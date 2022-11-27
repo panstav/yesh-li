@@ -1,0 +1,30 @@
+{
+	"env": {
+		"node": false,
+		"browser": true
+	},
+	"globals": {
+		"process": "readonly"
+	},
+	"extends": [
+		"plugin:react/recommended"
+	],
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		}
+	},
+	"plugins": [
+		"react"
+	],
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
+	"ignorePatterns": [],
+	"rules": {
+		"react/react-in-jsx-scope": "off",
+		"react/prop-types": "off"
+	}
+}

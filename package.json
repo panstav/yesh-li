@@ -1,0 +1,38 @@
+{
+  "name": "yesh-li",
+  "description": "",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "gatsby develop",
+    "build-debug": "npm run clean && npm run build && npm run serve",
+    "lint": "eslint .",
+    "clean": "gatsby clean",
+    "build": "gatsby build",
+    "serve": "gatsby serve"
+  },
+  "dependencies": {
+    "@fontsource/assistant": "^4.5.11",
+    "bulma": "^0.9.4",
+    "eslint": "^7.32.0",
+    "gatsby": "^4.24.8",
+    "gatsby-plugin-alias-imports": "^1.0.5",
+    "gatsby-plugin-react-helmet": "5.24",
+    "gatsby-plugin-robots-txt": "1.7",
+    "gatsby-plugin-sass": "5.24",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.56.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/panstav/yesh-li.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/panstav/yesh-li/issues"
+  },
+  "homepage": "https://github.com/panstav/yesh-li#readme"
+}
