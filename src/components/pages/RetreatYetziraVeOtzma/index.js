@@ -1,3 +1,5 @@
+import { createContext } from "react";
+
 import Section from '@wrappers/Section';
 import GlassBox from '@wrappers/GlassBox';
 
@@ -20,8 +22,10 @@ RetreatYetziraVeOtzmaPage.config = {
 	emailAddress: 'ksamardigital@gmail.com'
 };
 
+export const PageContext = createContext();
+
 export default function RetreatYetziraVeOtzmaPage() {
-	return <>
+	return <PageContext.Provider value={RetreatYetziraVeOtzmaPage.config}>
 		<Hero />
 		<Description />
 		<Delimiter height={100} />
@@ -47,7 +51,7 @@ export default function RetreatYetziraVeOtzmaPage() {
 			</GlassBox>
 		</Section>
 		<Footer />
-	</>;
+	</PageContext.Provider>;
 }
 
 function Delimiter({ height }) {

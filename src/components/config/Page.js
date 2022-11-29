@@ -1,13 +1,9 @@
-import { createContext } from "react";
-
 import Meta from "@config/Meta";
-
-export const PageContext = createContext();
 
 export default function Page({ path, config: pageConfig = {}, pageResources = {}, children }) {
 
 	const { title = '', description = '', background } = pageConfig;
-	const { page: { componentChunkName } = {} } = pageResources;
+	const { page: { componentChunkName = '' } = {} } = pageResources;
 
 	const pageId = componentChunkName.replace(/^component---src-pages-/, '').replace(/-js$/, '');
 
@@ -19,11 +15,9 @@ export default function Page({ path, config: pageConfig = {}, pageResources = {}
 
 		<Background {...{ background }} />
 
-		<PageContext.Provider value={pageConfig}>
-			<main className="pb-3">
-				{children}
-			</main>
-		</PageContext.Provider>
+		<main className="pb-3">
+			{children}
+		</main>
 	</>
 }
 

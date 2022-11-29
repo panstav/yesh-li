@@ -1,10 +1,9 @@
 import { useState, useRef, useCallback, useContext } from 'react';
 import classNames from 'classnames';
 
-import { PageContext } from "@config/Page";
-
 import { Checkmark } from '@elements/Icon';
 
+import { PageContext } from "./index";
 import Heading from './_elements/Heading';
 
 export default function Form({ className }) {
