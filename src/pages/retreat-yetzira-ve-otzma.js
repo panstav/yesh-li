@@ -1,3 +1,2 @@
-export default function RetreatYetziraVeOtzmaPage() {
-	return 'yay';
-}
+import RetreatYetziraVeOtzmaPage from '@pages/RetreatYetziraVeOtzma';
+export default RetreatYetziraVeOtzmaPage;
