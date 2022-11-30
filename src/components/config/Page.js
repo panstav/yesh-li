@@ -15,7 +15,7 @@ export default function Page({ path, config: pageConfig = {}, pageResources = {}
 
 		<Background {...{ background }} />
 
-		<main className="pb-3">
+		<main className="pb-3" style={{ height: '100%' }}>
 			{children}
 		</main>
 	</>
