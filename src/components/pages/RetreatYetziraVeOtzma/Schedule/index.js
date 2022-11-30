@@ -11,7 +11,7 @@ export default function Schedule() {
 					<span className='is-inline-block has-text-weight-bold mb-2'>{day.title}</span>
 					<ul>
 						{day.items.map((item) => {
-							return <li key={item} className="mb-2">{item}</li>;
+							return <li key={`${day.title}${item}`} className="mb-2">{item}</li>;
 						})}
 					</ul>
 				</div>;

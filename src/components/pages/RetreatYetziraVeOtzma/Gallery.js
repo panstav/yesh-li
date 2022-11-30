@@ -4,7 +4,7 @@ import classNames from "classnames";
 export default function Gallery({ children }) {
 
 	return <div className="is-flex is-flex-direction-column" style={{ gap: '1rem' }}>
-		{children.map((slideRow) => <div className="is-flex is-flex-wrap-wrap" style={{ gap: '1rem' }}>
+		{children.map((slideRow) => <div key={slideRow[0].src} className="is-flex is-flex-wrap-wrap" style={{ gap: '1rem' }}>
 			{slideRow.map((slide) => <GalleryItem key={slide.src} {...slide} />)}
 		</div>)}
 	</div>;
