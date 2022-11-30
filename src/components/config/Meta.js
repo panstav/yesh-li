@@ -22,7 +22,7 @@ export default function Meta({
 
 	const pageTitle = title || siteTitle;
 	const pageDescription = description || siteDescription;
-	const pathname = location.origin + path;
+	const pathname = isBrowser() ? window.location.origin + path : path;
 
 	return <Helmet {...helmetProps}>
 		<title>{pageTitle}</title>
@@ -48,4 +48,8 @@ export default function Meta({
 		<meta name="msapplication-TileColor" content="#f7d31e" />
 		<meta name="theme-color" content="#ffffff" /> */}
 	</Helmet>;
+}
+
+function isBrowser() {
+	return typeof window !== 'undefined';
 }
