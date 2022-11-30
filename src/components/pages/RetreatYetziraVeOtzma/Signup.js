@@ -1,6 +1,8 @@
 import { useState, useRef, useCallback, useContext } from 'react';
 import classNames from 'classnames';
 
+import isBrowser from '@lib/is-browser';
+
 import { Checkmark } from '@elements/Icon';
 
 import { PageContext } from "./index";
@@ -32,6 +34,7 @@ export default function Form({ className }) {
 	return <form {...{ ref, className }}>
 		<Heading>לפרטים נוספים:</Heading>
 		{succeeded && <div className="notification p-4 is-success">מעולה! נשתמע בקרוב.</div>}
+		<input type="hidden" name="_url" value={isBrowser() ? window.location.href : ''} />
 		<div className="block">
 			<div className="field">
 				<label className="label" htmlFor="name">שמי</label>

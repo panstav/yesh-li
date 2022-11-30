@@ -1,6 +1,8 @@
 import { graphql, useStaticQuery } from 'gatsby';
 import { Helmet } from 'react-helmet';
 
+import isBrowser from '@lib/is-browser';
+
 export default function Meta({
 	path,
 	title = '',
@@ -48,8 +50,4 @@ export default function Meta({
 		<meta name="msapplication-TileColor" content="#f7d31e" />
 		<meta name="theme-color" content="#ffffff" /> */}
 	</Helmet>;
-}
-
-function isBrowser() {
-	return typeof window !== 'undefined';
 }
