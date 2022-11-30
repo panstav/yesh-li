@@ -67,7 +67,7 @@ function Check({ className: classes, ...props }) {
 }
 
 function send({ toAddress, ...data }) {
-	fetch(`https://formsubmit.co/ajax/${toAddress}`, {
+	return fetch(`https://formsubmit.co/ajax/${toAddress}`, {
 		method: "POST",
 		body: JSON.stringify(data),
 		headers: {
