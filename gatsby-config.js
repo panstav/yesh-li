@@ -6,6 +6,7 @@ const crossEnvPlugins = [
 			policy: [{ userAgent: '*', allow: '*' }]
 		}
 	},
+	"gatsby-plugin-preact",
 	"gatsby-plugin-netlify",
 	"gatsby-plugin-react-helmet",
 	"gatsby-plugin-sass",
