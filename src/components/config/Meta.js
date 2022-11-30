@@ -22,6 +22,7 @@ export default function Meta({
 
 	const pageTitle = title || siteTitle;
 	const pageDescription = description || siteDescription;
+	const pathname = location.origin + path;
 
 	return <Helmet {...helmetProps}>
 		<title>{pageTitle}</title>
@@ -29,12 +30,12 @@ export default function Meta({
 		<meta name="description" content={pageDescription} />
 
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content={path} />
+		<meta property="og:url" content={pathname} />
 		<meta property="og:title" content={pageTitle} />
 		<meta property="og:description" content={pageDescription} />
 		{/* <meta property="og:image" content={pageFeaturedImage} /> */}
 		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={path} />
+		<meta property="twitter:url" content={pathname} />
 		<meta property="twitter:title" content={pageTitle} />
 		<meta property="twitter:description" content={pageDescription} />
 		{/* <meta property="twitter:image" content={pageFeaturedImage} /> */}
