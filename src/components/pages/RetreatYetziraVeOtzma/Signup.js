@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useContext } from 'react';
+import { useState, useRef, useCallback, useContext, useEffect } from 'react';
 import classNames from 'classnames';
 
 import isBrowser from '@lib/is-browser';
@@ -16,6 +16,15 @@ export default function Form({ className }) {
 	const [validation, setValidation] = useState(false);
 	const [succeeded, setSucceeded] = useState(false);
 
+	useEffect(() => {
+		if (window.location.href.includes('form-submitted')) {
+			setSucceeded(true);
+		} else {
+			document.querySelector('input[name="_next"]').value = window.location.href + '?form-submitted';
+			document.querySelector('input[name="_url"]').value = window.location.href;
+		}
+	}, []);
+
 	const resetValidation = useCallback(() => {
 		setValidation(false);
 	}, [setValidation]);
@@ -23,18 +32,19 @@ export default function Form({ className }) {
 	const handleSubmit = useCallback((event) => {
 		event.preventDefault();
 
-		const { name, phone, email } = ref.current.elements;
+		const { phone, email } = ref.current.elements;
 
 		if (!phone.value && !email.value) return setValidation(true);
 
-		send({ name: name.value, phone: phone.value, email: email.value, toAddress })
-			.then(() => setSucceeded(true));
+		ref.current.submit();
 	}, [ref, setValidation, setSucceeded, toAddress]);
 
-	return <form {...{ ref, className }}>
+	return <form action={`https://formsubmit.co/${toAddress}`} method="POST" {...{ ref, className }}>
+		<input type="text" name="_honey" style="display:none" />
+		<input type="hidden" name="_next" value="" />
+		<input type="hidden" name="_url" value=""></input>
 		<Heading>לפרטים נוספים:</Heading>
 		{succeeded && <div className="notification p-4 is-success">מעולה! נשתמע בקרוב.</div>}
-		<input type="hidden" name="_url" value={isBrowser() ? window.location.href : ''} />
 		<div className="block">
 			<div className="field">
 				<label className="label" htmlFor="name">שמי</label>
@@ -67,18 +77,4 @@ export default function Form({ className }) {
 function Check({ className: classes, ...props }) {
 	props.className = classNames('ml-1 mr-2 has-text-success', classes);
 	return <Checkmark {...props} />;
-}
-
-function send({ toAddress, ...data }) {
-	return fetch(`https://formsubmit.co/ajax/${toAddress}`, {
-		method: "POST",
-		body: JSON.stringify(data),
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-		}
-	})
-		.then(response => response.json())
-		.then(data => console.log(data))
-		.catch(error => console.error(error));
 }
