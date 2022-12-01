@@ -28,7 +28,20 @@ const crossEnvPlugins = [
 	}
 ];
 
-const plugins = crossEnvPlugins;
+const productionOnlyPlugins = [
+	{
+		resolve: "gatsby-plugin-google-tagmanager",
+		options: {
+			id: "GTM-W2SWWXL",
+			includeInDevelopment: false,
+			enableWebVitalsTracking: true
+		},
+	}
+];
+
+const developmentOnlyPlugins = [];
+
+const plugins = crossEnvPlugins.concat(process.env.NETLIFY ? productionOnlyPlugins : developmentOnlyPlugins);
 
 module.exports = {
 	siteMetadata: {
