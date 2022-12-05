@@ -4,7 +4,7 @@ import Heading from '../_elements/Heading';
 
 export default function Schedule() {
 	return <>
-		<Heading>תכנית הריטריט</Heading>
+		<Heading>תכנית הריטריט:</Heading>
 		<div className="is-flex-desktop is-flex-direction-row is-flex-gap-2 is-justify-content-space-between">
 			{schedule.map((day) => {
 				return <div key={day.title} className='is-flex-grow-1 mb-3' style={{ flexBasis: 0 }}>

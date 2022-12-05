@@ -10,7 +10,7 @@ import guides from './guides';
 export default function Guides () {
 	return <Section>
 		<GlassBox>
-			<Heading>על המנחה והמפיקה</Heading>
+			<Heading>על המנחה והמפיקה:</Heading>
 			<div className="is-flex is-flex-direction-row is-flex-wrap-wrap is-flex-gap-4">
 				{guides.map((guide) => {
 					return <div key={guide.name} className='is-flex-grow-1' style={{ flexBasis: 0, minWidth: 'min(100%, 16rem)' }}>

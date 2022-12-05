@@ -11,6 +11,7 @@ import Signup from './Signup';
 import Gallery from './Gallery';
 import Details from './Details';
 import Footer from './Footer';
+import WhosThisFor from "./WhosThisFor";
 
 import slides from './_data/slides';
 
@@ -43,12 +44,13 @@ export default function RetreatYetziraVeOtzmaPage() {
 		</Section>
 		<Delimiter height={100} />
 		<Section>
+			<WhosThisFor />
+		</Section>
+		<Section>
 			<Gallery>{slides}</Gallery>
 		</Section>
 		<Section>
-			<GlassBox>
-				<Details />
-			</GlassBox>
+			<Details />
 		</Section>
 		<Footer />
 	</PageContext.Provider>;
