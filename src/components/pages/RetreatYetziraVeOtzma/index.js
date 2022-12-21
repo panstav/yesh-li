@@ -32,9 +32,15 @@ export default function RetreatYetziraVeOtzmaPage() {
 		<Delimiter height={100} />
 		<Guides />
 		<Section withTopMargin={false} className="mt-3">
+			<WhosThisFor />
+		</Section>
+		<Section withTopMargin={false} className="mt-3">
 			<GlassBox>
 				<Schedule />
 			</GlassBox>
+		</Section>
+		<Section withTopMargin={false} className="mt-3">
+			<Gallery>{slides}</Gallery>
 		</Section>
 		<Delimiter height={100} />
 		<Section className="is-medium">
@@ -43,12 +49,6 @@ export default function RetreatYetziraVeOtzmaPage() {
 			</GlassBox>
 		</Section>
 		<Delimiter height={100} />
-		<Section>
-			<WhosThisFor />
-		</Section>
-		<Section>
-			<Gallery>{slides}</Gallery>
-		</Section>
 		<Section>
 			<Details />
 		</Section>
