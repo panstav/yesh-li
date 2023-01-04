@@ -28,5 +28,9 @@ function Title() {
 		<span className="is-size-2 has-text-weight-bold">ריטריט יצירה ועוצמה בערבה</span>
 		<br />
 		<span className="is-size-3 has-text-weight-bold has-text-grey">26-28.01.23</span>
+		<br />
+		<span className="is-size-5 has-text-weight-bold has-text-danger-dark">הסדנא מלאה</span>
+		<br />
+		<span className="is-size-6 has-text-weight-bold has-text-danger-dark">ניתן להשאיר פרטים לקבלת עידכונים על הסדנאות הבאות</span>
 	</h1>
 }

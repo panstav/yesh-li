@@ -43,8 +43,8 @@ export default function Form({ className }) {
 		<input type="text" name="_honey" style="display:none" />
 		<input type="hidden" name="_next" value="" />
 		<input type="hidden" name="_url" value=""></input>
-		<Heading>לפרטים נוספים:</Heading>
-		{succeeded && <div className="notification p-4 is-success">מעולה! נשתמע בקרוב.</div>}
+		<Heading>עידכונים על הסדנאות הבאות:</Heading>
+		{succeeded && <div className="notification p-4 is-success">מעולה! נעדכן כשתהיה סדנא נוספת.</div>}
 		<div className="block">
 			<div className="field">
 				<label className="label" htmlFor="name">שמי</label>
@@ -66,9 +66,7 @@ export default function Form({ className }) {
 		{validation && <div className="notification p-4 mt-5 is-warning">אם תשאירו מייל או טלפון - נוכל גם לחזור אליכם 😉</div>}
 		<button onClick={handleSubmit} className="button is-fullwidth is-primary has-text-white has-text-weight-bold mt-4">תחזרו אליי בבקשה</button>
 		<p className='has-text-centered has-text-grey is-fullwidth is-size-7 mt-2'>
-			<span className='is-inline-block'><Check />נחזור אלייך בהקדם.</span>
 			<span className='is-inline-block'><Check />בלי ספאם.</span>
-			<span className='is-inline-block'><Check />אך ורק לצורך הסדנה.</span>
 		</p>
 	</form>;
 
