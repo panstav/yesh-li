@@ -1,3 +1,5 @@
+const siteUrl = 'https://yesh.li';
+
 const crossEnvPlugins = [
 	{
 		resolve: 'gatsby-plugin-robots-txt',
@@ -35,7 +37,13 @@ const productionOnlyPlugins = [
 			id: "GTM-W2SWWXL",
 			includeInDevelopment: false,
 			enableWebVitalsTracking: true
-		},
+		}
+	},
+	{
+		resolve: `gatsby-plugin-canonical-urls`,
+		options: {
+			siteUrl
+		}
 	}
 ];
 
@@ -45,7 +53,7 @@ const plugins = crossEnvPlugins.concat(process.env.NETLIFY ? productionOnlyPlugi
 
 module.exports = {
 	siteMetadata: {
-		siteUrl: 'https://yesh.li',
+		siteUrl,
 		title: 'יש.לי',
 		description: 'יום אחד גם לך יהיה'
 	},
