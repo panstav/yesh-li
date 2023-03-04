@@ -1,5 +1,3 @@
-import Section from '@wrappers/Section';
-
 export default function Hero() {
 	return <div className="is-flex is-flex-direction-column is-align-items-center has-text-centered has-background-white pt-4 pb-2">
 		<Logo />

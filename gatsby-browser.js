@@ -3,6 +3,6 @@ import lazySizes from 'lazysizes';
 
 import '@styles/index.sass';
 
-lazySizes.cfg.expand = 300;
+export { wrapPageElement } from '@config/Page';
 
-export { default as wrapPageElement } from './lib/wrap-page-element';
+lazySizes.cfg.expand = 300;

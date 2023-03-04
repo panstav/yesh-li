@@ -17,7 +17,7 @@ export default function Guides () {
 						<LazyImage src={guide.imageSrc} className="is-round" style={{ width: '100px', borderRadius: '100%' }} />
 						<h3 className='mt-2 mb-1 has-text-weight-bold'>{guide.name}</h3>
 						<p>{guide.description}</p>
-					</div>
+					</div>;
 				})}
 			</div>
 		</GlassBox>

@@ -19,7 +19,6 @@ RetreatYetziraVeOtzmaPage.config = {
 	title: 'ריטריט יצירה ועוצמה בערבה',
 	description: 'יצירה בחומרים נטושים וחומרי טבע בסטודיו בלב המדבר.',
 	background: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg',
-
 	emailAddress: 'ksamardigital@gmail.com'
 };
 

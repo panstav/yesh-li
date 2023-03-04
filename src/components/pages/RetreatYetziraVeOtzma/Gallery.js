@@ -1,5 +1,4 @@
 import LazyImage from "@elements/LazyImage";
-import classNames from "classnames";
 
 export default function Gallery({ children }) {
 

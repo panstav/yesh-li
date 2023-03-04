@@ -1,24 +1,17 @@
-import Meta from "@config/Meta";
+import { createElement } from 'react';
 
-export default function Page({ path, config: pageConfig = {}, pageResources = {}, children }) {
-
-	const { title = '', description = '', background } = pageConfig;
-	const { page: { componentChunkName = '' } = {} } = pageResources;
-
-	const pageId = componentChunkName.replace(/^component---src-pages-/, '').replace(/-js$/, '');
+export default function Page({ background, children }) {
 
 	return <>
-		<Meta {...{ title, description, path }} helmetProps={{
-			htmlAttributes: { lang: 'he', dir: 'rtl' },
-			bodyAttributes: { 'data-page': pageId }
-		}} />
-
 		<Background {...{ background }} />
-
 		<main className="pb-3" style={{ height: '100%' }}>
 			{children}
 		</main>
-	</>
+	</>;
+}
+
+export function wrapPageElement({ element, props }) {
+	return createElement(Page, { ...element.type.config, ...props }, element);
 }
 
 function Background({ background: url }) {

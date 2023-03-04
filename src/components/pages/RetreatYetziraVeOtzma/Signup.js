@@ -1,8 +1,6 @@
 import { useState, useRef, useCallback, useContext, useEffect } from 'react';
 import classNames from 'classnames';
 
-import isBrowser from '@lib/is-browser';
-
 import { Checkmark } from '@elements/Icon';
 
 import { PageContext } from "./index";
@@ -40,7 +38,7 @@ export default function Form({ className }) {
 	}, [ref, setValidation, setSucceeded, toAddress]);
 
 	return <form action={`https://formsubmit.co/${toAddress}`} method="POST" {...{ ref, className }}>
-		<input type="text" name="_honey" style="display:none" />
+		<input type="text" name="_honey" style={{ display: 'none' }} />
 		<input type="hidden" name="_next" value="" />
 		<input type="hidden" name="_url" value=""></input>
 		<Heading>עידכונים על הסדנאות הבאות:</Heading>
