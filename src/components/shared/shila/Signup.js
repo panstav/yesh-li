@@ -3,12 +3,12 @@ import classNames from 'classnames';
 
 import { Checkmark } from '@elements/Icon';
 
-import { PageContext } from "./index";
-import Heading from './_elements/Heading';
+import { PageContext } from "@shared/shila/contexts";
+import Heading from '@shared/shila/Heading';
 
 export default function Form({ className }) {
 
-	const { emailAddress: toAddress } = useContext(PageContext);
+	const { emailAddress: toAddress, isSoldOut } = useContext(PageContext);
 
 	const ref = useRef(null);
 	const [validation, setValidation] = useState(false);
@@ -37,12 +37,15 @@ export default function Form({ className }) {
 		ref.current.submit();
 	}, [ref, setValidation, setSucceeded, toAddress]);
 
+	const heading = isSoldOut ? 'עידכונים על הסדנאות הבאות' : 'לפרטים נוספים';
+	const successMessage = isSoldOut ? 'מעולה! נשתמע בקרוב' : 'מעולה! נעדכן כשתהיה סדנא נוספת';
+
 	return <form action={`https://formsubmit.co/${toAddress}`} method="POST" {...{ ref, className }}>
 		<input type="text" name="_honey" style={{ display: 'none' }} />
 		<input type="hidden" name="_next" value="" />
 		<input type="hidden" name="_url" value=""></input>
-		<Heading>עידכונים על הסדנאות הבאות:</Heading>
-		{succeeded && <div className="notification p-4 is-success">מעולה! נעדכן כשתהיה סדנא נוספת.</div>}
+		<Heading>{heading}:</Heading>
+		{succeeded && <div className="notification p-4 is-success">{successMessage}.</div>}
 		<div className="block">
 			<div className="field">
 				<label className="label" htmlFor="name">שמי</label>
@@ -64,7 +67,9 @@ export default function Form({ className }) {
 		{validation && <div className="notification p-4 mt-5 is-warning">אם תשאירו מייל או טלפון - נוכל גם לחזור אליכם 😉</div>}
 		<button onClick={handleSubmit} className="button is-fullwidth is-primary has-text-white has-text-weight-bold mt-4">תחזרו אליי בבקשה</button>
 		<p className='has-text-centered has-text-grey is-fullwidth is-size-7 mt-2'>
+			{!isSoldOut && <span className='is-inline-block'><Check />נחזור אלייך בהקדם.</span>}
 			<span className='is-inline-block'><Check />בלי ספאם.</span>
+			{!isSoldOut && <span className='is-inline-block'><Check />אך ורק לצורך הסדנה.</span>}
 		</p>
 	</form>;
 

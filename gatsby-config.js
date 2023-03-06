@@ -22,7 +22,8 @@ const crossEnvPlugins = [
 				"@lib": "src/lib",
 				"@hooks": "src/hooks",
 				"@styles": "src/styles",
-				"@data": "src/data"
+				"@data": "src/data",
+				"@shared": "src/components/shared"
 			}
 		}
 	}

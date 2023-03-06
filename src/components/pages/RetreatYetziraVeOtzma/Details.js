@@ -1,6 +1,6 @@
 import GlassBox from "@wrappers/GlassBox";
 
-import Heading from "./_elements/Heading";
+import Heading from "@shared/shila/Heading";
 
 export default function Details() {
 	return <>

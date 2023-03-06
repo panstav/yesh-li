@@ -3,7 +3,7 @@ import GlassBox from '@wrappers/GlassBox';
 
 import LazyImage from '@elements/LazyImage';
 
-import Heading from '../_elements/Heading';
+import Heading from '@shared/shila/Heading';
 
 import guides from './guides';
 

@@ -1,6 +1,6 @@
 import schedule from './schedule';
 
-import Heading from '../_elements/Heading';
+import Heading from '../../../shared/shila/Heading';
 
 export default function Schedule() {
 	return <>
