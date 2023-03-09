@@ -5,6 +5,9 @@ import { Checkmark } from '@elements/Icon';
 import Heading from '@shared/shila/Heading';
 
 export default function Form({ toAddress, formRef, className, heading, succeeded, successMessage, resetValidation, validation, handleSubmit, isSoldOut }) {
+
+	const seed = Math.floor(Math.random() * 1000);
+
 	return <form action={`https://formsubmit.co/${toAddress}`} method="POST" {...{ ref: formRef, className }}>
 		<input type="text" name="_honey" style={{ display: 'none' }} />
 		<input type="hidden" name="_next" value="" />
@@ -13,20 +16,20 @@ export default function Form({ toAddress, formRef, className, heading, succeeded
 		{succeeded && <div className="notification p-4 is-success">{successMessage}.</div>}
 		<div className="block">
 			<div className="field">
-				<label className="label" htmlFor="name">שמי</label>
-				<input onChange={resetValidation} className="input" type="text" name="name" />
+				<label className="label" htmlFor={`signup-name-${seed}`}>שמי</label>
+				<input onChange={resetValidation} className="input" type="text" name="name" id={`signup-name-${seed}`} />
 			</div>
 		</div>
 		<div className="block">
 			<div className="field">
-				<label className="label" htmlFor="phone">אפשר לחזור אליי למספר</label>
-				<input onChange={resetValidation} className="input is-ltr" type="text" name="phone" />
+				<label className="label" htmlFor={`signup-phone-${seed}`}>אפשר לחזור אליי למספר</label>
+				<input onChange={resetValidation} className="input is-ltr" type="text" name="phone" id={`signup-phone-${seed}`} />
 			</div>
 		</div>
 		<div className="block">
 			<div className="field">
-				<label className="label" htmlFor="email">או בכתובת המייל</label>
-				<input onChange={resetValidation} className="input" type="email" name="email" />
+				<label className="label" htmlFor={`signup-email-${seed}`}>או בכתובת המייל</label>
+				<input onChange={resetValidation} className="input" type="email" name="email" id={`signup-email-${seed}`} />
 			</div>
 		</div>
 		{validation && <div className="notification p-4 mt-5 is-warning">אם תשאירו מייל או טלפון - נוכל גם לחזור אליכם 😉</div>}
