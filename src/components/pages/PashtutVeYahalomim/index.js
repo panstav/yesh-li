@@ -3,12 +3,7 @@ import GlassBox from "@wrappers/GlassBox";
 
 import { PageContext } from "@shared/shila/contexts";
 
-import Hero from "@shared/shila/Hero";
-import Description from "@shared/shila/Description";
-import Delimiter from "@shared/shila/Delimiter";
-import Guides from "@shared/shila/Guides";
-import Signup from '@shared/shila/Signup';
-import Footer from '@shared/shila/Footer';
+import { Hero, Description, Delimiter, Guides, WhosThisFor, Signup, Footer } from "@shared/shila";
 
 import Details from "./Details";
 
@@ -29,6 +24,9 @@ export default function PashtutVeYahalomimPage() {
 		</Description>
 		<Delimiter height={100} />
 		<Guides />
+		<Section withTopMargin={false} className="mt-3">
+			<WhosThisFor />
+		</Section>
 		<Delimiter height={100} />
 		<Section className="is-medium">
 			<GlassBox>

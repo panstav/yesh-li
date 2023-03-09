@@ -1,18 +1,12 @@
 import Section from '@wrappers/Section';
 import GlassBox from '@wrappers/GlassBox';
 
+import { Hero, Description, Delimiter, Guides, WhosThisFor, Signup, Footer } from "@shared/shila";
 import { PageContext } from "@shared/shila/contexts";
-import Hero from "@shared/shila/Hero";
-import Description from "@shared/shila/Description";
-import Delimiter from '@shared/shila/Delimiter';
-import Signup from '@shared/shila/Signup';
-import Guides from "@shared/shila/Guides";
-import Footer from '@shared/shila/Footer';
 
 import Schedule from "./Schedule";
 import Gallery from './Gallery';
 import Details from './Details';
-import WhosThisFor from "./WhosThisFor";
 
 import slides from './_data/slides';
 
