@@ -18,7 +18,7 @@ const images = [
 		alt: 'יצירה של שילה ,ענף ונייר בצינור מחליד',
 		className: 'is-flex-grow-2'
 	},{
-		src: 'https://storage.googleapis.com/yeshli-www/samar-shila-pashtut-veyahalomim/20230127_095350.jpg',
+		src: 'https://storage.googleapis.com/yeshli-www/samar-shila-pashtut-veyahalomim/20230127_095350-1.jpg',
 		alt: 'להלך וללקט במטע דקלים עתיק',
 		className: 'is-flex-grow-1'
 		// style: { width: '100%', flexBasis: 'auto' }
