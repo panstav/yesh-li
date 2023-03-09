@@ -32,8 +32,8 @@ export default function Form({ toAddress, formRef, className, heading, succeeded
 				<input onChange={resetValidation} className="input" type="email" name="email" id={`signup-email-${seed}`} />
 			</div>
 		</div>
-		{validation && <div className="notification p-4 mt-5 is-warning">אם תשאירו מייל או טלפון - נוכל גם לחזור אליכם 😉</div>}
-		<button onClick={handleSubmit} className="button is-fullwidth has-text-white has-text-weight-bold mt-4" style={{ background: 'linear-gradient(to right, #fecb01 0%,#f18244 51%, #fecb01 100%)' }}>תחזרו אליי בבקשה</button>
+		{validation && <div className="notification p-4 mt-5 is-warning">הרשמו עם כתובת מייל או טלפון 😉</div>}
+		<button onClick={handleSubmit} className="button is-fullwidth has-text-white has-text-weight-bold mt-4" style={{ background: 'linear-gradient(to right, #fecb01 0%,#f18244 51%, #fecb01 100%)' }}>אשמח שתיצרו קשר</button>
 		<p className='has-text-centered is-fullwidth is-size-7 mt-2'>
 			{!isSoldOut && <span className='is-inline-block'><Check />נחזור אלייך בהקדם.</span>}
 			<span className='is-inline-block'><Check />בלי ספאם.</span>
