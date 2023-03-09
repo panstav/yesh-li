@@ -16,7 +16,8 @@ RetreatYetziraVeOtzmaPage.config = {
 	dates: '26-28.01.23',
 	description: 'יצירה בחומרים נטושים וחומרי טבע בסטודיו בלב המדבר.',
 	background: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg',
-	emailAddress: 'ksamardigital@gmail.com'
+	emailAddress: 'ksamardigital@gmail.com',
+	featuredImage: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg'
 };
 
 export default function RetreatYetziraVeOtzmaPage() {
