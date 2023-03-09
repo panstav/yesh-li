@@ -3,9 +3,11 @@ import GlassBox from "@wrappers/GlassBox";
 
 import { PageContext } from "@shared/shila/contexts";
 
-import { Hero, Description, Delimiter, Guides, WhosThisFor, Signup, Footer } from "@shared/shila";
+import { Hero, Description, Delimiter, Guides, WhosThisFor, Signup, Footer, Gallery } from "@shared/shila";
 
 import Details from "./Details";
+
+import images from './images';
 
 PashtutVeYahalomimPage.config = {
 	isSoldOut: false,
@@ -27,6 +29,9 @@ export default function PashtutVeYahalomimPage() {
 		<Guides />
 		<Section withTopMargin={false} className="mt-3">
 			<WhosThisFor />
+		</Section>
+		<Section className="pt-6">
+			<Gallery>{images}</Gallery>
 		</Section>
 		<Delimiter height={100} />
 		<Section className="is-medium">

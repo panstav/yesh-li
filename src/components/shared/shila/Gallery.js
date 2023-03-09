@@ -10,7 +10,8 @@ export default function Gallery({ children }) {
 }
 
 function GalleryItem({ src, alt, style = {}, className }) {
+	const title = alt;
 	return <div {...{ className }} style={{ height: '17rem', borderRadius: '0.5rem', overflow: 'hidden', flexBasis: 0, ...style }}>
-		<LazyImage {...{ src, alt }} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+		<LazyImage {...{ src, alt, title }} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
 	</div>;
 }
