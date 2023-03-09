@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import classNames from 'classnames';
 
 import { Checkmark } from '@elements/Icon';
@@ -6,7 +8,7 @@ import Heading from '@shared/shila/Heading';
 
 export default function Form({ toAddress, formRef, className, heading, succeeded, successMessage, resetValidation, validation, handleSubmit, isSoldOut }) {
 
-	const seed = Math.floor(Math.random() * 1000);
+	const seed = useMemo(() => Math.floor(Math.random() * 1000), []);
 
 	return <form action={`https://formsubmit.co/${toAddress}`} method="POST" {...{ ref: formRef, className }}>
 		<input type="text" name="_honey" style={{ display: 'none' }} />
