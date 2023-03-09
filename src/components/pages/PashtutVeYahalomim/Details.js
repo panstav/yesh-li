@@ -1,3 +1,5 @@
+import { useCallback, useRef } from 'react';
+
 import GlassBox from "@wrappers/GlassBox";
 
 import Heading from "@shared/shila/Heading";
@@ -28,7 +30,7 @@ export default function Details() {
 		</div>
 		<div className="block">
 			<p>התשלום עבור הריטריט ייעשה לבחירתכם באחד האופנים הבאים:</p>
-			<p>או ביט לטלפון <a href="tel:+972524322063">052-432-2063</a> (אנא ציינו באופו ברור: &quot;פשטות ויהלומים&quot;)</p>
+			<p>או ביט לטלפון <SelectOnClick>052-432-2063</SelectOnClick> (אנא ציינו באופו ברור: &quot;פשטות ויהלומים&quot;)</p>
 			<p>או בהעברה בנקאית לחשבון: בנק מזרחי, סניף אילת 470, מספר חשבון 330190, קיבוץ סמר.</p>
 			<p>בבקשה שלחו אסמכתא על התשלום לאיילת קוז&apos;יץ: <a href="tel:+972523947909">052-394-7909</a></p>
 		</div>
@@ -55,4 +57,26 @@ export default function Details() {
 			<p>בשבועיים לפני הרטריט תחויבו בדמי ביטול בסך ₪250</p>
 		</div>
 	</GlassBox>;
+}
+
+function SelectOnClick ({ children }) {
+
+	const ref = useRef(null);
+
+// This code selects all the text in the element
+// with the reference "ref"
+	const onClick = useCallback(() => {
+		// remove all existing selections
+		const selection = window.getSelection();
+		// create a new range
+		const range = document.createRange();
+		// select the node contents of the target element
+		range.selectNodeContents(ref.current);
+		// clear all existing selections
+		selection.removeAllRanges();
+		// add the new range to the selection
+		selection.addRange(range);
+	}, [ref]);
+
+	return <span onClick={onClick} ref={ref}>{children}</span>
 }
