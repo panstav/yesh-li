@@ -14,5 +14,5 @@ function Presenting () {
 }
 
 function Logo() {
-	return <img style={{ width: '6rem' }} src="https://storage.googleapis.com/yeshli-www/samar/logo-transparent-01.png" alt="לוגו קיבוץ סמר" />;
+	return <img style={{ width: '6rem' }} src="https://storage.googleapis.com/yeshli-www/samar/logo-transparent-01.png" alt="לוגו קיבוץ סמר" width="108" height="52" />;
 }
