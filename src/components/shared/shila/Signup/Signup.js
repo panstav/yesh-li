@@ -11,9 +11,7 @@ export default function Form({ formName, formRef, className, heading, succeeded,
 	const seed = useMemo(() => Math.floor(Math.random() * 1000), []);
 
 	return <form name={formName} method="POST" {...{ ref: formRef, className }} netlify>
-		<input type="text" name="_honey" style={{ display: 'none' }} />
-		<input type="hidden" name="_next" value="" />
-		<input type="hidden" name="_url" value=""></input>
+		<input type="hidden" name="form-name" value={formName} />
 		<Heading>{heading}:</Heading>
 		{succeeded && <div className="notification p-4 is-success">{successMessage}.</div>}
 		<div className="block">
