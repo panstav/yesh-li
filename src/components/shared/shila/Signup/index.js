@@ -32,7 +32,14 @@ export default function Form({ className }) {
 
 		if (!phone.value && !email.value) return setValidation(true);
 
-		ref.current.submit();
+		const formElem = event.target;
+		const formData = new FormData(formElem);
+		fetch("/", {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			body: new URLSearchParams(formData).toString(),
+		}).then(() => navigate(window.location.href + (window.location.search ? '&' : '?') + 'form-submitted'));
+
 	}, [ref, setValidation, setSucceeded]);
 
 	const heading = isSoldOut ? 'עידכונים על הסדנאות הבאות' : 'לפרטים נוספים';
