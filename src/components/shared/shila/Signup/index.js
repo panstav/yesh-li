@@ -15,11 +15,7 @@ export default function Form({ className }) {
 	const [succeeded, setSucceeded] = useState(false);
 
 	useEffect(() => {
-		if (window.location.href.includes('form-submitted')) {
-			setSucceeded(true);
-		} else {
-			document.querySelector(`form[name="${formName}"]`).setAttribute('action', window.location.href + '?form-submitted');
-		}
+		if (window.location.href.includes('form-submitted')) setSucceeded(true)
 	}, []);
 
 	const resetValidation = useCallback(() => {
@@ -35,11 +31,16 @@ export default function Form({ className }) {
 
 		const formElem = ref.current;
 		const formData = new FormData(formElem);
+		const redirectUrl = window.location.href + (window.location.search ? '&' : '?') + 'form-submitted';
+		console.log('redirectUrl', redirectUrl);
+		console.log('formData', formData);
+
+
 		fetch("/", {
 			method: "POST",
 			headers: { "Content-Type": "application/x-www-form-urlencoded" },
 			body: new URLSearchParams(formData).toString(),
-		}).then(() => navigate(window.location.href + (window.location.search ? '&' : '?') + 'form-submitted'));
+		}).then(() => navigate(redirectUrl));
 
 	}, [ref, setValidation, setSucceeded]);
 
