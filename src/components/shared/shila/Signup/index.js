@@ -31,10 +31,9 @@ export default function Form({ className }) {
 
 		const formElem = ref.current;
 		const formData = new FormData(formElem);
-		const redirectUrl = window.location.href + (window.location.search ? '&' : '?') + 'form-submitted';
+		const redirectUrl = window.location.href + (window.location.search ? '&' : '?') + 'form-submitted=true';
 		console.log('redirectUrl', redirectUrl);
 		console.log('formData', formData);
-
 
 		fetch("/", {
 			method: "POST",
