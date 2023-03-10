@@ -1,7 +1,4 @@
 import { useState, useRef, useCallback, useContext, useEffect } from 'react';
-import classNames from 'classnames';
-
-import { Checkmark } from '@elements/Icon';
 
 import { PageContext } from "@shared/shila/contexts";
 
@@ -9,20 +6,20 @@ import Component from './Signup';
 
 export default function Form({ className }) {
 
-	const { emailAddress: toAddress, isSoldOut } = useContext(PageContext);
+	const { isSoldOut, title, dates } = useContext(PageContext);
 
 	const ref = useRef(null);
 	const [validation, setValidation] = useState(false);
 	const [succeeded, setSucceeded] = useState(false);
 
-	useEffect(() => {
-		if (window.location.href.includes('form-submitted')) {
-			setSucceeded(true);
-		} else {
-			document.querySelector('input[name="_next"]').value = window.location.href + '?form-submitted';
-			document.querySelector('input[name="_url"]').value = window.location.href;
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (window.location.href.includes('form-submitted')) {
+	// 		setSucceeded(true);
+	// 	} else {
+	// 		document.querySelector('input[name="_next"]').value = window.location.href + '?form-submitted';
+	// 		document.querySelector('input[name="_url"]').value = window.location.href;
+	// 	}
+	// }, []);
 
 	const resetValidation = useCallback(() => {
 		setValidation(false);
@@ -36,13 +33,14 @@ export default function Form({ className }) {
 		if (!phone.value && !email.value) return setValidation(true);
 
 		ref.current.submit();
-	}, [ref, setValidation, setSucceeded, toAddress]);
+	}, [ref, setValidation, setSucceeded]);
 
 	const heading = isSoldOut ? 'עידכונים על הסדנאות הבאות' : 'לפרטים נוספים';
 	const successMessage = isSoldOut ? 'מעולה! נעדכן כשתהיה סדנא נוספת' : 'מעולה! נשתמע בקרוב';
 
 	const props = {
-		toAddress,
+		formId: `signup-${title}-${dates}`,
+		redirectUrl: window.location.href + '?form-submitted',
 		formRef: ref,
 		className,
 		heading,
