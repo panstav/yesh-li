@@ -15,7 +15,7 @@ export default function Form({ className }) {
 	const [validation, setValidation] = useState(false);
 	const [succeeded, setSucceeded] = useState(false);
 
-	if (isBrowser()) {
+	if (!succeeded && isBrowser()) {
 		if (window.location.href.includes('form-submitted')) setSucceeded(true);
 	};
 
@@ -38,7 +38,9 @@ export default function Form({ className }) {
 			method: "POST",
 			headers: { "Content-Type": "application/x-www-form-urlencoded" },
 			body: new URLSearchParams(formData).toString(),
-		}).then(() => navigate(redirectUrl));
+		}).then(() => {
+			window.location.href = redirectUrl;
+		});
 
 	}, [ref, setValidation, setSucceeded]);
 
