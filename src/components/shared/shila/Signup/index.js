@@ -1,6 +1,5 @@
-import { navigate } from 'gatsby';
 import { useState, useRef, useCallback, useContext, useEffect } from 'react';
-import { redirectTo } from "@reach/router";
+import * as reach from "@reach/router";
 
 import { PageContext } from "@shared/shila/contexts";
 
@@ -40,7 +39,7 @@ export default function Form({ className }) {
 			method: "POST",
 			headers: { "Content-Type": "application/x-www-form-urlencoded" },
 			body: new URLSearchParams(formData).toString(),
-		}).then(() => redirectTo(redirectUrl));
+		}).then(() => reach.redirectTo(redirectUrl));
 
 	}, [ref, setValidation, setSucceeded]);
 
