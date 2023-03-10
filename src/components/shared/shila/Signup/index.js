@@ -1,3 +1,4 @@
+import { navigate } from 'gatsby';
 import { useState, useRef, useCallback, useContext, useEffect } from 'react';
 
 import { PageContext } from "@shared/shila/contexts";
