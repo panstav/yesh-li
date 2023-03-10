@@ -16,7 +16,7 @@ PashtutVeYahalomimPage.config = {
 	description: 'יצירה בחומרים נטושים וחומרי טבע בסטודיו בלב המדבר.',
 	background: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg',
 	emailAddress: 'ksamardigital@gmail.com',
-	featuredImage: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg'
+	featuredImage: 'https://storage.googleapis.com/yeshli-www/samar-shila-pashtut-veyahalomim/featured-image-01.jpg'
 };
 
 export default function PashtutVeYahalomimPage() {
