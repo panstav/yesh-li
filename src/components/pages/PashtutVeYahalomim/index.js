@@ -14,9 +14,9 @@ PashtutVeYahalomimPage.config = {
 	title: 'פשטות ויהלומים רטריט אביב בערבה',
 	dates: '11-13.5.23',
 	description: 'יצירה בחומרים נטושים וחומרי טבע בסטודיו בלב המדבר.',
-	background: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg',
+	background: 'https://storage.googleapis.com/yeshli-www/assets/background-02.jpg',
 	emailAddress: 'ksamardigital@gmail.com',
-	featuredImage: 'https://storage.googleapis.com/yeshli-www/samar-shila-pashtut-veyahalomim/featured-image-01.jpg'
+	featuredImage: 'https://storage.googleapis.com/yeshli-www/assets/background-02-clear.jpg'
 };
 
 export default function PashtutVeYahalomimPage() {
