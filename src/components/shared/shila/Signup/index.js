@@ -6,8 +6,8 @@ import Component from './Signup';
 
 export default function Form({ className }) {
 
-	const { isSoldOut, title, dates } = useContext(PageContext);
-	const formName = `signup-${title}-${dates}`;
+	const { isSoldOut, dates } = useContext(PageContext);
+	const formName = `signup-samar-shila-${dates}`;
 
 	const ref = useRef(null);
 	const [validation, setValidation] = useState(false);
@@ -17,7 +17,7 @@ export default function Form({ className }) {
 		if (window.location.href.includes('form-submitted')) {
 			setSucceeded(true);
 		} else {
-			document.querySelector(`form[name=${formName}]`).setAttribute('action', window.location.href + '?form-submitted');
+			document.querySelector(`form[name="${formName}"]`).setAttribute('action', window.location.href + '?form-submitted');
 		}
 	}, []);
 
