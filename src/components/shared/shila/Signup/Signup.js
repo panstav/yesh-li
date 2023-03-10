@@ -6,11 +6,11 @@ import { Checkmark } from '@elements/Icon';
 
 import Heading from '@shared/shila/Heading';
 
-export default function Form({ formId, redirectUrl, formRef, className, heading, succeeded, successMessage, resetValidation, validation, handleSubmit, isSoldOut }) {
+export default function Form({ formName, formRef, className, heading, succeeded, successMessage, resetValidation, validation, handleSubmit, isSoldOut }) {
 
 	const seed = useMemo(() => Math.floor(Math.random() * 1000), []);
 
-	return <form name={formId} action={redirectUrl} method="POST" {...{ ref: formRef, className }} netlify>
+	return <form name={formName} method="POST" {...{ ref: formRef, className }} netlify>
 		<input type="text" name="_honey" style={{ display: 'none' }} />
 		<input type="hidden" name="_next" value="" />
 		<input type="hidden" name="_url" value=""></input>

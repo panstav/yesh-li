@@ -7,19 +7,19 @@ import Component from './Signup';
 export default function Form({ className }) {
 
 	const { isSoldOut, title, dates } = useContext(PageContext);
+	const formName = `signup-${title}-${dates}`;
 
 	const ref = useRef(null);
 	const [validation, setValidation] = useState(false);
 	const [succeeded, setSucceeded] = useState(false);
 
-	// useEffect(() => {
-	// 	if (window.location.href.includes('form-submitted')) {
-	// 		setSucceeded(true);
-	// 	} else {
-	// 		document.querySelector('input[name="_next"]').value = window.location.href + '?form-submitted';
-	// 		document.querySelector('input[name="_url"]').value = window.location.href;
-	// 	}
-	// }, []);
+	useEffect(() => {
+		if (window.location.href.includes('form-submitted')) {
+			setSucceeded(true);
+		} else {
+			document.querySelector(`form[name=${formName}]`).setAttribute('action', window.location.href + '?form-submitted');
+		}
+	}, []);
 
 	const resetValidation = useCallback(() => {
 		setValidation(false);
@@ -39,8 +39,7 @@ export default function Form({ className }) {
 	const successMessage = isSoldOut ? 'מעולה! נעדכן כשתהיה סדנא נוספת' : 'מעולה! נשתמע בקרוב';
 
 	const props = {
-		formId: `signup-${title}-${dates}`,
-		redirectUrl: window.location.href + '?form-submitted',
+		formName,
 		formRef: ref,
 		className,
 		heading,
