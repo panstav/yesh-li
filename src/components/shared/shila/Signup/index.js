@@ -4,6 +4,7 @@ import { navigate } from "@reach/router";
 import { PageContext } from "@shared/shila/contexts";
 
 import Component from './Signup';
+import isBrowser from '@lib/is-browser';
 
 export default function Form({ className }) {
 
@@ -14,10 +15,9 @@ export default function Form({ className }) {
 	const [validation, setValidation] = useState(false);
 	const [succeeded, setSucceeded] = useState(false);
 
-	useEffect(() => {
-		console.log('did we submit?', window.location.href);
-		if (window.location.href.includes('form-submitted')) setSucceeded(true)
-	}, []);
+	if (isBrowser()) {
+		if (window.location.href.includes('form-submitted')) setSucceeded(true);
+	};
 
 	const resetValidation = useCallback(() => {
 		setValidation(false);
