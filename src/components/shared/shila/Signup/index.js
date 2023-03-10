@@ -32,7 +32,7 @@ export default function Form({ className }) {
 
 		if (!phone.value && !email.value) return setValidation(true);
 
-		const formElem = event.target;
+		const formElem = ref.current;
 		const formData = new FormData(formElem);
 		fetch("/", {
 			method: "POST",
