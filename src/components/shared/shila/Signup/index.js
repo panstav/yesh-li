@@ -1,14 +1,12 @@
 import { navigate } from 'gatsby';
 import { useState, useRef, useCallback, useContext, useEffect } from 'react';
-import { useLocation } from "@reach/router";
+import { redirectTo } from "@reach/router";
 
 import { PageContext } from "@shared/shila/contexts";
 
 import Component from './Signup';
 
 export default function Form({ className }) {
-
-	const [, setLocation] = useLocation();
 
 	const { isSoldOut, dates } = useContext(PageContext);
 	const formName = `signup-samar-shila-${dates}`;
@@ -42,7 +40,7 @@ export default function Form({ className }) {
 			method: "POST",
 			headers: { "Content-Type": "application/x-www-form-urlencoded" },
 			body: new URLSearchParams(formData).toString(),
-		}).then(() => setLocation(redirectUrl));
+		}).then(() => redirectTo(redirectUrl));
 
 	}, [ref, setValidation, setSucceeded]);
 
