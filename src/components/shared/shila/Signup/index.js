@@ -39,7 +39,7 @@ export default function Form({ className }) {
 	}, [ref, setValidation, setSucceeded, toAddress]);
 
 	const heading = isSoldOut ? 'עידכונים על הסדנאות הבאות' : 'לפרטים נוספים';
-	const successMessage = isSoldOut ? 'מעולה! נשתמע בקרוב' : 'מעולה! נעדכן כשתהיה סדנא נוספת';
+	const successMessage = isSoldOut ? 'מעולה! נעדכן כשתהיה סדנא נוספת' : 'מעולה! נשתמע בקרוב';
 
 	const props = {
 		toAddress,
