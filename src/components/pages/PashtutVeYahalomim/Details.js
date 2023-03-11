@@ -6,7 +6,7 @@ import Heading from "@shared/shila/Heading";
 
 export default function Details() {
 	return <GlassBox>
-		<Heading>פרטים נוספים:</Heading>
+		<Heading>עוד כמה מילים על ההרפתקה בערבה:</Heading>
 		<div className="block">
 			<p>הרטריט יתקיים בקיבוץ סמר  והלינה נמצאת במרחק 10 דקות נסיעה, דרומית לסמר, בקיבוץ אליפז.</p>
 			<p>באליפז תמצאו חדרים נעימים, סביבה ירוקה, נוף להשראה מדברית ואירוח חם ועוטף .</p>
