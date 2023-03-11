@@ -1,14 +1,6 @@
 const siteUrl = 'https://yesh.li';
 
 const crossEnvPlugins = [
-	{
-		resolve: 'gatsby-plugin-robots-txt',
-		options: {
-			// sitemap: 'https://www.example.com/sitemap.xml',
-			policy: [{ userAgent: '*', allow: '*' }]
-		}
-	},
-	"gatsby-plugin-netlify",
 	"gatsby-plugin-sass",
 	{
 		resolve: `gatsby-plugin-alias-imports`,
@@ -42,6 +34,15 @@ const productionOnlyPlugins = [
 		resolve: `gatsby-plugin-canonical-urls`,
 		options: {
 			siteUrl
+		}
+	},
+	"gatsby-plugin-sitemap",
+	"gatsby-plugin-netlify",
+	{
+		resolve: 'gatsby-plugin-robots-txt',
+		options: {
+			sitemap: `${siteUrl}'/sitemap-index.xml`,
+			policy: [{ userAgent: '*', allow: '*' }]
 		}
 	}
 ];
