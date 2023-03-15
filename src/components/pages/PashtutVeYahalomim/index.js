@@ -16,7 +16,8 @@ PashtutVeYahalomimPage.config = {
 	description: 'יצירה בחומרים נטושים וחומרי טבע בסטודיו בלב המדבר.',
 	background: 'https://storage.googleapis.com/yeshli-www/assets/background-02.jpg',
 	emailAddress: 'ksamardigital@gmail.com',
-	featuredImage: 'https://storage.googleapis.com/yeshli-www/assets/background-02-clear.jpg'
+	featuredImage: 'https://storage.googleapis.com/yeshli-www/assets/background-02-clear.jpg',
+	formSubmittionEventId: 'iszkCKe_g5IYEL3xkrYp'
 };
 
 export default function PashtutVeYahalomimPage() {

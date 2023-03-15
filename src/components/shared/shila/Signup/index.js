@@ -1,14 +1,15 @@
-import { useState, useRef, useCallback, useContext, useEffect } from 'react';
-import { navigate } from "@reach/router";
+import { useState, useRef, useCallback, useContext } from 'react';
+
+import isBrowser from '@lib/is-browser';
+import { trackConversion } from '@lib/track-events';
 
 import { PageContext } from "@shared/shila/contexts";
 
 import Component from './Signup';
-import isBrowser from '@lib/is-browser';
 
 export default function Form({ className }) {
 
-	const { isSoldOut, dates } = useContext(PageContext);
+	const { isSoldOut, dates, formSubmittionEventId } = useContext(PageContext);
 	const formName = `signup-samar-shila-${dates}`;
 
 	const ref = useRef(null);
@@ -32,14 +33,13 @@ export default function Form({ className }) {
 
 		const formElem = ref.current;
 		const formData = new FormData(formElem);
-		const redirectUrl = window.location.href + (window.location.search ? '&' : '?') + 'form-submitted=true';
 
 		fetch("/", {
 			method: "POST",
 			headers: { "Content-Type": "application/x-www-form-urlencoded" },
 			body: new URLSearchParams(formData).toString(),
 		}).then(() => {
-			window.location.href = redirectUrl;
+			if (formSubmittionEventId) trackConversion(formSubmittionEventId);
 		});
 
 	}, [ref, setValidation, setSucceeded]);
