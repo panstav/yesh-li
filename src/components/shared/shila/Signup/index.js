@@ -16,10 +16,6 @@ export default function Form({ className }) {
 	const [validation, setValidation] = useState(false);
 	const [succeeded, setSucceeded] = useState(false);
 
-	if (!succeeded && isBrowser()) {
-		if (window.location.href.includes('form-submitted')) setSucceeded(true);
-	};
-
 	const resetValidation = useCallback(() => {
 		setValidation(false);
 	}, [setValidation]);
@@ -39,6 +35,7 @@ export default function Form({ className }) {
 			headers: { "Content-Type": "application/x-www-form-urlencoded" },
 			body: new URLSearchParams(formData).toString(),
 		}).then(() => {
+			setSucceeded(true);
 			if (formSubmittionEventId) trackConversion(formSubmittionEventId);
 		});
 
