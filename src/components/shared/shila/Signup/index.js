@@ -1,6 +1,5 @@
 import { useState, useRef, useCallback, useContext } from 'react';
 
-import isBrowser from '@lib/is-browser';
 import { trackConversion } from '@lib/track-events';
 
 import { PageContext } from "@shared/shila/contexts";

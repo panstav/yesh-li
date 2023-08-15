@@ -10,6 +10,7 @@ export default function Form({ formName, formRef, className, heading, succeeded,
 
 	const seed = useMemo(() => Math.floor(Math.random() * 1000), []);
 
+	// eslint-disable-next-line react/no-unknown-property
 	return <form name={formName} method="POST" {...{ ref: formRef, className }} netlify="true">
 		<input type="hidden" name="form-name" value={formName} />
 		<Heading>{heading}:</Heading>

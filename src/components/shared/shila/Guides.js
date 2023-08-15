@@ -5,12 +5,10 @@ import LazyImage from '@elements/LazyImage';
 
 import Heading from '@shared/shila/Heading';
 
-import guides from './guides';
-
-export default function Guides() {
+export default function Guides({ title, children: guides }) {
 	return <Section>
 		<GlassBox>
-			<Heading>על המנחה והמפיקה:</Heading>
+			<Heading>{title}</Heading>
 			<div className="is-flex is-flex-direction-row is-flex-wrap-wrap is-flex-gap-4">
 				{guides.map((guide) => {
 					return <div key={guide.name} className='is-flex-grow-1' style={{ flexBasis: 0, minWidth: 'min(100%, 16rem)' }}>
