@@ -11,7 +11,7 @@ import guides from './_data/guides';
 
 RetreatYetziraVeOtzmaPage.config = {
 	isSoldOut: false,
-	title: 'FROM JUNK TO MAGIC בערבה',
+	title: () => <>FROM JUNK TO MAGIC<br />ריטריט יצירה עם חומרים נטושים<br />בערבה</>,
 	dates: '23-25.11.23',
 	description: 'ריטריט יצירה 	בחומרים נטושים וחומרי טבע מהמדבר. חוויה שמכוונת עמוק פנימה ומוציאה לאור, בעדינות, את היופי הגולמי שבתוכנו.',
 	background: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg',
