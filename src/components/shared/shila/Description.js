@@ -23,8 +23,7 @@ export default function Description ({ children }) {
 }
 
 function Title() {
-	const { title, dates, isSoldOut } = useContext(PageContext);
-	const TitleComponent = typeof(title) === 'function' ? title : () => title;
+	const { title, TitleComponent = () => title, dates, isSoldOut } = useContext(PageContext);
 	return <h1 className="has-text-centered">
 		<div className="is-size-2 has-text-weight-bold">
 			<TitleComponent />
