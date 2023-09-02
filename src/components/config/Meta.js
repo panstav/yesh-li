@@ -19,8 +19,10 @@ export default function Meta({
 		}
 	`);
 
+	const normalizedDescription = Array.isArray(description) ? description.join(' ') : description;
+
 	const pageTitle = title || siteTitle;
-	const pageDescription = description || siteDescription;
+	const pageDescription = normalizedDescription || siteDescription;
 	const pagePathname = siteUrl + pathname;
 
 	return <>
