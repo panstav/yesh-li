@@ -23,10 +23,16 @@ const crossEnvPlugins = [
 
 const productionOnlyPlugins = [
 	{
-		resolve: `gatsby-plugin-hotjar`,
+		resolve: `gatsby-plugin-clarity`,
 		options: {
-			id: 3283744,
-			sv: 7,
+			// String value for your clarity project id
+			// Project id is found in your clarity dashboard url
+			// https://clarity.microsoft.com/projects/view/{clarity_project_id}/
+			clarity_project_id: 'iorhjtv8tj',
+			// Boolean value for enabling clarity while developing
+			// true will enable clarity tracking code on both development and production environments
+			// false will enable clarity tracking code on production environment only
+			enable_on_dev_env: false
 		},
 	},
 	{
