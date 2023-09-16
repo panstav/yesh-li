@@ -4,9 +4,8 @@ export default function Page({ background, children }) {
 
 	return <>
 		<Background {...{ background }} />
-		<main className="pb-3" style={{ height: '100%' }}>
-			{children}
-		</main>
+		{children}
+		<div id="modal-root" />
 	</>;
 }
 

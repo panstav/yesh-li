@@ -1,9 +1,47 @@
-.is-small
-	max-width: 45ch !important
-.is-medium
-	max-width: 60ch !important
-.is-large
-	max-width: 75ch !important
+div, section
+	&.is-small
+		max-width: min(45ch, 100%) !important
+	&.is-small-mobile
+		@include mobile
+			max-width: min(45ch, 100%) !important
+	&.is-medium
+		max-width: min(60ch, 100%) !important
+	&.is-large
+		max-width: min(75ch, 100%) !important
+
+.box
+	&.p-0, &.paddingless
+		.box-inner
+			padding: $box-padding
 
 .is-ltr
 	direction: ltr
+
+.is-overlay
+	@include overlay
+
+.has-strong-radius
+	border-radius: 1rem
+	overflow: hidden
+
+.is-hidden-tiny
+	display: none
+	@include not-tiny
+		display: unset
+.is-hidden-not-tiny
+	@include not-tiny
+		display: none
+
+.is-flex-gap-2-tablet
+	@include tablet
+		gap: 0.5rem
+
+.p-5-tablet
+	@include tablet
+		padding: 1.5rem
+.pb-5-mobile
+	@include mobile
+		padding-bottom: 1.5rem
+.mb-6-mobile
+	@include mobile
+		margin-bottom: 3rem

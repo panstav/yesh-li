@@ -2,9 +2,6 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"@components/*": [
-				"./src/components/*"
-			],
 			"@config/*": [
 				"./src/components/config/*"
 			],
@@ -29,8 +26,8 @@
 			"@hooks/*": [
 				"./src/hooks/*"
 			],
-			"@shared/*": [
-				"./src/components/shared/*"
+			"@services/*": [
+				"./src/services/*"
 			]
 		}
 	}
