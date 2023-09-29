@@ -7,6 +7,9 @@ if (!process.env.GATSBY_API_URL) {
 
 (async () => {
 
+	// if not in production - exit
+	if (!process.env.NETLIFY) return;
+
 	// got doesn't like to be `require`d
 	const got = (await import('got')).got;
 
