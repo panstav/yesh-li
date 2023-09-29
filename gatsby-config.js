@@ -87,7 +87,8 @@ const productionOnlyPlugins = [
 			sitemap: `${siteUrl}/sitemap-index.xml`,
 			policy: [{ userAgent: '*', allow: '*' }]
 		}
-	}
+	},
+	'gatsby-plugin-split-css'
 ];
 
 const developmentOnlyPlugins = [];
