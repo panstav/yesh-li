@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 import hideHash from "@lib/hide-hash";
 
