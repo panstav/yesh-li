@@ -4,6 +4,13 @@
 	--color-primary: #{$primary}
 	height: 100%
 
+.fieldsContainer
+	+desktop
+		min-width: min(40%, 27rem)
+		width: min-content
+		height: 100%
+		overflow-y: auto
+
 details.details
 	[data-yay]
 		background-color: whitesmoke
@@ -33,11 +40,15 @@ details.details
 			font-size: 0.5rem
 
 	.inner-container
-		padding-top: $size-6
-		padding-bottom: $size-5
-		padding-right: $size-5
-		padding-left: $size-5
 		box-sizing: border-box
+		padding: $size-8
+		padding-right: $size-8
+		padding-left: $size-8
+		padding-bottom: $size-5
+		+desktop
+			padding-top: $size-6
+			padding-right: $size-5
+			padding-left: $size-5
 
 .help
 	+delete
@@ -84,6 +95,10 @@ details.details
 	border: 1px solid white
 	border-radius: $radius
 
+	// extendeing bulma's .field
+	&:not(:last-child)
+		margin-bottom: 0.75rem
+
 	.removeButton
 		&:hover
 			background-color: $danger
@@ -93,3 +108,8 @@ details.details
 	&:hover
 		background-color: $primary
 		color: white
+
+.previewContainer
+	width: 100%
+	+touch
+		height: 100%
