@@ -1,16 +1,17 @@
 import { useContext } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import classNames from 'classnames';
 
 import xhr from '@services/xhr';
 import Section from '@wrappers/Section';
 import Loader from '@elements/Loader';
 
-import { UserContext } from '.';
-import { fieldsContainer, previewContainer } from './index.module.sass';
-
 import ThemeFields from './ThemeFieldGroups';
 import Preview from './Preview';
-import classNames from 'classnames';
+import Header from './Header';
+
+import { UserContext } from '.';
+import { fieldsContainer, previewContainer } from './index.module.sass';
 
 export default function Editor () {
 
@@ -33,7 +34,8 @@ export default function Editor () {
 	const themeName = ((lowerCaseName) => (lowerCaseName[0].toUpperCase() + lowerCaseName.slice(1)))(form.getValues().theme);
 
 	return <FormProvider {...form}>
-		<div className='is-flex-desktop' style={{ height: '100%' }}>
+		<Header />
+		<div className='is-flex-desktop mt-2' style={{ height: '100%' }}>
 			<div className={fieldsContainer}>
 				<Section noTopMargin className='py-3' style={{ minHeight: '10rem' }}>
 					<div className='has-strong-radius'>
