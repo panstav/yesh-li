@@ -43,7 +43,7 @@ function AuthGate () {
 				// we have a jwt, save it to localstorage and set the user
 				localDb.set('jwt', jwt);
 				setUser(user);
-			});
+			}).catch(() => window.location.reload());
 		} else {
 			// we don't have a login code, but we might already have a jwt
 			xhr.getUserIdentity().then(setUser);

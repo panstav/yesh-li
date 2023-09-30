@@ -19,7 +19,7 @@ export default function Header() {
 		Icon: Logout,
 		onClick: () => {
 			localDb.clear();
-			window.location.href = window.location.href + '';
+			window.location.reload();
 		}
 	};
 
