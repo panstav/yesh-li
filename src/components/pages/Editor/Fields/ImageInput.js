@@ -61,7 +61,7 @@ export default function ImageInput({ id, label, description, sizes, required = t
 						</span>
 						<span className="file-label is-size-6">{uploadCTA}</span>
 					</span>
-					{fileName && <span className="file-name is-justify-content-center is-size-7" style={{ maxWidth: "100%" }}>{fileName}</span>}
+					{fileName && <span className="file-name has-text-centered is-size-7" style={{ maxWidth: "100%" }}>{fileName}</span>}
 				</label>
 				{state?.error?.message
 					? <p className='help is-danger'>{state.error.message}</p>
