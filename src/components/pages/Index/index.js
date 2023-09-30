@@ -1,5 +1,5 @@
 export default function IndexPage() {
-	return <div className="is-flex is-flex-direction-column is-justify-content-center is-align-items-center has-text-centered" style={{ height: '100%', fontFamily: 'Assistant, sans-serif' }}>
+	return <div className="is-flex is-flex-direction-column is-justify-content-center is-align-items-center has-text-centered" style={{ marginTop: '15rem', fontFamily: 'Assistant, sans-serif' }}>
 		<h2 className="is-size-3">
 			<span>יום אחד</span>
 			<br />
