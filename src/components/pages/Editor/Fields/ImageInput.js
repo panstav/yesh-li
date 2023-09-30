@@ -37,7 +37,8 @@ export default function ImageInput({ id, label, description, sizes, required = t
 		if (!allowedTypes.includes(file.type)) return alert('סוגי הקבצים שנתמכים כאן: jpg, jpeg, png');
 
 		const { base64: imageBase64 } = await limitImageSize(file, 1200);
-		xhr.postImage({ imageBase64, fileName: file.name, sizes, siteId: getValues('siteId') }).then(({ srcSet }) => {
+
+		xhr.postImage({ imageBase64, fileName: file.name, sizes, siteId: getValues('slug') }).then(({ srcSet }) => {
 			setFileName(file.name);
 			setValue(propertyKey, srcSet);
 		});
