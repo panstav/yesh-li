@@ -1,7 +1,19 @@
+.select:not(.is-multiple):not(.is-loading):not(.specific-enough)::after
+	border-color: $input-arrow
+
 .is-size-8
 	font-size: $size-8 !important
 .is-size-9
 	font-size: $size-9 !important
+
+.field:not(:last-child)
+	margin-bottom: $size-4
+
+summary
+	@extend .is-clickable
+
+.reset-anchors
+	@include reset-anchors
 
 $spacing-values: ("0": 0, "1": 0.5rem, "2": 1rem, "3": 1.5rem, "4": 2rem, "5": 2.5rem, "6":3rem) !default
 @each $name, $value in $spacing-values

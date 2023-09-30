@@ -1,0 +1,115 @@
+@import @styles/common
+
+.container
+	--color-primary: #{$primary}
+	height: 100%
+
+.fieldsContainer
+	+desktop
+		min-width: min(40%, 27rem)
+		width: min-content
+		height: 100%
+		overflow-y: auto
+
+details.details
+	[data-yay]
+		background-color: whitesmoke
+
+details.details
+
+	border-bottom: 2px solid white
+
+	&[open] summary:after
+		transform: rotate(135deg)
+
+	&[has-errors]
+		background-color: $danger-light
+	&:not([has-errors])
+		background-color: $info-light
+
+	summary
+		position: relative
+		display: block
+		padding: $size-5
+		font-weight: bold
+		font-size: calc($size-6 + 0.2rem)
+
+		&:after
+			@include arrow(black)
+			left: $size-3
+			font-size: 0.5rem
+
+	.inner-container
+		box-sizing: border-box
+		padding: $size-8
+		padding-right: $size-8
+		padding-left: $size-8
+		padding-bottom: $size-5
+		+desktop
+			padding-top: $size-6
+			padding-right: $size-5
+			padding-left: $size-5
+
+.help
+	+delete
+	line-height: 20px
+	color: white
+	text-align: center
+	font-size: 0.7rem
+	font-weight: bold
+	&::before, &::after
+		display: none
+	&.is-small
+		line-height: 16px
+	&.is-medium
+		line-height: 24px
+	&.is-large
+		line-height: 32px
+
+.richTextContainer
+
+	[class~="ql-toolbar"]
+		border-top-left-radius: $radius
+		border-top-right-radius: $radius
+	[class~="ql-container"]
+		border-bottom-left-radius: $radius
+		border-bottom-right-radius: $radius
+		overflow: hidden
+
+	[class~="ql-toolbar"]
+		span[class~="ql-formats"]
+			margin-right: 0
+			margin-inline-end: 15px
+		button[type="button"], span[role="button"]
+			&:hover
+				[class~="ql-stroke"]
+					stroke: $primary
+				[class~="ql-fill"]
+					fill: $primary
+	[class~="ql-editor"]
+		text-align: right
+		background-color: white
+
+.compound-field
+	padding: $size-8
+	border: 1px solid white
+	border-radius: $radius
+
+	// extendeing bulma's .field
+	&:not(:last-child)
+		margin-bottom: 0.75rem
+
+	.removeButton
+		&:hover
+			background-color: $danger
+			color: white
+
+.addButton
+	&:hover
+		background-color: $primary
+		color: white
+
+.previewContainer
+	width: 100%
+	+touch
+		height: 100%

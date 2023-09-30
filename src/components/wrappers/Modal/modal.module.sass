@@ -1,0 +1,20 @@
+@import @styles/common
+@import bulma/sass/components/modal
+
+.modal-background
+	background-color: rgba($primary, 0.75)
+.modal
+	display: flex
+	.modal-content
+		max-height: calc(100% - 2rem)
+		max-width: calc(100% - 2rem)
+		@include until(550px)
+			max-height: 100%
+			max-width: 100%
+			.box
+				border-radius: 0
+		overflow: unset
+
+	// fix odd pulling downwards of buttons stack
+	.buttons:last-child
+		margin-bottom: unset

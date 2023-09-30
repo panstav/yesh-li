@@ -26,7 +26,6 @@ export default function Meta({
 	const pagePathname = siteUrl + pathname;
 
 	return <>
-		<html dir='rtl' lang='he' />
 		<body data-page={pathname} />
 
 		<title>{pageTitle}</title>
@@ -55,4 +54,27 @@ export default function Meta({
 		<meta name="msapplication-TileColor" content="#f7d31e" />
 		<meta name="theme-color" content="#ffffff" /> */}
 	</>;
+}
+
+export function HeadFor(arg) {
+
+	// this HOC will be used to either only pass the pageId like this: HeadFor('home')
+	// or to pass different props like this: HeadFor({ pageId: 'home', title: 'Homepage' })
+	// or to use graph query to pass props like this: HeadFor((data) => ({ pageId: 'home', title: data.site.siteMetadata.title }))
+	return function Head (data) {
+
+		let props;
+
+		if (typeof (arg) === 'function') {
+			props = arg(data);
+		} else if (typeof (arg) === 'string') {
+			props = { pageId: arg };
+		} else {
+			props = arg;
+		}
+
+		if (!('pageId' in props)) throw new Error('HeadFor() requires a pageId prop');
+
+		return <Meta pathname={data.location.pathname} {...props} />;
+	};
 }

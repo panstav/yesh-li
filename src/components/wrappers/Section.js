@@ -1,6 +1,14 @@
 import classnames from 'classnames';
 
-export default function Section({ className = '', withTopMargin = true, withSidePadding = true, children, ...props }) {
-	props.className = classnames('container', withSidePadding && 'px-3', withTopMargin && 'mt-6', className);
-	return <div {...props}>{children}</div>;
+export default function Section({ className: classes = '', style, noTopMargin, noSidePadding, isFullWidth, anchor: id, children }) {
+
+	const className = classnames(
+		'container',
+		isFullWidth ? 'is-fullhd' : 'is-max-desktop',
+		classes,
+		noSidePadding || 'px-3',
+		noTopMargin || 'mt-6'
+	);
+
+	return <section {...{ id, className, style }}>{children}</section>;
 }

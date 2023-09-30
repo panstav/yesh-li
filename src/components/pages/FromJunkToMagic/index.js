@@ -1,8 +1,7 @@
-import Section from '@wrappers/Section';
 import GlassBox from '@wrappers/GlassBox';
 
-import { Hero, Description, Delimiter, Guides, Signup, Footer, Gallery } from "@shared/shila";
-import { PageContext } from "@shared/shila/contexts";
+import { Hero, Description, Delimiter, Guides, Signup, Footer, Gallery, Section } from "./shila";
+import { PageContext } from "./shila/contexts";
 
 import Details from './Details';
 

@@ -2,5 +2,7 @@
 	a, a:active, a:focus, a:hover
 		color: $text
 		text-decoration: none
-.reset-anchors
-	@include reset-anchors
+
+@mixin not-tiny
+	@include from(520px)
+		@content

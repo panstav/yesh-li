@@ -15,10 +15,17 @@ const crossEnvPlugins = [
 				"@hooks": "src/hooks",
 				"@styles": "src/styles",
 				"@data": "src/data",
-				"@shared": "src/components/shared"
+				"@services": "src/services"
 			}
 		}
-	}
+	},
+	{
+		resolve: 'gatsby-source-filesystem',
+		options: {
+			"path": "./data"
+		}
+	},
+	"gatsby-transformer-json"
 ];
 
 const productionOnlyPlugins = [
@@ -80,7 +87,8 @@ const productionOnlyPlugins = [
 			sitemap: `${siteUrl}/sitemap-index.xml`,
 			policy: [{ userAgent: '*', allow: '*' }]
 		}
-	}
+	},
+	'gatsby-plugin-split-css'
 ];
 
 const developmentOnlyPlugins = [];

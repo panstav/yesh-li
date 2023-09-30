@@ -1,0 +1,35 @@
+@import @styles/common
+
+$red: #ff595eff
+$yellow: #f5b400ff
+$green: #82bc24ff
+$blue: #1982c4ff
+$purple: #6a4c93ff
+
+.container
+	--color-red: #{$red}
+	--color-red-half: #{lighten($red, 12.5%)}
+	--color-red-quarter: #{lighten($red, 25%)}
+	--color-yellow: #{$yellow}
+	--color-yellow-half: #{lighten($yellow, 12.5%)}
+	--color-yellow-quarter: #{lighten($yellow, 35%)}
+	--color-green: #{$green}
+	--color-green-half: #{lighten($green, 12.5%)}
+	--color-green-quarter: #{lighten($green, 35%)}
+	--color-blue: #{$blue}
+	--color-blue-half: #{lighten($blue, 12.5%)}
+	--color-blue-quarter: #{lighten($blue, 50%)}
+	--color-purple: #{$purple}
+	--color-purple-half: #{lighten($purple, 12.5%)}
+	--color-purple-quarter: #{lighten($purple, 40%)}
+
+	--color-grey: #{$grey}
+	--color-grey-light: #{$grey-light}
+
+	input, select, textarea
+		border: 1px solid var(--color-primary) !important
+
+.service-media-side
+	max-height: 6rem
+	+not-tiny
+		max-height: unset
