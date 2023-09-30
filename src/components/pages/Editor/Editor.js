@@ -9,6 +9,7 @@ import Loader from '@elements/Loader';
 import ThemeFields from './ThemeFieldGroups';
 import Preview from './Preview';
 import Header from './Header';
+import Footer from './Footer';
 
 import { UserContext } from '.';
 import { fieldsContainer, previewContainer } from './index.module.sass';
@@ -35,7 +36,7 @@ export default function Editor () {
 
 	return <FormProvider {...form}>
 		<Header />
-		<div className='is-flex-desktop mt-2' style={{ height: '100%' }}>
+		<div className='is-flex-desktop mt-2'>
 			<div className={fieldsContainer}>
 				<Section noTopMargin className='py-3' style={{ minHeight: '10rem' }}>
 					<div className='has-strong-radius'>
@@ -48,5 +49,6 @@ export default function Editor () {
 				{/* <pre style={{ direction: 'ltr' }}>{JSON.stringify(form.getValues(), null, 2)}</pre> */}
 			</div>
 		</div>
+		<Footer />
 	</FormProvider>;
 }

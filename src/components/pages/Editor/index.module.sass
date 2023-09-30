@@ -2,7 +2,7 @@
 
 .container
 	--color-primary: #{$primary}
-	height: calc(100% - $navbar-height)
+	--color-primary-dark: #{$primary-dark}
 
 .fieldsContainer
 	+desktop
@@ -111,5 +111,4 @@ details.details
 
 .previewContainer
 	width: 100%
-	+touch
-		height: 100%
+	height: calc(100vh - $navbar-height)
