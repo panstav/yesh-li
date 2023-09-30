@@ -25,7 +25,8 @@ const crossEnvPlugins = [
 			"path": "./data"
 		}
 	},
-	"gatsby-transformer-json"
+	"gatsby-transformer-json",
+	'gatsby-plugin-split-css'
 ];
 
 const productionOnlyPlugins = [
@@ -87,8 +88,7 @@ const productionOnlyPlugins = [
 			sitemap: `${siteUrl}/sitemap-index.xml`,
 			policy: [{ userAgent: '*', allow: '*' }]
 		}
-	},
-	'gatsby-plugin-split-css'
+	}
 ];
 
 const developmentOnlyPlugins = [];

@@ -21,8 +21,7 @@ function Preview(props) {
 
 	if (isProduction) {
 		const siteAssets = JSON.parse(window.___chunkMapping);
-		styles = `<link rel="stylesheet" href="${siteAssets[Object.keys(siteAssets).find((key) => key.includes(props.theme))]
-			.find((src) => src.includes('.css'))}">`;
+		styles = `<link rel="stylesheet" href="${siteAssets.app.find((src) => src.includes('.css'))}"><link rel="stylesheet" href="${siteAssets[Object.keys(siteAssets).find((key) => key.includes(props.theme))].find((src) => src.includes('.css'))}">`;
 	} else {
 		styles = Array.from(document.head.children).filter((elem) => ['LINK', 'STYLE'].includes(elem.nodeName)).map((elem) => elem.outerHTML).join('');
 	}
