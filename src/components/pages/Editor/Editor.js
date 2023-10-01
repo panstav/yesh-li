@@ -3,7 +3,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 
 import xhr from '@services/xhr';
-import Section from '@wrappers/Section';
 import Loader from '@elements/Loader';
 
 import ThemeFields from './ThemeFieldGroups';
@@ -12,7 +11,7 @@ import Header from './Header';
 import Footer from './Footer';
 
 import { UserContext } from '.';
-import { fieldsContainer, previewContainer } from './index.module.sass';
+import { fieldsContainer, innerFieldsContainer, previewContainer } from './index.module.sass';
 
 export default function Editor () {
 
@@ -30,6 +29,8 @@ export default function Editor () {
 		.catch(() => alert('אירעה שגיאה בעת שמירת העמוד. המידע נשמר אך העמוד לא התעדכן - צרו עימנו קשר בהקדם')));
 
 	const previewContainerClassName = classNames('p-3', previewContainer);
+	const fieldsContainerClassName = classNames('p-3', fieldsContainer);
+	const innerFieldsContainerClassName = classNames('has-strong-radius', innerFieldsContainer);
 
 	// get theme name from form values, capitalize first letter
 	const themeName = ((lowerCaseName) => (lowerCaseName[0].toUpperCase() + lowerCaseName.slice(1)))(form.getValues().theme);
@@ -37,12 +38,10 @@ export default function Editor () {
 	return <FormProvider {...form}>
 		<Header />
 		<div className='is-flex-desktop mt-2'>
-			<div className={fieldsContainer}>
-				<Section noTopMargin className='py-3' style={{ minHeight: '10rem' }}>
-					<div className='has-strong-radius'>
-						<ThemeFields fieldGroupName={themeName} submitForm={submitForm} />
-					</div>
-				</Section>
+			<div className={fieldsContainerClassName}>
+				<div className={innerFieldsContainerClassName}>
+					<ThemeFields fieldGroupName={themeName} submitForm={submitForm} />
+				</div>
 			</div>
 			<div className={previewContainerClassName}>
 				<Preview />
