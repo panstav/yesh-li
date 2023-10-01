@@ -27,8 +27,7 @@ export default function ImageInput({ id, label, description, sizes, required = t
 	});
 	const setFocusModal = () => openFocusModal();
 
-	// copilot wrote this, i don't know what it does, but it works
-	const [fileName, setFileName] = useState(getValues(propertyKey)?.split(',').pop()?.split(' ')[0]?.split('/').pop()?.split('.')[0]);
+	const [fileName, setFileName] = useState();
 
 	const onFileChange = async (event) => {
 		const file = event.currentTarget.files[0];
@@ -41,11 +40,12 @@ export default function ImageInput({ id, label, description, sizes, required = t
 		xhr.postImage({ imageBase64, fileName: file.name, sizes, siteId: getValues('slug') }).then(({ srcSet }) => {
 			setFileName(file.name);
 			setValue(propertyKey, srcSet);
+		}).catch((err) => {
+			alert(err.responseData?.reasoning === 'moderation' ? 'המערכת זיהתה בתמונה תוכן בלתי מתאים מאחד הסוגים הבאים: תוכן למבוגרים, זיוף, דימוי רפואי, תוכן אלים או תוכן פרובוקטיבי. צרו קשר אם מדובר בשגיאה בזיהוי.' : 'אירעה שגיאה בהעלאת התמונה. נסו שנית מאוחר יותר');
 		});
 	};
 
 	const compoundFieldClassName = classNames(compoundField, 'is-relative');
-	const uploadCTA = fileName ? 'ליחצו להחלפת התמונה' : 'ליחצו להעלאת תמונה';
 
 	return <>
 
@@ -59,7 +59,7 @@ export default function ImageInput({ id, label, description, sizes, required = t
 						<span className="file-icon">
 							<Upload />
 						</span>
-						<span className="file-label is-size-6">{uploadCTA}</span>
+						<span className="file-label is-size-6">ליחצו להחלפת התמונה</span>
 					</span>
 					{fileName && <span className="file-name has-text-centered is-size-7" style={{ maxWidth: "100%" }}>{fileName}</span>}
 				</label>
@@ -67,7 +67,7 @@ export default function ImageInput({ id, label, description, sizes, required = t
 					? <p className='help is-danger'>{state.error.message}</p>
 					: <p className='help'>{description}</p>}
 			</div>
-			{fileName && <button type="button" onClick={setFocusModal} className='button is-small' style={{ position: 'absolute', left: '0.5rem', top: '0.35rem' }}>בחירת פוקוס לתמונה</button>}
+			<button type="button" onClick={setFocusModal} className='button is-small' style={{ position: 'absolute', left: '0.5rem', top: '0.35rem' }}>בחירת פוקוס לתמונה</button>
 			<div className='field'>
 				<label htmlFor={`${id}-alt`} className='label is-small'>טקסט חלופי:</label>
 				<input id={`${id}-alt`} className='input' type='text' {...register(`${id}.alt`, { setValueAs: cleanUGT })} />
@@ -131,8 +131,8 @@ async function limitImageSize(file, maxSize, quality = 0.8) {
 
 			const resultUrl = canvas.toDataURL(file.type, quality), result = {
 				url: resultUrl,
-				contentType: resultUrl.match(/^data\:([^\;]+)\;base64,/im)[1] || "",
-				b64: resultUrl.replace(/^data\:([^\;]+)\;base64,/gim, "")
+				contentType: resultUrl.match(/^data:([^;]+);base64,/im)[1] || "",
+				b64: resultUrl.replace(/^data:([^;]+);base64,/gim, "")
 			};
 
 			canvas.toBlob(

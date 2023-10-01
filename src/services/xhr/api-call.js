@@ -32,8 +32,9 @@ function transformApiCall(method) {
 		return new Promise((resolve, reject) => {
 			return ky[method](`${apiUrl}/${endpoint}`, options).json()
 				.then(resolve)
-				.catch((err) => {
+				.catch(async (err) => {
 					console.error(err);
+					err.responseData = await err.response?.json();
 					reject(err);
 				});
 		});
