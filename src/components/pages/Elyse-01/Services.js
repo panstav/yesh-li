@@ -12,7 +12,7 @@ export default function Services() {
 	const { setValue } = useFormContext();
 	const { content: { sections } } = useContext(PageContext);
 	const serviceMediaSideClassName = classNames('column is-one-third', serviceMediaSide);
-	return <Section>
+	return <Section noTopMargin>
 		{sections.map(({ label, anchor, color, content, image, ctaText }, index) => {
 			const innerClassName = classNames('has-background-white has-strong-radius p-5-tablet', index % 2 && 'is-flex-direction-row-reverse');
 			return <div id={anchor} key={anchor} className="pt-6">

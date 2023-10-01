@@ -6,6 +6,17 @@ $green: #82bc24ff
 $blue: #1982c4ff
 $purple: #6a4c93ff
 
+.svgBackground
+	path:nth-child(1)
+		fill: var(--color-primary-quarter)
+		opacity: 0.1
+	path:nth-child(2)
+		fill: var(--color-primary-half)
+		opacity: 0.1
+	path:nth-child(3)
+		fill: var(--color-primary)
+		opacity: 0.1
+
 .container
 	--color-red: #{$red}
 	--color-red-half: #{lighten($red, 12.5%)}
