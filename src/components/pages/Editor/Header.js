@@ -58,12 +58,17 @@ function MenuItem({ Icon, label, path, onClick, ...props }) {
 		Wrapper = 'div';
 		direction = { onClick };
 	} else {
-		Wrapper = Link;
-		direction = { to: path };
 		// if path is outbound, add target="_blank" and rel="noopener noreferrer"
 		if (!path.includes(window.location.host)) {
-			direction.target = '_blank';
-			direction.rel = 'noopener noreferrer';
+			Wrapper = 'a';
+			direction = {
+				href: path,
+				target: '_blank',
+				rel: 'noopener noreferrer'
+			};
+		} else {
+			Wrapper = Link;
+			direction = { to: path };
 		}
 	}
 
