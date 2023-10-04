@@ -1,14 +1,15 @@
-import { createContext } from "react";
+import { useContext } from "react";
 import classNames from "classnames";
+
+import { PageContext } from "@config/Page";
 
 import Media from "./Media";
 import Details from "./Details";
 
 import { container } from "./index.module.sass";
 
-export const PageContext = createContext();
-
-export default function Ascent_1({ content }) {
+export default function Ascent_1() {
+	const { content } = useContext(PageContext);
 
 	content.links.map(({ address }, index, arr) => {
 		if (!address) delete arr[index];

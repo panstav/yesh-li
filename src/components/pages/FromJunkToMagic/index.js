@@ -1,3 +1,4 @@
+import Meta from '@config/Meta';
 import GlassBox from '@wrappers/GlassBox';
 
 import { Hero, Description, Delimiter, Guides, Signup, Footer, Gallery, Section } from "./shila";
@@ -17,6 +18,13 @@ RetreatYetziraVeOtzmaPage.config = {
 	background: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg',
 	emailAddress: 'ksamardigital@gmail.com',
 	featuredImage: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg'
+};
+
+export const Head = ({ location: { pathname } }) => {
+	return <Meta
+		{...RetreatYetziraVeOtzmaPage.config}
+		pathname={pathname}
+	/>;
 };
 
 export default function RetreatYetziraVeOtzmaPage() {

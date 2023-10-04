@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { PageContext } from "@themes/Ascent-01";
+import { PageContext } from "@config/Page";
 
 import Main from "./Main";
 

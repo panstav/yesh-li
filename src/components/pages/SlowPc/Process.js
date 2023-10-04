@@ -1,6 +1,6 @@
 import Section from "@wrappers/Section";
 
-import { SubtleHeader } from ".";
+import SubtleHeader from "./SubtleHeader";
 import { backgroundColorBlueLightStyle } from "./css";
 
 const copy = [

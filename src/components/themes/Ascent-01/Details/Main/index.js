@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import classNames from "classnames";
 
-import { PageContext } from "@themes/Ascent-01";
+import { PageContext } from "@config/Page";
 import { Email, Facebook, Instagram, LinkedIn, TikTok, WhatsApp, X, YouTube, Phone, Pinterest } from "@elements/Icon";
 
 import { boxes } from "./main.module.sass";

@@ -15,19 +15,13 @@ exports.createPages = async ({ actions }) => {
 	const rootSiteFilePath = `${__dirname}/data/root.json`;
 
 	if (fs.existsSync(rootSiteFilePath)) {
-		// instance is running on a dedicated domain, the root page is the only page
-
-		const siteData = JSON.parse(fs.readFileSync(rootSiteFilePath));
-
-		// create the root page
-		actions.createPage({
-			path: '/',
-			component: getThemeComponent(siteData.theme),
-			context: siteData
-		});
-
+		createRootSite();
 	} else {
+		createMultiSite();
+		createLegacySites();
+	}
 
+	function createMultiSite () {
 		// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 		const sitesDirectory = `${__dirname}/data`;
 
@@ -48,6 +42,32 @@ exports.createPages = async ({ actions }) => {
 					context: siteData
 				});
 			});
+		});
+	}
+
+	function createRootSite () {
+		// instance is running on a dedicated domain, the root page is the only page
+
+		const siteData = JSON.parse(fs.readFileSync(rootSiteFilePath));
+
+		// create the root page
+		actions.createPage({
+			path: '/',
+			component: getThemeComponent(siteData.theme),
+			context: siteData
+		});
+	}
+
+	function createLegacySites () {
+
+		actions.createPage({
+			path: '/from-junk-to-magic',
+			component: require.resolve(`./src/components/pages/FromJunkToMagic/index.js`)
+		});
+
+		actions.createPage({
+			path: '/slow-pc',
+			component: require.resolve(`./src/components/pages/SlowPc/index.js`)
 		});
 
 	}

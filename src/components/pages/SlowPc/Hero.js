@@ -2,7 +2,8 @@ import { useContext, Fragment } from "react";
 
 import Section from "@wrappers/Section";
 
-import { PageContext, SubtleHeader } from ".";
+import SubtleHeader from "./SubtleHeader";
+import { PageContext } from "./contexts";
 import { backgroundColorBlueLightStyle } from "./css";
 
 export default function Hero () {

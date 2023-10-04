@@ -1,12 +1,13 @@
-import { useRef, useState, useCallback, useContext } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import classNames from 'classnames';
 
 import { trackConversion } from '@lib/track-events';
 import { Checkmark } from '@elements/Icon';
 import Section from '@wrappers/Section';
 
-import { SubtleHeader } from '.';
 import { blueLightColor } from './css';
+
+import SubtleHeader from './SubtleHeader';
 
 const basePrice = 1100;
 const additionalDevicePrice = 600;
