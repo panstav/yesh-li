@@ -5,7 +5,7 @@ import cloneDeep from "lodash.clonedeep";
 
 import Loader from "@elements/Loader";
 
-const Elyse_01 = lazy(() => import('@pages/Elyse-01'));
+const Elyse_01 = lazy(() => import('@themes/Elyse-01'));
 
 const isProduction = process.env.NODE_ENV === 'production';
 

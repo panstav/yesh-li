@@ -8,6 +8,9 @@
 			"@pages/*": [
 				"./src/components/pages/*"
 			],
+			"@themes/*": [
+				"./src/components/themes/*"
+			],
 			"@compounds/*": [
 				"./src/components/compounds/*"
 			],

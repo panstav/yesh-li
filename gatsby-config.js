@@ -10,6 +10,7 @@ const crossEnvPlugins = [
 				"@config": "src/components/config",
 				"@elements": "src/components/elements",
 				"@pages": "src/components/pages",
+				"@themes": "src/components/themes",
 				"@wrappers": "src/components/wrappers",
 				"@lib": "src/lib",
 				"@hooks": "src/hooks",
@@ -97,6 +98,7 @@ const plugins = crossEnvPlugins.concat(process.env.NETLIFY ? productionOnlyPlugi
 
 module.exports = {
 	siteMetadata: {
+		version: process.env.npm_package_version,
 		siteUrl,
 		title: 'יש.לי',
 		description: 'יום אחד גם לך יהיה'
