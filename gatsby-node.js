@@ -36,9 +36,16 @@ exports.createPages = async ({ actions }) => {
 			fs.readdirSync(themeDirectory).forEach((siteName) => {
 				const siteData = JSON.parse(fs.readFileSync(`${themeDirectory}/${siteName}`));
 
+				const themeComponent = siteData.redirect
+					// some sites moved out to their own domains, we'll use a component that redirects them to their new domain
+					? require.resolve(`./src/components/templates/redirect-to-root/index.js`)
+					// otherwise, we'll use the theme's component
+					: require.resolve(`./src/themes/${siteData.theme}.js`);
+
+				// create the page for this site using the theme's component and the site's data as it's pageContext prop
 				actions.createPage({
 					path: `/${siteData.slug}`,
-					component: getThemeComponent(siteData.theme),
+					component: themeComponent,
 					context: siteData
 				});
 			});
@@ -53,7 +60,7 @@ exports.createPages = async ({ actions }) => {
 		// create the root page
 		actions.createPage({
 			path: '/',
-			component: getThemeComponent(siteData.theme),
+			component: require.resolve(`./src/themes/${siteData.theme}.js`),
 			context: siteData
 		});
 	}
@@ -70,10 +77,6 @@ exports.createPages = async ({ actions }) => {
 			component: require.resolve(`./src/components/pages/SlowPc/index.js`)
 		});
 
-	}
-
-	function getThemeComponent (theme) {
-		return require.resolve(`./src/themes/${theme}.js`);
 	}
 
 };
