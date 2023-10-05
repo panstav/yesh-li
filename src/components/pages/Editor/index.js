@@ -8,6 +8,7 @@ import { roles } from './variables';
 import Login from './Login';
 import Component from './Editor';
 
+import './index.sass';
 import { container } from './index.module.sass';
 
 export const UserContext = createContext();
