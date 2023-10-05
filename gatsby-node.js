@@ -66,17 +66,10 @@ exports.createPages = async ({ actions }) => {
 	}
 
 	function createLegacySites () {
-
 		actions.createPage({
 			path: '/from-junk-to-magic',
 			component: require.resolve(`./src/components/pages/FromJunkToMagic/index.js`)
 		});
-
-		actions.createPage({
-			path: '/slow-pc',
-			component: require.resolve(`./src/components/pages/SlowPc/index.js`)
-		});
-
 	}
 
 };
