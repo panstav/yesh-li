@@ -1,3 +1,4 @@
+import { navigate } from 'gatsby';
 import { useContext } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
@@ -23,6 +24,10 @@ export default function Editor () {
 	});
 
 	if (!Object.keys(form.getValues()).length) return <Loader />;
+
+	// if the site has moved out to it's own domain, redirect to its editor page
+	const redirect = form.getValues().redirect;
+	if (redirect) return navigate(`${redirect}/editor`, { replace: true });
 
 	const submitForm = form.handleSubmit((data) => xhr.updateSiteData(siteId, data.content)
 		.then(() => alert('העמוד נשמר בהצלחה!'))
