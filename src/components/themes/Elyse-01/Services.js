@@ -1,3 +1,4 @@
+import { Link } from "gatsby";
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import classNames from "classnames";
@@ -45,6 +46,6 @@ export default function Services() {
 function ContentAndCTA({ setValue, label, content, ctaText, color }) {
 	return <>
 		<div dangerouslySetInnerHTML={{ __html: content }} />
-		<a href="#contact-form" {...onClickMarkInterest(label, setValue)} className="button has-text-white mt-3" style={{ backgroundColor: `var(--color-${color})` }}>{ctaText}</a>
+		<Link to="#contact-form" replace {...onClickMarkInterest(label, setValue)} className="button has-text-white mt-3" style={{ backgroundColor: `var(--color-${color})` }}>{ctaText}</Link>
 	</>;
 }

@@ -1,3 +1,4 @@
+import { Link } from "gatsby";
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -23,7 +24,7 @@ export default function Hero() {
 						<p className="is-large mb-5">{description}</p>
 						<div className="tags are-medium">
 							{sections.map(({ label, anchor, color }) => {
-								return <a key={anchor} {...onClickMarkInterest(label, setValue)} className="tag has-text-weight-bold has-text-white" style={{ backgroundColor: `var(--color-${color})` }} href={`#${anchor}`}>{label}</a>;
+								return <Link key={anchor} to={`#${anchor}`} replace {...onClickMarkInterest(label, setValue)} className="tag has-text-weight-bold has-text-white" style={{ backgroundColor: `var(--color-${color})` }}>{label}</Link>;
 							})}
 						</div>
 						{!!Object.keys(socials).length && <Section noSidePadding className="is-medium mr-0">
