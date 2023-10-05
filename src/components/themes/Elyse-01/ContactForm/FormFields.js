@@ -24,7 +24,7 @@ export default function FormFields ({ isSuccess, isError }) {
 				</select>
 			</div>
 		</div>
-		<button className="button block is-justify-content-center is-fullwidth has-text-white has-text-weight-bold mt-4" style={{ background: `linear-gradient(to right, var(--color-primary-half) 0%, var(--color-primary) 51%, var(--color-primary-half) 100%)` }}>{submitText}</button>
+		<button className="button block is-justify-content-center is-fullwidth has-text-white has-text-weight-bold mt-4" style={{ background: `linear-gradient(90deg, var(--color-primary-half) 0%, var(--color-primary) 51%, var(--color-primary-half) 100%)` }}>{submitText}</button>
 		{isError && <div className="notification has-background-warning-light p-4">שגיאת מערכת, נסו שוב מאוחר יותר.</div>}
 		{isSuccess && <div className="notification has-background-success-light p-4">אחלה, נשתמע!</div>}
 	</>;

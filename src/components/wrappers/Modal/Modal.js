@@ -13,7 +13,7 @@ export default function Modal({ title, hideModal: hideModalProp, children, hidea
 		<div className={modalContent}>
 			<div className="box p-0" style={{ maxHeight: '100%', overflowY: 'auto' }}>
 
-				{hideable && <div onClick={hideModal} className='is-flex is-overlay is-clickable p-1' style={{ right: 'unset', bottom: 'unset' }}>
+				{hideable && <div onClick={hideModal} className='is-flex is-overlay is-clickable p-1' style={{ insetInlineStart: 'unset', bottom: 'unset' }}>
 					<div className="delete" />
 				</div>}
 

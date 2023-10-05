@@ -30,7 +30,7 @@ export default function Login() {
 							<Checkbox
 								id='rememberMe'
 								label="זוכר אותי"
-								besideLabel={<Tooltip content="אם זהו מכשיר פרטי אפשר להשאר מחוברים ליותר זמן" className="is-flex is-is-align-items-center mr-2" ><Help size="small" /></Tooltip>} />
+								besideLabel={<Tooltip content="אם זהו מכשיר פרטי אפשר להשאר מחוברים ליותר זמן" className="is-flex is-is-align-items-center ms-2"><Help size="small" /></Tooltip>} />
 
 							<button className="button block is-justify-content-center is-fullwidth has-text-white has-text-weight-bold has-background-primary mt-4">שלח לי לינק התחברות</button>
 							{isError && <div className="notification has-text-centered has-background-warning-light p-4">שגיאת מערכת, נסו שוב מאוחר יותר.</div>}

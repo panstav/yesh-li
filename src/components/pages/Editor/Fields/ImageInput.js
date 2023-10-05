@@ -67,7 +67,7 @@ export default function ImageInput({ id, label, description, sizes, required = t
 					? <p className='help is-danger'>{state.error.message}</p>
 					: <p className='help'>{description}</p>}
 			</div>
-			<button type="button" onClick={setFocusModal} className='button is-small' style={{ position: 'absolute', left: '0.5rem', top: '0.35rem' }}>בחירת פוקוס לתמונה</button>
+			<button type="button" onClick={setFocusModal} className='button is-small' style={{ position: 'absolute', insetInlineEnd: '0.5rem', top: '0.35rem' }}>בחירת פוקוס לתמונה</button>
 			<div className='field'>
 				<label htmlFor={`${id}-alt`} className='label is-small'>טקסט חלופי:</label>
 				<input id={`${id}-alt`} className='input' type='text' {...register(`${id}.alt`, { setValueAs: cleanUGT })} />

@@ -6,6 +6,11 @@
 .is-size-9
 	font-size: $size-9 !important
 
+.has-text-start
+	text-align: start
+.has-text-end
+	text-align: end
+
 .field:not(:last-child)
 	margin-bottom: $size-4
 
@@ -19,3 +24,21 @@ $spacing-values: ("0": 0, "1": 0.5rem, "2": 1rem, "3": 1.5rem, "4": 2rem, "5": 2
 @each $name, $value in $spacing-values
 	.is-flex-gap-#{$name}
 		gap: $value !important
+
+$spacing-shortcuts: ("margin": "m", "padding": "p") !default
+$spacing-values: ("0": 0, "1": 0.25rem, "2": 0.5rem, "3": 0.75rem, "4": 1rem, "5": 1.5rem, "6": 3rem, "auto": auto) !default
+$spacing-end-directions: ("start": "s", "end": "e")
+@each $property, $shortcut in $spacing-shortcuts
+	@each $name, $value in $spacing-values
+		@each $direction, $suffix in $spacing-end-directions
+			.#{$shortcut}#{$suffix}-#{$name}
+				@if $direction == "start"
+					@if $property == "margin"
+						margin-inline-start: $value
+					@else
+						padding-inline-start: $value
+				@if $direction == "end"
+					@if $property == "margin"
+						margin-inline-end: $value
+					@else
+						padding-inline-end: $value

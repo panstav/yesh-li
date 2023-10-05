@@ -74,6 +74,6 @@ function MenuItem({ Icon, label, path, onClick, ...props }) {
 
 	return <Wrapper key={label} {...direction} className="navbar-item is-flex is-align-items-center is-clickable has-text-white px-4" {...props}>
 		<Icon />
-		<div className="icon-text mr-1">{label}</div>
+		<div className="icon-text ms-1">{label}</div>
 	</Wrapper>;
 }

@@ -36,7 +36,7 @@ export default function Main () {
 				const Icon = copy[type];
 				return <div key={address} className="box is-relative">
 					<a href={address} target="_blank" rel="noreferrer">
-						<Icon style={{ width: '1rem', position: 'absolute', right: '1rem' }} />
+						<Icon style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
 						<span className="icon-text px-5 mx-3">{label}</span>
 					</a>
 				</div>;
@@ -46,26 +46,26 @@ export default function Main () {
 		<div className={boxesContainerClassName}>
 			<div className="box is-relative">
 				<a target="_blank" rel="noreferrer">
-					<Email style={{ width: '1rem', position: 'absolute', right: '1rem' }} />
+					<Email style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
 					<span className="icon-text px-5 mx-3">אודותיי</span>
 				</a>
 			</div>
 			<div className="box is-relative">
 				<a target="_blank" rel="noreferrer">
-					<Email style={{ width: '1rem', position: 'absolute', right: '1rem' }} />
+					<Email style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
 					<span className="icon-text px-5 mx-3">שירותיי</span>
 				</a>
 			</div>
 			<div className="box is-relative">
 				<a target="_blank" rel="noreferrer">
-					<Email style={{ width: '1rem', position: 'absolute', right: '1rem' }} />
+					<Email style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
 					<span className="icon-text px-5 mx-3">צרו קשר</span>
 				</a>
 			</div>
 		</div>
 
 		{statement && <p className="has-background-white-bis my-5 py-3 px-4" style={{ borderInlineStart: '3px solid black', borderInlineEnd: '3px solid transparent' }}>
-			{statement}
+			<span>{statement.content}</span>
 		</p>}
 	</>;
 }

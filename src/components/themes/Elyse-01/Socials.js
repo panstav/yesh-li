@@ -59,7 +59,7 @@ export default function Socials ({ className: classes }) {
 			const style = { backgroundColor: `var(--color-${type}-half)`, ...(['phone', 'email'].includes(type) ? { border: '1px solid var(--color-primary)' } : {}) };
 			return <a key={type} href={href} className="tag is-rounded" style={style} target="_blank" rel="noopener noreferrer">
 				<Icon className="has-strong-radius" style={{ color: `var(--color-${type})` }} />
-				<span className="icon-text mr-1">{label}</span>
+				<span className="icon-text ms-1">{label}</span>
 			</a>;
 		})}
 	</div>;

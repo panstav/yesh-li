@@ -27,7 +27,7 @@ export default function Hero() {
 								return <Link key={anchor} to={`#${anchor}`} replace {...onClickMarkInterest(label, setValue)} className="tag has-text-weight-bold has-text-white" style={{ backgroundColor: `var(--color-${color})` }}>{label}</Link>;
 							})}
 						</div>
-						{!!Object.keys(socials).length && <Section noSidePadding className="is-medium mr-0">
+						{!!Object.keys(socials).length && <Section noSidePadding className="is-medium ms-0">
 							<Socials className="mt-5 are-small" />
 						</Section>}
 					</Section>

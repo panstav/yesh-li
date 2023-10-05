@@ -18,7 +18,7 @@ export default function Services() {
 			const innerClassName = classNames('has-background-white has-strong-radius p-5-tablet', index % 2 && 'is-flex-direction-row-reverse');
 			return <div id={anchor} key={anchor} className="pt-6">
 				<div className="is-relative">
-					<div className="has-strong-radius" style={{ position: 'absolute', top: '0.3rem', bottom: '-0.3rem', right: '-0.3rem', left: '0.3rem', backgroundColor: `var(--color-${color}-half)`, zIndex: -1 }} />
+					<div className="has-strong-radius" style={{ position: 'absolute', top: '0.3rem', bottom: '-0.3rem', insetInlineStart: '-0.3rem', insetInlineEnd: '0.3rem', backgroundColor: `var(--color-${color}-half)`, zIndex: -1 }} />
 					<div className={innerClassName} style={{ border: `2px solid var(--color-${color}-quarter)` }}>
 						<div className="columns is-mobile is-flex-gap-2-tablet is-align-items-stretch m-0">
 							<div className={serviceMediaSideClassName}>
