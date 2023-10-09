@@ -40,7 +40,17 @@ export default function RichEditor({ id, label, placeholder }) {
 
 		if (value) editor.root.innerHTML = value;
 
-		editor.on('text-change', () => setValue(id, cleanUGT(editor.root.innerHTML)));
+		editor.on('text-change', () => {
+			// check whether the editor is empty
+			// use another element to check for innerText because Quill's root element never has innerText ¯\_(ツ)_/¯
+			const elem = document.createElement('div');
+			elem.innerHTML = editor.root.innerHTML;
+			// if it is, set the value to an empty string instead of an empty paragraph or span or whatever
+			if (!elem.innerText.trim()) return setValue(id, '');
+
+			// if it's not, set the value to the editor's innerHTML after cleaning it
+			setValue(id, cleanUGT(editor.root.innerHTML));
+		});
 	}, []);
 
 	return <div className={richTextContainerClassName}>
