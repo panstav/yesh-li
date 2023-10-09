@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import Loader from '@elements/Loader';
 
-import { copy } from '@pages/Editor';
+import copy from '@pages/Editor/copy';
 
 import map from './map';
 

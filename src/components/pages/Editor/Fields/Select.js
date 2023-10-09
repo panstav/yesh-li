@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 
-import { copy } from "@pages/Editor";
+import copy from '@pages/Editor/copy';
 
 export default function Select({ id, label, oneOf, required = true }) {
 	const { register } = useFormContext();

@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 
 import cleanUGT from "@lib/clean-user-generated-text";
 
-import { copy } from "@pages/Editor";
+import copy from '@pages/Editor/copy';
 
 export default function TextArea({ id, label, description, maxLength, required = true }) {
 	const { register, getFieldState } = useFormContext();

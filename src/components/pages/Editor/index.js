@@ -13,15 +13,6 @@ import { container } from './index.module.sass';
 
 export const UserContext = createContext();
 
-export const copy = {
-	requiredField: 'שדה חובה',
-	maxLengthField: (maxLength) => `מקסימום ${maxLength} תווים`,
-	invalidUrl: 'כתובת האינטרנט לא תקינה',
-	invalidPhoneNumber: 'מספר הטלפון אינו תקין',
-	invalidEmail: 'כתובת האימייל אינה תקינה',
-	submit: 'לשמור'
-};
-
 export default function Editor () {
 	return <div className={container}>
 		<AuthGate />

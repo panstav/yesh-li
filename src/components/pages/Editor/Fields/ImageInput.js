@@ -9,7 +9,7 @@ import xhr from '@services/xhr';
 import cleanUGT from '@lib/clean-user-generated-text';
 
 import { compoundField } from '@pages/Editor/index.module.sass';
-import { copy } from '@pages/Editor';
+import copy from '@pages/Editor/copy';
 
 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 const acceptedTypes = allowedTypes.join(',').replaceAll('image/', '.');

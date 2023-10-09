@@ -1,5 +1,5 @@
 import { Details, ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, TelInput } from "@pages/Editor/Fields";
-import { copy } from "@pages/Editor";
+import copy from '@pages/Editor/copy';
 
 export default function Elyse_01 () {
 	return <>

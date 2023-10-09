@@ -2,9 +2,9 @@ import { useFormContext } from "react-hook-form";
 import classNames from "classnames";
 
 import cleanUGT from "@lib/clean-user-generated-text";
-
-import { copy } from "@pages/Editor";
 import isUrl from "@lib/is-url";
+
+import copy from '@pages/Editor/copy';
 
 export default function TextInput({ id, label, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, isSmall }) {
 	const { register, getFieldState } = useFormContext();

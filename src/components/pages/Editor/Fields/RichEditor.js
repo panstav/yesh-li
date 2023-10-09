@@ -6,7 +6,7 @@ import classNames from "classnames";
 import cleanUGT from "@lib/clean-user-generated-text";
 
 import { richTextContainer } from '@pages/Editor/index.module.sass';
-import { copy } from "@pages/Editor";
+import copy from '@pages/Editor/copy';
 
 export default function RichEditor({ id, label, placeholder }) {
 	import('quill/dist/quill.core.css');
