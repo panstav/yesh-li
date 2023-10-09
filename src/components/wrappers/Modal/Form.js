@@ -37,7 +37,8 @@ function useCustomForm({ autoFocus = true, defaultValues = {} } = {}) {
 	const isClean = () => !Object.values(form.formState.dirtyFields).length;
 
 	useEffect(() => {
-		if (autoFocus && ref.current) {
+		// 3 conditions to autofocus: 1) autoFocus is true 2) ref is set 3) ref is not inside of an iframe
+		if (autoFocus && ref.current && ref.current.ownerDocument === document) {
 			const inputElem = ref.current.querySelector('input, textarea');
 			if (inputElem) inputElem.focus();
 		}
