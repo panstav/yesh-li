@@ -29,7 +29,7 @@ function Preview(props) {
 
 	// set a (except for outbound), button, input, textarea to pointer-events: none
 	// set input, textarea to disabled
-	const interactionBlocker = `<style>* a:not([href^="https://"]):not([href^="tel:"]):not([href^="mailto:"]), * button, * input, * textarea { pointer-events: none !important; }</style><script defer>const interval = setInterval(function () {const elems = Array.from(document.querySelectorAll('input, textarea'));if (elems.length) {clearInterval(interval);elems.forEach((elem) => elem.setAttribute('disabled', true));}}, 100);</script>`;
+	const interactionBlocker = `<style>* a:not([href^="https://"]):not([href^="tel:"]):not([href^="mailto:"]), * button, * label, * input, * textarea { pointer-events: none !important; }</style><script defer>const interval = setInterval(function () {const elems = Array.from(document.querySelectorAll('input, textarea'));if (elems.length) {clearInterval(interval);elems.forEach((elem) => elem.setAttribute('disabled', true));}}, 100);</script>`;
 
 	const injection = `<!DOCTYPE html><html dir="rtl" lang="he"><head>${interactionBlocker}${styles}</head><body><div id="mountTarget"></div></body></html>`;
 
