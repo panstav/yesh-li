@@ -1,8 +1,8 @@
-@import @styles/common
+@import @themes/Ascent-01/common
 
 .details
 	text-align: center
-	+tablet
+	+from($mainBreakpoint)
 		width: 30rem
 		overflow-y: auto
 		text-align: inherit
@@ -10,5 +10,5 @@
 	footer
 		bottom: -2rem
 		padding-bottom: 0.5rem
-		+tablet
+		+from($mainBreakpoint)
 			bottom: 0rem
