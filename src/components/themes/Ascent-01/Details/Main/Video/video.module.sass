@@ -1,0 +1,28 @@
+.youtube-image-container
+	position: relative
+	cursor: pointer
+	&:hover
+		.youtube-thumbnail, .youtube-icon
+			opacity: 1
+
+.youtube-thumbnail
+	width: 100%
+	opacity: 0.25
+	z-index: 3
+
+.youtube-icon
+	opacity: 0.6
+	svg
+		z-index: 10
+	&:after
+		z-index: 5
+		content: ""
+		position: absolute
+		top: 0
+		left: 0
+		right: 0
+		bottom: 0
+		margin: auto
+		width: 1rem
+		height: 1rem
+		background-color: white

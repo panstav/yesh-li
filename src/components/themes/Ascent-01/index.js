@@ -15,23 +15,13 @@ export default function Ascent_1() {
 		if (!address) delete arr[index];
 	});
 
-	const containerClassName = classNames(container, "is-flex-tablet is-flex-direction-row-reverse");
+	content.video.src = `https://www.youtube.com/embed/${content.video.id}?autoplay=1&cc_lang_pref=he&hl=he&rel=0`;
+	content.video.thumbnail = "https://img.youtube.com/vi/" + content.video.id + "/sddefault.jpg";
 
-	const cssVariables = {
-		'--color-primary': `var(--color-${content.mainColor})`,
-		'--color-primary-half': `var(--color-${content.mainColor}-half)`,
-		'--color-primary-quarter': `var(--color-${content.mainColor}-quarter)`
-	};
+	const containerClassName = classNames(container, "is-flex-direction-row-reverse");
 
-	return <PageContext.Provider value={{ content }}>
-
-		<div className={containerClassName} style={cssVariables}>
-
-			<Media {...content.featuredImage} />
-
-			<Details />
-
-		</div>
-
-	</PageContext.Provider>;
+	return <div className={containerClassName}>
+		<Media {...content.featuredImage} />
+		<Details />
+	</div>;
 }
