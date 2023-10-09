@@ -1,3 +1,3 @@
 export default function cleanUGT (str) {
-	return str.replaceAll(' .', '. ').replaceAll(' ,', ', ').replace(/\s+/g, ' ').trim();
+	return str.replace(/\s+\./g, '. ').replace(/\s+,/g, ', ').replace(/\s+/g, ' ').trim();
 }
