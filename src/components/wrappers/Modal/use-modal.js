@@ -1,26 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useFrame } from 'react-frame-component';
 
 export default function useModal(propsFromHook = {}) {
 
+	const { window } = useFrame();
 	const [modalProps, setModalProps] = useState();
+
 	const hideModal = () => {
-		window.document.body.classList.toggle('with-modal', false);
+		window.document.documentElement.classList.toggle('with-modal', false);
 		return setModalProps();
 	};
 
-	const [location, setLocation] = useState();
-	const [prevLocation, setPrevLocation] = useState();
 	useEffect(() => {
-		const listener = window.addEventListener('popstate', () => setLocation(window.location.href));
-		return () => window.removeEventListener('popstate', listener);
+		window.addEventListener('popstate', hideModal);
+		return () => window.removeEventListener('popstate', hideModal);
 	}, []);
-
-	useEffect(() => {
-		if (location !== prevLocation) {
-			hideModal();
-			setPrevLocation(location);
-		}
-	}, [location, !!modalProps]);
 
 	const showModal = useCallback((propsFromCallback = {}) => {
 		const newProps = Object.assign({ hideModal },
@@ -28,7 +22,7 @@ export default function useModal(propsFromHook = {}) {
 				? propsFromHook(propsFromCallback)
 				: Object.assign(propsFromHook, propsFromCallback)
 		);
-		window.document.body.classList.toggle('with-modal', true);
+		window.document.documentElement.classList.toggle('with-modal', true);
 		setModalProps(newProps);
 	}, [typeof propsFromHook]);
 
