@@ -38,11 +38,10 @@ export function UrlInput({ type = 'url', validate, includes, required, ...props 
 		{...props} />;
 }
 
-export function TelInput({ type = 'tel', required, ...props }) {
+export function TelInput(props) {
 	return <TextInput
-		type={type}
+		type='tel'
 		pattern={{ value: /^\+972\d{8,9}$/, message: copy.invalidPhoneNumber }}
-		required={required}
 		setValueAs={(str) => str.trim().replace(/-/g, '').replace(/^0/, '+972')}
 		{...props} />;
 }
