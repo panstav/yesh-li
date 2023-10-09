@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import classNames from 'classnames';
 
 import { Email, Facebook, Instagram, LinkedIn, Phone, Pinterest, TikTok, WhatsApp, X, YouTube } from '@elements/Icon';
+import hrefByAddressType from '@lib/href-by-address-type';
 
 import { PageContext } from '.';
 
@@ -54,7 +55,7 @@ export default function Socials ({ className: classes }) {
 	const className = classNames('tags', classes);
 	return <div className={className}>
 		{socialsArray.map(({ type, address }) => {
-			const href = type === 'email' ? `mailto:${address}` : type === 'phone' ? `tel:${address}` : address;
+			const href = hrefByAddressType(type, address);
 			const { Icon, label } = copy[type];
 			const style = { backgroundColor: `var(--color-${type}-half)`, ...(['phone', 'email'].includes(type) ? { border: '1px solid var(--color-primary)' } : {}) };
 			return <a key={type} href={href} className="tag is-rounded" style={style} target="_blank" rel="noopener noreferrer">
