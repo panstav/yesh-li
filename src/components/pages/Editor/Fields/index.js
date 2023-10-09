@@ -1,5 +1,5 @@
 export { default as TextInput } from './TextInput';
-export { UrlInput, TelInput } from './TextInput';
+export { UrlInput, TelInput, EmailInput } from './TextInput';
 
 export { default as Select } from './Select';
 export { default as ImageInput } from './ImageInput';

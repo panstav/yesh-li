@@ -46,3 +46,10 @@ export function TelInput({ type = 'tel', required, ...props }) {
 		setValueAs={(str) => str.trim().replace(/-/g, '').replace(/^0/, '+972')}
 		{...props} />;
 }
+
+export function EmailInput(props) {
+	return <TextInput
+		type="email"
+		pattern={{ value: /\S+@\S+\.\S+/, message: copy.invalidEmail }}
+		{...props} />;
+}
