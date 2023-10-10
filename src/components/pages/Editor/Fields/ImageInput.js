@@ -14,7 +14,7 @@ import copy from '@pages/Editor/copy';
 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 const acceptedTypes = allowedTypes.join(',').replaceAll('image/', '.');
 
-export default function ImageInput({ id, label, description, sizes, required = true, multiple = false }) {
+export default function ImageInput({ id, label, description, sizes, required = true, multiple = false, isCompoundField = true }) {
 	const { register, setValue, getValues, setError, getFieldState } = useFormContext();
 
 	const state = getFieldState(id);
@@ -45,14 +45,15 @@ export default function ImageInput({ id, label, description, sizes, required = t
 		});
 	};
 
-	const compoundFieldClassName = classNames(compoundField, 'is-relative');
+	const compoundFieldClassName = classNames(isCompoundField && compoundField, 'is-relative');
+	const setFocusButtonStyle = { top: isCompoundField ? '0.35rem' : 0, insetInlineEnd: isCompoundField ? '0.5rem' : 0 };
 
 	return <>
 
 		<div className={compoundFieldClassName}>
 			<div className="field file is-large is-boxed has-name is-flex-direction-column">
 				<label className="file-label" style={{ width: '100%' }}>
-					<span className='label'>{label}:</span>
+					{label && <span className='label'>{label}:</span>}
 					<input type="file" id={id} name={id} onChange={onFileChange} multiple={multiple} accept={acceptedTypes} className='file-input' />
 					<input type="text" className="is-hidden" {...register(propertyKey, { required, multiple, accept: acceptedTypes })} />
 					<span className="file-cta has-background-white" style={{ border: '1px solid lightgray' }}>
@@ -67,11 +68,11 @@ export default function ImageInput({ id, label, description, sizes, required = t
 					? <p className='help is-danger'>{state.error.message}</p>
 					: <p className='help'>{description}</p>}
 			</div>
-			<button type="button" onClick={setFocusModal} className='button is-small' style={{ position: 'absolute', insetInlineEnd: '0.5rem', top: '0.35rem' }}>בחירת פוקוס לתמונה</button>
+			<button type="button" onClick={setFocusModal} className='button is-small' style={{ position: 'absolute', ...setFocusButtonStyle }}>בחירת פוקוס לתמונה</button>
 			<div className='field'>
 				<label htmlFor={`${id}-alt`} className='label is-small'>טקסט חלופי:</label>
 				<input id={`${id}-alt`} className='input' type='text' {...register(`${id}.alt`, { setValueAs: cleanUGT })} />
-				<p className='help'>מיועד למקריאי מסך ולמנועי חיפוש</p>
+				<p className='help'>{copy.altDescription}</p>
 			</div>
 		</div>
 
