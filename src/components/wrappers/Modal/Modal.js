@@ -11,7 +11,7 @@ export default function Modal({ title, hideModal: hideModalProp, hideable = true
 	const ModalContent = isRaw ? RawModal : RegularModal;
 
 	return <div className={modal}>
-		<div className={modalBackground} onClick={hideModal} style={{ backgroundColor: 'var(--color-primary-900)', opacity: '0.75' }}/>
+		<div className={modalBackground} onClick={hideModal} style={{ backgroundColor: 'var(--color-primary-700)', opacity: '0.75' }}/>
 		<ModalContent {...{ title, hideable, hideModal, isLarge, children }} />
 	</div>;
 }
