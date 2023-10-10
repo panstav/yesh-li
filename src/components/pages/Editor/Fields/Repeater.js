@@ -8,7 +8,10 @@ export default function Repeater({ arrayId, singleName, emptyItem, minLength, ma
 	const { control, getValues } = useFormContext();
 	const { fields, append, remove } = useFieldArray({ name: arrayId, control });
 
-	const addToBottom = () => append(emptyItem(getValues()));
+	const addToBottom = () => {
+		if (typeof emptyItem !== 'function') return append(emptyItem);
+		return append(emptyItem(getValues()));
+	};
 
 	const cantRemove = (minLength && fields.length == minLength) ? `מינימום ${minLength} פריטים` : '';
 	const cantAdd = maxLength && fields.length == maxLength ? `מקסימום ${maxLength} פריטים` : '';
