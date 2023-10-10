@@ -5,13 +5,13 @@ import Loader from '@elements/Loader';
 
 import copy from '@pages/Editor/copy';
 
-import map from './map';
+import { fieldsMap } from '../map';
 
-export default function ThemeFields({ fieldGroupName, submitForm }) {
+export default function ThemeFields({ themeName, submitForm }) {
 	const { watch, formState: { errors } } = useFormContext();
 	watch();
 
-	const FieldGroup = map[fieldGroupName];
+	const FieldGroup = fieldsMap[themeName];
 
 	const hasErrors = !!Object.keys(errors).length;
 

@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 import Frame from 'react-frame-component';
 import { useFormContext } from "react-hook-form";
 import cloneDeep from "lodash.clonedeep";
@@ -6,7 +6,7 @@ import cloneDeep from "lodash.clonedeep";
 import Page from "@config/Page";
 import Loader from "@elements/Loader";
 
-const Elyse_01 = lazy(() => import('@themes/Elyse-01'));
+import { themesMap } from "./map";
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -14,9 +14,7 @@ let validProps = {};
 
 function Preview(props) {
 
-	const Theme = {
-		'elyse-01': Elyse_01
-	}[props.theme];
+	const Theme = themesMap[props.theme];
 
 	let styles;
 

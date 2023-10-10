@@ -38,19 +38,18 @@ export default function Editor () {
 	const innerFieldsContainerClassName = classNames('has-strong-radius', innerFieldsContainer);
 
 	// get theme name from form values, capitalize first letter
-	const themeName = ((lowerCaseName) => (lowerCaseName[0].toUpperCase() + lowerCaseName.slice(1)))(form.getValues().theme);
+	const themeName = form.getValues().theme;
 
 	return <FormProvider {...form}>
 		<Header />
 		<div className='is-flex-desktop mt-2'>
 			<div className={fieldsContainerClassName}>
 				<div className={innerFieldsContainerClassName}>
-					<ThemeFields fieldGroupName={themeName} submitForm={submitForm} />
+					<ThemeFields {...{ themeName, submitForm }} />
 				</div>
 			</div>
 			<div className={previewContainerClassName}>
 				<Preview />
-				{/* <pre style={{ direction: 'ltr' }}>{JSON.stringify(form.getValues(), null, 2)}</pre> */}
 			</div>
 		</div>
 		<Footer />
