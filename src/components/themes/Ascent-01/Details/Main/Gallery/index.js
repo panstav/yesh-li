@@ -52,8 +52,10 @@ function GalleryModal() {
 
 	return <div className="has-background-black">
 		<img {...gallery[index]} style={{ width: '100%', objectFit: 'contain', maxHeight: '90dvh' }} />
-		<Edge onClick={rightHandler} side="right" />
-		<Edge onClick={leftHandler} side="left" />
+		{gallery.length > 1 && <>
+			<Edge onClick={rightHandler} side="right" />
+			<Edge onClick={leftHandler} side="left" />
+		</>}
 	</div>;
 }
 
