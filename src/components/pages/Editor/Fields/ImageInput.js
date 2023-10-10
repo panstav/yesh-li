@@ -23,7 +23,7 @@ export default function ImageInput({ id, label, description, sizes, required = t
 
 	const [focusModal, openFocusModal] = useModal({
 		onSubmit: ({ position }) => setValue(`${id}.position`, position),
-		imageToFocus: { srcSet: getValues(propertyKey) }
+		imageToFocus: getValues(id)
 	});
 	const setFocusModal = () => openFocusModal();
 
@@ -78,13 +78,19 @@ export default function ImageInput({ id, label, description, sizes, required = t
 		<Modal {...focusModal} render={({ setValue, getValues, imageToFocus, watch }) => {
 
 			watch('position');
-			const position = getValues('position') || '50% 50%';
+			const position = getValues('position') || imageToFocus.position || '50% 50%';
 			const setFocus = ({ x, y }) => setValue('position', `${Math.round(((x + 1) / 2) * 1000) / 10}% ${Math.round((1 - ((y + 1) / 2)) * 1000) / 10}%`);
 
 			const ref = useRef(null);
 
 			useEffect(() => {
-				new FocusPicker(ref.current, { onChange: setFocus });
+				const x = Number(position.split(' ')[0].replace('%', '')) / 100 * 2 - 1;
+				const y = 1 - (Number(position.split(' ')[1].replace('%', '')) / 100 * 2);
+
+				new FocusPicker(ref.current, {
+					onChange: setFocus,
+					focus: { x, y }
+				});
 			}, [ref]);
 
 			return <>
