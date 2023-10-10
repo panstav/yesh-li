@@ -6,12 +6,13 @@ import isUrl from "@lib/is-url";
 
 import copy from '@pages/Editor/copy';
 
-export default function TextInput({ id, label, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, isSmall }) {
+export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, isSmall }) {
 	const { register, getFieldState } = useFormContext();
 	const { error } = getFieldState(id);
+	const labelClassName = classNames('label', labelClasses);
 	const inputClassName = classNames('input', isSmall && 'is-small');
 	return <div className='field'>
-		<label htmlFor={id} className='label'>{label}:</label>
+		<label htmlFor={id} className={labelClassName}>{label}:</label>
 		<input id={id} className={inputClassName} type={type} {...register(id, {
 			required: required && copy.requiredField,
 			pattern,
