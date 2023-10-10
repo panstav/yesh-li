@@ -14,12 +14,13 @@ import copy from '@pages/Editor/copy';
 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 const acceptedTypes = allowedTypes.join(',').replaceAll('image/', '.');
 
-export default function ImageInput({ id, label, description, sizes, required = true, multiple = false, hasNoFocus, isCompoundField = true }) {
-	const { register, setValue, getValues, setError, getFieldState } = useFormContext();
+export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true }) {
+	const { register, setValue, getValues, getFieldState } = useFormContext();
 
 	const state = getFieldState(id);
 
 	const propertyKey = `${id}.srcSet`;
+	const imgProps = getValues(id);
 
 	const [focusModal, openFocusModal] = useModal({
 		onSubmit: ({ position }) => setValue(`${id}.position`, position),
@@ -32,7 +33,7 @@ export default function ImageInput({ id, label, description, sizes, required = t
 	const onFileChange = async (event) => {
 		const file = event.currentTarget.files[0];
 
-		if (!file) return setError(id, { type: 'file', message: copy.requiredField });
+		if (!file) return;
 		if (!allowedTypes.includes(file.type)) return alert('סוגי הקבצים שנתמכים כאן: jpg, jpeg, png');
 
 		const { base64: imageBase64 } = await limitImageSize(file, 1200);
@@ -47,6 +48,7 @@ export default function ImageInput({ id, label, description, sizes, required = t
 
 	const compoundFieldClassName = classNames(isCompoundField && compoundField, 'is-relative');
 	const setFocusButtonStyle = { top: isCompoundField ? '0.35rem' : 0, insetInlineEnd: isCompoundField ? '0.5rem' : 0 };
+	const uploadButtonStyle =  { backgroundColor: imgProps.srcSet ? 'transparent' : 'white' };
 
 	return <>
 
@@ -55,13 +57,16 @@ export default function ImageInput({ id, label, description, sizes, required = t
 				<label className="file-label" style={{ width: '100%' }}>
 					{label && <span className='label'>{label}:</span>}
 					<input type="file" id={id} name={id} onChange={onFileChange} multiple={multiple} accept={acceptedTypes} className='file-input' />
-					<input type="text" className="is-hidden" {...register(propertyKey, { required, multiple, accept: acceptedTypes })} />
-					<span className="file-cta has-background-white" style={{ border: '1px solid lightgray' }}>
-						<span className="file-icon">
-							<Upload />
+					<input type="text" className="is-hidden" {...register(propertyKey)} />
+					<div className='is-relative'>
+						{imgProps.srcSet && <img srcSet={imgProps.srcSet} className='is-overlay object-fit-cover' style={{ objectPosition: imgProps.position, opacity: 0.1 }} />}
+						<span className="file-cta" style={{ border: '1px solid lightgray', width: '100%', ...uploadButtonStyle }}>
+							<span className="file-icon mx-0">
+								<Upload />
+							</span>
+							<span className="file-label is-size-6">ליחצו להחלפת התמונה</span>
 						</span>
-						<span className="file-label is-size-6">ליחצו להחלפת התמונה</span>
-					</span>
+					</div>
 					{fileName && <span className="file-name has-text-centered is-size-7" style={{ maxWidth: "100%" }}>{fileName}</span>}
 				</label>
 				{state?.error?.message
