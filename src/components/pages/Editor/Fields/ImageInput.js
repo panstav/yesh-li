@@ -8,7 +8,7 @@ import { Upload } from '@elements/Icon';
 import xhr from '@services/xhr';
 import cleanUGT from '@lib/clean-user-generated-text';
 
-import { compoundField } from '@pages/Editor/index.module.sass';
+import { compoundField, imagePreviewContainer } from '@pages/Editor/index.module.sass';
 import copy from '@pages/Editor/copy';
 
 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
@@ -47,6 +47,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 	};
 
 	const compoundFieldClassName = classNames(isCompoundField && compoundField, 'is-relative');
+	const imagePreviewContainerClassName = classNames(imagePreviewContainer, 'is-relative');
 	const setFocusButtonStyle = { top: isCompoundField ? '0.35rem' : 0, insetInlineEnd: isCompoundField ? '0.5rem' : 0 };
 	const uploadButtonStyle =  { backgroundColor: imgProps.srcSet ? 'transparent' : 'white' };
 
@@ -58,8 +59,8 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 					{label && <span className='label'>{label}:</span>}
 					<input type="file" id={id} name={id} onChange={onFileChange} multiple={multiple} accept={acceptedTypes} className='file-input' />
 					<input type="text" className="is-hidden" {...register(propertyKey)} />
-					<div className='is-relative'>
-						{imgProps.srcSet && <img srcSet={imgProps.srcSet} className='is-overlay object-fit-cover' style={{ objectPosition: imgProps.position, opacity: 0.1 }} />}
+					<div className={imagePreviewContainerClassName}>
+						{imgProps.srcSet && <img srcSet={imgProps.srcSet} className='is-overlay object-fit-cover' style={{ objectPosition: imgProps.position }} />}
 						<span className="file-cta" style={{ border: '1px solid lightgray', width: '100%', ...uploadButtonStyle }}>
 							<span className="file-icon mx-0">
 								<Upload />
