@@ -22,7 +22,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, minLength, ma
 			return <div className={compoundFieldClassName} key={field.id}>
 
 				<div className="is-flex is-justify-content-space-between is-align-items-center mb-4">
-					<h3 className="title is-5 m-0">{singleName} #{index + 1}</h3>
+					<h3 className="is-size-5 m-0">{singleName} #{index + 1}</h3>
 					<button type="button" onClick={remove} data-index={index} className={removeButtonClassName} disabled={!!cantRemove} title={cantRemove}>להסיר</button>
 				</div>
 
