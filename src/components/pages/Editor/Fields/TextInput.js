@@ -31,7 +31,7 @@ export function UrlInput({ type = 'url', validate, includes, required, ...props 
 		validate={{
 			...validate,
 			// only invalidate these if value is present, otherwise it's the required validator's responsibility
-			incldues: (s) => (!s || s.includes(includes)) || `הכתובת צריכה להתחיל ב-"${includes}"`,
+			incldues: (s) => (!s || s.includes(includes)) || `הכתובת צריכה להכיל "${includes}"`,
 			isUrl: (s) => (!s || isUrl(s)) || copy.invalidUrl
 		}}
 		required={required}
