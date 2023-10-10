@@ -28,7 +28,7 @@ export default function Video ({ className }) {
 		</div>
 
 		<Modal {...youtubeModal} render={() => {
-			return <iframe {...video} allowFullScreen style={{ width: "100%", height: "95dvh" }} />;
+			return <iframe {...video} allowFullScreen style={{ width: "100%", height: "min(95dvh, 100vw)" }} />;
 		}} />
 
 	</>;
