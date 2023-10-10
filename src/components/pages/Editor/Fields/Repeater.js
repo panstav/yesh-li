@@ -5,8 +5,8 @@ import { compoundField, removeButton, addButton } from "@pages/Editor/index.modu
 
 export default function Repeater({ arrayId, singleName, emptyItem, minLength, maxLength, children }) {
 
-	const { control, getValues } = useFormContext();
-	const { fields, append, remove } = useFieldArray({ name: arrayId, control });
+	const { getValues } = useFormContext();
+	const { fields, append, remove } = useFieldArray({ name: arrayId });
 
 	const addToBottom = () => {
 		if (typeof emptyItem !== 'function') return append(emptyItem);
@@ -26,7 +26,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, minLength, ma
 
 				<div className="is-flex is-justify-content-space-between is-align-items-center mb-4">
 					<h3 className="is-size-5 m-0">{singleName} #{index + 1}</h3>
-					<button type="button" onClick={remove} data-index={index} className={removeButtonClassName} disabled={!!cantRemove} title={cantRemove}>להסיר</button>
+					<button type="button" onClick={() => remove(index)} data-index={index} className={removeButtonClassName} disabled={!!cantRemove} title={cantRemove}>להסיר</button>
 				</div>
 
 				{children(`${arrayId}.[${index}]`)}
