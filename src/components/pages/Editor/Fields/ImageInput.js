@@ -14,7 +14,7 @@ import copy from '@pages/Editor/copy';
 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 const acceptedTypes = allowedTypes.join(',').replaceAll('image/', '.');
 
-export default function ImageInput({ id, label, description, sizes, required = true, multiple = false, isCompoundField = true }) {
+export default function ImageInput({ id, label, description, sizes, required = true, multiple = false, hasNoFocus, isCompoundField = true }) {
 	const { register, setValue, getValues, setError, getFieldState } = useFormContext();
 
 	const state = getFieldState(id);
@@ -25,7 +25,7 @@ export default function ImageInput({ id, label, description, sizes, required = t
 		onSubmit: ({ position }) => setValue(`${id}.position`, position),
 		imageToFocus: getValues(id)
 	});
-	const setFocusModal = () => openFocusModal();
+	const setFocus = () => openFocusModal();
 
 	const [fileName, setFileName] = useState();
 
@@ -68,7 +68,7 @@ export default function ImageInput({ id, label, description, sizes, required = t
 					? <p className='help is-danger'>{state.error.message}</p>
 					: <p className='help'>{description}</p>}
 			</div>
-			<button type="button" onClick={setFocusModal} className='button is-small' style={{ position: 'absolute', ...setFocusButtonStyle }}>בחירת פוקוס לתמונה</button>
+			{hasNoFocus || <button type="button" onClick={setFocus} className='button is-small' style={{ position: 'absolute', ...setFocusButtonStyle }}>בחירת פוקוס לתמונה</button>}
 			<div className='field'>
 				<label htmlFor={`${id}-alt`} className='label is-small'>טקסט חלופי:</label>
 				<input id={`${id}-alt`} className='input' type='text' {...register(`${id}.alt`, { setValueAs: cleanUGT })} />
