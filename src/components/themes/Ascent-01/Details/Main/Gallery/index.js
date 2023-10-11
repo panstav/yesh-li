@@ -21,7 +21,7 @@ export default function Gallery({ className }) {
 	return <>
 
 		<div className={containerClassName} onClick={() => showGalleryModal()}>
-			<img {...gallery[0]} style={{ width: '100%' }} />
+			<img {...gallery[0]} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover' }} width={640} height={480} />
 			{gallery.length > 1 && <div className="button is-small is-flex is-flex-gap-1 is-align-items-center has-text-weight-medium ps-4" style={{ position: 'absolute', width: 'fit-content' }}>
 				<GalleryIcon />
 				<span>{gallery.length} תמונות</span>

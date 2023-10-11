@@ -22,7 +22,7 @@ export default function Video ({ className }) {
 
 		<div {...{ className }}>
 			<div className={youtubeImageContainer} onClick={() => showYoutubeModal()}>
-				<img src={video.thumbnail} alt={video.title} className={youtubeThumbnail} />
+				<img src={video.thumbnail} alt={video.title} className={youtubeThumbnail} width={640} height={480} />
 				<YouTube className={youtubeIconClassName} style={{ width: '3rem', color: 'var(--color-youtube)' }} />
 			</div>
 		</div>
