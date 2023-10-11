@@ -45,7 +45,7 @@ export default function Elyse_01 () {
 				id="content.portrait"
 				label={copy.mainImage}
 				description={copy.mainImageDescription}
-				sizes={[400, 800]} />
+				sizes={[450, 800]} />
 		</Details>
 
 		<Details title='שירותים'>
@@ -84,7 +84,7 @@ export default function Elyse_01 () {
 					<ImageInput
 						id={`${id}.image`}
 						label="תמונה לצד השירות"
-						sizes={[400]} />
+						sizes={[450]} />
 
 					<RichEditor
 						id={`${id}.content`}

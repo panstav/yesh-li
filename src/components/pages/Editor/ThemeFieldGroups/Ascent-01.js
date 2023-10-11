@@ -68,7 +68,7 @@ export default function Ascent_01 () {
 				id="content.featuredImage"
 				label={copy.mainImage}
 				description={copy.mainImageDescription}
-				sizes={[400, 800, 1024, 1400]} />
+				sizes={[450, 800, 1024, 1400]} />
 		</Details>
 
 		<Details title='קישורים'>
