@@ -1,81 +1,62 @@
-import { useState, useEffect, createContext } from 'react';
+import { navigate } from 'gatsby';
+import { useContext } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import classNames from 'classnames';
 
 import xhr from '@services/xhr';
-import localDb from '@services/localDb';
 import Loader from '@elements/Loader';
 
-import { roles } from './variables';
-import Login from './Login';
-import Component from './Editor';
+import Auth, { AuthContext } from './Auth';
+import ThemeFields from './ThemeFieldGroups';
+import Header from './Header';
+import Preview from './Preview';
+import Footer from './Footer';
 
-import './index.sass';
-import { container } from './index.module.sass';
-
-export const UserContext = createContext();
+import { fieldsContainer, innerFieldsContainer, previewContainer } from './index.module.sass';
 
 export default function Editor () {
-	return <div className={container}>
-		<AuthGate />
-	</div>;
+	return <Auth>
+		<EditorForm />
+	</Auth>;
 }
 
-function AuthGate () {
-	const [user, setUser] = useState();
+function EditorForm() {
+	const { sites: [siteId] } = useContext(AuthContext);
 
-	useEffect(() => {
-		if (user) return;
+	const form = useForm({
+		mode: 'onChange',
+		defaultValues: () => xhr.getSiteData(siteId)
+	});
 
-		// user is not logged in
-		// check if user is attempting to login but navigating from a login email to the editor
-		const loginCode = snatchParameter('loginCode');
+	if (!Object.keys(form.getValues()).length) return <Loader />;
 
-		if (loginCode) {
-			// we have a login code, send it to the server to verify and install a jwt
-			xhr.getLoginCodeVerification(loginCode).then(({ jwt, ...user }) => {
-				// we have a jwt, save it to localstorage and set the user
-				localDb.set('jwt', jwt);
-				setUser(user);
-			}).catch(() => window.location.reload());
-		} else {
-			// we don't have a login code, but we might already have a jwt
-			xhr.getUserIdentity().then(setUser);
-		}
-	}, [user]);
+	// if the site has moved out to it's own domain, redirect to its editor page
+	const redirect = form.getValues().redirect;
+	if (redirect) return navigate(`${redirect}/editor`, { replace: true });
 
-	// we don't yet know if the user is logged in or not, show a loader till we do
-	if (!user) return <Loader />;
+	const submitForm = form.handleSubmit((data) => xhr.updateSiteData(siteId, data.content)
+		.then(() => alert('העמוד נשמר בהצלחה!'))
+		.catch(() => alert('אירעה שגיאה בעת שמירת העמוד. המידע נשמר אך העמוד לא התעדכן - צרו עימנו קשר בהקדם')));
 
-	// user is neither logged in nor is trying to, start the login process
-	if (user.role === roles.GUEST) return <Login />;
+	const previewContainerClassName = classNames('p-3', previewContainer);
+	const fieldsContainerClassName = classNames('p-3', fieldsContainer);
+	const innerFieldsContainerClassName = classNames('has-strong-radius', innerFieldsContainer);
 
-	// user is logged in, render the editor
-	return <UserContext.Provider value={user}>
-		<Component />
-	</UserContext.Provider>;
-}
+	// get theme name from form values, capitalize first letter
+	const themeName = form.getValues().theme;
 
-function snatchParameter(paramName) {
-
-	// Get the URLSearchParams
-	const params = (new URL(document.location)).searchParams;
-
-	// Get the value of the specified parameter
-	const param = params.get(paramName);
-
-	// If the parameter doesn't exist, return null
-	if (!param) return null;
-
-	// Remove the specified parameter
-	params.delete(paramName);
-
-	// Get the remaining parameters as a string
-	const updatedParams = params.toString();
-
-	// Update the URL without the specified parameter
-	// remove ? if there are no parameters
-	// (This is done to prevent the user from going back to the page with the parameter)
-	window.history.replaceState({}, '', `${window.location.pathname}${updatedParams ? `?${updatedParams}` : ''}`);
-
-	// Return the value of the parameter
-	return param;
+	return <FormProvider {...form}>
+		<Header />
+		<div className='is-flex-desktop mt-2'>
+			<div className={fieldsContainerClassName}>
+				<div className={innerFieldsContainerClassName}>
+					<ThemeFields {...{ themeName, submitForm }} />
+				</div>
+			</div>
+			<div className={previewContainerClassName}>
+				<Preview />
+			</div>
+		</div>
+		<Footer />
+	</FormProvider>;
 }
