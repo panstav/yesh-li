@@ -47,9 +47,9 @@ export default function Sections({ contactByForm, className }) {
 		}} />
 
 		<Modal {...servicesModal} render={() => {
-			return sections.map(({ ctaText, color, title, content }, index) => {
+			return sections.map(({ id, ctaText, color, title, content }, index) => {
 				const sectionClassName = classNames("box px-4 pt-4 pb-5", index && "mt-4", index !== sections.length - 1 && 'mb-4');
-				return <div key={title} className={sectionClassName} style={{ borderInlineStart: `3px solid var(--color-${color})` }}>
+				return <div key={id} className={sectionClassName} style={{ borderInlineStart: `3px solid var(--color-${color})` }}>
 					<h3 className="title is-3">{title}</h3>
 					<div dangerouslySetInnerHTML={{ __html: content }} />
 					<button onClick={() => contactByForm(title)} className="button mt-3" style={{ backgroundColor: `var(--color-${color}-300)` }}>{ctaText}</button>

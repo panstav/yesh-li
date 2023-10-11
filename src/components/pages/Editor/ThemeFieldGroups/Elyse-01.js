@@ -1,4 +1,4 @@
-import { Details, ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, TelInput } from "@pages/Editor/Fields";
+import { Details, ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, TelInput, EmailInput } from "@pages/Editor/Fields";
 import copy from '@pages/Editor/copy';
 
 export default function Elyse_01 () {
@@ -6,25 +6,25 @@ export default function Elyse_01 () {
 		<Details title='אודות'>
 			<TextInput
 				id="content.fullName"
-				label="שם מלא"
+				label={copy.fullName}
 				maxLength={20} />
 
 			<TextInput
 				id="content.occupation"
-				label="עיסוק ראשי"
-				description='ה-"טייטל" שלך או כותרת למכלול העשייה שלך'
+				label={copy.occupation}
+				description={copy.occupationDescription}
 				maxLength={30} />
 
 			<TextArea
 				id="content.description"
-				label="תיאור קצר"
-				description='תיאור קצת יותר מפורט של מכלול העשייה שלך'
+				label={copy.description}
+				description={copy.descriptionDescription}
 				maxLength={150} />
 
 			<TextArea
 				id="content.statement"
-				label="משפט מפתח"
-				description='"אני מאמין" או הצהרה קצרה של הערכים שלך'
+				label={copy.statement}
+				description={copy.statementDescription}
 				required={false}
 				maxLength={200} />
 		</Details>
@@ -32,7 +32,7 @@ export default function Elyse_01 () {
 		<Details title='עיצוב'>
 			<Select
 				id="content.mainColor"
-				label="צבע ראשי"
+				label={copy.mainColor}
 				oneOf={[
 					{ label: 'כחול', value: 'blue' },
 					{ label: 'ירוק', value: 'green' },
@@ -43,8 +43,8 @@ export default function Elyse_01 () {
 
 			<ImageInput
 				id="content.portrait"
-				label="תמונה ראשית"
-				description="התמונה שתופיע בראש העמוד ולצד כל קישור לעמוד הנחיתה"
+				label={copy.mainImage}
+				description={copy.mainImageDescription}
 				sizes={[400, 800]} />
 		</Details>
 
@@ -167,12 +167,10 @@ export default function Elyse_01 () {
 				label="טלפון"
 				required={false} />
 
-			<TextInput isSmall
+			<EmailInput isSmall
 				id={'content.socials.email'}
-				label="אימייל"
-				type="email"
-				required={false}
-				pattern={{ value: /\S+@\S+\.\S+/, message: copy.invalidEmail }} />
+				label={copy.email}
+				required={false} />
 
 		</Details>
 	</>;

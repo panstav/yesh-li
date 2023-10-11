@@ -16,23 +16,52 @@ import Gallery from "./Gallery";
 import { boxes } from "./main.module.sass";
 
 const copy = {
-	facebook: ({ style, ...props }) => <Facebook {...props} style={{ ...style, width: '1.5rem', marginInlineStart: '-0.25rem' }} />,
-	instagram: ({ style, ...props }) => <Instagram {...props} style={{ ...style, width: '1.5rem', marginInlineStart: '-0.25rem' }} />,
-	linkedin: LinkedIn,
-	twitter: X,
-	pinterest: Pinterest,
-	youtube: YouTube,
-	tiktok: TikTok,
-	whatsapp: WhatsApp,
-	phone: Phone,
-	email: Email
+	facebook: {
+		Icon: ({ style, ...props }) => <Facebook {...props} style={{ ...style, width: '1.5rem', marginInlineStart: '-0.25rem' }} />,
+		label: 'פייסבוק'
+	},
+	instagram: {
+		Icon: ({ style, ...props }) => <Instagram {...props} style={{ ...style, width: '1.5rem', marginInlineStart: '-0.25rem' }} />,
+		label: 'אינסטגרם'
+	},
+	linkedin: {
+		Icon: LinkedIn,
+		label: 'לינקדאין'
+	},
+	twitter: {
+		Icon: X,
+		label: 'טוויטר'
+	},
+	pinterest: {
+		Icon: Pinterest,
+		label: 'פינטרסט'
+	},
+	youtube: {
+		Icon: YouTube,
+		label: 'יוטיוב'
+	},
+	tiktok: {
+		Icon: TikTok,
+		label: 'טיקטוק'
+	},
+	whatsapp: {
+		Icon: WhatsApp,
+		label: 'וואטסאפ'
+	},
+	phone: {
+		Icon: Phone,
+		label: 'טלפון'
+	},
+	email: {
+		Icon: Email,
+		label: 'אימייל'
+	}
 };
 
 export default function Main() {
-	const { content: { fullName, occupation, description, statement, links, ctaHeader } } = useContext(PageContext);
+	const { content: { fullName, occupation, description, statement, links } } = useContext(PageContext);
 
 	const [contactModal, showContactModal] = useModal({
-		title: ctaHeader,
 		onSubmit: (data) => xhr.postLead(data)
 			.then(() => alert('אחלה, נשתמע!'))
 			.catch(() => alert('שגיאת מערכת, נסו שוב מאוחר יותר.'))
@@ -48,9 +77,9 @@ export default function Main() {
 			<p>{description}</p>
 		</div>
 
-		{!!links.length && <div className={boxesContainerClassName}>
-			{links.sort(byPlatform).map(({ type, label, address }) => {
-				const Icon = copy[type];
+		{!!Object.entries(links).length && <div className={boxesContainerClassName}>
+			{Object.entries(links).map(([type, address]) => ({ type, address })).sort(byPlatform).map(({ type, address }) => {
+				const { Icon, label } = copy[type];
 				const href = hrefByAddressType(type, address);
 				return <div key={address} className="box is-relative">
 					<a href={href} target="_blank" rel="noreferrer">
@@ -67,7 +96,7 @@ export default function Main() {
 
 		<Sections {...{ contactByForm }} className="mt-3" />
 
-		{statement && <div className="px-4 py-3 mt-6 mb-5" style={{ backgroundColor: 'var(--color-primary-50)', borderInlineStart: '3px solid var(--color-primary-900)', borderInlineEnd: '3px solid transparent' }}>
+		{statement?.content && <div className="px-4 py-3 mt-6 mb-5" style={{ backgroundColor: 'var(--color-primary-50)', borderInlineStart: '3px solid var(--color-primary-600)', borderInlineEnd: '3px solid transparent' }}>
 			<p>{statement.author && '"'}{statement.content}{statement.author && '"'}</p>
 			{statement.author && <span className="is-block has-text-end mt-2">- {statement.author}</span>}
 		</div>}

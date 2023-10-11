@@ -1,12 +1,14 @@
 import { useContext } from "react";
 
 import { PageContext } from "@config/Page";
+import { Title } from "@wrappers/Modal";
 
 export default function ContactForm ({ register, interest }) {
 
-	const { content: { submitText, sections } } = useContext(PageContext);
+	const { content: { ctaHeader, submitText, sections } } = useContext(PageContext);
 
 	return <>
+		<Title>{ctaHeader}</Title>
 		<div className="field">
 			<label className="label" htmlFor="contact-name">שם:</label>
 			<input className="input" type="text" id="contact-name" autoComplete="name" {...register('name')} />
