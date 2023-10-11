@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import { PageContext } from "@config/Page";
 import Modal, { useModal } from "@wrappers/Modal";
-import { Email, Gift } from "@elements/Icon";
+import { Email, Gift, Person } from "@elements/Icon";
 
 import { boxes } from "./main.module.sass";
 
@@ -24,14 +24,14 @@ export default function Sections({ contactByForm, className }) {
 		<div className={boxesClassName}>
 			{about && <div className="box is-relative">
 				<div onClick={() => showAboutModal()} className="inner is-clickable">
-					<Email style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
-					<span className="icon-text px-5 mx-3">אודותיי</span>
+					<Person style={{ width: '1.25rem', position: 'absolute', insetInlineStart: '0.85rem' }} />
+					<span className="icon-text px-5 mx-3">אודות</span>
 				</div>
 			</div>}
 			{!!sections.length && <div className="box is-relative">
 				<div onClick={() => showServicesModal()} className="inner is-clickable">
 					<Gift style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
-					<span className="icon-text px-5 mx-3">שירותיי</span>
+					<span className="icon-text px-5 mx-3">שירותים</span>
 				</div>
 			</div>}
 			<div className="box is-relative">
