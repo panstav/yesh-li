@@ -1,5 +1,7 @@
 import Meta from '@config/Meta';
 import GlassBox from '@wrappers/GlassBox';
+import GoogleAnalytics from '@elements/GoogleAnalytics';
+import MicrosoftClarity from '@elements/MicrosoftClarity';
 
 import { Hero, Description, Delimiter, Guides, Signup, Footer, Gallery, Section } from "./shila";
 import { PageContext } from "./shila/contexts";
@@ -8,6 +10,8 @@ import Details from './Details';
 
 import slides from './_data/slides';
 import guides from './_data/guides';
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 RetreatYetziraVeOtzmaPage.config = {
 	isSoldOut: false,
@@ -21,10 +25,16 @@ RetreatYetziraVeOtzmaPage.config = {
 };
 
 export const Head = ({ location: { pathname } }) => {
-	return <Meta
-		{...RetreatYetziraVeOtzmaPage.config}
-		pathname={pathname}
-	/>;
+	return <>
+		<Meta
+			{...RetreatYetziraVeOtzmaPage.config}
+			pathname={pathname}
+		/>
+		{isProduction && <>
+			<GoogleAnalytics />
+			<MicrosoftClarity />
+		</>}
+	</>;
 };
 
 export default function RetreatYetziraVeOtzmaPage() {
