@@ -7,7 +7,7 @@ export default function Page({ pageContext, background, children }) {
 	const mainColor = pageContext?.content?.mainColor;
 
 	return <PageContext.Provider value={pageContext}>
-		<style>{`:root {${cssColorVariables(mainColor)}}`}</style>
+		<CssVariables {...{ mainColor }} />
 		<Background {...{ background }} />
 		{children}
 		<div id="modal-root" />
@@ -25,8 +25,16 @@ function Background({ background: url }) {
 	</div>;
 }
 
-function cssColorVariables(mainColor = 'gray', mainShade = '400') {
-	return `
+function CssVariables({ mainColor, mainShade = '400' }) {
+	// avoid printing css variables if main one instead available
+	if (!mainColor) return null;
+
+	return <style>
+		{`:root {${variables()}}`}
+	</style>;
+
+	function variables() {
+		return `
 		accent-color: var(--color-primary);
 		--color-primary-50: var(--color-${mainColor}-50);
 		--color-primary-100: var(--color-${mainColor}-100);
@@ -152,4 +160,6 @@ function cssColorVariables(mainColor = 'gray', mainShade = '400') {
 		--color-pink-900: #521B41;
 		--color-pink: var(--color-pink-${mainShade});
 	`.trim();
+	}
+
 }
