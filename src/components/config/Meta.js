@@ -68,6 +68,10 @@ export function HeadFor(arg) {
 			props = arg;
 		}
 
-		return <Meta pathname={data.location.pathname} {...props} />;
+		return <>
+			<link rel="dns-prefetch" href="https://storage.googleapis.com" />
+			<link rel="preconnect" href="https://storage.googleapis.com" />
+			<Meta pathname={data.location.pathname} {...props} />
+		</>;
 	};
 }
