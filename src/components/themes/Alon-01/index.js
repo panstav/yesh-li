@@ -8,7 +8,7 @@ import Details from "./Details";
 
 import { container } from "./index.module.sass";
 
-export default function Ascent_1() {
+export default function Alon_1() {
 	const { content } = useContext(PageContext);
 
 	Object.entries(content.links).forEach(([platform, address]) => {

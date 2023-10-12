@@ -2,7 +2,7 @@ import { lazy } from 'react';
 
 const mapped = [
 	'Elyse-01',
-	'Ascent-01'
+	'Alon-01'
 ];
 
 export const fieldsMap = mapped.reduce((accu, themeName) => {

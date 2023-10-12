@@ -15,7 +15,7 @@ const availableColors = [
 	{ label: 'אפור', value: 'gray' }
 ];
 
-export default function Ascent_01 () {
+export default function Alon_01 () {
 	return <>
 
 		<Details title='אודות'>
