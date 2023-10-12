@@ -6,9 +6,10 @@ import isUrl from "@lib/is-url";
 
 import copy from '@pages/Editor/copy';
 
-export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, isSmall }) {
+export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, onChange, isSmall }) {
 	const { register, getFieldState } = useFormContext();
 	const { error } = getFieldState(id);
+	const valueAs = (val) => setValueAs(cleanUGT(val));
 	const labelClassName = classNames('label', labelClasses);
 	const inputClassName = classNames('input', isSmall && 'is-small');
 	return <div className='field'>
@@ -18,7 +19,8 @@ export default function TextInput({ id, label, labelClassName: labelClasses, typ
 			pattern,
 			maxLength: maxLength && { value: maxLength, message: copy.maxLengthField(maxLength) },
 			validate,
-			setValueAs: (val) => setValueAs(cleanUGT(val))
+			onChange: (event) => onChange(ifValid({ validate, pattern }, valueAs(event.target.value))),
+			setValueAs: valueAs
 		})} />
 		{error?.message
 			? <p className='help is-danger'>{error?.message}</p>
@@ -52,4 +54,15 @@ export function EmailInput(props) {
 		type="email"
 		pattern={{ value: /\S+@\S+\.\S+/, message: copy.invalidEmail }}
 		{...props} />;
+}
+
+function ifValid({ validate, pattern }, value) {
+
+	// if there's no value, don't validate
+	if (!value) return value;
+
+	// if there's no valid value, return false
+	return Object.values(validate).every(validator => validator(value))
+		&& (!pattern || (pattern instanceof RegExp ? pattern.test(value) : pattern.value.test(value)))
+		&& value;
 }
