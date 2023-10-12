@@ -18,7 +18,6 @@ export default function Alon_1() {
 	if (content.video?.url) {
 		const videoId = (new URL(content.video.url)).searchParams.get('v');
 		content.video.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&cc_lang_pref=he&hl=he&rel=0`;
-		content.video.thumbnail = "https://img.youtube.com/vi/" + videoId + "/sddefault.jpg";
 	}
 
 	content.sections.forEach((section) => {

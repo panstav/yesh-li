@@ -13,6 +13,7 @@ export default {
 	// editor-facing routes
 	getSiteData: (siteId) => get(`site-data?id=${siteId}`),
 	postImage: ({ imageBase64, fileName, sizes, siteId }) => post(`image`, { imageBase64, fileName, sizes, siteId }),
+	postYoutubeThumbnail: ({ videoUrl, siteId }) => post(`youtube-thumbnail`, { videoUrl, siteId }),
 	updateSiteData: (siteId, content) => put(`site-data?siteId=${siteId}`, content),
 
 };

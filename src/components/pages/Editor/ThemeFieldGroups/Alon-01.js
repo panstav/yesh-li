@@ -1,7 +1,11 @@
-import { Details, ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, EmailInput, TelInput } from "@pages/Editor/Fields";
-import copy from '@pages/Editor/copy';
+import { useContext } from "react";
+import { useFormContext } from "react-hook-form";
 
+import xhr from "@services/xhr";
+import { Details, ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, EmailInput, TelInput } from "@pages/Editor/Fields";
+import { AuthContext } from "@pages/Editor/Auth";
 import { compoundField } from '@pages/Editor/index.module.sass';
+import copy from '@pages/Editor/copy';
 
 const availableColors = [
 	{ label: 'אדום', value: 'red' },
@@ -16,6 +20,9 @@ const availableColors = [
 ];
 
 export default function Alon_01 () {
+	const { siteId } = useContext(AuthContext);
+	const { setValue } = useFormContext();
+
 	return <>
 
 		<Details title='אודות'>
@@ -138,7 +145,12 @@ export default function Alon_01 () {
 					id={'content.video.url'}
 					label="כתובת סרטון יוטיוב"
 					required={false}
-					includes='youtube.com/watch?v' />
+					includes='youtube.com/watch?v'
+					setValueAs={(val) => val.split('&')[0]}
+					onChange={(videoUrl) => {
+						if (videoUrl) xhr.postYoutubeThumbnail({ videoUrl, siteId })
+							.then(({ thumbnailPath }) => setValue('content.video.thumbnail', thumbnailPath));
+					}} />
 
 				<TextInput
 					id={'content.video.title'}
