@@ -17,7 +17,7 @@ export default function Details () {
 			</main>
 
 			<footer className="is-overlay has-text-centered mx-auto" style={{ top: 'unset' }}>
-				<span className='is-size-7 has-text-grey-light'>© {new Date().getFullYear()} {fullName} כל הזכויות שמורות</span>
+				<span className='is-size-7'>© {new Date().getFullYear()} {fullName} כל הזכויות שמורות</span>
 			</footer>
 
 		</div>
