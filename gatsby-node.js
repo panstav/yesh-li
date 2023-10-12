@@ -38,9 +38,9 @@ exports.createPages = async ({ actions }) => {
 
 				const themeComponent = siteData.redirect
 					// some sites moved out to their own domains, we'll use a component that redirects them to their new domain
-					? require.resolve(`./src/components/templates/redirect-to-root/index.js`)
+					? require.resolve(`${__dirname}/src/components/templates/redirect-to-root/index.js`)
 					// otherwise, we'll use the theme's component
-					: require.resolve(`./src/themes/${siteData.theme}.js`);
+					: require.resolve(`${__dirname}/src/themes/${siteData.theme}.js`);
 
 				// create the page for this site using the theme's component and the site's data as it's pageContext prop
 				actions.createPage({
@@ -60,7 +60,7 @@ exports.createPages = async ({ actions }) => {
 		// create the root page
 		actions.createPage({
 			path: '/',
-			component: require.resolve(`./src/themes/${siteData.theme}.js`),
+			component: require.resolve(`${__dirname}/src/themes/${siteData.theme}.js`),
 			context: siteData
 		});
 	}
@@ -68,7 +68,7 @@ exports.createPages = async ({ actions }) => {
 	function createLegacySites () {
 		actions.createPage({
 			path: '/from-junk-to-magic',
-			component: require.resolve(`./src/components/pages/FromJunkToMagic/index.js`)
+			component: require.resolve(`${__dirname}/src/components/pages/FromJunkToMagic/index.js`)
 		});
 	}
 
