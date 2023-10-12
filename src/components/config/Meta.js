@@ -26,8 +26,6 @@ export default function Meta({
 	const pagePathname = siteUrl + pathname;
 
 	return <>
-		<body data-page={pathname} />
-
 		<title>{pageTitle}</title>
 		<meta name="title" content={pageTitle} />
 		<meta name="description" content={pageDescription} />
