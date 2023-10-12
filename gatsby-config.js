@@ -32,6 +32,14 @@ const crossEnvPlugins = [
 
 const productionOnlyPlugins = [
 	{
+		resolve: 'gatsby-plugin-preconnect',
+		options: {
+			domains: [
+				{ domain: 'https://storage.googleapis.com', crossOrigin: false },
+			],
+		},
+	},
+	{
 		resolve: `gatsby-plugin-canonical-urls`,
 		options: {
 			siteUrl

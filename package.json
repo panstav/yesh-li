@@ -23,6 +23,7 @@
     "gatsby-plugin-clarity": "^1.0.1",
     "gatsby-plugin-google-gtag": "^5.7.0",
     "gatsby-plugin-netlify": "^5.1.0",
+    "gatsby-plugin-preconnect": "^1.4.0",
     "gatsby-plugin-robots-txt": "^1.8.0",
     "gatsby-plugin-sass": "^6.7.0",
     "gatsby-plugin-sitemap": "^6.7.0",
