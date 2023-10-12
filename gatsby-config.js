@@ -1,3 +1,7 @@
+require('dotenv').config({
+	path: `.env.${process.env.NODE_ENV}`
+});
+
 const siteUrl = 'https://yesh.li';
 
 const crossEnvPlugins = [
@@ -56,7 +60,15 @@ const productionOnlyPlugins = [
 	}
 ];
 
-const developmentOnlyPlugins = [];
+const developmentOnlyPlugins = [
+	{
+		resolve: "gatsby-plugin-webpack-bundle-analyser-v2",
+		options: {
+			disable: process.env.ANALYZE_BUNDLE_SIZE !== 'true',
+			defaultSizes: "gzip"
+		},
+	}
+];
 
 const plugins = crossEnvPlugins.concat(process.env.NETLIFY ? productionOnlyPlugins : developmentOnlyPlugins);
 
