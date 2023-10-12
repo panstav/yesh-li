@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FocusPicker } from 'image-focus';
 import classNames from 'classnames';
@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import Modal, { Title, useModal } from '@wrappers/Modal';
 import { Upload } from '@elements/Icon';
 import xhr from '@services/xhr';
+import { AuthContext } from '@pages/Editor/Auth';
 import cleanUGT from '@lib/clean-user-generated-text';
 
 import { compoundField, imagePreviewContainer } from '@pages/Editor/index.module.sass';
@@ -15,6 +16,7 @@ const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 const acceptedTypes = allowedTypes.join(',').replaceAll('image/', '.');
 
 export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true }) {
+	const { siteId } = useContext(AuthContext);
 	const { register, setValue, getValues, getFieldState } = useFormContext();
 
 	const state = getFieldState(id);
@@ -38,7 +40,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 
 		const { base64: imageBase64 } = await limitImageSize(file, 1200);
 
-		xhr.postImage({ imageBase64, fileName: file.name, sizes, siteId: getValues('slug') }).then(({ srcSet }) => {
+		xhr.postImage({ imageBase64, fileName: file.name, sizes, siteId }).then(({ srcSet }) => {
 			setFileName(file.name);
 			setValue(propertyKey, srcSet);
 		}).catch((err) => {

@@ -21,7 +21,7 @@ export default function Editor () {
 }
 
 function EditorForm() {
-	const { sites: [siteId] } = useContext(AuthContext);
+	const { siteId } = useContext(AuthContext);
 
 	const form = useForm({
 		mode: 'onChange',
