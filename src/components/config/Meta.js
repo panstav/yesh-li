@@ -60,14 +60,19 @@ export function HeadFor(arg) {
 	// or to use page data to pass props like this: HeadFor((data) => ({ title: data.pageContext.title }))
 	return function Head (data) {
 
-		let props;
+		let args;
 
 		if (typeof (arg) === 'function') {
-			props = arg(data);
+			args = arg(data);
 		} else {
-			props = arg;
+			args = arg;
 		}
 
-		return <Meta pathname={data.location.pathname} {...props} />;
+		const { _preload, ...props } = args;
+
+		return <>
+			{_preload && _preload.map((preload) => <link rel="preload" key={preload.href} {...preload} />)}
+			<Meta pathname={data.location.pathname} {...props} />
+		</>;
 	};
 }
