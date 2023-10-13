@@ -6,8 +6,10 @@ export default function useModal(propsFromHook = {}) {
 	const { window } = useFrame();
 	const [modalProps, setModalProps] = useState();
 
-	const hideModal = () => {
+	const hideModal = (event) => {
 		window.document.documentElement.classList.toggle('with-modal', false);
+		// unless the modal is being closed by the browser's back button - go back
+		if (event?.type !== 'popstate') history.back();
 		return setModalProps();
 	};
 
@@ -23,6 +25,7 @@ export default function useModal(propsFromHook = {}) {
 				: Object.assign(propsFromHook, propsFromCallback)
 		);
 		window.document.documentElement.classList.toggle('with-modal', true);
+		history.pushState({}, '');
 		setModalProps(newProps);
 	}, [typeof propsFromHook]);
 
