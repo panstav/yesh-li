@@ -1,12 +1,15 @@
+const googleAnalyticsKey = process.env.GATSBY_GOOGLE_ANALYTICS_KEY;
+
 /* eslint-disable */
 export default function GoogleAnalytics () {
+	if (!googleAnalyticsKey) return null;
+
 	return <>
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-6S1RKXRGW7"></script>
+		<script async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsKey}`}></script>
 		<script dangerouslySetInnerHTML={{
 			__html: `window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments)}
 			gtag('js', new Date());
-
-			gtag('config', 'G-6S1RKXRGW7');` }} />
+			gtag('config', '${googleAnalyticsKey}');` }} />
 	</>;
 }

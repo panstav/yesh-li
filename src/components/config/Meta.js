@@ -68,11 +68,12 @@ export function HeadFor(arg) {
 			args = arg;
 		}
 
-		const { _preload, ...props } = args;
+		const { _preload, _children, ...props } = args;
 
 		return <>
 			{_preload && _preload.map((preload) => <link rel="preload" key={preload.href} {...preload} />)}
 			<Meta pathname={data.location.pathname} {...props} />
+			{_children}
 		</>;
 	};
 }
