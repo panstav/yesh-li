@@ -8,15 +8,15 @@ export { default as useModal } from './use-modal';
 
 export { Title, ContextTitle };
 
-export default function Modal({ render, hideModal, confirmBeforeHiding, ...props }) {
+export default function Modal({ modalId, ...props }) {
 	const { document } = useFrame();
 
-	// if no props are passed (except for render and hideModal, which are passed by default from useModal hook), don't render anything - the modal is closed
-	if (!Object.keys(props).length) return null;
+	// if we don't have a modalId - don't render anything - the modal is closed
+	if (!modalId) return null;
 
 	if ([props, ...Object.values(props)].some((prop) => prop?.nativeEvent?.view === window)) console.error('Open modal with an event by passing a wrapped openModal function to the event handler (e.g. onClick={() => openModal()}), not by calling it directly (e.g. onClick={openModal})');
 
-	return createPortal(<ModalOrFormOnModal {...props} {...{ render, hideModal, confirmBeforeHiding }} />, document.getElementById('modal-root'));
+	return createPortal(<ModalOrFormOnModal {...props} />, document.getElementById('modal-root'));
 }
 
 function ModalOrFormOnModal({ render, hideModal, isRaw, isLarge, confirmBeforeHiding, ...modalProps }) {

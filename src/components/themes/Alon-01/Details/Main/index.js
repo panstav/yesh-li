@@ -3,15 +3,16 @@ import classNames from "classnames";
 
 import { PageContext } from "@config/Page";
 import Modal, { useModal } from "@wrappers/Modal";
-import { Email, Facebook, Instagram, LinkedIn, TikTok, WhatsApp, X, YouTube, Phone, Pinterest, AddContact } from "@elements/Icon";
+import { Email, Facebook, Instagram, LinkedIn, TikTok, WhatsApp, X, YouTube, Phone, Pinterest, AddContact, Share } from "@elements/Icon";
 
 import xhr from '@services/xhr';
 import hrefByAddressType from "@lib/href-by-address-type";
 
 import Sections from "./Sections";
-import ContactForm from "./ContactForm";
 import Video from "./Video";
 import Gallery from "./Gallery";
+import ContactForm from "./ContactForm";
+import SharingModal from "./SharingModal";
 
 import { boxes } from "./main.module.sass";
 
@@ -70,6 +71,9 @@ export default function Main() {
 	});
 	const contactByForm = (interest) => showContactModal({ interest });
 
+	const [sharingModal, showSharingModal] = useModal({});
+	const sharePage = () => showSharingModal();
+
 	const boxesContainerClassName = classNames(boxes, "px-2 mt-3");
 
 	return <>
@@ -96,7 +100,7 @@ export default function Main() {
 			<div className="box is-relative">
 				<div onClick={saveContact} className="inner is-clickable">
 					<AddContact style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
-					<span className="icon-text px-5 mx-3">איש קשר</span>
+					<span className="icon-text px-5 mx-3">שמירת איש קשר</span>
 				</div>
 			</div>
 		</div>
@@ -111,7 +115,18 @@ export default function Main() {
 			{statement.author && <span className="is-block has-text-end mt-2">- {statement.author}</span>}
 		</div>}
 
+		<div className={boxesContainerClassName}>
+			<div className="box is-relative">
+				<div onClick={sharePage} className="inner is-clickable">
+					<Share style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
+					<span className="icon-text px-5 mx-3">שיתוף העמוד</span>
+				</div>
+			</div>
+		</div>
+
 		<Modal {...contactModal} render={ContactForm} />
+
+		<Modal {...sharingModal} render={SharingModal} />
 
 	</>;
 }
