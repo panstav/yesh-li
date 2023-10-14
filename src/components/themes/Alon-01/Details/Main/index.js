@@ -59,7 +59,7 @@ const copy = {
 };
 
 export default function Main() {
-	const { content: { fullName, occupation, description, statement, links } } = useContext(PageContext);
+	const { content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
 
 	const [contactModal, showContactModal] = useModal({
 		onSubmit: (data) => xhr.postLead(data)
@@ -90,11 +90,10 @@ export default function Main() {
 			})}
 		</div>}
 
-		<Video className="mt-3" />
+		<Video />
+		<Gallery className={video.url ? "mt-3" : "mt-6"} />
 
-		<Gallery className="mt-3" />
-
-		<Sections {...{ contactByForm }} className="mt-3" />
+		<Sections {...{ contactByForm }} className="mt-6" />
 
 		{statement?.content && <div className="px-4 py-3 mt-6 mb-5" style={{ backgroundColor: 'var(--color-primary-50)', borderInlineStart: '3px solid var(--color-primary-600)', borderInlineEnd: '3px solid transparent' }}>
 			<p>{statement.author && '"'}{statement.content}{statement.author && '"'}</p>

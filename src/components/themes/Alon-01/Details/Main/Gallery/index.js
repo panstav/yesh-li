@@ -16,6 +16,8 @@ export default function Gallery({ className }) {
 		isRaw: true, isLarge: true
 	});
 
+	if (!gallery.length) return null;
+
 	const containerClassName = classNames(container, "is-relative", className);
 
 	return <>
