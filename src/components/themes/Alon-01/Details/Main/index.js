@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import { PageContext } from "@config/Page";
 import Modal, { useModal } from "@wrappers/Modal";
-import { Email, Facebook, Instagram, LinkedIn, TikTok, WhatsApp, X, YouTube, Phone, Pinterest } from "@elements/Icon";
+import { Email, Facebook, Instagram, LinkedIn, TikTok, WhatsApp, X, YouTube, Phone, Pinterest, AddContact } from "@elements/Icon";
 
 import xhr from '@services/xhr';
 import hrefByAddressType from "@lib/href-by-address-type";
@@ -61,6 +61,8 @@ const copy = {
 export default function Main() {
 	const { content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
 
+	const saveContact = async () => createAndDownloadContact(fullName, occupation, links);
+
 	const [contactModal, showContactModal] = useModal({
 		onSubmit: (data) => xhr.postLead(data)
 			.then(() => alert('אחלה, נשתמע!'))
@@ -68,7 +70,7 @@ export default function Main() {
 	});
 	const contactByForm = (interest) => showContactModal({ interest });
 
-	const boxesContainerClassName = classNames(boxes, "mt-3 px-2");
+	const boxesContainerClassName = classNames(boxes, "px-2 mt-3");
 
 	return <>
 		<div className="px-4">
@@ -90,7 +92,16 @@ export default function Main() {
 			})}
 		</div>}
 
-		<Video />
+		<div className={boxesContainerClassName}>
+			<div className="box is-relative">
+				<div onClick={saveContact} className="inner is-clickable">
+					<AddContact style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
+					<span className="icon-text px-5 mx-3">איש קשר</span>
+				</div>
+			</div>
+		</div>
+
+		<Video className="mt-6" />
 		<Gallery className={video.url ? "mt-3" : "mt-6"} />
 
 		<Sections {...{ contactByForm }} className="mt-6" />
@@ -107,4 +118,18 @@ export default function Main() {
 
 function byPlatform (a, b) {
 	return Object.keys(copy).indexOf(a.type) - Object.keys(copy).indexOf(b.type);
+}
+
+function createAndDownloadContact(fullName, occupation, links) {
+
+	const vCard = `BEGIN:VCARD\nVERSION:4.0\nFN:${fullName}\n${occupation ? `\nTITLE:${occupation}` : ''}${links.phone ? `\nTEL;TYPE=work,voice:${links.phone}` : ''}${links.email ? `\nEMAIL:${links.email}` : ''}\nURL:${window.location.origin + window.location.pathname}\nEND:VCARD`;
+
+	const blob = new Blob([vCard], { type: "text/vcard" });
+
+	const newLink = document.createElement('a');
+	newLink.download = fullName.replaceAll(' ', '-') + ".vcf";
+	newLink.textContent = `${fullName} - איש קשר`;
+	newLink.href = URL.createObjectURL(blob);
+
+	newLink.click();
 }
