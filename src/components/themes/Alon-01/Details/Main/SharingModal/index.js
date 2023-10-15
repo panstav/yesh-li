@@ -1,13 +1,13 @@
 import { useContext, useState } from "react";
 import classNames from "classnames";
 
+import { Title } from "@wrappers/Modal";
 import { Email, Facebook, LinkedIn, WhatsApp, X, Copy, Telegram } from '@elements/Icon';
 
 import { PageContext } from "@config/Page";
 import copyToClipboard from "@lib/copy-to-clipboard";
 
 import { topContainer } from "./sharing-modal.module.sass";
-import { Title } from "@wrappers/Modal";
 
 export default function SharingModal () {
 	const { qrSvgPath, content: { fullName, occupation } } = useContext(PageContext);
