@@ -2,7 +2,7 @@ import { useContext } from "react";
 import classNames from "classnames";
 
 import { PageContext } from "@config/Page";
-import Modal, { useModal } from "@wrappers/Modal";
+import Modal, { Title, useModal } from "@wrappers/Modal";
 import { Email, Gift, Person } from "@elements/Icon";
 
 import { boxes } from "./main.module.sass";
@@ -50,7 +50,7 @@ export default function Sections({ contactByForm, className }) {
 			return sections.map(({ id, ctaText, color, title, content }, index) => {
 				const sectionClassName = classNames("box px-4 pt-4 pb-5", index && "mt-4", index !== sections.length - 1 && 'mb-4');
 				return <div key={id} className={sectionClassName} style={{ borderInlineStart: `3px solid var(--color-${color})` }}>
-					<h3 className="title is-3">{title}</h3>
+					<Title>{title}</Title>
 					<div dangerouslySetInnerHTML={{ __html: content }} />
 					<button onClick={() => contactByForm(title)} className="button mt-3" style={{ backgroundColor: `var(--color-${color}-300)` }}>{ctaText}</button>
 				</div>;

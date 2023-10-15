@@ -49,7 +49,7 @@ function RegularModal({ title, hideable, hideModal, children }) {
 }
 
 export function Title ({ children }) {
-	return <div className="title is-3 is-flex is-align-items-center has-text-grey">{children}</div>;
+	return <div className="title is-4 is-flex is-align-items-center has-text-grey mb-4">{children}</div>;
 }
 
 export function ContextTitle ({ children }) {
