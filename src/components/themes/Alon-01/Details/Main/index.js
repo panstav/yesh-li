@@ -60,7 +60,7 @@ const copy = {
 };
 
 export default function Main() {
-	const { content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
+	const { qrSvgPath, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
 
 	const saveContact = async () => createAndDownloadContact(fullName, occupation, links);
 
@@ -71,7 +71,9 @@ export default function Main() {
 	});
 	const contactByForm = (interest) => showContactModal({ interest });
 
-	const [sharingModal, showSharingModal] = useModal({});
+	const [sharingModal, showSharingModal] = useModal({
+		qr: qrSvgPath
+	});
 	const sharePage = () => showSharingModal();
 
 	const boxesContainerClassName = classNames(boxes, "px-2 mt-3");

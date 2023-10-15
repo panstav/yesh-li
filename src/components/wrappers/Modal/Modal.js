@@ -1,6 +1,7 @@
 import useKeyPress from '@hooks/use-key-press';
 
 import { modalBackground, modal, modalContent, rawModalInner } from './modal.module.sass';
+import classNames from 'classnames';
 
 export default function Modal({ title, hideModal: hideModalProp, hideable = true, isRaw, isLarge, children }) {
 
@@ -48,8 +49,9 @@ function RegularModal({ title, hideable, hideModal, children }) {
 	</div>;
 }
 
-export function Title ({ children }) {
-	return <div className="title is-4 is-flex is-align-items-center has-text-grey mb-4">{children}</div>;
+export function Title ({ className: classes, children }) {
+	const className = classNames('title is-4 is-flex is-align-items-center has-text-grey mb-4', classes);
+	return <div className={className}>{children}</div>;
 }
 
 export function ContextTitle ({ children }) {
