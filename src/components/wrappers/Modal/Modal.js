@@ -49,9 +49,9 @@ function RegularModal({ title, hideable, hideModal, children }) {
 	</div>;
 }
 
-export function Title ({ className: classes, children }) {
-	const className = classNames('title is-4 is-flex is-align-items-center has-text-grey mb-4', classes);
-	return <div className={className}>{children}</div>;
+export function Title ({ isMarginless, className: classes, style, children }) {
+	const className = classNames('title is-4 is-flex is-align-items-center has-text-grey', isMarginless || 'mb-4', classes);
+	return <div {...{ className, style }}>{children}</div>;
 }
 
 export function ContextTitle ({ children }) {
