@@ -49,7 +49,7 @@ export default function RichEditor({ id, label, placeholder }) {
 			if (!elem.innerText.trim()) return setValue(id, '');
 
 			// if it's not, set the value to the editor's innerHTML after cleaning it
-			setValue(id, cleanUGT(editor.root.innerHTML));
+			setValue(id, cleanUGT(editor.root.innerHTML.replaceAll('<br>', '')));
 		});
 	}, []);
 
