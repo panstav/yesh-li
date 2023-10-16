@@ -8,13 +8,13 @@ import cleanUGT from "@lib/clean-user-generated-text";
 import { richTextContainer } from '@pages/Editor/index.module.sass';
 import copy from '@pages/Editor/copy';
 
-export default function RichEditor({ id, label, placeholder }) {
+export default function RichEditor({ id, label, placeholder, maxLength }) {
 	import('quill/dist/quill.core.css');
 	import('quill/dist/quill.snow.css');
 
-	const { getValues, setValue, getFieldState } = useFormContext();
+	const { getValues, setValue, getFieldState, setError, clearErrors } = useFormContext();
 
-	const state = getFieldState(id);
+	const { error } = getFieldState(id);
 
 	const editorMountElemId = `${id}-editor-mount-elem`;
 	const richTextContainerClassName = classNames(richTextContainer, 'field');
@@ -41,12 +41,17 @@ export default function RichEditor({ id, label, placeholder }) {
 		if (value) editor.root.innerHTML = value;
 
 		editor.on('text-change', () => {
+			clearErrors(id);
+
 			// check whether the editor is empty
 			// use another element to check for innerText because Quill's root element never has innerText ¯\_(ツ)_/¯
 			const elem = document.createElement('div');
 			elem.innerHTML = editor.root.innerHTML;
+			const strippedText = elem.innerText.trim();
+
 			// if it is, set the value to an empty string instead of an empty paragraph or span or whatever
-			if (!elem.innerText.trim()) return setValue(id, '');
+			if (!strippedText) return setValue(id, '');
+			if (maxLength && strippedText.length > maxLength) return setError(id, { type: 'maxLength', message: copy.maxLengthField(maxLength) });
 
 			// if it's not, set the value to the editor's innerHTML after cleaning it
 			setValue(id, cleanUGT(editor.root.innerHTML.replaceAll('<br>', '')));
@@ -56,6 +61,6 @@ export default function RichEditor({ id, label, placeholder }) {
 	return <div className={richTextContainerClassName}>
 		<label className='label'>{label}:</label>
 		<div data-id={editorMountElemId} />
-		{state?.error?.required && <p className="help is-danger">{copy.requiredField}</p>}
+		{error?.message && <p className='help is-danger'>{error?.message}</p>}
 	</div>;
 }
