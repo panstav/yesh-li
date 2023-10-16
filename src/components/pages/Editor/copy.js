@@ -23,7 +23,7 @@ export default {
 
 	facebook: 'פייסבוק',
 	instagram: 'אינסטגרם',
-	linkedin:	'לינקדין',
+	linkedin:	'לינקדאין',
 	twitter: 'טוויטר',
 	pinterest: 'פינטרסט',
 	youtube: 'יוטיוב',

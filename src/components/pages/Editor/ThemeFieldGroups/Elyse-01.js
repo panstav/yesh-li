@@ -129,7 +129,7 @@ export default function Elyse_01 () {
 
 			<UrlInput isSmall
 				id={'content.socials.linkedin'}
-				label="לינקדין"
+				label="לינקדאין"
 				required={false}
 				includes='linkedin.com' />
 
