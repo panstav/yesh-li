@@ -1,19 +1,23 @@
-import { useContext } from "react";
+import { Fragment, useContext } from "react";
 import classNames from "classnames";
 
-import { PageContext } from "@config/Page";
 import Modal, { Title, useModal } from "@wrappers/Modal";
-import { Email, Gift, Person } from "@elements/Icon";
+import { Email, Faq, Gift, Person } from "@elements/Icon";
+
+import { PageContext } from "@config/Page";
 
 import { boxes } from "./main.module.sass";
 
 export default function Sections({ contactByForm, className }) {
-	const { content: { about, sections } } = useContext(PageContext);
+	const { content: { about, sections, faq } } = useContext(PageContext);
 
 	const [aboutModal, showAboutModal] = useModal({
 		title: 'אודותיי'
 	});
 	const [servicesModal, showServicesModal] = useModal({
+		isRaw: true
+	});
+	const [faqModal, showFaqModal] = useModal({
 		isRaw: true
 	});
 
@@ -32,6 +36,12 @@ export default function Sections({ contactByForm, className }) {
 				<div onClick={() => showServicesModal()} className="inner is-clickable">
 					<Gift style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
 					<span className="icon-text px-5 mx-3">שירותים</span>
+				</div>
+			</div>}
+			{!!faq.length && <div className="box is-relative">
+				<div onClick={() => showFaqModal()} className="inner is-clickable">
+					<Faq style={{ width: '1.25rem', position: 'absolute', insetInlineStart: '0.85rem' }} />
+					<span className="icon-text px-5 mx-3">שאלות נפוצות</span>
 				</div>
 			</div>}
 			<div className="box is-relative">
@@ -55,6 +65,22 @@ export default function Sections({ contactByForm, className }) {
 					<button onClick={() => contactByForm(title)} className="button mt-3" style={{ backgroundColor: `var(--color-${color}-300)` }}>{ctaText}</button>
 				</div>;
 			});
+		}} />
+
+		<Modal {...faqModal} render={() => {
+			return <div className="has-background-white has-radius">
+				{faq.map(({ question, answer }, index) => {
+					return <Fragment key={question}>
+						{index !== 0 && <hr className="m-0" />}
+						<details className="details">
+							<summary className="ps-4 py-4 me-4">
+								<Title isMarginless style={{ maxWidth: 'calc(100% - 2.5em)' }}>{question}</Title>
+							</summary>
+							<div className="px-4 pb-4" dangerouslySetInnerHTML={{ __html: answer }} />
+						</details>
+					</Fragment>;
+				})}
+			</div>;
 		}} />
 
 	</>;

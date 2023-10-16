@@ -214,5 +214,28 @@ export default function Alon_01 () {
 			</Repeater>
 		</Details>
 
+		<Details title='שאלות נפוצות'>
+			<Repeater
+				arrayId="content.faq"
+				singleName="שאלה ותשובה"
+				minLength="0" maxLength="10"
+				emptyItem={{
+					question: '',
+					answer: ''
+				}}>{(id) => <>
+
+					<TextInput
+						id={`${id}.question`}
+						label="שאלה"
+						maxLength={30} />
+
+					<RichEditor
+						id={`${id}.answer`}
+						label="תשובה" />
+
+				</>}
+			</Repeater>
+		</Details>
+
 	</>;
 }
