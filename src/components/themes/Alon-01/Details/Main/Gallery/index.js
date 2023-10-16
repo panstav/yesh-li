@@ -2,7 +2,7 @@ import { useCallback, useContext, useState } from "react";
 import classNames from "classnames";
 
 import { PageContext } from "@config/Page";
-import Modal, { useModal } from "@wrappers/Modal";
+import Modal, { useRawModal } from "@wrappers/Modal";
 import { Gallery as GalleryIcon } from "@elements/Icon";
 
 import useKeyPress from "@hooks/use-key-press";
@@ -12,8 +12,8 @@ import { container, edge } from "./gallery.module.sass";
 export default function Gallery({ className }) {
 	const { content: { gallery } } = useContext(PageContext);
 
-	const [galleryModal, showGalleryModal] = useModal({
-		isRaw: true, isLarge: true
+	const [galleryModal, showGalleryModal] = useRawModal({
+		isLarge: true
 	});
 
 	if (!gallery.length) return null;

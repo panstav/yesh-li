@@ -1,7 +1,7 @@
 import { Fragment, useContext } from "react";
 import classNames from "classnames";
 
-import Modal, { Title, useModal } from "@wrappers/Modal";
+import Modal, { Title, useModal, useRawModal } from "@wrappers/Modal";
 import { Email, Faq, Gift, Person } from "@elements/Icon";
 
 import { PageContext } from "@config/Page";
@@ -14,12 +14,8 @@ export default function Sections({ contactByForm, className }) {
 	const [aboutModal, showAboutModal] = useModal({
 		title: 'אודותיי'
 	});
-	const [servicesModal, showServicesModal] = useModal({
-		isRaw: true
-	});
-	const [faqModal, showFaqModal] = useModal({
-		isRaw: true
-	});
+	const [servicesModal, showServicesModal] = useRawModal();
+	const [faqModal, showFaqModal] = useRawModal();
 
 	const boxesClassName = classNames(boxes, "px-2", className);
 

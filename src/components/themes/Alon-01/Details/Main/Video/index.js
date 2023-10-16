@@ -2,7 +2,7 @@ import { useContext } from "react";
 import classNames from "classnames";
 
 import { PageContext } from "@config/Page";
-import Modal, { useModal } from "@wrappers/Modal";
+import Modal, { useRawModal } from "@wrappers/Modal";
 import { YouTube } from "@elements/Icon";
 
 import { youtubeImageContainer, youtubeThumbnail, youtubeIcon } from './video.module.sass';
@@ -10,8 +10,8 @@ import { youtubeImageContainer, youtubeThumbnail, youtubeIcon } from './video.mo
 export default function Video ({ className }) {
 	const { content: { video } } = useContext(PageContext);
 
-	const [youtubeModal, showYoutubeModal] = useModal({
-		isRaw: true, isLarge: true
+	const [youtubeModal, showYoutubeModal] = useRawModal({
+		isLarge: true
 	});
 
 	if (!video.url) return null;

@@ -3,8 +3,9 @@ import { useFormContext } from 'react-hook-form';
 import { FocusPicker } from 'image-focus';
 import classNames from 'classnames';
 
-import Modal, { Title, useModal } from '@wrappers/Modal';
+import Modal, { Title, useErrorModal, useModal } from '@wrappers/Modal';
 import { Upload } from '@elements/Icon';
+
 import xhr from '@services/xhr';
 import { AuthContext } from '@pages/Editor/Auth';
 import cleanUGT from '@lib/clean-user-generated-text';
@@ -18,6 +19,10 @@ const acceptedTypes = allowedTypes.join(',').replaceAll('image/', '.');
 export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true }) {
 	const { siteId } = useContext(AuthContext);
 	const { register, setValue, getValues, getFieldState } = useFormContext();
+
+	const [supportedFileTyesModal, showSupportedFileTyesModal] = useErrorModal();
+	const [moderationModal, showModerationModal] = useErrorModal();
+	const [serverErrorModal, showServerErrorModal] = useErrorModal();
 
 	const state = getFieldState(id);
 
@@ -36,7 +41,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 		const file = event.currentTarget.files[0];
 
 		if (!file) return;
-		if (!allowedTypes.includes(file.type)) return alert('סוגי הקבצים שנתמכים כאן: jpg, jpeg, png');
+		if (!allowedTypes.includes(file.type)) return showSupportedFileTyesModal();
 
 		const { base64: imageBase64 } = await limitImageSize(file, 1200);
 
@@ -44,7 +49,8 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 			setFileName(file.name);
 			setValue(propertyKey, srcSet);
 		}).catch((err) => {
-			alert(err.responseData?.reasoning === 'moderation' ? 'המערכת זיהתה בתמונה תוכן בלתי מתאים מאחד הסוגים הבאים: תוכן למבוגרים, זיוף, דימוי רפואי, תוכן אלים או תוכן פרובוקטיבי. צרו קשר אם מדובר בשגיאה בזיהוי.' : 'אירעה שגיאה בהעלאת התמונה. נסו שנית מאוחר יותר');
+			if (err.responseData?.reasoning === 'moderation') return showModerationModal();
+			showServerErrorModal();
 		});
 	};
 
@@ -83,6 +89,10 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 				<p className='help'>{copy.altDescription}</p>
 			</div>
 		</div>
+
+		<Modal {...supportedFileTyesModal} render={() => 'סוגי הקבצים שנתמכים כאן: jpg, jpeg, png'} />
+		<Modal {...moderationModal} render={() => <><p>המערכת זיהתה בתמונה תוכן בלתי מתאים מאחד הסוגים הבאים: תוכן למבוגרים, זיוף, דימוי רפואי, תוכן אלים או תוכן פרובוקטיבי.</p><br /><p>צרו קשר אם מדובר בטעות בזיהוי.</p></>} />
+		<Modal {...serverErrorModal} render={() => 'אירעה שגיאה בהעלאת התמונה. נסו שנית מאוחר יותר'} />
 
 		<Modal {...focusModal} render={({ setValue, getValues, imageToFocus, watch }) => {
 

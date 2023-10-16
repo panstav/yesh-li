@@ -2,7 +2,7 @@ import { useContext } from "react";
 import classNames from "classnames";
 
 import { PageContext } from "@config/Page";
-import Modal, { useModal } from "@wrappers/Modal";
+import Modal, { useErrorModal, useModal, useSuccessModal } from "@wrappers/Modal";
 import { Email, Facebook, Instagram, LinkedIn, TikTok, WhatsApp, X, YouTube, Phone, Pinterest, AddContact, Share } from "@elements/Icon";
 
 import xhr from '@services/xhr';
@@ -62,12 +62,15 @@ const copy = {
 export default function Main() {
 	const { qrSvgPath, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
 
+	const [savedLeadModal, showSavedLeadModal] = useSuccessModal();
+	const [errorWhileSavingModal, showErrorWhileSavingModal] = useErrorModal();
+
 	const saveContact = async () => createAndDownloadContact(fullName, occupation, links);
 
 	const [contactModal, showContactModal] = useModal({
 		onSubmit: (data) => xhr.postLead(data)
-			.then(() => alert('אחלה, נשתמע!'))
-			.catch(() => alert('שגיאת מערכת, נסו שוב מאוחר יותר.'))
+			.then(() => showSavedLeadModal())
+			.catch(() => showErrorWhileSavingModal())
 	});
 	const contactByForm = (interest) => showContactModal({ interest });
 
@@ -127,6 +130,8 @@ export default function Main() {
 		</div>
 
 		<Modal {...contactModal} render={ContactForm} />
+		<Modal {...savedLeadModal} render={() => 'אחלה, נשתמע!'} />
+		<Modal {...errorWhileSavingModal} render={() => 'שגיאת מערכת, נסו שוב מאוחר יותר.'} />
 
 		<Modal {...sharingModal} render={SharingModal} />
 
