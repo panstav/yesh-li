@@ -20,6 +20,19 @@ summary
 .reset-anchors
 	@include reset-anchors
 
+details.details
+
+	&[open] summary:after
+		transform: rotate(135deg)
+
+	summary
+		position: relative
+		display: block
+
+		&:after
+			@include arrow(black)
+			inset-inline-end: 1em
+
 $spacing-values: ("0": 0, "1": 0.5rem, "2": 1rem, "3": 1.5rem, "4": 2rem, "5": 2.5rem, "6":3rem) !default
 @each $name, $value in $spacing-values
 	.is-flex-gap-#{$name}

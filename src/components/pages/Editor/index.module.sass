@@ -17,23 +17,17 @@ details.details
 
 	border-bottom: 2px solid white
 
-	&[open] summary:after
-		transform: rotate(135deg)
-
 	&[has-errors]
 		background-color: $danger-light
 	&:not([has-errors])
 		background-color: $info-light
 
 	summary
-		position: relative
-		display: block
 		padding: $size-5
 		font-weight: bold
 		font-size: calc($size-6 + 0.2rem)
 
 		&:after
-			@include arrow(black)
 			inset-inline-end: $size-3
 			font-size: 0.5rem
 
