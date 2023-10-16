@@ -4,7 +4,7 @@ import { useFrame } from 'react-frame-component';
 import ComponentWithForm from './Form';
 import Component, { Title, ContextTitle } from './Modal';
 
-export { default as useModal } from './use-modal';
+export { default as useModal, useRawModal, useErrorModal, useSuccessModal } from './use-modal';
 
 export { Title, ContextTitle };
 
@@ -19,14 +19,15 @@ export default function Modal({ modalId, ...props }) {
 	return createPortal(<ModalOrFormOnModal {...props} />, document.getElementById('modal-root'));
 }
 
-function ModalOrFormOnModal({ render, hideModal, isRaw, isLarge, confirmBeforeHiding, ...modalProps }) {
+function ModalOrFormOnModal({ render, hideModal, type, isLarge, confirmBeforeHiding, ...modalProps }) {
 
-	if (modalProps.onSubmit) return <ComponentWithForm {...{ render, hideModal, isRaw, isLarge, confirmBeforeHiding, ...modalProps }} />;
+	if (modalProps.onSubmit) return <ComponentWithForm {...{ render, hideModal, type, isLarge, confirmBeforeHiding, ...modalProps }} />;
 
 	const props = {
 		title: modalProps.title,
 		hideModal,
-		isRaw, isLarge,
+		type,
+		isLarge,
 		children: render({ hideModal, ...modalProps })
 	};
 

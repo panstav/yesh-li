@@ -1,18 +1,27 @@
+import classNames from 'classnames';
+
+import { Confirm, Error } from '@elements/Icon';
 import useKeyPress from '@hooks/use-key-press';
 
 import { modalBackground, modal, modalContent, rawModalInner } from './modal.module.sass';
-import classNames from 'classnames';
 
-export default function Modal({ title, hideModal: hideModalProp, hideable = true, isRaw, isLarge, children }) {
+const modalTypes = {
+	default: RegularModal,
+	raw: RawModal,
+	error: ErrorModal,
+	success: SuccessModal
+};
+
+export default function Modal({ type = 'default', title, hideModal: hideModalProp, hideable = true, isLarge, children }) {
 
 	const hideModal = !hideable ? () => {} : hideModalProp;
 
 	useKeyPress('Escape', hideModal);
 
-	const ModalContent = isRaw ? RawModal : RegularModal;
+	const ModalContent = modalTypes[type];
 
 	return <div className={modal}>
-		<div className={modalBackground} onClick={hideModal} style={{ backgroundColor: 'var(--color-primary-700)', opacity: '0.75' }}/>
+		<div className={modalBackground} onClick={hideModal} style={{ opacity: '0.75' }}/>
 		<ModalContent {...{ title, hideable, hideModal, isLarge, children }} />
 	</div>;
 }
@@ -47,6 +56,27 @@ function RegularModal({ title, hideable, hideModal, children }) {
 
 		</div>
 	</div>;
+}
+
+function SimpleModal ({ Icon, hideable, hideModal, children }) {
+	return <RegularModal {...{ hideable, hideModal }}>
+		<div className="has-text-centered py-4">
+			<div className='mb-2'>
+				<Icon style={{ width: '6rem', height: 'auto' }} />
+			</div>
+			<span className='is-size-5'>
+				{children}
+			</span>
+		</div>
+	</RegularModal>;
+}
+
+function ErrorModal(props) {
+	return <SimpleModal {...props} Icon={(props) => <Error {...props} className="has-text-danger" />} />;
+}
+
+function SuccessModal(props) {
+	return <SimpleModal {...props} Icon={(props) => <Confirm {...props} className="has-text-success" />} />;
 }
 
 export function Title ({ isMarginless, className: classes, style, children }) {

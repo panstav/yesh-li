@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { useFrame } from 'react-frame-component';
 
 export default function useModal(propsFromHook = {}) {
-
 	const { window } = useFrame();
+
 	const [modalProps, setModalProps] = useState();
 
 	const hideModal = (event) => {
@@ -41,4 +41,24 @@ export default function useModal(propsFromHook = {}) {
 
 	return [modalProps, showModal, hideModal];
 
+}
+
+export const useRawModal = modalType('raw');
+export const useErrorModal = modalType('error');
+export const useSuccessModal = modalType('success');
+
+function modalType (type) {
+	return (propsFromHook = {}) => {
+
+		if (typeof props === 'function') return useModal((propsFromCallback) => ({
+			type,
+			...propsFromHook(propsFromCallback)
+		}));
+
+		return useModal({
+			type,
+			...propsFromHook
+		});
+
+	};
 }
