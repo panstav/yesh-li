@@ -61,7 +61,8 @@ export default function Alon_01 () {
 
 			<RichEditor
 				id="content.about"
-				label={copy.about} />
+				label={copy.about}
+				maxLength={1500} />
 
 		</Details>
 
@@ -202,7 +203,8 @@ export default function Alon_01 () {
 
 					<RichEditor
 						id={`${id}.content`}
-						label='תיאור' />
+						label='תיאור'
+						maxLength={250} />
 
 					<TextInput
 						id={`${id}.ctaText`}
@@ -231,7 +233,8 @@ export default function Alon_01 () {
 
 					<RichEditor
 						id={`${id}.answer`}
-						label="תשובה" />
+						label="תשובה"
+						maxLength={750} />
 
 				</>}
 			</Repeater>
