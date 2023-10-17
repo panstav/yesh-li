@@ -63,7 +63,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 	const compoundFieldClassName = classNames(isCompoundField && compoundField, 'is-relative');
 	const imagePreviewContainerClassName = classNames(imagePreviewContainer, 'is-relative');
 	const setFocusButtonStyle = { top: isCompoundField ? '0.35rem' : 0, insetInlineEnd: isCompoundField ? '0.5rem' : 0 };
-	const uploadButtonStyle =  { backgroundColor: imgProps.srcSet ? 'transparent' : 'white' };
+	const uploadButtonStyle = { backgroundColor: imgProps.srcSet ? 'transparent' : 'white', visibility: isLoading ? 'hidden' : 'visible' };
 
 	return <>
 
@@ -75,13 +75,12 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 					<input type="text" className="is-hidden" {...register(propertyKey)} />
 					<div className={imagePreviewContainerClassName}>
 						{imgProps.srcSet && <img srcSet={imgProps.srcSet} className='is-overlay object-fit-cover' style={{ objectPosition: imgProps.position }} />}
+						{isLoading && <Loader />}
 						<span className="file-cta" style={{ border: '1px solid lightgray', width: '100%', ...uploadButtonStyle }}>
-							{isLoading ? <Loader /> : <>
-								<span className="file-icon mx-0">
-									<Upload />
-								</span>
-								<span className="file-label is-size-6">ליחצו להחלפת התמונה</span>
-							</>}
+							<span className="file-icon mx-0">
+								<Upload />
+							</span>
+							<span className="file-label is-size-6">ליחצו להחלפת התמונה</span>
 						</span>
 					</div>
 					{fileName && <span className="file-name has-text-centered is-size-7" style={{ maxWidth: "100%" }}>{fileName}</span>}
