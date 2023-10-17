@@ -5,6 +5,7 @@ import classNames from 'classnames';
 
 import Modal, { Title, useErrorModal, useModal } from '@wrappers/Modal';
 import { Upload } from '@elements/Icon';
+import Loader from '@elements/Loader';
 
 import xhr from '@services/xhr';
 import cleanUGT from '@lib/clean-user-generated-text';
@@ -34,6 +35,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 	const setFocus = () => openFocusModal();
 
 	const [fileName, setFileName] = useState();
+	const [isLoading, setLoading] = useState(false);
 
 	const onFileChange = async (event) => {
 		const file = event.currentTarget.files[0];
@@ -41,13 +43,18 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 		if (!file) return;
 		if (!allowedTypes.includes(file.type)) return showSupportedFileTyesModal();
 
+		// we're done with validation, let's upload the image
+		setLoading(true);
+
 		const { base64: imageBase64 } = await limitImageSize(file, 1200);
 
 		const siteSlug = getValues('slug');
 		xhr.postImage({ imageBase64, fileName: file.name, sizes, siteSlug, isFavicon }).then(({ srcSet }) => {
+			setLoading(false);
 			setFileName(file.name);
 			setValue(propertyKey, srcSet);
 		}).catch((err) => {
+			setLoading(false);
 			if (err.responseData?.reasoning === 'moderation') return showModerationModal();
 			showServerErrorModal();
 		});
@@ -69,10 +76,12 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 					<div className={imagePreviewContainerClassName}>
 						{imgProps.srcSet && <img srcSet={imgProps.srcSet} className='is-overlay object-fit-cover' style={{ objectPosition: imgProps.position }} />}
 						<span className="file-cta" style={{ border: '1px solid lightgray', width: '100%', ...uploadButtonStyle }}>
-							<span className="file-icon mx-0">
-								<Upload />
-							</span>
-							<span className="file-label is-size-6">ליחצו להחלפת התמונה</span>
+							{isLoading ? <Loader /> : <>
+								<span className="file-icon mx-0">
+									<Upload />
+								</span>
+								<span className="file-label is-size-6">ליחצו להחלפת התמונה</span>
+							</>}
 						</span>
 					</div>
 					{fileName && <span className="file-name has-text-centered is-size-7" style={{ maxWidth: "100%" }}>{fileName}</span>}
