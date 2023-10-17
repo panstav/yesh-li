@@ -31,7 +31,7 @@ export default function Elyse_01 () {
 
 		<Details title='עיצוב'>
 			<Select
-				id="content.mainColor"
+				id="mainColor"
 				label={copy.mainColor}
 				oneOf={[
 					{ label: 'כחול', value: 'blue' },
@@ -55,7 +55,7 @@ export default function Elyse_01 () {
 				minLength="3" maxLength="6"
 				emptyItem={(data) => ({
 					label: 'כותרת השירות החדש',
-					color: data.content.mainColor,
+					color: data.mainColor,
 					content: 'תיאור השירות החדש',
 					ctaText: 'להזמנה',
 					image: {

@@ -1,10 +1,13 @@
 import { graphql, useStaticQuery } from 'gatsby';
 
+import pallatte from '@lib/pallatte';
+
 export default function Meta({
 	title,
 	description,
 	pathname,
 	featuredImage: pageFeaturedImage,
+	mainColorName, mainColorHex
 }) {
 
 	const { site: { siteMetadata: { siteUrl, title: siteTitle, description: siteDescription } } } = useStaticQuery(graphql`
@@ -24,6 +27,9 @@ export default function Meta({
 	const pageTitle = title || siteTitle;
 	const pageDescription = normalizedDescription || siteDescription;
 	const pagePathname = siteUrl + pathname;
+	const pageShortUrl = pagePathname.slice(pagePathname.indexOf('://') + 3);
+
+	mainColorHex = mainColorHex || pallatte.getColor(mainColorName);
 
 	return <>
 		<title>{pageTitle}</title>
@@ -44,13 +50,16 @@ export default function Meta({
 			<meta property="twitter:image" content={pageFeaturedImage} />
 		</>}
 
-		{/* <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-		<link rel="manifest" href="/site.webmanifest" />
-		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-		<meta name="msapplication-TileColor" content="#f7d31e" />
-		<meta name="theme-color" content="#ffffff" /> */}
+		<meta name="apple-mobile-web-app-title" content={siteTitle} />
+		<meta name="application-name" content={siteTitle} />
+		<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon.png`} />
+		<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-32x32.png`} />
+		<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-16x16.png`} />
+		<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon.ico`} />
+		<meta name="msapplication-TileColor" content={`#${mainColorHex}`} />
+		<meta name="theme-color" content={`#${mainColorHex}`} />
+
+		<CssVariables {...{ mainColorName, mainColorHex }} />
 	</>;
 }
 
@@ -68,12 +77,16 @@ export function HeadFor(arg) {
 			args = arg;
 		}
 
-		const { _preload, _children, ...props } = args;
+		const { preload, children, ...props } = args;
 
 		return <>
-			{_preload && _preload.map((preload) => <link rel="preload" key={preload.href} {...preload} />)}
-			<Meta pathname={data.location.pathname} {...props} />
-			{_children}
+			{preload && preload.map((preload) => <link rel="preload" key={preload.href} {...preload} />)}
+			<Meta pathname={data.location.pathname} mainColorName={data.pageContext.mainColor} {...props} />
+			{children}
 		</>;
 	};
+}
+
+export function CssVariables ({ mainColorName, mainColorHex }) {
+	return <style>{`:root { accent-color: var(--color-primary); ${pallatte.getVariables(mainColorName)} ${!mainColorName ? `--color-primary: #${mainColorHex};` : ''} }`}</style>;
 }

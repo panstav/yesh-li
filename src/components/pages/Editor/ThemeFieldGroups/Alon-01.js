@@ -68,7 +68,7 @@ export default function Alon_01 () {
 
 		<Details title='עיצוב'>
 			<Select
-				id="content.mainColor"
+				id="mainColor"
 				label={copy.mainColor}
 				oneOf={availableColors} />
 
@@ -76,7 +76,8 @@ export default function Alon_01 () {
 				id="content.featuredImage"
 				label={copy.mainImage}
 				description={copy.mainImageDescription}
-				sizes={[450, 800, 1024, 1400]} />
+				sizes={[450, 800, 1024, 1400]}
+				isFavicon={true} />
 		</Details>
 
 		<Details title='קישורים'>
@@ -186,7 +187,7 @@ export default function Alon_01 () {
 				minLength="1" maxLength="6"
 				emptyItem={(data) => ({
 					label: 'כותרת השירות החדש',
-					color: data.content.mainColor,
+					color: data.mainColor,
 					content: 'תיאור השירות החדש',
 					ctaText: 'להזמנה'
 				})}>{(id) => <>

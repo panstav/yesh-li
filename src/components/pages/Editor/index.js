@@ -39,7 +39,7 @@ function EditorForm() {
 	const redirect = form.getValues().redirect;
 	if (redirect) return navigate(`${redirect}/editor`, { replace: true });
 
-	const submitForm = form.handleSubmit((data) => xhr.updateSiteData(siteId, data.content)
+	const submitForm = form.handleSubmit((data) => xhr.updateSiteData(siteId, data)
 		.then(() => showSavedSuccessfullyModal())
 		.catch(() => showErrorWhileSavingModal())
 	);

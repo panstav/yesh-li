@@ -14,7 +14,7 @@ import Footer from "./Footer";
 
 export const PageContext = createContext();
 
-export default function Elyse_01({ content }) {
+export default function Elyse_01({ mainColor, content }) {
 
 	const form = useForm({ shouldUseNativeValidation: true });
 
@@ -34,9 +34,9 @@ export default function Elyse_01({ content }) {
 	return <PageContext.Provider value={{ css, content }}>
 		<FormProvider {...form}>
 			<div className={container} style={{
-				'--color-primary': `var(--color-${content.mainColor})`,
-				'--color-primary-half': `var(--color-${content.mainColor}-half)`,
-				'--color-primary-quarter': `var(--color-${content.mainColor}-quarter)`
+				'--color-primary': `var(--color-${mainColor})`,
+				'--color-primary-half': `var(--color-${mainColor}-half)`,
+				'--color-primary-quarter': `var(--color-${mainColor}-quarter)`
 			}}>
 
 				<Hero />

@@ -12,8 +12,8 @@ export default {
 
 	// editor-facing routes
 	getSiteData: (siteId) => get(`site-data?id=${siteId}`),
-	postImage: ({ imageBase64, fileName, sizes, siteId }) => post(`image`, { imageBase64, fileName, sizes, siteId }),
+	postImage: ({ imageBase64, fileName, sizes, siteId, isFavicon }) => post(`image`, { imageBase64, fileName, sizes, siteId, isFavicon }),
 	postYoutubeThumbnail: ({ videoUrl, siteId }) => post(`youtube-thumbnail`, { videoUrl, siteId }),
-	updateSiteData: (siteId, content) => put(`site-data?siteId=${siteId}`, content),
+	updateSiteData: (siteId, data) => put(`site-data?siteId=${siteId}`, data),
 
 };

@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 import cloneDeep from "lodash.clonedeep";
 
 import Page from "@config/Page";
+import { CssVariables } from "@config/Meta";
 import Loader from "@elements/Loader";
 
 import { themesMap } from "./map";
@@ -35,6 +36,7 @@ function Preview(props) {
 		<Suspense fallback={<Loader />}>
 			<Frame initialContent={injection} mountTarget='#mountTarget' style={{ width: '100%', height: '100%' }}><>
 				{props.hasErrors && <p className="has-background-danger has-text-centered has-text-white has-text-weight-bold py-2" style={{ position: 'fixed', top: '0', right: '0', left: '0', zIndex: '1000' }}>התצוגה המקדימה אינה מתעדכנת כאשר יש בעיות בעריכת העמוד</p>}
+				<CssVariables mainColorName={props.mainColor} />
 				<Page pageContext={props}>
 					<Theme {...props} />
 				</Page>
