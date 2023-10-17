@@ -15,11 +15,11 @@ function transformApiCall(method) {
 	// eslint-disable-next-line no-param-reassign
 	if (method === 'del') method = 'delete';
 
-	return (endpoint, data) => {
+	return (endpoint, data, optionsExtension = {}) => {
 
 		const jwt = localDb.get('jwt');
 		const headers = jwt ? { 'Authorization': `Bearer ${jwt}` } : {};
-		const options = { json: data, headers };
+		const options = { json: data, headers, ...optionsExtension };
 
 		if (data && 'formData' in data) {
 			if (Object.keys(data).length > 1) throw new Error(`Cannot send both formdata and json, found extra keys: ${Object.keys(data).filter((key) => key !== 'formData').join(', ')}`);
