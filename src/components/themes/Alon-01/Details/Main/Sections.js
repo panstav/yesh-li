@@ -6,7 +6,7 @@ import { Email, Faq, Gift, Person } from "@elements/Icon";
 
 import { PageContext } from "@config/Page";
 
-import { boxes } from "./main.module.sass";
+import { boxes, summary } from "./main.module.sass";
 
 export default function Sections({ contactByForm, className }) {
 	const { content: { about, sections, faq } } = useContext(PageContext);
@@ -64,12 +64,13 @@ export default function Sections({ contactByForm, className }) {
 		}} />
 
 		<Modal {...faqModal} render={() => {
+			const summaryClassName = classNames(summary, "ps-4 py-4 me-4");
 			return <div className="has-background-white has-radius">
 				{faq.map(({ question, answer }, index) => {
 					return <Fragment key={question}>
 						{index !== 0 && <hr className="m-0" />}
 						<details className="details">
-							<summary className="ps-4 py-4 me-4">
+							<summary className={summaryClassName}>
 								<Title isMarginless style={{ maxWidth: 'calc(100% - 2.5em)' }}>{question}</Title>
 							</summary>
 							<div className="px-4 pb-4" dangerouslySetInnerHTML={{ __html: answer }} />
