@@ -2,7 +2,10 @@ require('dotenv').config({
 	path: `.env.${process.env.NODE_ENV}`
 });
 
-const siteUrl = 'https://yesh.li';
+const siteUrl = process.env.URL;
+const packageJsonVersion = process.env.npm_package_version;
+const isOnNetlify = process.env.NETLIFY;
+const shouldAvoidBundleAnalysis = process.env.ANALYZE_BUNDLE_SIZE !== 'true';
 
 const crossEnvPlugins = [
 	"gatsby-plugin-sass",
@@ -64,17 +67,17 @@ const developmentOnlyPlugins = [
 	{
 		resolve: "gatsby-plugin-webpack-bundle-analyser-v2",
 		options: {
-			disable: process.env.ANALYZE_BUNDLE_SIZE !== 'true',
+			disable: shouldAvoidBundleAnalysis,
 			defaultSizes: "gzip"
 		},
 	}
 ];
 
-const plugins = crossEnvPlugins.concat(process.env.NETLIFY ? productionOnlyPlugins : developmentOnlyPlugins);
+const plugins = crossEnvPlugins.concat(isOnNetlify ? productionOnlyPlugins : developmentOnlyPlugins);
 
 module.exports = {
 	siteMetadata: {
-		version: process.env.npm_package_version,
+		version: packageJsonVersion,
 		siteUrl,
 		title: 'יש.לי',
 		description: 'יום אחד גם לך יהיה'
