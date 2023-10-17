@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 
-import xhr from "@services/xhr";
 import { Details, ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, EmailInput, TelInput } from "@pages/Editor/Fields";
-import { AuthContext } from "@pages/Editor/Auth";
+import xhr from "@services/xhr";
+
 import { compoundField } from '@pages/Editor/index.module.sass';
 import copy from '@pages/Editor/copy';
 
@@ -20,8 +19,7 @@ const availableColors = [
 ];
 
 export default function Alon_01 () {
-	const { siteId } = useContext(AuthContext);
-	const { setValue } = useFormContext();
+	const { setValue, getValues } = useFormContext();
 
 	return <>
 
@@ -150,7 +148,7 @@ export default function Alon_01 () {
 					includes='youtube.com/watch?v'
 					setValueAs={(val) => val.split('&')[0]}
 					onChange={(videoUrl) => {
-						if (videoUrl) xhr.postYoutubeThumbnail({ videoUrl, siteId })
+						if (videoUrl) xhr.postYoutubeThumbnail({ videoUrl, siteSlug: getValues('slug') })
 							.then(({ thumbnailPath }) => setValue('content.video.thumbnail', thumbnailPath));
 					}} />
 
