@@ -1,19 +1,25 @@
+import { useFormContext } from "react-hook-form";
+
 import { Details, ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, TelInput, EmailInput } from "@pages/Editor/Fields";
 import copy from '@pages/Editor/copy';
 
 export default function Elyse_01 () {
+	const { setValue, getValues } = useFormContext();
+
 	return <>
 		<Details title='אודות'>
 			<TextInput
 				id="content.fullName"
 				label={copy.fullName}
-				maxLength={20} />
+				maxLength={20}
+				onChange={updateTitle} />
 
 			<TextInput
 				id="content.occupation"
 				label={copy.occupation}
 				description={copy.occupationDescription}
-				maxLength={30} />
+				maxLength={30}
+				onChange={updateTitle} />
 
 			<TextArea
 				id="content.description"
@@ -174,4 +180,11 @@ export default function Elyse_01 () {
 
 		</Details>
 	</>;
+
+	function updateTitle() {
+		const fullName = getValues('content.fullName');
+		const occupation = getValues('content.occupation');
+		setValue('title', `${occupation} • ${fullName}`);
+	}
+
 }

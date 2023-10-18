@@ -81,7 +81,14 @@ export function HeadFor(arg) {
 
 		return <>
 			{preload && preload.map((preload) => <link rel="preload" key={preload.href} {...preload} />)}
-			<Meta pathname={data.location.pathname} mainColorName={data.pageContext.mainColor} {...props} />
+
+			<Meta
+				pathname={data.location.pathname}
+				title={data.pageContext.title}
+				mainColorName={data.pageContext.mainColor}
+				{...props}
+			/>
+
 			{children}
 		</>;
 	};

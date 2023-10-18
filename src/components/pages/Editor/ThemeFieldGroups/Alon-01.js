@@ -27,13 +27,15 @@ export default function Alon_01 () {
 			<TextInput
 				id="content.fullName"
 				label={copy.fullName}
-				maxLength={20} />
+				maxLength={20}
+				onChange={updateTitle} />
 
 			<TextInput
 				id="content.occupation"
 				label={copy.occupation}
 				description={copy.occupationDescription}
-				maxLength={30} />
+				maxLength={30}
+				onChange={updateTitle} />
 
 			<TextArea
 				id="content.description"
@@ -240,4 +242,11 @@ export default function Alon_01 () {
 		</Details>
 
 	</>;
+
+	function updateTitle() {
+		const fullName = getValues('content.fullName');
+		const occupation = getValues('content.occupation');
+		setValue('title', `${occupation} • ${fullName}`);
+	}
+
 }
