@@ -83,7 +83,7 @@ function getManifest({ title, slug, mainColor }) {
 			},
 			{
 				"src": `https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon-114x114.png`,
-				"sizes": "32x32",
+				"sizes": "114x114",
 				"type": "image/png"
 			}
 		]
