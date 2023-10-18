@@ -82,8 +82,8 @@ function getManifest({ title, slug, mainColor }) {
 				"type": "image/png"
 			},
 			{
-				"src": `https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon-114x114.png`,
-				"sizes": "114x114",
+				"src": `https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon-144x144.png`,
+				"sizes": "144x144",
 				"type": "image/png"
 			}
 		]
