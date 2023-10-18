@@ -49,7 +49,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 		const { base64: imageBase64 } = await limitImageSize(file, 1200);
 
 		const siteSlug = getValues('slug');
-		xhr.postImage({ imageBase64, fileName: file.name, sizes, siteSlug, isFavicon }).then(({ srcSet }) => {
+		xhr.postImage({ imageBase64, fileName: file.name, sizes, siteSlug, isFavicon, position: imgProps.position }).then(({ srcSet }) => {
 			setLoading(false);
 			setFileName(file.name);
 			setValue(propertyKey, srcSet);
