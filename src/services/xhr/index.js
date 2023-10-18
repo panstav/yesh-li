@@ -12,7 +12,7 @@ export default {
 
 	// editor-facing routes
 	getSiteData: (siteId) => get(`site-data?id=${siteId}`),
-	postImage: ({ imageBase64, fileName, sizes, siteSlug, isFavicon }) => post(`image`, { imageBase64, fileName, sizes, siteSlug, isFavicon }, { timeout: false }),
+	postImage: ({ imageBase64, fileName, sizes, siteSlug, isFavicon, position }) => post(`image`, { imageBase64, fileName, sizes, siteSlug, isFavicon, position }, { timeout: false }),
 	postYoutubeThumbnail: ({ videoUrl, siteId }) => post(`youtube-thumbnail`, { videoUrl, siteId }),
 	updateSiteData: (siteId, data) => put(`site-data?siteId=${siteId}`, data),
 
