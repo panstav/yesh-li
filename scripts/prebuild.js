@@ -80,6 +80,11 @@ function getManifest({ title, slug, mainColor }) {
 				"src": `https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-32x32.png`,
 				"sizes": "32x32",
 				"type": "image/png"
+			},
+			{
+				"src": `https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon-114x114.png`,
+				"sizes": "32x32",
+				"type": "image/png"
 			}
 		]
 	};
