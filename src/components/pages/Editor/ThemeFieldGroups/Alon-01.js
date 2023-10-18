@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { Details, ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, EmailInput, TelInput } from "@pages/Editor/Fields";
@@ -20,7 +21,8 @@ const availableColors = [
 
 export default function Alon_01 () {
 	const { setValue, getValues } = useFormContext();
-	updateTitle();
+
+	useEffect(updateTitle, []);
 
 	return <>
 
@@ -247,7 +249,10 @@ export default function Alon_01 () {
 	function updateTitle() {
 		const fullName = getValues('content.fullName');
 		const occupation = getValues('content.occupation');
-		setValue('title', `${occupation} • ${fullName}`);
+		const newTitle = `${occupation} • ${fullName}`;
+		console.log(newTitle);
+
+		if (newTitle !== getValues('title')) setValue('title', newTitle);
 	}
 
 }
