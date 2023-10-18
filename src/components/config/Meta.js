@@ -50,6 +50,8 @@ export default function Meta({
 			<meta property="twitter:image" content={pageFeaturedImage} />
 		</>}
 
+		<link rel="manifest" href={`${pagePathname}/.webmanifest`} />
+
 		<meta name="apple-mobile-web-app-title" content={siteTitle} />
 		<meta name="application-name" content={siteTitle} />
 		<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon.png`} />
