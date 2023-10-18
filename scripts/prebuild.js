@@ -13,7 +13,7 @@ const fullDomain = process.env.URL;
 (async () => {
 
 	// if not in production - exit
-	if (!process.env.NETLIFY) return;
+	// if (!process.env.NETLIFY) return;
 
 	// got doesn't like to be `require`d
 	const got = (await import('got')).got;
@@ -39,7 +39,7 @@ const fullDomain = process.env.URL;
 
 		// save the site's data to a json file at /data/root.json
 		await fs.promises.writeFile('./data/root.json', JSON.stringify(sites[0]));
-		await fs.promises.writeFile('./static/manifest.webmanifest', JSON.stringify(getManifest(site)));
+		await fs.promises.writeFile('./static/manifest.json', JSON.stringify(getManifest(site)));
 	}
 
 	function saveAllSites() {
@@ -51,7 +51,7 @@ const fullDomain = process.env.URL;
 			await fs.promises.mkdir(`./data/theme-${site.theme}`, { recursive: true });
 			await fs.promises.writeFile(`./data/theme-${site.theme}/${site.slug}.json`, JSON.stringify(site));
 			await fs.promises.mkdir(`./static/${site.slug}`, { recursive: true });
-			await fs.promises.writeFile(`./static/${site.slug}/manifest.webmanifest`, JSON.stringify(getManifest(site)));
+			await fs.promises.writeFile(`./static/${site.slug}/manifest.json`, JSON.stringify(getManifest(site)));
 		}), Promise.resolve());
 	}
 
@@ -65,12 +65,14 @@ async function urlToQrSvgPath(url) {
 }
 
 function getManifest({ title, slug, mainColor }) {
-	const pageShortUrl = `${fullDomain}${slug ? `/${slug}` : ''}`;
+	const pageShortUrl = `${fullDomain}${slug ? `/${slug}` : ''}`.slice(fullDomain.indexOf('://') + 3);
 	return {
+		"id": slug,
 		"name": title,
+		"short_name": title,
 		"start_url": `/${slug}`,
 		"display": "standalone",
-		"theme_color": `#${mainColor}`,
+		"theme_color": mainColor,
 		"background_color": "#ffffff",
 		"orientation": "portrait",
 		"icons": [
