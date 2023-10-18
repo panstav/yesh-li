@@ -250,8 +250,6 @@ export default function Alon_01 () {
 		const fullName = getValues('content.fullName');
 		const occupation = getValues('content.occupation');
 		const newTitle = `${occupation} • ${fullName}`;
-		console.log(newTitle);
-
 		if (newTitle !== getValues('title')) setValue('title', newTitle);
 	}
 

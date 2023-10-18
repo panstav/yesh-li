@@ -187,7 +187,8 @@ export default function Elyse_01 () {
 	function updateTitle() {
 		const fullName = getValues('content.fullName');
 		const occupation = getValues('content.occupation');
-		setValue('title', `${occupation} • ${fullName}`);
+		const newTitle = `${occupation} • ${fullName}`;
+		if (newTitle !== getValues('title')) setValue('title', newTitle);
 	}
 
 }
