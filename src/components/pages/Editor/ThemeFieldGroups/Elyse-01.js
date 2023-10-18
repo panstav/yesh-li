@@ -5,6 +5,7 @@ import copy from '@pages/Editor/copy';
 
 export default function Elyse_01 () {
 	const { setValue, getValues } = useFormContext();
+	updateTitle();
 
 	return <>
 		<Details title='אודות'>

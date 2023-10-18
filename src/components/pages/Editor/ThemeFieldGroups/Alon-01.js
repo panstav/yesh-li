@@ -20,6 +20,7 @@ const availableColors = [
 
 export default function Alon_01 () {
 	const { setValue, getValues } = useFormContext();
+	updateTitle();
 
 	return <>
 
