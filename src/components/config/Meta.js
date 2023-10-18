@@ -2,6 +2,8 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 import pallatte from '@lib/pallatte';
 
+const isRemote = !process.env.GATSBY_IS_LOCAL;
+
 export default function Meta({
 	title,
 	description,
@@ -50,16 +52,18 @@ export default function Meta({
 			<meta property="twitter:image" content={pageFeaturedImage} />
 		</>}
 
-		<link rel="manifest" href={`${pagePathname}/manifest.json`} />
+		{isRemote && <>
+			<link rel="manifest" href={`${pagePathname}/manifest.json`} />
 
-		<meta name="apple-mobile-web-app-title" content={siteTitle} />
-		<meta name="application-name" content={siteTitle} />
-		<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon.png`} />
-		<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-32x32.png`} />
-		<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-16x16.png`} />
-		<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon.ico`} />
-		<meta name="msapplication-TileColor" content={`#${mainColorHex}`} />
-		<meta name="theme-color" content={`#${mainColorHex}`} />
+			<meta name="apple-mobile-web-app-title" content={siteTitle} />
+			<meta name="application-name" content={siteTitle} />
+			<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon.png`} />
+			<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-32x32.png`} />
+			<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-16x16.png`} />
+			<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon.ico`} />
+			<meta name="msapplication-TileColor" content={`#${mainColorHex}`} />
+			<meta name="theme-color" content={`#${mainColorHex}`} />
+		</>}
 
 		<CssVariables {...{ mainColorName, mainColorHex }} />
 	</>;
