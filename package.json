@@ -5,11 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "gatsby develop",
-    "prebuild": "node scripts/prebuild.js",
     "clean": "gatsby clean",
     "lint": "eslint .",
     "build-debug": "npm run clean && npm run build && gatsby serve",
-    "build": "gatsby build",
+    "build": "node scripts/prebuild.js && gatsby build",
     "preversion": "npm run lint"
   },
   "dependencies": {
