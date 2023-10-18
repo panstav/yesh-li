@@ -50,7 +50,7 @@ export default function Meta({
 			<meta property="twitter:image" content={pageFeaturedImage} />
 		</>}
 
-		<link rel="manifest" href={`${pagePathname}/.webmanifest`} />
+		<link rel="manifest" href={`${pagePathname}/manifest.webmanifest`} />
 
 		<meta name="apple-mobile-web-app-title" content={siteTitle} />
 		<meta name="application-name" content={siteTitle} />

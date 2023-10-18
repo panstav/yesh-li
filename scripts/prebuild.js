@@ -39,7 +39,7 @@ const fullDomain = process.env.URL;
 
 		// save the site's data to a json file at /data/root.json
 		await fs.promises.writeFile('./data/root.json', JSON.stringify(sites[0]));
-		await fs.promises.writeFile('./static/.webmanifest', JSON.stringify(getManifest(site)));
+		await fs.promises.writeFile('./static/manifest.webmanifest', JSON.stringify(getManifest(site)));
 	}
 
 	function saveAllSites() {
@@ -51,7 +51,7 @@ const fullDomain = process.env.URL;
 			await fs.promises.mkdir(`./data/theme-${site.theme}`, { recursive: true });
 			await fs.promises.writeFile(`./data/theme-${site.theme}/${site.slug}.json`, JSON.stringify(site));
 			await fs.promises.mkdir(`./static/${site.slug}`, { recursive: true });
-			await fs.promises.writeFile(`./static/${site.slug}/.webmanifest`, JSON.stringify(getManifest(site)));
+			await fs.promises.writeFile(`./static/${site.slug}/manifest.webmanifest`, JSON.stringify(getManifest(site)));
 		}), Promise.resolve());
 	}
 
