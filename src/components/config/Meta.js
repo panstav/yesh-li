@@ -9,7 +9,8 @@ export default function Meta({
 	description,
 	pathname,
 	featuredImage: pageFeaturedImage,
-	mainColorName, mainColorHex
+	mainColorName, mainColorHex,
+	isInternal
 }) {
 
 	const { site: { siteMetadata: { siteUrl, title: siteTitle, description: siteDescription } } } = useStaticQuery(graphql`
@@ -38,31 +39,33 @@ export default function Meta({
 		<meta name="title" content={pageTitle} />
 		<meta name="description" content={pageDescription} />
 
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content={pagePathname} />
-		<meta property="og:title" content={pageTitle} />
-		<meta property="og:description" content={pageDescription} />
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={pagePathname} />
-		<meta property="twitter:title" content={pageTitle} />
-		<meta property="twitter:description" content={pageDescription} />
+		{!isInternal && <>
+			<meta property="og:type" content="website" />
+			<meta property="og:url" content={pagePathname} />
+			<meta property="og:title" content={pageTitle} />
+			<meta property="og:description" content={pageDescription} />
+			<meta property="twitter:card" content="summary_large_image" />
+			<meta property="twitter:url" content={pagePathname} />
+			<meta property="twitter:title" content={pageTitle} />
+			<meta property="twitter:description" content={pageDescription} />
 
-		{pageFeaturedImage && <>
-			<meta property="og:image" content={pageFeaturedImage} />
-			<meta property="twitter:image" content={pageFeaturedImage} />
-		</>}
+			{pageFeaturedImage && <>
+				<meta property="og:image" content={pageFeaturedImage} />
+				<meta property="twitter:image" content={pageFeaturedImage} />
+			</>}
 
-		{isRemote && <>
-			<link rel="manifest" href={`${pagePathname}/manifest.json`} />
+			{isRemote && <>
+				<link rel="manifest" href={`${pagePathname}/manifest.json`} />
 
-			<meta name="apple-mobile-web-app-title" content={siteTitle} />
-			<meta name="application-name" content={siteTitle} />
-			<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon.png`} />
-			<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-32x32.png`} />
-			<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-16x16.png`} />
-			<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon.ico`} />
-			<meta name="msapplication-TileColor" content={`#${mainColorHex}`} />
-			<meta name="theme-color" content={`#${mainColorHex}`} />
+				<meta name="apple-mobile-web-app-title" content={siteTitle} />
+				<meta name="application-name" content={siteTitle} />
+				<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon.png`} />
+				<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-32x32.png`} />
+				<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-16x16.png`} />
+				<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon.ico`} />
+				<meta name="msapplication-TileColor" content={`#${mainColorHex}`} />
+				<meta name="theme-color" content={`#${mainColorHex}`} />
+			</>}
 		</>}
 
 		<CssVariables {...{ mainColorName, mainColorHex }} />
