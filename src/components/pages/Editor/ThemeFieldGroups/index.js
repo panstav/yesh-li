@@ -1,19 +1,25 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import classNames from 'classnames';
 
+import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
 import Loader from '@elements/Loader';
 
+import xhr from '@services/xhr';
 import copy from '@pages/Editor/copy';
+import { AuthContext } from '@pages/Editor/Auth';
 
 import { fieldsMap } from '../map';
 
-export default function ThemeFields({ themeName, submitForm }) {
-	const { watch, formState: { errors } } = useFormContext();
+export default function ThemeFields() {
+	const { siteId } = useContext(AuthContext);
+	const { watch, handleSubmit, getValues, formState: { errors } } = useFormContext();
 	watch();
 
-	const FieldGroup = fieldsMap[themeName];
+	const [isLoading, setLoading] = useState(false);
 
-	const hasErrors = !!Object.keys(errors).length;
+	const [savedSuccessfullyModal, showSavedSuccessfullyModal] = useSuccessModal();
+	const [errorWhileSavingModal, showErrorWhileSavingModal] = useErrorModal();
 
 	useEffect(() => {
 		// clear all error indicators
@@ -22,10 +28,28 @@ export default function ThemeFields({ themeName, submitForm }) {
 		findElems(errors).forEach((elem) => elem.closest('details').setAttribute('has-errors', true));
 	});
 
-	return <Suspense fallback={<Loader />}>
-		<FieldGroup />
-		<button onClick={submitForm} disabled={hasErrors} title={hasErrors ? 'בעיות בעריכת העמוד מוצגות באדום' : ''} className='button is-primary is-fullwidth is-justify-content-center has-text-weight-bold'>{copy.submit}</button>
-	</Suspense>;
+	const submitForm = handleSubmit((data) => {
+		setLoading(true);
+		xhr.updateSiteData(siteId, data)
+			.then(() => showSavedSuccessfullyModal())
+			.catch(() => showErrorWhileSavingModal())
+			.finally(() => setLoading(false));
+	});
+
+	const FieldGroup = fieldsMap[getValues().theme];
+	const hasErrors = !!Object.keys(errors).length;
+
+	const submitClassName = classNames('button is-primary is-fullwidth is-justify-content-center has-text-weight-bold', isLoading && 'is-loading');
+
+	return <>
+		<Suspense fallback={<Loader />}>
+			<FieldGroup />
+			<button onClick={submitForm} disabled={hasErrors || isLoading} title={hasErrors ? 'בעיות בעריכת העמוד מוצגות באדום' : ''} className={submitClassName}>{copy.submit}</button>
+		</Suspense>
+
+		<Modal {...savedSuccessfullyModal} render={() => 'העמוד נשמר בהצלחה!'} />
+		<Modal {...errorWhileSavingModal} render={() => 'אירעה שגיאה בעת שמירת העמוד. המידע נשמר אך העמוד לא התעדכן - צרו עימנו קשר בהקדם'} />
+	</>;
 }
 
 function findElems (obj) {
