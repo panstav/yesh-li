@@ -68,9 +68,12 @@ export default function Main() {
 	const saveContact = async () => createAndDownloadContact(fullName, occupation, links);
 
 	const [contactModal, showContactModal] = useModal({
-		onSubmit: ({ name, email, tel, interest }) => xhr.postLead({ name, email, tel, interest })
-			.then(() => showSavedLeadModal())
-			.catch(() => showErrorWhileSavingModal())
+		onSubmit: ({ name, email, tel, interest }) => {
+			const whatsappLink = `https://wa.me/${tel}`;
+			return xhr.postLead({ name, email, tel, interest, whatsappLink })
+				.then(() => showSavedLeadModal())
+				.catch(() => showErrorWhileSavingModal());
+		}
 	});
 	const contactByForm = (interest) => showContactModal({ interest });
 
