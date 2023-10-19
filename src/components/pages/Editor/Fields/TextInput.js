@@ -6,7 +6,7 @@ import isUrl from "@lib/is-url";
 
 import copy from '@pages/Editor/copy';
 
-export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, onChange, isSmall }) {
+export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, onChange, isSmall, autoComplete }) {
 	const { register, getFieldState } = useFormContext();
 	const { error } = getFieldState(id);
 	const valueAs = (val) => setValueAs(cleanUGT(val));
@@ -22,6 +22,7 @@ export default function TextInput({ id, label, labelClassName: labelClasses, typ
 	if (pattern) inputConfig.pattern = pattern;
 	if (validate) inputConfig.validate = validate;
 	if (onChange) inputConfig.onChange = (event) => onChange(ifValid({ validate, pattern }, valueAs(event.target.value)));
+	if (autoComplete) inputConfig.autoComplete = autoComplete;
 
 	return <div className='field'>
 		<label htmlFor={id} className={labelClassName}>{label}:</label>
