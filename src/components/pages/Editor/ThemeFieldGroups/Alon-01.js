@@ -31,14 +31,16 @@ export default function Alon_01 () {
 				id="content.fullName"
 				label={copy.fullName}
 				maxLength={20}
-				onChange={updateTitle} />
+				onChange={updateTitle}
+				autoComplete='name' />
 
 			<TextInput
 				id="content.occupation"
 				label={copy.occupation}
 				description={copy.occupationDescription}
 				maxLength={30}
-				onChange={updateTitle} />
+				onChange={updateTitle}
+				autoComplete='organization-title' />
 
 			<TextArea
 				id="content.description"
@@ -130,17 +132,20 @@ export default function Alon_01 () {
 			<TelInput isSmall
 				id={'content.links.whatsapp'}
 				label={copy.whatsapp}
-				required={false} />
+				required={false}
+				autoComplete='tel' />
 
 			<TelInput isSmall
 				id={'content.links.phone'}
 				label={copy.phone}
-				required={false} />
+				required={false}
+				autoComplete='tel' />
 
 			<EmailInput isSmall
 				id={'content.links.email'}
 				required={false}
-				label={copy.email} />
+				label={copy.email}
+				autoComplete='email' />
 
 		</Details>
 
