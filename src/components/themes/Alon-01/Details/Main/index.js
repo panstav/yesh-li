@@ -68,7 +68,7 @@ export default function Main() {
 	const saveContact = async () => createAndDownloadContact(fullName, occupation, links);
 
 	const [contactModal, showContactModal] = useModal({
-		onSubmit: (data) => xhr.postLead(data)
+		onSubmit: ({ name, email, tel, interest }) => xhr.postLead({ name, email, tel, interest })
 			.then(() => showSavedLeadModal())
 			.catch(() => showErrorWhileSavingModal())
 	});

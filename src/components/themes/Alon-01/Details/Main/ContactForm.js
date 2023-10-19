@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { PageContext } from "@config/Page";
 import { Title } from "@wrappers/Modal";
 
-export default function ContactForm ({ register, interest }) {
+export default function ContactForm({ register, getValues, setValue, interest, formState: { errors } }) {
 
 	const { content: { ctaHeader, submitText, sections } } = useContext(PageContext);
 
@@ -15,7 +15,12 @@ export default function ContactForm ({ register, interest }) {
 		</div>
 		<div className="field">
 			<label className="label" htmlFor="contact-email">כתובת מייל:</label>
-			<input className="input" type="email" id="contact-email" autoComplete="email" {...register('email', { required: 'אצור איתך קשר בכתובת הזו' })} />
+			<input className="input" type="email" id="contact-email" autoComplete="email" {...register('email', { onChange: updateEmailOrPhone })} />
+		</div>
+		{errors.emailOrPhone && <p className="help is-danger my-4">רישמו את כתובת המייל או את מספר הטלפון איתו תירצו שאצור קשר</p>}
+		<div className="field">
+			<label className="label" htmlFor="contact-phone">מספר טלפון:</label>
+			<input className="input" type="tel" id="contact-tel" autoComplete="tel" {...register('tel', { onChange: updateEmailOrPhone })} />
 		</div>
 		<div className="field">
 			<label htmlFor="contact-interest" className="label">הכי מעניין אותי:</label>
@@ -26,6 +31,12 @@ export default function ContactForm ({ register, interest }) {
 				</select>
 			</div>
 		</div>
+		<input className="is-hidden" {...register('emailOrPhone', { required: true })} />
 		<button className="button is-justify-content-center is-fullwidth has-text-white has-text-weight-bold mt-4" style={{ background: `linear-gradient(90deg, var(--color-primary-200) 0%, var(--color-primary-400) 51%, var(--color-primary-200) 100%)` }}>{submitText}</button>
 	</>;
+
+	function updateEmailOrPhone () {
+		setValue('emailOrPhone', `${getValues('tel')}${getValues('email') }`);
+	}
+
 }
