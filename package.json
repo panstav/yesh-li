@@ -1,7 +1,7 @@
 {
   "name": "yesh-li",
   "description": "",
-  "version": "2.3.6",
+  "version": "2.3.7",
   "main": "index.js",
   "scripts": {
     "start": "gatsby develop",
