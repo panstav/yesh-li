@@ -16,7 +16,7 @@ import copy from '@pages/Editor/copy';
 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 const acceptedTypes = allowedTypes.join(',').replaceAll('image/', '.');
 
-export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true, isFavicon }) {
+export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true, onChange }) {
 	const { register, setValue, getValues, getFieldState } = useFormContext();
 
 	const [supportedFileTyesModal, showSupportedFileTyesModal] = useErrorModal();
@@ -29,8 +29,11 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 	const imgProps = getValues(id);
 
 	const [focusModal, openFocusModal] = useModal({
-		onSubmit: ({ position }) => setValue(`${id}.position`, position),
-		imageToFocus: getValues(id)
+		imageToFocus: imgProps,
+		onSubmit: ({ position }) => {
+			if (position !== getValues(`${id}.position`)) onChange?.(imgProps);
+			return setValue(`${id}.position`, position);
+		}
 	});
 	const setFocus = () => openFocusModal();
 
@@ -49,8 +52,9 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 		const { base64: imageBase64 } = await limitImageSize(file, 1200);
 
 		const siteSlug = getValues('slug');
-		xhr.postImage({ imageBase64, fileName: file.name, sizes, siteSlug, isFavicon, position: imgProps.position }).then(({ srcSet }) => {
+		xhr.postImage({ imageBase64, fileName: file.name, sizes, siteSlug }).then(({ srcSet }) => {
 			setLoading(false);
+			onChange?.(imgProps);
 			setFileName(file.name);
 			setValue(propertyKey, srcSet);
 		}).catch((err) => {
