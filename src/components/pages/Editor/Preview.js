@@ -7,7 +7,7 @@ import Page from "@config/Page";
 import { CssVariables } from "@config/Meta";
 import Loader from "@elements/Loader";
 
-import { themesMap } from "./map";
+import { themesMap } from "../../themes/map";
 
 const isProduction = process.env.NODE_ENV === 'production';
 

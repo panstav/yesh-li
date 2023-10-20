@@ -1,5 +1,5 @@
 import { HeadFor } from "@config/Meta";
-import Page from "@themes/Alon-01";
+import Page from "@themes/alon-01/Theme";
 
 import parseSrcSet from "@lib/parse-srcset";
 

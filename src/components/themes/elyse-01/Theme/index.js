@@ -1,6 +1,7 @@
 import { createContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
+import Spacer from "@elements/Spacer";
 import hideHash from "@lib/hide-hash";
 
 import { container, svgBackground } from "./theme.module.sass";
@@ -8,7 +9,6 @@ import { container, svgBackground } from "./theme.module.sass";
 import Hero from "./Hero";
 import Services from "./Services";
 import Statement from "./Statement";
-import Spacer from "../../elements/Spacer";
 import ContactForm from "./ContactForm";
 import Footer from "./Footer";
 

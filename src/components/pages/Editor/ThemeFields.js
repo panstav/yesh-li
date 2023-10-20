@@ -6,10 +6,9 @@ import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
 import Loader from '@elements/Loader';
 
 import xhr from '@services/xhr';
-import copy from '@pages/Editor/copy';
+import { fieldsMap } from '@themes/map';
 import { AuthContext } from '@pages/Editor/Auth';
-
-import { fieldsMap } from '../map';
+import copy from '@pages/Editor/copy';
 
 export default function ThemeFields() {
 	const { siteId } = useContext(AuthContext);

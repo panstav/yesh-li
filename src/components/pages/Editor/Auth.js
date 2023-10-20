@@ -4,10 +4,15 @@ import xhr from '@services/xhr';
 import localDb from '@services/localDb';
 import Loader from '@elements/Loader';
 
-import { roles } from './variables';
 import Login from './Login';
 
 import './index.sass';
+
+const roles = {
+	GUEST: 'GUEST',
+	EDITOR: 'EDITOR',
+	ADMIN: 'ADMIN'
+};
 
 export const AuthContext = createContext();
 

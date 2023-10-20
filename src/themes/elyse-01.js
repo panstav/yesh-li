@@ -1,5 +1,5 @@
 import { HeadFor } from "@config/Meta";
-import Page from "@themes/Elyse-01";
+import Page from "@themes/elyse-01/Theme";
 
 export const Head = HeadFor(({ pageContext: { content: { description, portrait: { srcSet } } } }) => {
 	return {

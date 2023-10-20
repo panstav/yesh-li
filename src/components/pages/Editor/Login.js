@@ -1,12 +1,15 @@
 import { FormProvider, useForm } from 'react-hook-form';
+import classNames from 'classnames';
 
-import xhr from '@services/xhr';
-import useFetch from '@hooks/use-fetch';
 import Section from '@wrappers/Section';
 import Tooltip from '@wrappers/Tooltip';
 import Spacer from '@elements/Spacer';
 import Checkbox from '@elements/Checkbox';
-import Help from '@pages/Editor/Help';
+
+import xhr from '@services/xhr';
+import useFetch from '@hooks/use-fetch';
+
+import { help, isSmall, isMedium, isLarge } from './index.module.sass';
 
 export default function Login() {
 	const form = useForm();
@@ -43,4 +46,9 @@ export default function Login() {
 		</div>
 	</>;
 
+}
+
+function Help({ size }) {
+	const className = classNames(help, { small: isSmall, medium: isMedium, large: isLarge }[size]);
+	return <div className={className}>?</div>;
 }
