@@ -1,12 +1,14 @@
 import { HeadFor } from "@config/Meta";
 import Page from "@themes/Alon-01";
 
+import parseSrcSet from "@lib/parse-srcset";
+
 export const Head = HeadFor(({ pageContext: { content: { description, featuredImage } } }) => {
-	const featuredImageSrcs = featuredImage.srcSet.split(', ').map((src) => src.split(' ')[0]);
+	const srcs = parseSrcSet(featuredImage.srcSet);
 	return {
-		preload: [{ href: featuredImageSrcs[0], as: 'image' }, { href: featuredImageSrcs[1], as: 'image' }],
+		preload: [{ href: srcs[0], as: 'image' }, { href: srcs[1], as: 'image' }],
 		description,
-		featuredImage: featuredImageSrcs.slice(-1)[0].split(' ')[0]
+		featuredImage: srcs[srcs.length - 1]
 	};
 });
 
