@@ -82,7 +82,7 @@ export default function Alon_01 () {
 				label={copy.mainImage}
 				description={copy.mainImageDescription}
 				sizes={[450, 800, 1024, 1400]}
-				isFavicon={true} />
+				onChange={(favicon) => setValue('favicon', favicon)} />
 		</Details>
 
 		<Details title='קישורים'>
