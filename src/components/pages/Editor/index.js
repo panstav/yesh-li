@@ -6,11 +6,11 @@ import classNames from 'classnames';
 import Loader from '@elements/Loader';
 import xhr from '@services/xhr';
 
-import Auth, { AuthContext } from './Auth';
 import Header from './Header';
 import ThemeFields from './ThemeFields';
 import Preview from './Preview';
 import Footer from './Footer';
+import Auth, { AuthContext } from './Auth';
 
 import { fieldsContainer, innerFieldsContainer, previewContainer } from './index.module.sass';
 
