@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import Modal from './Modal';
 
-export default function Form({ onSubmit, hideable, confirmBeforeHiding, autoClose = true, hideModal: unsafeHideModal, render, title, ...modalProps }) {
+export default function Form({ type, onSubmit, hideable, confirmBeforeHiding, autoClose = true, hideModal: unsafeHideModal, render, title, ...modalProps }) {
 
 	const { ref, form, isClean } = useCustomForm();
 
@@ -17,7 +17,7 @@ export default function Form({ onSubmit, hideable, confirmBeforeHiding, autoClos
 	};
 
 	return <FormProvider {...form}>
-		<Modal {...{ title, hideModal, hideable }}>
+		<Modal {...{ type, title, hideModal, hideable }}>
 			<form ref={ref} onSubmit={form.handleSubmit(handleSubmit)}>
 				{render(Object.assign({ hideModal }, form, modalProps))}
 			</form>
