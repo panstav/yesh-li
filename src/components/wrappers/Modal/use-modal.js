@@ -50,7 +50,7 @@ export const useSuccessModal = modalType('success');
 function modalType (type) {
 	return (propsFromHook = {}) => {
 
-		if (typeof props === 'function') return useModal((propsFromCallback) => ({
+		if (typeof propsFromHook === 'function') return useModal((propsFromCallback) => ({
 			type,
 			...propsFromHook(propsFromCallback)
 		}));
