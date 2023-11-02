@@ -16,18 +16,17 @@ import copy from '@pages/Editor/copy';
 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 const acceptedTypes = allowedTypes.join(',').replaceAll('image/', '.');
 
-export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true, onChange }) {
-	const { register, setValue, getValues, getFieldState } = useFormContext();
+export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true, onChange, required = true }) {
+	const { register, setValue, getValues, getFieldState, formState } = useFormContext();
 
 	const [supportedFileTyesModal, showSupportedFileTyesModal] = useErrorModal();
 	const [moderationModal, showModerationModal] = useErrorModal();
 	const [serverErrorModal, showServerErrorModal] = useErrorModal();
 
-	const state = getFieldState(id);
-
 	const propertyKey = `${id}.srcSet`;
-	const imgProps = getValues(id);
+	const state = getFieldState(propertyKey, formState);
 
+	const imgProps = getValues(id) || {};
 	const [focusModal, openFocusModal] = useModal({
 		imageToFocus: imgProps,
 		onSubmit: ({ position }) => {
@@ -76,7 +75,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 				<label className="file-label" style={{ width: '100%' }}>
 					{label && <span className='label'>{label}:</span>}
 					<input type="file" id={id} name={id} onChange={onFileChange} multiple={multiple} accept={acceptedTypes} className='file-input' />
-					<input type="text" className="is-hidden" {...register(propertyKey)} />
+					<input type="text" className="is-hidden" {...register(propertyKey, { required: required && copy.requiredField })} />
 					<div className={imagePreviewContainerClassName}>
 						{imgProps.srcSet && <img srcSet={imgProps.srcSet} className='is-overlay object-fit-cover' style={{ objectPosition: imgProps.position }} />}
 						{isLoading && <Loader />}
@@ -84,7 +83,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 							<span className="file-icon mx-0">
 								<Upload />
 							</span>
-							<span className="file-label is-size-6">ליחצו להחלפת התמונה</span>
+							<span className="file-label is-size-6">{imgProps.srcSet ? 'ליחצו להחלפת התמונה' : 'ליחצו לבחירת תמונה'}</span>
 						</span>
 					</div>
 					{fileName && <span className="file-name has-text-centered is-size-7" style={{ maxWidth: "100%" }}>{fileName}</span>}

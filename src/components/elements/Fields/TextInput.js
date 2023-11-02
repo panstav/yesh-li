@@ -7,8 +7,9 @@ import isUrl from "@lib/is-url";
 import copy from '@pages/Editor/copy';
 
 export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, onChange, isSmall, autoComplete }) {
-	const { register, getFieldState } = useFormContext();
-	const { error } = getFieldState(id);
+	const { register, getFieldState, formState } = useFormContext();
+	const { error } = getFieldState(id, formState);
+
 	const valueAs = (val) => setValueAs(cleanUGT(val));
 	const labelClassName = classNames('label', labelClasses);
 	const inputClassName = classNames('input', isSmall && 'is-small');
@@ -25,7 +26,7 @@ export default function TextInput({ id, label, labelClassName: labelClasses, typ
 	if (autoComplete) inputConfig.autoComplete = autoComplete;
 
 	return <div className='field'>
-		<label htmlFor={id} className={labelClassName}>{label}:</label>
+		{label && <label htmlFor={id} className={labelClassName}>{label}:</label>}
 		<input id={id} className={inputClassName} type={type} {...register(id, inputConfig)} />
 		{error?.message
 			? <p className='help is-danger'>{error?.message}</p>

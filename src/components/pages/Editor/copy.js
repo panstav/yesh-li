@@ -9,7 +9,7 @@ export default {
 	statementDescription: 'משפט או הצהרה קצרה של הערכים שלך',
 	mainColor: 'צבע ראשי',
 	mainImage: "תמונה ראשית",
-	mainImageDescription: "התמונה שתופיע בראש העמוד ולצד כל קישור לעמוד",
+	mainImageDescription: "תופיע גם כשמשתפים את העמוד ברשתות חברתיות, וואטסאפ וכו'",
 	altDescription: 'מיועד למקריאי מסך ולמנועי חיפוש',
 
 	requiredField: 'שדה חובה',

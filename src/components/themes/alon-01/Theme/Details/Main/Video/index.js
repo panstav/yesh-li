@@ -14,7 +14,7 @@ export default function Video ({ className }) {
 		isLarge: true
 	});
 
-	if (!video.url) return null;
+	if (!video?.url) return null;
 
 	const youtubeIconClassName = classNames(youtubeIcon, 'is-overlay m-auto');
 

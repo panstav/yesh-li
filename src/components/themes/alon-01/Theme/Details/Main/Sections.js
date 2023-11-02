@@ -2,7 +2,7 @@ import { Fragment, useContext } from "react";
 import classNames from "classnames";
 
 import Modal, { Title, useModal, useRawModal } from "@wrappers/Modal";
-import { Email, Faq, Gift, Person } from "@elements/Icon";
+import { Faq, Gift, Person } from "@elements/Icon";
 
 import { PageContext } from "@config/Page";
 
@@ -28,24 +28,18 @@ export default function Sections({ contactByForm, className }) {
 					<span className="icon-text px-5 mx-3">אודות</span>
 				</div>
 			</div>}
-			{!!sections.length && <div className="box is-relative">
+			{!!sections?.length && <div className="box is-relative">
 				<div onClick={() => showServicesModal()} className="inner is-clickable">
 					<Gift style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
 					<span className="icon-text px-5 mx-3">שירותים</span>
 				</div>
 			</div>}
-			{!!faq.length && <div className="box is-relative">
+			{!!faq?.length && <div className="box is-relative">
 				<div onClick={() => showFaqModal()} className="inner is-clickable">
 					<Faq style={{ width: '1.25rem', position: 'absolute', insetInlineStart: '0.85rem' }} />
 					<span className="icon-text px-5 mx-3">שאלות נפוצות</span>
 				</div>
 			</div>}
-			<div className="box is-relative">
-				<div onClick={() => contactByForm()} className="inner is-clickable">
-					<Email style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
-					<span className="icon-text px-5 mx-3">צרו קשר</span>
-				</div>
-			</div>
 		</div>
 
 		<Modal {...aboutModal} render={() => {

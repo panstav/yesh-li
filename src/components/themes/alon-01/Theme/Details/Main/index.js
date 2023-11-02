@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import { PageContext } from "@config/Page";
 import Modal, { useErrorModal, useModal, useSuccessModal } from "@wrappers/Modal";
-import { Email, Facebook, Instagram, LinkedIn, TikTok, WhatsApp, X, YouTube, Phone, Pinterest, AddContact, Share } from "@elements/Icon";
+import { Email, Facebook, Instagram, LinkedIn, TikTok, WhatsApp, X, YouTube, Phone, Pinterest, AddContact, Share, Chat } from "@elements/Icon";
 
 import xhr from '@services/xhr';
 import hrefByAddressType from "@lib/href-by-address-type";
@@ -82,17 +82,19 @@ export default function Main() {
 	});
 	const sharePage = () => showSharingModal();
 
-	const boxesContainerClassName = classNames(boxes, "px-2 mt-3");
+	const boxesContainerClassName = classNames(boxes, "px-2 mt-5");
 
 	return <>
 		<div className="px-4">
 			<h1 className="title is-2">{fullName}</h1>
 			<h2 className="subtitle is-4">{occupation}</h2>
-			<p>{description}</p>
+			{description && <p>{description}</p>}
 		</div>
 
-		{!!Object.entries(links).length && <div className={boxesContainerClassName}>
-			{Object.entries(links).map(([type, address]) => ({ type, address })).sort(byPlatform).map(({ type, address }) => {
+		<Sections {...{ contactByForm }} className="mt-5" />
+
+		<div className={boxesContainerClassName}>
+			{links && Object.entries(links).map(([type, address]) => ({ type, address })).sort(byPlatform).map(({ type, address }) => {
 				const { Icon, label } = copy[type];
 				const href = hrefByAddressType(type, address);
 				return <div key={address} className="box is-relative">
@@ -102,28 +104,18 @@ export default function Main() {
 					</a>
 				</div>;
 			})}
-		</div>}
-
-		<div className={boxesContainerClassName}>
 			<div className="box is-relative">
+				<div onClick={() => contactByForm()} className="inner is-clickable">
+					<Chat style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
+					<span className="icon-text px-5 mx-3">צרו קשר</span>
+				</div>
+			</div>
+			{links?.phone && <div className="box is-relative">
 				<div onClick={saveContact} className="inner is-clickable">
 					<AddContact style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
 					<span className="icon-text px-5 mx-3">שמירת איש קשר</span>
 				</div>
-			</div>
-		</div>
-
-		<Video className="mt-6" />
-		<Gallery className={video.url ? "mt-3" : "mt-6"} />
-
-		<Sections {...{ contactByForm }} className="mt-6" />
-
-		{statement?.content && <div className="px-4 py-3 mt-6 mb-5" style={{ backgroundColor: 'var(--color-primary-50)', borderInlineStart: '3px solid var(--color-primary-600)', borderInlineEnd: '3px solid transparent' }}>
-			<p>{statement.author && '"'}{statement.content}{statement.author && '"'}</p>
-			{statement.author && <span className="is-block has-text-end mt-2">- {statement.author}</span>}
-		</div>}
-
-		<div className={boxesContainerClassName}>
+			</div>}
 			<div className="box is-relative">
 				<div onClick={sharePage} className="inner is-clickable">
 					<Share style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
@@ -131,6 +123,14 @@ export default function Main() {
 				</div>
 			</div>
 		</div>
+
+		<Video className="mt-6" />
+		<Gallery className={video?.url ? "mt-3" : "mt-6"} />
+
+		{statement?.content && <div className="px-4 py-3 mt-6 mb-5" style={{ backgroundColor: 'var(--color-primary-50)', borderInlineStart: '3px solid var(--color-primary-600)', borderInlineEnd: '3px solid transparent' }}>
+			<p>{statement.author && '"'}{statement.content}{statement.author && '"'}</p>
+			{statement.author && <span className="is-block has-text-end mt-2">- {statement.author}</span>}
+		</div>}
 
 		<Modal {...contactModal} render={ContactForm} />
 		<Modal {...savedLeadModal} render={() => 'אחלה, נשתמע!'} />

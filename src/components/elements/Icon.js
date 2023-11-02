@@ -4,6 +4,13 @@ export const AddContact = (props) => <Icon viewBox="0 -960 960 960" {...props}>
 	<path xmlns="http://www.w3.org/2000/svg" d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm-360-80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z" />
 </Icon>;
 
+export const Chat = ({ svgProps: { style = {}, ...svgProps } = {}, ...props }) => <Icon size={24} svgProps={{ style: { fill: 'none', ...style }, ...svgProps }} {...props}>
+	<path d="M8 10H8.01" stroke="#323232" strokeWidth="1.56" strokeLinecap="round" strokeLinejoin="round" />
+	<path d="M12 10H12.01" stroke="#323232" strokeWidth="1.56" strokeLinecap="round" strokeLinejoin="round" />
+	<path d="M16 10H16.01" stroke="#323232" strokeWidth="1.56" strokeLinecap="round" strokeLinejoin="round" />
+	<path d="M21 13V7C21 5.11438 21 4.17157 20.4142 3.58579C19.8284 3 18.8856 3 17 3H7C5.11438 3 4.17157 3 3.58579 3.58579C3 4.17157 3 5.11438 3 7V13C3 14.8856 3 15.8284 3.58579 16.4142C4.17157 17 5.11438 17 7 17H7.5C7.77614 17 8 17.2239 8 17.5V20V20.1499C8 20.5037 8.40137 20.7081 8.6875 20.5L13.0956 17.2941C13.3584 17.103 13.675 17 14 17H17C18.8856 17 19.8284 17 20.4142 16.4142C21 15.8284 21 14.8856 21 13Z" stroke="#323232" strokeWidth="1.56" strokeLinejoin="round" />
+</Icon>;
+
 export const Checkmark = (props) => <span {...props}>&#10003;</span>;
 
 export const Coffee = ({ className: classes, ...props }) => {

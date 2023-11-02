@@ -16,7 +16,7 @@ export default function Gallery({ className }) {
 		isLarge: true
 	});
 
-	if (!gallery.length) return null;
+	if (!gallery?.length) return null;
 
 	const containerClassName = classNames(container, "is-relative", className);
 

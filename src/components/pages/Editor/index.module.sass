@@ -13,6 +13,20 @@ $windowHeight: calc(100vh - $navbar-height)
 		overflow-y: auto
 		max-height: 100%
 
+	.compound-field
+		padding: $size-8
+		border: 1px solid white
+		border-radius: $radius
+
+		// extendeing bulma's .field
+		&:not(:last-child)
+			margin-bottom: 0.75rem
+
+		.removeButton
+			&:hover
+				background-color: $danger
+				color: white
+
 details.details
 
 	border-bottom: 2px solid white
@@ -81,20 +95,6 @@ details.details
 	[class~="ql-editor"]
 		text-align: start
 		background-color: white
-
-.compound-field
-	padding: $size-8
-	border: 1px solid white
-	border-radius: $radius
-
-	// extendeing bulma's .field
-	&:not(:last-child)
-		margin-bottom: 0.75rem
-
-	.removeButton
-		&:hover
-			background-color: $danger
-			color: white
 
 .addButton
 	&:hover

@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
-import { Details, ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, TelInput, EmailInput } from "@pages/Editor/Fields";
+import { ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, TelInput, EmailInput } from "@elements/Fields";
+import Details from "@elements/Details";
 import copy from '@pages/Editor/copy';
 
 export default function Elyse_01 () {

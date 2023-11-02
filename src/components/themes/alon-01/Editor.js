@@ -1,23 +1,14 @@
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
-import { Details, ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, EmailInput, TelInput } from "@pages/Editor/Fields";
+import { ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea } from "@elements/Fields";
+import Details from "@elements/Details";
 import xhr from "@services/xhr";
 
-import { compoundField } from '@pages/Editor/index.module.sass';
 import copy from '@pages/Editor/copy';
+import { compoundField } from '@pages/Editor/index.module.sass';
 
-const availableColors = [
-	{ label: 'אדום', value: 'red' },
-	{ label: 'כתום', value: 'orange' },
-	{ label: 'צהוב', value: 'yellow' },
-	{ label: 'ירוק', value: 'green' },
-	{ label: 'טורקיז', value: 'teal' },
-	{ label: 'כחול', value: 'blue' },
-	{ label: 'ציאן', value: 'cyan' },
-	{ label: 'סגול', value: 'purple' },
-	{ label: 'אפור', value: 'gray' }
-];
+import { EmailContact, FacebookContact, FeaturedImageFile, FullNameInput, MainColorSelect, OccupationInput, PhoneContact, WhatsappContact, availableColors } from "@themes/alon-01/shared";
 
 export default function Alon_01 () {
 	const { setValue, getValues } = useFormContext();
@@ -27,26 +18,12 @@ export default function Alon_01 () {
 	return <>
 
 		<Details title='אודות'>
-			<TextInput
-				id="content.fullName"
-				label={copy.fullName}
-				maxLength={20}
-				onChange={updateTitle}
-				autoComplete='name' />
 
-			<TextInput
-				id="content.occupation"
-				label={copy.occupation}
-				description={copy.occupationDescription}
-				maxLength={30}
-				onChange={updateTitle}
-				autoComplete='organization-title' />
+			<FullNameInput
+				onChange={updateTitle} />
 
-			<TextArea
-				id="content.description"
-				label={copy.description}
-				description={copy.descriptionDescription}
-				maxLength={150} />
+			<OccupationInput
+				onChange={updateTitle} />
 
 			<div className={compoundField}>
 				<TextArea
@@ -72,26 +49,19 @@ export default function Alon_01 () {
 		</Details>
 
 		<Details title='עיצוב'>
-			<Select
-				id="mainColor"
-				label={copy.mainColor}
-				oneOf={availableColors} />
 
-			<ImageInput
-				id="content.featuredImage"
-				label={copy.mainImage}
-				description={copy.mainImageDescription}
-				sizes={[450, 800, 1024, 1400]}
+			<MainColorSelect />
+
+			<FeaturedImageFile
 				onChange={(favicon) => setValue('favicon', favicon)} />
+
 		</Details>
 
 		<Details title='קישורים'>
 
-			<UrlInput isSmall
-				id={'content.links.facebook'}
+			<FacebookContact
 				label={copy.facebook}
-				required={false}
-				includes='facebook.com' />
+				required={false} />
 
 			<UrlInput isSmall
 				id={'content.links.instagram'}
@@ -129,23 +99,17 @@ export default function Alon_01 () {
 				required={false}
 				includes='tiktok.com' />
 
-			<TelInput isSmall
-				id={'content.links.whatsapp'}
+			<WhatsappContact
 				label={copy.whatsapp}
-				required={false}
-				autoComplete='tel' />
+				required={false} />
 
-			<TelInput isSmall
-				id={'content.links.phone'}
+			<PhoneContact
 				label={copy.phone}
-				required={false}
-				autoComplete='tel' />
+				required={false} />
 
-			<EmailInput isSmall
-				id={'content.links.email'}
-				required={false}
+			<EmailContact
 				label={copy.email}
-				autoComplete='email' />
+				required={false} />
 
 		</Details>
 
@@ -192,12 +156,12 @@ export default function Alon_01 () {
 			<Repeater
 				arrayId="content.sections"
 				singleName="שירות"
-				minLength="1" maxLength="6"
+				minLength="0" maxLength="6"
 				emptyItem={(data) => ({
-					label: 'כותרת השירות החדש',
+					title: 'כותרת',
 					color: data.mainColor,
-					content: 'תיאור השירות החדש',
-					ctaText: 'להזמנה'
+					content: 'תיאור',
+					ctaText: 'הזמנה'
 				})}>{(id) => <>
 
 					<Select
