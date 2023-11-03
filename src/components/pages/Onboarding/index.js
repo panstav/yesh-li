@@ -6,16 +6,16 @@ import merge from "lodash.merge";
 
 import Section from "@wrappers/Section";
 import Loader from "@elements/Loader";
+import { Checkmark } from "@elements/Icon";
 
 import xhr from "@services/xhr";
 import localDb from "@services/localDb";
 import { onboardingStepsMap, defaultTheme } from "@themes/map";
 
-export const OnboardingContext = createContext();
-
 import './index.sass';
 import { container } from './onboarding.module.sass';
-import { Checkmark } from "@elements/Icon";
+
+export const OnboardingContext = createContext();
 
 export default function Onboarding () {
 
