@@ -19,9 +19,6 @@ export const OnboardingContext = createContext();
 
 export default function Onboarding () {
 
-	// a logged in user should be redirected to the editor
-	if (localDb.get('jwt')) navigate('/editor', { replace: true });
-
 	// when redirected to the onboarding page, the user could have a slug and theme in localstorage
 	const prefilledOnboardingForm = merge({
 		slug: `trial-${Math.random().toString(36).substring(2, 8)}`,
@@ -41,6 +38,9 @@ export default function Onboarding () {
 	const [introStep, setIntroStep] = useState(true);
 	const hideIntro = () => setIntroStep(false);
 	const [steps, setSteps] = useState([]);
+
+	// a logged in user should be redirected to the editor
+	if (localDb.get('jwt')) return navigate('/editor', { replace: true });
 
 	const current = steps.find(step => step.isActive)?.title;
 
