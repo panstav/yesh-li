@@ -9,6 +9,8 @@ export default {
 	getUserIdentity: () => get('user-identity'),
 	postEmailToLogin: ({ email }) => post('login-link', { email }),
 	getLoginCodeVerification: (loginCode) => get(`login-code-verification?loginCode=${loginCode}`),
+	verifyEmail: (data) => post('email-verification', data),
+	verifyEmailCode: (code) => post('email-verification-code', { code }),
 
 	// editor-facing routes
 	getSiteData: (siteId) => get(`site-data?id=${siteId}`),
