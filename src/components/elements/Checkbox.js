@@ -1,8 +1,10 @@
 import { useFormContext } from 'react-hook-form';
+import classNames from 'classnames';
 
-export default function Checkbox({ id, label, besideLabel }) {
+export default function Checkbox({ id, label, besideLabel, className: classes }) {
 	const { register } = useFormContext();
-	return <div className='field is-flex is-align-items-center'>
+	const className = classNames('field is-flex is-align-items-center', classes);
+	return <div className={className}>
 		<label className='is-flex'>
 			<input className='me-1' type="checkbox" {...register(id)} />
 			{label}
