@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import Quill from 'quill';
 import { useFormContext } from 'react-hook-form';
 import classNames from "classnames";
 
@@ -7,6 +6,8 @@ import cleanUGT from "@lib/clean-user-generated-text";
 
 import { richTextContainer } from '@pages/Editor/index.module.sass';
 import copy from '@pages/Editor/copy';
+
+let Quill;
 
 export default function RichEditor({ id, label, placeholder, maxLength }) {
 	import('quill/dist/quill.core.css');
@@ -21,7 +22,13 @@ export default function RichEditor({ id, label, placeholder, maxLength }) {
 
 	let editor;
 
+	useEffect(async () => {
+		if (Quill) return;
+		Quill = await import('quill');
+	}, []);
+
 	useEffect(() => {
+
 		if (editor) return;
 
 		const value = getValues(id);
