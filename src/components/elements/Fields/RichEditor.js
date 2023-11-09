@@ -22,18 +22,20 @@ export default function RichEditor({ id, label, placeholder, maxLength }) {
 
 	let editor;
 
-	useEffect(async () => {
+	useEffect(() => {
 		if (Quill) return;
-		Quill = await import('quill');
+		(async () => {
+			Quill = await import('quill');
+		})();
 	}, []);
 
 	useEffect(() => {
 
-		if (editor) return;
+		if (editor || !Quill) return;
 
 		const value = getValues(id);
 
-		editor = new Quill(`[data-id="${editorMountElemId}"]`, {
+		editor = new Quill.default(`[data-id="${editorMountElemId}"]`, {
 			modules: {
 				toolbar: [
 					['strike', 'underline', 'italic', 'bold'],

@@ -19,9 +19,6 @@ export const OnboardingContext = createContext();
 
 export default function Onboarding () {
 
-	// when redirected to the onboarding page, the user could have a slug and theme in localstorage
-	let prefilledOnboardingForm, OnboardingSteps;
-
 	const [fullForm, setFullForm] = useState();
 	const setPartial = (partial) => {
 		const currentFormState = merge(fullForm, partial);
@@ -33,21 +30,19 @@ export default function Onboarding () {
 	const hideIntro = () => setIntroStep(false);
 	const [steps, setSteps] = useState([]);
 
+	// when redirected to the onboarding page, the user could have a slug and theme in localstorage
+	// we can only load it on the browser since there's no localstorage on the server
 	useEffect(() => {
-
-		prefilledOnboardingForm = merge({
+		setFullForm(merge({
 			slug: `trial-${Math.random().toString(36).substring(2, 8)}`,
 			theme: defaultTheme,
 			content: { submitText: 'שלח' }
-		}, localDb.get('onboarding') || {});
-
-		setFullForm(prefilledOnboardingForm);
-
-		OnboardingSteps = onboardingStepsMap[prefilledOnboardingForm.theme];
-
+		}, localDb.get('onboarding') || {}));
 	}, []);
 
-	if (!prefilledOnboardingForm) return <Loader />;
+	if (!fullForm) return <Loader />;
+
+	const OnboardingSteps = onboardingStepsMap[fullForm?.theme];
 
 	// a logged in user should be redirected to the editor
 	if (localDb.get('jwt')) return navigate('/editor', { replace: true });
