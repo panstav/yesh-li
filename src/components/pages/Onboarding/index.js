@@ -131,8 +131,10 @@ export function Step ({ title, children }) {
 
 	const [isSubmitting, setSubmitting] = useState();
 	const onSubmit = (event) => {
-		setSubmitting(true);
-		form.handleSubmit(next)(event);
+		form.handleSubmit((data) => {
+			setSubmitting(true);
+			next(data);
+		})(event);
 	};
 
 	useEffect(() => setup(title), []);
