@@ -60,7 +60,7 @@ const copy = {
 };
 
 export default function Main() {
-	const { qrSvgPath, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
+	const { title, qrSvgPath, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
 
 	const [savedLeadModal, showSavedLeadModal] = useSuccessModal();
 	const [errorWhileSavingModal, showErrorWhileSavingModal] = useErrorModal();
@@ -80,7 +80,15 @@ export default function Main() {
 	const [sharingModal, showSharingModal] = useModal({
 		qr: qrSvgPath
 	});
-	const sharePage = () => showSharingModal();
+	const sharePage = () => {
+		if (!navigator.share) return showSharingModal();
+
+		navigator.share({
+			title,
+			text: description,
+			url: location.origin + location.pathname
+		});
+	};
 
 	const boxesContainerClassName = classNames(boxes, "px-2 mt-5");
 
