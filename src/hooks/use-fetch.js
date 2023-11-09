@@ -16,7 +16,7 @@ export default function useFetch(apiFn, form) {
 		form.clearErrors();
 
 		return apiFn(data)
-			.then((res) => {
+			.then((res = {}) => {
 				res.isSuccess = true;
 				setState(res);
 			})
