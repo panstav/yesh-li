@@ -107,9 +107,13 @@ export default function Onboarding () {
 	}
 
 	function submitForm() {
+
+		// eslint-disable-next-line no-unused-vars
+		const { internal, ...form } = fullForm;
+
 		// send the fullForm to server
 		// when users will be able to create more than one site - this will be changed from createTrial to a createSite request
-		xhr.createTrial(fullForm).then(({ jwt }) => {
+		xhr.createTrial(form).then(({ jwt }) => {
 			// reset the onboarding cache from localstorage
 			localDb.unset('onboarding');
 			// save the jwt to localstorage

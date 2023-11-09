@@ -33,18 +33,18 @@ export default function Onboarding() {
 function ContactStep () {
 	const { watch } = useFormContext();
 
-	const contactMethods = watch('contactMethods');
+	const internal = watch('internal');
 
 	return <>
 		<h2 className="is-size-5 mb-4">איך לקוחות יוצרים איתכם קשר?</h2>
-		<div className="mt-2"><Checkbox id="contactMethods.whatsapp" label={<b>{copy.whatsapp}{contactMethods?.whatsapp ? ':' : ''}</b>} /></div>
-		{contactMethods?.whatsapp && <WhatsappContact />}
-		<div className="mt-2"><Checkbox id="contactMethods.phone" label={<b>{copy.phone}{contactMethods?.phone ? ':' : ''}</b>} /></div>
-		{contactMethods?.phone && <PhoneContact />}
-		<div className="mt-2"><Checkbox id="contactMethods.email" label={<b>{copy.email}{contactMethods?.email ? ':' : ''}</b>} /></div>
-		{contactMethods?.email && <EmailContact />}
-		<div className="mt-2"><Checkbox id="contactMethods.facebook" label={<b>{copy.facebook}{contactMethods?.facebook ? ':' : ''}</b>} /></div>
-		{contactMethods?.facebook && <FacebookContact />}
+		<div className="mt-2"><Checkbox id="internal.contactMethods.whatsapp" label={<b>{copy.whatsapp}{internal?.contactMethods?.whatsapp ? ':' : ''}</b>} /></div>
+		{internal?.contactMethods?.whatsapp && <WhatsappContact />}
+		<div className="mt-2"><Checkbox id="internal.contactMethods.phone" label={<b>{copy.phone}{internal?.contactMethods?.phone ? ':' : ''}</b>} /></div>
+		{internal?.contactMethods?.phone && <PhoneContact />}
+		<div className="mt-2"><Checkbox id="internal.contactMethods.email" label={<b>{copy.email}{internal?.contactMethods?.email ? ':' : ''}</b>} /></div>
+		{internal?.contactMethods?.email && <EmailContact />}
+		<div className="mt-2"><Checkbox id="internal.contactMethods.facebook" label={<b>{copy.facebook}{internal?.contactMethods?.facebook ? ':' : ''}</b>} /></div>
+		{internal?.contactMethods?.facebook && <FacebookContact />}
 	</>;
 
 }
