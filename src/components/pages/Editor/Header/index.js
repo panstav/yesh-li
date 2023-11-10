@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import Modal, { Title, useModal, useSuccessModal } from '@wrappers/Modal';
 import Tooltip from '@wrappers/Tooltip';
-import { Logo, Logout, Sheet } from '@elements/Icon';
+import { Eye, Logo, Logout, Sheet } from '@elements/Icon';
 import Help from '@elements/Help';
 
 import xhr from '@services/xhr';
@@ -69,13 +69,20 @@ function Header() {
 		});
 	} else {
 		// site is published
-		if (!getValues('isSetSlug')) {
+		if (getValues('isSetSlug')) {
 			// site has yet to be assigned a slug
 			// add slug button
 			menuItems.unshift({
 				label: 'בחירת כתובת',
 				Icon: () => <span className='is-size-7 has-text-weight-bold me-1' style={{ lineHeight: 1 }}>www</span>,
 				onClick: () => showSlugModal()
+			});
+		} else {
+			// site is published and has a slug
+			menuItems.unshift({
+				label: 'מעבר לעמוד',
+				Icon: () => <Eye style={{ width: '1.3rem' }} />,
+				path: `/${getValues('slug')}`
 			});
 		}
 	}
