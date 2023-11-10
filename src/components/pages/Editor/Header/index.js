@@ -3,7 +3,9 @@ import { Link } from 'gatsby';
 import { useFormContext } from 'react-hook-form';
 import classnames from 'classnames';
 
+import Tooltip from '@wrappers/Tooltip';
 import { Logo, Logout, Sheet } from '@elements/Icon';
+import Help from '@elements/Help';
 import localDb from '@services/localDb';
 
 import TrialNotice from './TrialNotice';
@@ -16,6 +18,7 @@ export default memo(Header);
 function Header() {
 
 	const { role, emailVerified } = useContext(AuthContext);
+
 	const { getValues } = useFormContext();
 	const [isEmailRecentlyVerified, setIsEmailRecentlyVerified] = useState();
 
@@ -28,14 +31,32 @@ function Header() {
 
 	const spreadSheetAddress = `https://docs.google.com/spreadsheets/d/${getValues('leadsTarget.address') }`;
 
-	const logOutLink = {
-		label: 'יציאה',
-		Icon: Logout,
-		onClick: () => {
-			localDb.clear();
-			window.location.reload();
+	const menuItems = [
+		{
+			label: 'יציאה',
+			Icon: Logout,
+			onClick: () => {
+				localDb.clear();
+				window.location.reload();
+			}
 		}
-	};
+	];
+
+	if (!getValues('isPublic')) {
+		menuItems.unshift({
+			label: 'הוצאה לאור',
+			Icon: () => '★',
+			path: '/',
+			Suffix: () => <Tooltip content="אחרי ההוצאה לאור - הדף יהיה נגיש למבקרים" className="is-flex is-is-align-items-center ms-2"><Help size="small" /></Tooltip>
+		});
+	} else {
+		menuItems.unshift({
+			label: 'בחירת כתובת',
+			Icon: Www,
+			onClick: () => openSlugModal()
+		});
+	}
+
 
 	const burgerClasses = classnames('navbar-burger has-text-white', isOpen && 'is-active');
 	const menuClasses = classnames('navbar-menu has-background-primary', isOpen && 'is-active');
@@ -67,7 +88,7 @@ function Header() {
 					<MenuItem label="גיליון הפניות שלי" path={spreadSheetAddress} Icon={Sheet} />
 				</div>
 				<div className="navbar-end">
-					<MenuItem {...logOutLink} />
+					{menuItems.map(MenuItem)}
 				</div>
 			</div>
 
@@ -76,7 +97,7 @@ function Header() {
 	</>;
 }
 
-function MenuItem({ Icon, label, path, onClick, ...props }) {
+function MenuItem({ Icon, label, path, onClick, Suffix = ()=>null, ...props }) {
 
 	let Wrapper, direction;
 
@@ -85,7 +106,7 @@ function MenuItem({ Icon, label, path, onClick, ...props }) {
 		direction = { onClick };
 	} else {
 		// if path is outbound, add target="_blank" and rel="noopener noreferrer"
-		if (!path.includes(window.location.host)) {
+		if (!path.includes(window.location.host) && !path.startsWith('/')) {
 			Wrapper = 'a';
 			direction = {
 				href: path,
@@ -101,6 +122,7 @@ function MenuItem({ Icon, label, path, onClick, ...props }) {
 	return <Wrapper key={label} {...direction} className="navbar-item is-flex is-align-items-center is-clickable has-text-white px-4" {...props}>
 		<Icon />
 		<div className="icon-text ms-1">{label}</div>
+		<Suffix />
 	</Wrapper>;
 }
 
