@@ -3,9 +3,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import Modal from './Modal';
 
-export default function Form({ type, onSubmit, hideable, confirmBeforeHiding, autoClose = true, hideModal: unsafeHideModal, render, title, ...modalProps }) {
+export default function Form({ type, onSubmit, hideable, confirmBeforeHiding, shouldUseNativeValidation, autoClose = true, hideModal: unsafeHideModal, render, title, ...modalProps }) {
 
-	const { ref, form, isClean } = useCustomForm();
+	const { ref, form, isClean } = useCustomForm({ shouldUseNativeValidation });
 
 	const hideModal = useCallback(() => {
 		if (!confirmBeforeHiding || isClean() || confirm('Sure?')) return unsafeHideModal();
@@ -25,13 +25,13 @@ export default function Form({ type, onSubmit, hideable, confirmBeforeHiding, au
 	</FormProvider>;
 }
 
-function useCustomForm({ autoFocus = true, defaultValues = {} } = {}) {
+function useCustomForm({ autoFocus = true, defaultValues = {}, shouldUseNativeValidation = true } = {}) {
 
 	const ref = useRef(null);
 
 	const form = useForm({
 		defaultValues,
-		shouldUseNativeValidation: true
+		shouldUseNativeValidation
 	});
 
 	const isClean = () => !Object.values(form.formState.dirtyFields).length;
