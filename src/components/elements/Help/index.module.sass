@@ -1,0 +1,17 @@
+@import @styles/common
+
+.help
+	+delete
+	line-height: 20px
+	color: white
+	text-align: center
+	font-size: 0.7rem
+	font-weight: bold
+	&::before, &::after
+		display: none
+	&.is-small
+		line-height: 16px
+	&.is-medium
+		line-height: 24px
+	&.is-large
+		line-height: 32px

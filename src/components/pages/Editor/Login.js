@@ -6,12 +6,12 @@ import Section from '@wrappers/Section';
 import Tooltip from '@wrappers/Tooltip';
 import Spacer from '@elements/Spacer';
 import Checkbox from '@elements/Checkbox';
+import { Logo } from '@elements/Icon';
+import Help from '@elements/Help';
 
 import xhr from '@services/xhr';
 import useFetch from '@hooks/use-fetch';
 
-import { help, isSmall, isMedium, isLarge } from './index.module.sass';
-import { Logo } from '@elements/Icon';
 
 export default function Login() {
 
@@ -60,9 +60,4 @@ export default function Login() {
 		</div>
 	</>;
 
-}
-
-function Help({ size }) {
-	const className = classNames(help, { small: isSmall, medium: isMedium, large: isLarge }[size]);
-	return <div className={className}>?</div>;
 }
