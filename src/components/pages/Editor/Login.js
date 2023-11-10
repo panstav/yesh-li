@@ -24,7 +24,7 @@ export default function Login() {
 			.then(() => setIsLoading(false));
 	}, form);
 
-	const submitClassName = classNames("button block is-justify-content-center is-fullwidth has-text-white has-text-weight-bold has-background-primary mt-4", isLoading && 'is-loading');
+	const submitClassName = classNames("button block is-primary is-justify-content-center is-fullwidth has-text-white has-text-weight-bold mt-4", isLoading && 'is-loading');
 
 	return <>
 		<Spacer />
