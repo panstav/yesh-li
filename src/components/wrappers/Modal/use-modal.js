@@ -10,6 +10,7 @@ export default function useModal(propsFromHook = {}) {
 		window.document.documentElement.classList.toggle('with-modal', false);
 		// unless the modal is being closed by the browser's back button - go back
 		if (event?.type !== 'popstate') history.back();
+		propsFromHook.onHide?.();
 		return setModalProps();
 	};
 
