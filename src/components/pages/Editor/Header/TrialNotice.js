@@ -78,7 +78,7 @@ export default function TrialNotice() {
 					label="כתובת מייל"
 					id='email'
 					autoComplete='email'
-					description="כשתלחצו על &quot;המשך&quot; המערכת תשלח מייל עם קוד חד פעמי, כך נדע שכתובת המייל תקינה ושיש לך גישה אליה. עם כתובת זו ניתן יהיה להתחבר למערכת ללא צורך בסיסמה."
+					description="כשתלחצו על &quot;המשך&quot; המערכת תשלח מייל עם קוד חד פעמי, כך נדע שכתובת המייל תקינה ושיש לך גישה אליה. עם כתובת זו אפשר יהיה להתחבר למערכת ללא צורך בסיסמה."
 					labelClassName="mt-4" />
 				<Checkbox id="consentUpgrades" label="אשמח לקבל עידכונים על שידרוגים ופיצ'רים חדשים" className="mb-1" />
 				<Checkbox id="consentCommercial" label="אשמח לקבל עידכונים על מבצעים ושירותים נלווים" />

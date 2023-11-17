@@ -18,7 +18,7 @@ div, section
 	direction: ltr
 
 .is-overlay
-	@include overlay
+	+overlay
 
 .has-radius, .has-strong-radius
 	overflow: hidden
@@ -29,22 +29,28 @@ div, section
 
 .is-hidden-tiny
 	display: none
-	@include not-tiny
+	+not-tiny
 		display: unset
 .is-hidden-not-tiny
-	@include not-tiny
+	+not-tiny
 		display: none
 
 .is-flex-gap-2-tablet
-	@include tablet
+	+tablet
 		gap: 0.5rem
 
 .p-5-tablet
-	@include tablet
+	+tablet
 		padding: 1.5rem
 .pb-5-mobile
-	@include mobile
+	+mobile
 		padding-bottom: 1.5rem
+.mb-5-mobile
+	+mobile
+		margin-bottom: 1.5rem
+.mb-5-touch
+	+touch
+		margin-bottom: 1.5rem
 .mb-6-mobile
-	@include mobile
+	+mobile
 		margin-bottom: 3rem

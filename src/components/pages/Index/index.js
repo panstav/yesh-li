@@ -1,10 +1,82 @@
-export default function IndexPage() {
-	return <div className="is-flex is-flex-direction-column is-justify-content-center is-align-items-center has-text-centered" style={{ marginTop: '15rem', fontFamily: 'Assistant, sans-serif' }}>
-		<h2 className="is-size-3">
-			<span>יום אחד</span>
-			<br />
-			<span>גם לך יהיה</span>
-		</h2>
-		<h1 className="has-text-weight-bold has-text-black" style={{ fontSize: '7rem' }}>יש.לי</h1>
-	</div>;
+import { createContext, useEffect, useState } from "react";
+import classNames from "classnames";
+
+import Section from "@wrappers/Section";
+import Spacer from "@elements/Spacer";
+import xhr from "@services/xhr";
+
+import Hero from "./Hero";
+import Socials from "./Socials";
+import Benefits from "./Benefits";
+import CTA from "./CTA";
+import WhosItFor from "./WhosItFor";
+import FartherQuestions from "./FurtherQuestions";
+
+import './index.sass';
+import { titleFont, footerGlow } from './index.module.sass';
+
+export const AuthContext = createContext();
+
+export const copy = {
+	freeAndCommitmentFree: 'חינם וללא התחייבות'
+};
+
+export default function IndexPage () {
+	return <Auth>
+		<Hero />
+		<Socials />
+		<Spacer />
+		<Spacer />
+		<Benefits />
+		<Spacer />
+		<WhosItFor />
+		<Spacer />
+		<Spacer />
+		<EditorMock />
+		<CTA trialId="publish" />
+		<Spacer />
+		<FartherQuestions />
+		<Spacer />
+		<Spacer />
+		<Footer />
+	</Auth>;
+}
+
+export function SectionTitle({ className: classes, children }) {
+	const titleClassName = classNames("title is-3 has-text-centered", titleFont, classes);
+	return <h2 className={titleClassName} style={{ lineHeight: '1.3' }}>{children}</h2>;
+}
+
+function Auth ({ children }) {
+
+	const [user, setUser] = useState();
+
+	useEffect(() => {
+		if (user) return;
+		xhr.getUserIdentity().then(setUser);
+	}, []);
+
+	return <AuthContext.Provider value={user || {}}>
+		{children}
+	</AuthContext.Provider>;
+
+}
+
+function Footer () {
+	const domainClassName = classNames("title is-3 has-text-weight-normal pb-1 my-0 mx-5", titleFont);
+
+	return <footer className="is-relative" style={{ overflow: 'hidden' }}>
+		<div className={footerGlow} />
+		<Section noTopMargin className="is-flex-tablet is-justify-content-space-between is-align-items-center has-text-centered py-3">
+			<div className="has-text-start" style={{ width: '8rem' }}>אתר שגדל איתך</div>
+			<div className={domainClassName}>יש.לי</div>
+			<div className="is-size-7 has-text-end" style={{ paddingTop: '0.1em', width: '8rem' }}>2019-{new Date().getFullYear()} ©</div>
+		</Section>
+	</footer>;
+}
+
+function EditorMock () {
+	return <Section noTopMargin isFullWidth className="is-flex is-justify-content-center">
+		<img src="https://storage.googleapis.com/yeshli-www/assets/editor-preview-mock-02.png" width="1038" height="655" loading="lazy" />
+	</Section>;
 }

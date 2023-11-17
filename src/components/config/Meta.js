@@ -10,7 +10,8 @@ export default function Meta({
 	pathname,
 	featuredImage: pageFeaturedImage,
 	mainColorName, mainColorHex,
-	isInternal
+	isInternal,
+	hasAdvancedSeo = true
 }) {
 
 	const { site: { siteMetadata: { siteUrl, title: siteTitle, description: siteDescription } } } = useStaticQuery(graphql`
@@ -54,7 +55,7 @@ export default function Meta({
 				<meta property="twitter:image" content={pageFeaturedImage} />
 			</>}
 
-			{isRemote && <>
+			{(isRemote && hasAdvancedSeo) && <>
 				<link rel="manifest" href={`${pagePathname}/manifest.json`} />
 
 				<meta name="apple-mobile-web-app-title" content={siteTitle} />
