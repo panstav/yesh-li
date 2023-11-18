@@ -69,7 +69,7 @@ function Header() {
 		});
 	} else {
 		// site is published
-		if (getValues('isSetSlug')) {
+		if (!getValues('isSetSlug')) {
 			// site has yet to be assigned a slug
 			// add slug button
 			menuItems.unshift({
