@@ -3,7 +3,7 @@ import { Link } from 'gatsby';
 import { useFormContext } from 'react-hook-form';
 import classnames from 'classnames';
 
-import Modal, { Title, useModal, useSuccessModal } from '@wrappers/Modal';
+import Modal, { useModal, useSuccessModal } from '@wrappers/Modal';
 import Tooltip from '@wrappers/Tooltip';
 import { Eye, Logo, Logout, Sheet } from '@elements/Icon';
 import Help from '@elements/Help';
@@ -12,8 +12,8 @@ import xhr from '@services/xhr';
 import localDb from '@services/localDb';
 
 import TrialNotice from './TrialNotice';
+import SlugChoice from './SlugChoice';
 import { AuthContext } from '@pages/Editor/Auth';
-import copy from '@pages/Editor/copy';
 
 export const noticeClassName = 'py-2';
 
@@ -123,31 +123,7 @@ function Header() {
 
 		</nav>
 
-		<Modal {...slugModal} render={({ register, getFieldState, formState }) => {
-
-			const id = 'slug';
-			const { error } = getFieldState(id, formState);
-
-			return <>
-				<Title>כתובת קבועה לעמוד</Title>
-				<div className="field has-addons">
-					<div className="control is-flex-grow-1">
-						<input className="input is-ltr" type="text" {...register(id, {
-							required: true,
-							pattern: { value: /^[a-zA-Z-0-9]+$/, message: 'כתובת העמוד יכולה להכיל אותיות באנגלית, ספרות ומקפים בלבד.' },
-							maxLength: { value: 30, message: copy.maxLengthField(30) }
-						})} />
-						{error?.message && <p className='help is-danger'>{error?.message}</p>}
-					</div>
-					<div className="control">
-						<a className="button is-static is-ltr">{location.origin}/</a>
-					</div>
-				</div>
-				<div className='is-flex is-justify-content-end'>
-					<button className='button is-primary'>שמור</button>
-				</div>
-			</>;
-		}} />
+		<Modal {...slugModal} render={SlugChoice} />
 
 		<Modal {...slugUpdateSuccess} render={() => <>
 			כתובת האתר עודכנה.

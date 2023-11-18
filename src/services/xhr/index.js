@@ -18,6 +18,8 @@ export default {
 	postYoutubeThumbnail: ({ videoUrl, siteId }) => post(`youtube-thumbnail`, { videoUrl, siteId }),
 	updateSiteData: (siteId, data) => put(`site-data?siteId=${siteId}`, data),
 	createTrial: (data) => post('trial', data),
+	updateSlug: ({ slug, siteId }) => put('slug', { slug, siteId }),
+	checkSlugVacancy: (slug) => get(`slug-vacancy?slug=${slug}`),
 
 	// marketing-facing routes
 	postEnquiry: (data) => post('enquiry', data)
