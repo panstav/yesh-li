@@ -33,7 +33,7 @@ export default function IndexPage () {
 		<Spacer />
 		<Spacer />
 		<EditorMock />
-		<CTA trialId="publish" />
+		<CTA id="purchase" />
 		<Spacer />
 		<FartherQuestions />
 		<Spacer />

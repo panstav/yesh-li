@@ -42,7 +42,7 @@ function CTA () {
 	</div>;
 
 	if (role === 'TRIAL') return <div>
-		<CtaButton href="#publish">הוצאה לאור של העמוד שלך</CtaButton>
+		<CtaButton href="#purchase">הוצאה לאור של העמוד שלך</CtaButton>
 		<p className="is-size-7 has-text-grey mt-2">{copy.freeAndCommitmentFree}</p>
 	</div>;
 

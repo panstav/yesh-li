@@ -16,13 +16,11 @@ const benefits = [
 	'בקרוב גם ב: אשראי, גוגל פיי, אפל פיי'
 ];
 
-export default function CTA({ trialId }) {
+export default function CTA({ id }) {
 	const { role } = useContext(AuthContext);
 
 	const [paymentModal, setPaymentModal] = useModal();
 	const showPaymentModal = () => setPaymentModal();
-
-	if (!role) return null;
 
 	const title = (() => {
 		if (role === 'MEMBER') return 'ברוכים השבים!';
@@ -31,22 +29,18 @@ export default function CTA({ trialId }) {
 	})();
 
 	const subtitle = (() => {
-		if (role === 'GUEST') return copy.freeAndCommitmentFree;
+		if (!role || role === 'GUEST') return copy.freeAndCommitmentFree;
 		if (role === 'TRIAL') return 'לאחר הפעלת העמוד - הוא יהיה נגיש למבקרים וחשוף בפני מנועי חיפוש ורשתות חברתיות';
 	})();
 
 	const cta = (() => {
-		if (role === 'GUEST') return 'יאללה, מתחילים!';
+		if (!role || role === 'GUEST') return 'יאללה, מתחילים!';
 		return 'חזרה למערכת הניהול';
 	})();
 
 	const href = (() => {
-		if (role === 'GUEST') return '/start';
+		if (!role || role === 'GUEST') return '/start';
 		return '/editor';
-	})();
-
-	const containerId = (() => {
-		if (role === 'TRIAL') return trialId;
 	})();
 
 	const headerClassName = classNames('is-size-3 has-text-weight-bold mb-2', titleFont);
@@ -54,7 +48,7 @@ export default function CTA({ trialId }) {
 
 	return <>
 
-		<div id={containerId} className="has-background-primary has-text-centered has-text-white py-6">
+		<div id={id} className="has-background-primary has-text-centered has-text-white py-6">
 			<div className="block">
 				<p className={headerClassName}>{title}</p>
 				{subtitle && <p>{subtitle}</p>}
