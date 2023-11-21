@@ -20,15 +20,20 @@ export default function FartherQuestions() {
 
 		<Section isFullWidth>
 			<SectionTitle>שאלות נוספות?</SectionTitle>
-			<div className="buttons is-centered">
-				<a href="mailto:hello@yesh.li" target="_blank" rel="noreferrer" className="button is-primary is-outlined is-medium is-rounded has-strong-radius">
-					<Email />
-					<span className="icon-text ms-2">לשלוח שאלה במייל</span>
-				</a>
-				<button onClick={openContactModal} className="button is-primary is-outlined is-medium is-rounded has-strong-radius">
-					<Faq />
-					<span className="icon-text ms-2">למלא טופס יצירת קשר</span>
-				</button>
+			<div className="is-flex-tablet is-flex-gap-3 has-text-centered-mobile">
+				<div className="has-text-end-tablet" style={{ flex: 1 }}>
+					<a href="mailto:hello@yesh.li" target="_blank" rel="noreferrer" className="button is-primary is-outlined is-medium is-rounded has-strong-radius">
+						<Email />
+						<span className="icon-text ms-2">לשלוח שאלה במייל</span>
+					</a>
+				</div>
+				<span className="is-block" style={{ height: '0.5rem' }} />
+				<div style={{ flex: 1 }}>
+					<button onClick={openContactModal} className="button is-primary is-outlined is-medium is-rounded has-strong-radius">
+						<Faq />
+						<span className="icon-text ms-2">למלא טופס יצירת קשר</span>
+					</button>
+				</div>
 			</div>
 		</Section>
 
