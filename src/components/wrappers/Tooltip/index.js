@@ -17,7 +17,7 @@ export default function Tooltip({ children, content, html, onClick, onClickSelec
 	const handleUnMount = useCallback(toggle => {
 		return onClick && ((tippy) => (onClickSelector
 			? tippy.popper.querySelector(onClickSelector)
-			: tippy)[`${toggle}EventListener`]('click', onClick));
+			: tippy.reference)[`${toggle}EventListener`]('click', onClick));
 	}, [onClick, onClickSelector]);
 
 	let options = {
@@ -32,10 +32,18 @@ export default function Tooltip({ children, content, html, onClick, onClickSelec
 
 	useEffect(() => {
 		tippy(ref.current.base || ref.current, Object.assign({}, defaults, options));
+		if (ref.current) ref.current.addEventListener('click', preventDefault);
+		return () => {
+			if (ref.current) ref.current.removeEventListener('click', preventDefault);
+		};
 	}, [ref]);
 
 	return <span ref={ref} {...props}>
 		{children}
 	</span>;
 
+}
+
+function preventDefault(event) {
+	return event.preventDefault();
 }

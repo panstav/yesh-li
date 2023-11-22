@@ -65,7 +65,7 @@ function Header() {
 			label: 'הוצאה לאור',
 			Icon: () => '★',
 			path: '/',
-			Suffix: () => <Tooltip content="אחרי ההוצאה לאור - הדף יהיה נגיש למבקרים" className="is-flex is-is-align-items-center ms-2"><Help onClick={stopPropagation} size="small" /></Tooltip>
+			Suffix: () => <Tooltip content="אחרי ההוצאה לאור - הדף יהיה נגיש למבקרים" className="is-flex is-is-align-items-center ms-2"><Help size="small" /></Tooltip>
 		});
 	} else {
 		// site is published
@@ -179,8 +179,4 @@ function EmailIsVerifiedNotice () {
 			כתובת המייל אומתה בהצלחה.
 		</div>
 	</div>;
-}
-
-function stopPropagation (event) {
-	event.stopPropagation();
 }
