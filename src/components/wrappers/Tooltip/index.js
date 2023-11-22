@@ -15,10 +15,6 @@ export default function Tooltip({ children, content, html, onClick, onClickSelec
 	const ref = useRef(null);
 
 	const handleUnMount = useCallback(toggle => {
-		if (!onClick) return (event) => {
-			// prevent event where the tooltip was clicked but another element has the onClick event listener
-			event.stopPropagation();
-		};
 		return onClick && ((tippy) => (onClickSelector
 			? tippy.popper.querySelector(onClickSelector)
 			: tippy)[`${toggle}EventListener`]('click', onClick));
@@ -36,6 +32,7 @@ export default function Tooltip({ children, content, html, onClick, onClickSelec
 
 	useEffect(() => {
 		tippy(ref.current.base || ref.current, Object.assign({}, defaults, options));
+		if (ref.current) ref.current.addEventListener('click', (event) => event.stopPropagation());
 	}, [ref]);
 
 	return <span ref={ref} {...props}>
