@@ -43,7 +43,9 @@ $LIGHTING_FLAT: 3
 		width: 65%
 
 .text3d
-	+text3d(adjust-color($primary, $lightness: -0.5%), $depth: 6, $primaryshadowcolour: adjust-color($primary, $lightness: -10%, $saturation: +20%), $shadowopacity: .2)
+	+text3d(adjust-color($primary, $lightness: -0.5%), $depth: 3, $primaryshadowcolour: adjust-color($primary, $lightness: -10%, $saturation: +20%), $shadowopacity: .1)
+	+desktop
+		+text3d(adjust-color($primary, $lightness: -0.5%), $depth: 6, $primaryshadowcolour: adjust-color($primary, $lightness: -10%, $saturation: +20%), $shadowopacity: .2)
 
 .hero-image-container
 	z-index: 10
