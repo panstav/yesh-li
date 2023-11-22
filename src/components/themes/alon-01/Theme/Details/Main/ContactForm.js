@@ -22,7 +22,7 @@ export default function ContactForm({ register, getValues, setValue, interest, f
 			<label className="label" htmlFor="contact-phone">מספר טלפון:</label>
 			<input className="input" type="tel" id="contact-tel" autoComplete="tel" {...register('tel', { onChange: updateEmailOrPhone })} />
 		</div>
-		<div className="field">
+		{!!sections.length && <div className="field">
 			<label htmlFor="contact-interest" className="label">הכי מעניין אותי:</label>
 			<div className="select is-fullwidth">
 				<select id="contact-interest" {...register('interest', { value: interest })}>
@@ -30,7 +30,7 @@ export default function ContactForm({ register, getValues, setValue, interest, f
 					{sections.map(({ title }) => <option key={title} value={title}>{title}</option>)}
 				</select>
 			</div>
-		</div>
+		</div>}
 		<input className="is-hidden" {...register('emailOrPhone', { required: true })} />
 		<button className="button is-justify-content-center is-fullwidth has-text-white has-text-weight-bold mt-4" style={{ background: `linear-gradient(90deg, var(--color-primary-200) 0%, var(--color-primary-400) 51%, var(--color-primary-200) 100%)` }}>{submitText}</button>
 	</>;
