@@ -32,7 +32,6 @@ export default function Tooltip({ children, content, html, onClick, onClickSelec
 
 	useEffect(() => {
 		tippy(ref.current.base || ref.current, Object.assign({}, defaults, options));
-		if (ref.current) ref.current.addEventListener('click', (event) => event.stopPropagation());
 	}, [ref]);
 
 	return <span ref={ref} {...props}>
