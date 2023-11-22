@@ -34,9 +34,7 @@ export default function Hero() {
 function CTA () {
 	const { role } = useContext(AuthContext);
 
-	if (!role) return null;
-
-	if (role === 'GUEST') return <div>
+	if (!role || role === 'GUEST') return <div>
 		<CtaButton href="/start">יצירת עמוד ב-יש.לי</CtaButton>
 		<p className="is-size-7 has-text-grey mt-2">{copy.freeAndCommitmentFree}</p>
 	</div>;
