@@ -63,11 +63,11 @@ function Auth ({ children }) {
 }
 
 function Footer () {
-	const domainClassName = classNames("title is-3 has-text-weight-normal pb-1 my-0 mx-5", titleFont);
+	const domainClassName = classNames("title is-3 is-flex-shrink-0 has-text-weight-normal pb-1 my-0", titleFont);
 
 	return <footer className="is-relative" style={{ overflow: 'hidden' }}>
 		<div className={footerGlow} />
-		<Section noTopMargin className="is-flex-tablet is-justify-content-space-between is-align-items-center has-text-centered py-3">
+		<Section noTopMargin className="is-flex is-justify-content-space-between is-align-items-center has-text-centered py-3">
 			<div className="has-text-start" style={{ width: '8rem' }}>אתר שגדל איתך</div>
 			<div className={domainClassName}>יש.לי</div>
 			<div className="is-size-7 has-text-end" style={{ paddingTop: '0.1em', width: '8rem' }}>2019-{new Date().getFullYear()} ©</div>
