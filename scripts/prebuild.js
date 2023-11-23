@@ -1,8 +1,6 @@
 const fs = require('fs');
 
 const dotenv = require('dotenv');
-const qrcode = require('qrcode');
-const { parse } = require('svg-parser');
 
 if (!process.env.GATSBY_API_URL) {
 	dotenv.config({ path: `.env.production` });
@@ -35,7 +33,6 @@ const fullDomain = process.env.URL;
 		// instance is running on a dedicated domain, the root page is the only page
 
 		const site = sites[0];
-		site.qrSvgPath = await urlToQrSvgPath(fullDomain);
 
 		// save the site's data to a json file at /data/root.json
 		await fs.promises.writeFile('./data/root.json', JSON.stringify(sites[0]));
@@ -44,8 +41,6 @@ const fullDomain = process.env.URL;
 
 	function saveAllSites() {
 		return sites.reduce((accu, site) => accu.then(async () => {
-
-			site.qrSvgPath = await urlToQrSvgPath(`${fullDomain}/${site.slug}`);
 
 			// save each site's data to a json file at /data/theme-{themeName}/{siteId}.json
 			await fs.promises.mkdir(`./data/theme-${site.theme}`, { recursive: true });
@@ -56,13 +51,6 @@ const fullDomain = process.env.URL;
 	}
 
 })();
-
-async function urlToQrSvgPath(url) {
-	const qrSvg = await qrcode.toString(url, { type: 'svg', errorCorrectionLevel: 'H', margin: 0 });
-	const parsed = parse(qrSvg);
-
-	return parsed?.children?.[0]?.children?.[1]?.properties?.d;
-}
 
 function getManifest({ title, slug, mainColor }) {
 	const pageShortUrl = `${fullDomain}${slug ? `/${slug}` : ''}`.slice(fullDomain.indexOf('://') + 3);
