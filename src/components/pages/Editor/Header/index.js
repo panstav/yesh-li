@@ -61,7 +61,7 @@ function Header() {
 		// add publish button
 		menuItems.unshift({
 			label: 'הוצאה לאור',
-			Icon: () => '★',
+			Icon: () => <span style={{ fontSize: '1.7rem' }}>★</span>,
 			path: '/'
 		});
 	} else {
