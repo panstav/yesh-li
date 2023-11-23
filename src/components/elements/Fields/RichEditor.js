@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from 'react-hook-form';
 import classNames from "classnames";
 
@@ -13,6 +13,8 @@ export default function RichEditor({ id, label, placeholder, maxLength }) {
 	import('quill/dist/quill.core.css');
 	import('quill/dist/quill.snow.css');
 
+	const [isModuleLoaded, setIsModuleLoaded] = useState(!!Quill);
+
 	const { getValues, setValue, getFieldState, setError, clearErrors } = useFormContext();
 
 	const { error } = getFieldState(id);
@@ -24,14 +26,15 @@ export default function RichEditor({ id, label, placeholder, maxLength }) {
 
 	useEffect(() => {
 		if (Quill) return;
-		(async () => {
-			Quill = await import('quill');
-		})();
-	}, []);
+		import('quill').then((mod) => {
+			Quill = mod;
+			setIsModuleLoaded(true);
+		});
+	});
 
 	useEffect(() => {
 
-		if (editor || !Quill) return;
+		if (editor || !isModuleLoaded) return;
 
 		const value = getValues(id);
 
@@ -65,7 +68,7 @@ export default function RichEditor({ id, label, placeholder, maxLength }) {
 			// if it's not, set the value to the editor's innerHTML after cleaning it
 			setValue(id, cleanUGT(editor.root.innerHTML.replaceAll('<br>', '')));
 		});
-	}, []);
+	}, [isModuleLoaded]);
 
 	return <div className={richTextContainerClassName}>
 		<label className='label'>{label}:</label>
