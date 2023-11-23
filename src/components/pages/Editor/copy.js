@@ -10,7 +10,7 @@ export default {
 	mainColor: 'צבע ראשי',
 	mainImage: "תמונה ראשית",
 	mainImageDescription: "תופיע גם כשמשתפים את העמוד ברשתות חברתיות, וואטסאפ וכו'",
-	altDescription: 'מיועד למקריאי מסך ולמנועי חיפוש',
+	altDescription: 'לא יופיע חזותית, מיועד לצרכי הנגשה ע"י מקריאי מסך וקידום אורגני ע"י מנועי חיפוש.',
 
 	requiredField: 'שדה חובה',
 	maxLengthField: (maxLength) => `מקסימום ${maxLength} תווים`,

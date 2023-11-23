@@ -94,7 +94,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 			</div>
 			{hasNoFocus || <button type="button" onClick={setFocus} className='button is-small' style={{ position: 'absolute', ...setFocusButtonStyle }}>בחירת פוקוס לתמונה</button>}
 			<div className='field'>
-				<label htmlFor={`${id}-alt`} className='label is-small'>טקסט חלופי:</label>
+				<label htmlFor={`${id}-alt`} className='label is-small'>טקסט חלופי לתמונה:</label>
 				<input id={`${id}-alt`} className='input' type='text' {...register(`${id}.alt`, { setValueAs: cleanUGT })} />
 				<p className='help'>{copy.altDescription}</p>
 			</div>
