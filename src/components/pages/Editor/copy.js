@@ -1,7 +1,7 @@
 export default {
 	fullName: 'שם מלא',
 	occupation: 'עיסוק ראשי',
-	occupationDescription: 'ה-"טייטל" שלך או כותרת למכלול העשייה שלך',
+	occupationDescription: 'ה-"טייטל" שלך או כותרת למכלול העשייה לה מוקדש עמוד זה.',
 	description: 'תיאור קצר',
 	descriptionDescription: 'תיאור קצת יותר מפורט של מכלול העשייה שלך',
 	about: 'אודות',
