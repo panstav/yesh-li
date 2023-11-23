@@ -9,10 +9,8 @@ import copyToClipboard from "@lib/copy-to-clipboard";
 
 import { topContainer } from "./sharing-modal.module.sass";
 
-export default function SharingModal () {
-	const { qrSvgPath, slug, content: { fullName, occupation } } = useContext(PageContext);
-
-	const url = `${window.location.origin}/${slug}`;
+export default function SharingModal ({ qr, url }) {
+	const { content: { fullName, occupation } } = useContext(PageContext);
 
 	const [hasCopied, setHasCopied] = useState(false);
 
@@ -30,7 +28,7 @@ export default function SharingModal () {
 	return <>
 
 		<div className={topContainer}>
-			<QR qr={qrSvgPath} style={{ margin: '1px' }} />
+			<QR qr={qr} style={{ margin: '1px' }} />
 
 			<div onMouseDown={copy} onMouseUp={displayCopied} className="field has-addons is-justify-content-center mt-3">
 				<div className="control">

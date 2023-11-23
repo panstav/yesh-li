@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import classNames from "classnames";
 
 import { PageContext } from "@config/Page";
@@ -60,7 +60,12 @@ const copy = {
 };
 
 export default function Main() {
-	const { title, qrSvgPath, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
+	const { title, slug, qrSvgPath, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
+
+	const [url, setUrl] = useState();
+	useEffect(() => {
+		if (!url) setUrl(`${window.location.origin}/${slug}`);
+	}, []);
 
 	const [savedLeadModal, showSavedLeadModal] = useSuccessModal();
 	const [errorWhileSavingModal, showErrorWhileSavingModal] = useErrorModal();
@@ -78,7 +83,8 @@ export default function Main() {
 	const contactByForm = (interest) => showContactModal({ interest });
 
 	const [sharingModal, showSharingModal] = useModal({
-		qr: qrSvgPath
+		qr: qrSvgPath,
+		url
 	});
 	const sharePage = () => {
 		if (!navigator.share) return showSharingModal();
@@ -86,7 +92,7 @@ export default function Main() {
 		navigator.share({
 			title,
 			text: description,
-			url: location.origin + location.pathname
+			url
 		});
 	};
 
