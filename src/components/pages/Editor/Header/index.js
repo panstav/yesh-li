@@ -4,9 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import classnames from 'classnames';
 
 import Modal, { useModal, useSuccessModal } from '@wrappers/Modal';
-import Tooltip from '@wrappers/Tooltip';
 import { Eye, Logo, Logout, Sheet } from '@elements/Icon';
-import Help from '@elements/Help';
 
 import xhr from '@services/xhr';
 import localDb from '@services/localDb';
@@ -58,14 +56,13 @@ function Header() {
 		}
 	];
 
-	if (getValues('isPublic')) {
+	if (!getValues('isPublic')) {
 		// site has yet to be published
 		// add publish button
 		menuItems.unshift({
 			label: 'הוצאה לאור',
 			Icon: () => '★',
-			path: '/',
-			Suffix: () => <Tooltip content="אחרי ההוצאה לאור - הדף יהיה נגיש למבקרים" className="is-flex is-is-align-items-center ms-2"><Help size="small" /></Tooltip>
+			path: '/'
 		});
 	} else {
 		// site is published
@@ -132,7 +129,7 @@ function Header() {
 	</>;
 }
 
-function MenuItem({ Icon, label, path, onClick, Suffix = ()=>null, ...props }) {
+function MenuItem({ Icon, label, path, onClick, ...props }) {
 
 	let Wrapper, direction;
 
@@ -157,7 +154,6 @@ function MenuItem({ Icon, label, path, onClick, Suffix = ()=>null, ...props }) {
 	return <Wrapper key={label} {...direction} className="navbar-item is-flex is-align-items-center is-clickable has-text-white px-4" {...props}>
 		<Icon />
 		<div className="icon-text ms-1">{label}</div>
-		<Suffix />
 	</Wrapper>;
 }
 
