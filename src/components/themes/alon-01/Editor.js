@@ -36,7 +36,7 @@ export default function Alon_01 () {
 				<TextInput
 					id="content.statement.author"
 					label="מחבר"
-					description='אם בחרת בציטוט למשפט המפתח, ניתן לציין את שם המצוטט'
+					description='אם בחרת בציטוט למשפט המפתח, אפשר לציין כאן את שם המצוטט.'
 					required={false}
 					maxLength={20} />
 			</div>
@@ -181,8 +181,8 @@ export default function Alon_01 () {
 
 					<TextInput
 						id={`${id}.ctaText`}
-						label="טקסט על הכפתור שלצד התיאור"
-						description="ביחרו צמד מילים שמביע את האופן שבו ניתן להנות מהשירות"
+						label="טקסט על כפתור הבחירה בשירות"
+						description='ביחרו צמד מילים שמביע את האופן שבו ניתן להנות מהשירות, למשל "הזמנה" או "הרשמה".'
 						maxLength={15} />
 
 				</>}

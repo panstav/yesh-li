@@ -12,7 +12,7 @@ export default function Onboarding() {
 		<Step title="פרטים כלליים">
 
 			<FullNameInput
-				description="יופיע בכותרת העמוד ובשורת זכויות היוצרים" />
+				description="יופיע בכותרת העמוד ובשורת זכויות היוצרים." />
 
 			<OccupationInput />
 

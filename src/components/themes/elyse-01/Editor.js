@@ -103,7 +103,7 @@ export default function Elyse_01 () {
 					<TextInput
 						id={`${id}.ctaText`}
 						label="טקסט על הכפתור שלצד התיאור"
-						description="ביחרו צמד מילים שמביע את האופן שבו ניתן להנות מהשירות"
+						description="ביחרו צמד מילים שמביע את האופן שבו ניתן להנות מהשירות."
 						maxLength={15} />
 
 				</>}
@@ -119,7 +119,7 @@ export default function Elyse_01 () {
 			<TextInput
 				id="content.submitText"
 				label="טקסט על כפתור שליחת הטופס"
-				description="המילים שיופיעו על גבי כפתור שבלחיצה עליו נשלח טופס הפניות"
+				description="המילים שיופיעו על גבי כפתור שבלחיצה עליו נשלח טופס הפניות."
 				maxLength={15} />
 		</Details>
 
