@@ -58,7 +58,7 @@ function Header() {
 		}
 	];
 
-	if (!getValues('isPublic')) {
+	if (getValues('isPublic')) {
 		// site has yet to be published
 		// add publish button
 		menuItems.unshift({

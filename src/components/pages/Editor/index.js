@@ -1,10 +1,12 @@
 import { navigate } from 'gatsby';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 
+import Modal, { useSuccessModal } from '@wrappers/Modal';
 import Loader from '@elements/Loader';
 import xhr from '@services/xhr';
+import snatchParameter from '@lib/snatch-parameter';
 
 import Header from './Header';
 import ThemeFields from './ThemeFields';
@@ -28,6 +30,11 @@ function EditorForm() {
 		defaultValues: () => xhr.getSiteData(siteId)
 	});
 
+	const [newPageModal, showNewPageModal] = useSuccessModal();
+	useEffect(() => {
+		if (snatchParameter('newPage')) showNewPageModal();
+	}, []);
+
 	if (!Object.keys(form.getValues()).length) return <Loader />;
 
 	// if the site has moved out to it's own domain, redirect to its editor page
@@ -38,18 +45,31 @@ function EditorForm() {
 	const fieldsContainerClassName = classNames('p-3', fieldsContainer);
 	const innerFieldsContainerClassName = classNames('has-strong-radius', innerFieldsContainer);
 
-	return <FormProvider {...form}>
-		<Header />
-		<div className='is-flex-desktop mt-2'>
-			<div className={fieldsContainerClassName}>
-				<div className={innerFieldsContainerClassName}>
-					<ThemeFields />
+	return <>
+
+		<FormProvider {...form}>
+			<Header />
+			<div className='is-flex-desktop mt-2'>
+				<div className={fieldsContainerClassName}>
+					<div className={innerFieldsContainerClassName}>
+						<ThemeFields />
+					</div>
+				</div>
+				<div className={previewContainerClassName}>
+					<Preview />
 				</div>
 			</div>
-			<div className={previewContainerClassName}>
-				<Preview />
+			<Footer />
+		</FormProvider>
+
+		<Modal {...newPageModal} render={() => <>
+			<p>העמוד שלך מוכן!</p>
+			<div className='is-size-6 has-text-start mt-4 mb-5'>
+				<p>במסך זה אפשר להעשיר את העמוד בפרטים ומאפיינים נוספים ותוך כדי לראות בתצוגה המקדימה את האופן בו הם מוצגים בעמוד.</p>
+				<p className='mt-3'>שימו לב: חלקים בעמוד שלך (כפתורים ושדות מסויימים) עלולים להראות בלתי פעילים בתצוגה המקדימה. כל אלה יפעלו בהתאם לאחר שתוציאו את העמוד האור.</p>
 			</div>
-		</div>
-		<Footer />
-	</FormProvider>;
+			<p className='has-text-weight-bold'>המון הצלחה!</p>
+		</>} />
+
+	</>;
 }

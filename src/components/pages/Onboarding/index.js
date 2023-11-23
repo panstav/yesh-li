@@ -119,7 +119,7 @@ export default function Onboarding () {
 			// save the jwt to localstorage
 			localDb.set('jwt', jwt);
 			// go to editor
-			navigate('/editor');
+			navigate('/editor?newPage=true');
 		});
 	}
 
