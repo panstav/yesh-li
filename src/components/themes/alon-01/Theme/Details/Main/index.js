@@ -60,7 +60,7 @@ const copy = {
 };
 
 export default function Main() {
-	const { title, slug, qrSvgPath, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
+	const { isPublic, title, slug, qrSvgPath, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
 
 	const [url, setUrl] = useState();
 	useEffect(() => {
@@ -82,10 +82,12 @@ export default function Main() {
 	});
 	const contactByForm = (interest) => showContactModal({ interest });
 
-	const [sharingModal, showSharingModal] = useModal({
-		qr: qrSvgPath
-	});
+	const [sharingModal, showSharingModal] = useModal({ qr: qrSvgPath });
+	const [sharingPublicOnlyModal, showSharingPublicOnlyModal] = useErrorModal();
 	const sharePage = () => {
+		// block sharing if the page is not public
+		if (!isPublic) return showSharingPublicOnlyModal();
+
 		if (!navigator.share) return showSharingModal();
 
 		navigator.share({
@@ -150,6 +152,7 @@ export default function Main() {
 		<Modal {...errorWhileSavingModal} render={() => 'שגיאת מערכת, נסו שוב מאוחר יותר.'} />
 
 		<Modal {...sharingModal} render={SharingModal} />
+		<Modal {...sharingPublicOnlyModal} render={() => 'שיתוף העמוד יתאפשר רק אחרי שתוציאו אותו לאור.'} />
 
 	</>;
 }
