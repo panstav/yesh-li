@@ -70,7 +70,7 @@ export default function CTA({ id }) {
 						<div className="is-flex-mobile is-justify-content-center is-align-items-baseline is-flex-gap-3">
 							<p>
 								<span className="is-size-4">₪</span>
-								<span className="is-size-2">560</span>
+								<span className="is-size-2">520</span>
 							</p>
 							<p className="is-size-4">/שנה</p>
 						</div>
@@ -87,7 +87,7 @@ export default function CTA({ id }) {
 			</div>
 			<p>אנחנו כרגע מקבלים תשלום רק ב-ביט. באופן הבא:</p>
 			<ol className="mt-2 mx-4">
-				<li>העבירו ₪560 למספר 054-229-6262</li>
+				<li>העבירו ₪520 למספר 054-229-6262</li>
 				<li>צרו קשר בוואטסאפ או בכתובת המייל <a href="mailto:hello@yesh.li" target="_blank" rel="noopener noreferrer">hello@yesh.li</a></li>
 				<li>נעדכן את החשבון שלכם עם מנוי השנתי והעמוד שלכם יהיה און-ליין</li>
 			</ol>
