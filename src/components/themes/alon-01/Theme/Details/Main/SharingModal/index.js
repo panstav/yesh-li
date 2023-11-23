@@ -10,9 +10,9 @@ import copyToClipboard from "@lib/copy-to-clipboard";
 import { topContainer } from "./sharing-modal.module.sass";
 
 export default function SharingModal () {
-	const { qrSvgPath, content: { fullName, occupation } } = useContext(PageContext);
+	const { qrSvgPath, slug, content: { fullName, occupation } } = useContext(PageContext);
 
-	const url = window.location.origin + window.location.pathname;
+	const url = `${window.location.origin}/${slug}`;
 
 	const [hasCopied, setHasCopied] = useState(false);
 
