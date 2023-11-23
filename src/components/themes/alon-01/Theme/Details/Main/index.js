@@ -83,8 +83,7 @@ export default function Main() {
 	const contactByForm = (interest) => showContactModal({ interest });
 
 	const [sharingModal, showSharingModal] = useModal({
-		qr: qrSvgPath,
-		url
+		qr: qrSvgPath
 	});
 	const sharePage = () => {
 		if (!navigator.share) return showSharingModal();

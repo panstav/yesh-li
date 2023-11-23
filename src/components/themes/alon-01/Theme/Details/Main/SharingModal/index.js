@@ -9,8 +9,10 @@ import copyToClipboard from "@lib/copy-to-clipboard";
 
 import { topContainer } from "./sharing-modal.module.sass";
 
-export default function SharingModal ({ qr, url }) {
-	const { content: { fullName, occupation } } = useContext(PageContext);
+export default function SharingModal ({ qr }) {
+	const { slug, content: { fullName, occupation } } = useContext(PageContext);
+
+	const url = `${window.location.origin}/${slug}`;
 
 	const [hasCopied, setHasCopied] = useState(false);
 
@@ -37,7 +39,9 @@ export default function SharingModal ({ qr, url }) {
 					</button>
 				</div>
 				<div className="control is-relative is-flex-grow-1">
-					<input className={inputClassName} type="text" value={hasCopied ? 'הקישור הועתק!' : url} readOnly />
+					{hasCopied
+						? <span className={inputClassName}>הקישור הועתק!</span>
+						: <input className={inputClassName} type="text" value={url} readOnly />}
 				</div>
 			</div>
 		</div>
