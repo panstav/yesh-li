@@ -6,7 +6,7 @@ export default {
 	descriptionDescription: 'תיאור קצת יותר מפורט של מכלול העשייה שלך',
 	about: 'אודות',
 	statement: 'משפט מפתח',
-	statementDescription: 'משפט או הצהרה קצרה של הערכים שלך',
+	statementDescription: 'הצהרת "אני מאמין" או ציטוט שנותן השראה לעשייה שלך.',
 	mainColor: 'צבע ראשי',
 	mainImage: "תמונה ראשית",
 	mainImageDescription: "תופיע גם כשמשתפים את העמוד ברשתות חברתיות, וואטסאפ וכו'",
