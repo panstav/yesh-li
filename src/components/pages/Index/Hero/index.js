@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import classNames from "classnames";
 
-import { AuthContext, copy } from "..";
+import { AuthContext, copy, topImageSrc } from "..";
 import { glow, heroContainer, titlesContainer, text3d, heroImageContainer, heroImage } from './index.module.sass';
 import { titleFont } from '../index.module.sass';
 
@@ -25,7 +25,7 @@ export default function Hero() {
 				<CTA />
 			</div>
 			<div className={heroImageContainerClassName}>
-				<img src="https://storage.googleapis.com/yeshli-www/assets/page-mockup-04.webp" className={heroImage} width="669" height="820" alt="דוגמה לעמוד במערכת יש.לי על גבי תצוגת סמארטפון" />
+				<img src={topImageSrc} className={heroImage} width="669" height="820" alt="דוגמה לעמוד במערכת יש.לי על גבי תצוגת סמארטפון" />
 			</div>
 		</div>
 	</div>;
