@@ -17,7 +17,10 @@ import { titleFont, footerGlow } from './index.module.sass';
 
 export const AuthContext = createContext();
 
-export const topImageSrc = "https://storage.googleapis.com/yeshli-www/assets/page-mockup-04.webp";
+export const topImageSrc = {
+	small: "https://storage.googleapis.com/yeshli-www/assets/page-mockup-04-small.webp",
+	regular: "https://storage.googleapis.com/yeshli-www/assets/page-mockup-04.webp"
+};
 
 export const copy = {
 	freeAndCommitmentFree: 'חינם וללא התחייבות'

@@ -25,7 +25,7 @@ export default function Hero() {
 				<CTA />
 			</div>
 			<div className={heroImageContainerClassName}>
-				<img src={topImageSrc} className={heroImage} width="669" height="820" alt="דוגמה לעמוד במערכת יש.לי על גבי תצוגת סמארטפון" />
+				<img srcSet={`${topImageSrc.small} 500w, ${topImageSrc.regular} 768w, ${topImageSrc.small} 1200w, ${topImageSrc.regular} 1400w`} className={heroImage} width="669" height="820" alt="דוגמה לעמוד במערכת יש.לי על גבי תצוגת סמארטפון" />
 			</div>
 		</div>
 	</div>;
