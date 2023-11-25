@@ -1,4 +1,5 @@
 import Section from "@wrappers/Section";
+
 import { SectionTitle } from ".";
 
 export default function WhosItFor () {
