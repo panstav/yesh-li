@@ -5,7 +5,7 @@ export default function GoogleAnalytics () {
 	if (!googleAnalyticsKey) return null;
 
 	return <>
-		<script async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsKey}`}></script>
+		<script async="" src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsKey}`}></script>
 		<script dangerouslySetInnerHTML={{
 			__html: `window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments)}
