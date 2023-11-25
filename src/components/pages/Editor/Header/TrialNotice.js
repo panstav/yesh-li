@@ -10,6 +10,7 @@ import xhr from "@services/xhr";
 import localDb from "@services/localDb";
 
 import { noticeClassName } from ".";
+import { reportConversion } from "@elements/GoogleAnalytics";
 
 export default function TrialNotice() {
 
@@ -65,6 +66,7 @@ export default function TrialNotice() {
 				const code = Object.values(data).join('');
 				const { isVerified } = await xhr.verifyEmailCode(code);
 				if (!isVerified) return showEmailVerificationFailedModal();
+				reportConversion('bPwnCNDS7PkYEL3xkrYp');
 				localDb.set('email-recently-verified', true);
 				window.location.reload();
 			});

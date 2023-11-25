@@ -15,3 +15,9 @@ export default function GoogleAnalytics () {
 			gtag('config', '${googleAnalyticsKey}');` }} />
 	</>;
 }
+
+export function reportConversion (conversionId) {
+	if (!googleAnalyticsKey) return null;
+
+	return gtag('event', 'conversion', { 'send_to': `AW-11119409341/${conversionId}` });
+}
