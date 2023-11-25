@@ -1,3 +1,5 @@
+import { Link } from "gatsby";
+
 import { Logo } from "@elements/Icon";
 import Section from "@wrappers/Section";
 
@@ -6,9 +8,9 @@ export const description = 'ב-יש.לי, מערכת הנגישה בכתובת h
 export default function PrivacyPolicy() {
 	return <>
 		<div className="has-background-primary has-text-centered pt-3 pb-1">
-			<a href="/">
+			<Link to="/">
 				<Logo className="has-text-white" style={{ width: '4rem' }} />
-			</a>
+			</Link>
 		</div>
 		<Section>
 			<div className="box content mb-6">

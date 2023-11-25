@@ -1,3 +1,4 @@
+import { Link } from "gatsby";
 import { createContext, useEffect, useState } from "react";
 import classNames from "classnames";
 
@@ -73,9 +74,9 @@ function Footer () {
 
 	return <>
 		<Section noTopMargin className="my-1">
-			<a href="/editor">התחברות</a>
+			<Link to="/editor">התחברות</Link>
 			<span className="has-text-weight-bold px-2" style={{ fontSize: '0.75em' }}>·</span>
-			<a href="/privacy-policy">מדיניות פרטיות</a>
+			<Link to="/privacy-policy">מדיניות פרטיות</Link>
 		</Section>
 		<footer className="is-relative" style={{ overflow: 'hidden' }}>
 			<div className={footerGlow} />

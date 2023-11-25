@@ -1,3 +1,4 @@
+import { Link } from "gatsby";
 import { useContext } from "react";
 import classNames from "classnames";
 
@@ -78,7 +79,7 @@ export default function CTA({ id }) {
 					</div>
 				</div>
 			</Section>}
-			{cta && <a href={href} className="button is-medium is-primary is-rounded mt-5" style={{ border: '1px solid white' }}>{cta}</a>}
+			{cta && <Link to={href} className="button is-medium is-primary is-rounded mt-5" style={{ border: '1px solid white' }}>{cta}</Link>}
 		</div>
 
 		<Modal {...paymentModal} render={() => <>
