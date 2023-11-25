@@ -15,7 +15,7 @@ export const Head = HeadFor({
 	title: "יש.לי • עולים לאוויר בקלות עם עמוד נחיתה מהמם שנותן ביצועים",
 	description: "פיתרון איכותי לשדרוג הנוכחות ברשת, מבלי ללמוד את הפרטים הטכניים של אתר אינטרנט, תהליך שלוקח שנים לאנשי המקצוע. המערכת מציעה פיתרון נוח, יעיל ומיידי שמאפשר לך להתקדם בפיתוח העסקי.",
 	featuredImage: "https://storage.googleapis.com/yeshli-www/assets/yeshli-home-featured-02.png",
-	mainColorHex: '00d1b2',
+	mainColorHex: '00856F',
 	hasAdvancedSeo: false,
 	children: <>
 		<GoogleAnalytics />

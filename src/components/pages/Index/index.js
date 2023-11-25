@@ -82,6 +82,6 @@ function Footer () {
 
 function EditorMock () {
 	return <Section noTopMargin isFullWidth className="is-flex is-justify-content-center">
-		<img src="https://storage.googleapis.com/yeshli-www/assets/editor-preview-mock-02.png" alt="מערכת ניהול התוכן ביש.לי עם תצוגה מקדימה שמתעדכנת תוך כדי הקלדה" width="1038" height="655" loading="lazy" />
+		<img src="https://storage.googleapis.com/yeshli-www/assets/editor-preview-mock-03.png" alt="מערכת ניהול התוכן ביש.לי עם תצוגה מקדימה שמתעדכנת תוך כדי הקלדה" width="1038" height="616" loading="lazy" />
 	</Section>;
 }

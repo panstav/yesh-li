@@ -5,7 +5,7 @@ export { default } from "@pages/Onboarding";
 
 export const Head = HeadFor({
 	title: "מתחילים • יש.לי",
-	mainColorHex: '00d1b2',
+	mainColorHex: '00856F',
 	isInternal: true,
 	children: <MicrosoftClarity />
 });
