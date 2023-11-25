@@ -36,12 +36,13 @@ function CTA () {
 
 	if (!role || role === 'GUEST') return <div>
 		<CtaButton href="/start">יצירת עמוד ב-יש.לי</CtaButton>
-		<p className="is-size-7 has-text-grey mt-2">{copy.freeAndCommitmentFree}</p>
+		<BeneathCTA>{copy.freeAndCommitmentFree}</BeneathCTA>
+		<p className="is-size-7 has-text-weight-bold mt-2"></p>
 	</div>;
 
 	if (role === 'TRIAL') return <div>
 		<CtaButton href="#purchase">הוצאה לאור של העמוד שלך</CtaButton>
-		<p className="is-size-7 has-text-grey mt-2">{copy.freeAndCommitmentFree}</p>
+		<BeneathCTA>{copy.freeAndCommitmentFree}</BeneathCTA>
 	</div>;
 
 	return <div>
@@ -50,4 +51,7 @@ function CTA () {
 }
 function CtaButton (props) {
 	return <a className="button is-primary is-rounded is-medium" style={{ border: '2px solid rgb(255 255 255 / 75%)' }} {...props} />;
+}
+function BeneathCTA (props) {
+	return <p className="is-size-7 has-text-weight-bold mt-2" {...props} />;
 }
