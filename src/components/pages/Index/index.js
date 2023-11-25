@@ -17,6 +17,7 @@ import { titleFont, footerGlow } from './index.module.sass';
 
 export const AuthContext = createContext();
 
+export const featuredImage = "https://storage.googleapis.com/yeshli-www/assets/yeshli-home-featured-02.png";
 export const topImageSrc = {
 	small: "https://storage.googleapis.com/yeshli-www/assets/page-mockup-05-small.webp",
 	regular: "https://storage.googleapis.com/yeshli-www/assets/page-mockup-04.webp"
@@ -70,14 +71,21 @@ function Auth ({ children }) {
 function Footer () {
 	const domainClassName = classNames("title is-3 is-flex-shrink-0 has-text-weight-normal pb-1 my-0", titleFont);
 
-	return <footer className="is-relative" style={{ overflow: 'hidden' }}>
-		<div className={footerGlow} />
-		<Section noTopMargin className="is-flex is-justify-content-space-between is-align-items-center has-text-centered py-3">
-			<div className="has-text-start" style={{ width: '8rem' }}>אתר שגדל איתך</div>
-			<div className={domainClassName}>יש.לי</div>
-			<div className="is-size-7 has-text-end" style={{ paddingTop: '0.1em', width: '8rem' }}>2019-{new Date().getFullYear()} ©</div>
+	return <>
+		<Section noTopMargin className="my-1">
+			<a href="/editor">התחברות</a>
+			<span className="has-text-weight-bold px-2" style={{ fontSize: '0.75em' }}>·</span>
+			<a href="/privacy-policy">מדיניות פרטיות</a>
 		</Section>
-	</footer>;
+		<footer className="is-relative" style={{ overflow: 'hidden' }}>
+			<div className={footerGlow} />
+			<Section noTopMargin className="is-flex is-justify-content-space-between is-align-items-center has-text-centered py-3">
+				<div className="has-text-start" style={{ width: '8rem' }}>אתר שגדל איתך</div>
+				<div className={domainClassName}>יש.לי</div>
+				<div className="is-size-7 has-text-end" style={{ paddingTop: '0.1em', width: '8rem' }}>2019-{new Date().getFullYear()} ©</div>
+			</Section>
+		</footer>
+	</>;
 }
 
 function EditorMock () {
