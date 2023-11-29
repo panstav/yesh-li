@@ -16,7 +16,6 @@ export const Head = HeadFor({
 	description: "פיתרון איכותי לשדרוג הנוכחות ברשת, מבלי ללמוד את הפרטים הטכניים של אתר אינטרנט, תהליך שלוקח שנים לאנשי המקצוע. המערכת מציעה פיתרון נוח, יעיל ומיידי שמאפשר לך להתקדם בפיתוח העסקי.",
 	featuredImage,
 	mainColorHex: '00856F',
-	hasAdvancedSeo: false,
 	children: <>
 		<GoogleAnalytics />
 		<MicrosoftClarity />

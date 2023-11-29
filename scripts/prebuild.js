@@ -47,17 +47,28 @@ const fullDomain = process.env.URL;
 			await fs.promises.writeFile(`./data/theme-${site.theme}/${site.slug}.json`, JSON.stringify(site));
 			await fs.promises.mkdir(`./static/${site.slug}`, { recursive: true });
 			await fs.promises.writeFile(`./static/${site.slug}/manifest.json`, JSON.stringify(getManifest(site)));
+
+			// create a manifest for the homepage as well
+			await fs.promises.mkdir(`./static/yeshli-homepage`, { recursive: true });
+			await fs.promises.writeFile(`./static/yeshli-homepage/manifest.json`, JSON.stringify(getManifest({
+				title: "יש.לי • עולים לאוויר בקלות עם עמוד נחיתה מהמם שנותן ביצועים",
+				shortName: "יש.לי",
+				mainColor: '#00856F',
+				id: 'yeshli-homepage',
+				slug: ''
+			})));
+
 		}), Promise.resolve());
 	}
 
 })();
 
-function getManifest({ title, slug, mainColor }) {
+function getManifest({ title, shortName = title, slug, id = slug, mainColor }) {
 	const pageShortUrl = `${fullDomain}${slug ? `/${slug}` : ''}`.slice(fullDomain.indexOf('://') + 3);
 	return {
-		"id": slug,
+		"id": id,
 		"name": title,
-		"short_name": title,
+		"short_name": shortName,
 		"start_url": `/${slug}`,
 		"display": "standalone",
 		"theme_color": mainColor,

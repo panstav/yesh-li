@@ -31,7 +31,9 @@ export default function Meta({
 	const pageTitle = title || siteTitle;
 	const pageDescription = normalizedDescription || siteDescription;
 	const pagePathname = siteUrl + pathname;
-	const pageShortUrl = pagePathname.slice(pagePathname.indexOf('://') + 3);
+	const pageShortUrl = ((shortUrl) => {
+		return `${shortUrl}${shortUrl.endsWith('/') ? '' : '/'}`;
+	})(pagePathname.slice(pagePathname.indexOf('://') + 3));
 
 	mainColorHex = mainColorHex || pallatte.getColor(mainColorName);
 
@@ -56,14 +58,14 @@ export default function Meta({
 			</>}
 
 			{(isRemote && hasAdvancedSeo) && <>
-				<link rel="manifest" href={`${pagePathname}/manifest.json`} />
+				<link rel="manifest" href={`${pageShortUrl}manifest.json`} />
 
 				<meta name="apple-mobile-web-app-title" content={siteTitle} />
 				<meta name="application-name" content={siteTitle} />
-				<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon.png`} />
-				<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-32x32.png`} />
-				<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-16x16.png`} />
-				<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon.ico`} />
+				<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}apple-touch-icon.png`} />
+				<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}favicon-32x32.png`} />
+				<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}favicon-16x16.png`} />
+				<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}favicon.ico`} />
 				<meta name="msapplication-TileColor" content={`#${mainColorHex}`} />
 				<meta name="theme-color" content={`#${mainColorHex}`} />
 			</>}
