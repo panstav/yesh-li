@@ -49,8 +49,7 @@ const fullDomain = process.env.URL;
 			await fs.promises.writeFile(`./static/${site.slug}/manifest.json`, JSON.stringify(getManifest(site)));
 
 			// create a manifest for the homepage as well
-			await fs.promises.mkdir(`./static/yeshli-homepage`, { recursive: true });
-			await fs.promises.writeFile(`./static/yeshli-homepage/manifest.json`, JSON.stringify(getManifest({
+			await fs.promises.writeFile(`./static/manifest.json`, JSON.stringify(getManifest({
 				title: "יש.לי • עולים לאוויר בקלות עם עמוד נחיתה מהמם שנותן ביצועים",
 				shortName: "יש.לי",
 				mainColor: '#00856F',
