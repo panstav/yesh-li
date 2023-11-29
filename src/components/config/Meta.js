@@ -58,7 +58,7 @@ export default function Meta({
 			</>}
 
 			{(isRemote && hasAdvancedSeo) && <>
-				<link rel="manifest" href={`${pageShortUrl}manifest.json`} />
+				<link rel="manifest" href={`${pagePathname.padEnd('/')}manifest.json`} />
 
 				<meta name="apple-mobile-web-app-title" content={siteTitle} />
 				<meta name="application-name" content={siteTitle} />
