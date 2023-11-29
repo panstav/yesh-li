@@ -64,6 +64,7 @@ export default function Onboarding () {
 					{introStep && <div className="content">
 						<p>בעוד מספר דקות - בתום שאלון זה - תעברו לתצוגה מקדימה של העמוד שיצרתם.</p>
 						<p>כמעט כל השדות הם חובה ואת כולם אפשר לשנות בקלות ובכל עת.</p>
+						<p>המידע שתוסיפו לעמוד שלכם משמש את העמוד שלכם בלבד. בעמוד ה<a href="/privacy-policy" target="_blank" rel="noopener noreferrer">מדיניות הפרטיות</a> שלנו תוכלו לקרוא בדיוק איך המערכת מתנהלת בכל הנוגע למידע שלכם.</p>
 						<CTA onClick={hideIntro}>
 							אחלה
 						</CTA>
