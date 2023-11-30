@@ -36,7 +36,7 @@ function CTA () {
 	const { role } = useContext(AuthContext);
 
 	if (!role || role === 'GUEST') return <div>
-		<CtaButton href="/start">יצירת עמוד ב-יש.לי</CtaButton>
+		<CtaButton href="/start">נסו כעת</CtaButton>
 		<BeneathCTA>{copy.freeAndCommitmentFree}</BeneathCTA>
 		<p className="is-size-7 has-text-weight-bold mt-2"></p>
 	</div>;
