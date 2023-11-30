@@ -1,5 +1,7 @@
 const fs = require('fs');
+const { Readable } = require('stream');
 
+const { SitemapStream, streamToPromise } = require('sitemap');
 const dotenv = require('dotenv');
 
 if (!process.env.GATSBY_API_URL) {
@@ -33,6 +35,14 @@ const fullDomain = process.env.URL;
 })();
 
 function saveAllSites(sites) {
+
+	const links = [
+		{ url: '/', changefreq: 'monthly', priority: 1 },
+		{ url: '/editor', changefreq: 'monthly', priority: 0.7 },
+		{ url: '/start', changefreq: 'monthly', priority: 0.7 },
+		{ url: '/privacy-policy', changefreq: 'monthly', priority: 0.7 }
+	].concat(sites.map(site => ({ url: `/${site.slug}`, changefreq: 'daily', priority: 1 })));
+
 	return sites.reduce((accu, site) => accu.then(async () => {
 
 		// save each site's data to a json file at /data/theme-{themeName}/{siteId}.json
@@ -50,13 +60,17 @@ function saveAllSites(sites) {
 			slug: ''
 		})));
 
-	}), Promise.resolve());
+	}), createSitemap(links));
 }
 
 async function saveRootSite(sites) {
 	// instance is running on a dedicated domain, the root page is the only page
 
 	const site = sites[0];
+
+	await createSitemap([
+		{ url: '/', changefreq: 'daily', priority: 1 }
+	]);
 
 	// save the site's data to a json file at /data/root.json
 	await fs.promises.writeFile('./data/root.json', JSON.stringify(sites[0]));
@@ -91,4 +105,11 @@ function getManifest({ title, shortName = title, slug, id = slug, mainColor }) {
 
 async function getGot() {
 	return (await import('got')).got;
+}
+
+async function createSitemap(items) {
+	const stream = new SitemapStream({ hostname: 'https:yesh.li' });
+	const sitemap = await streamToPromise(Readable.from(items).pipe(stream)).then((data) => data.toString());
+
+	return fs.promises.writeFile('./static/sitemap.xml', sitemap);
 }
