@@ -56,7 +56,7 @@ const productionOnlyPlugins = [
 	{
 		resolve: 'gatsby-plugin-robots-txt',
 		options: {
-			sitemap: `${siteUrl}/sitemap-index.xml`,
+			sitemap: `${siteUrl}/sitemap.xml`,
 			policy: [{ userAgent: '*', allow: '*' }]
 		}
 	}
