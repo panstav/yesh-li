@@ -58,7 +58,7 @@ export default function Meta({
 			</>}
 
 			{(isRemote && hasAdvancedSeo) && <>
-				<link rel="manifest" href={`${pagePathname.padEnd('/')}manifest.json`} />
+				<link rel="manifest" href={`${padEnd(pagePathname, '/')}manifest.json`} />
 
 				<meta name="apple-mobile-web-app-title" content={siteTitle} />
 				<meta name="application-name" content={siteTitle} />
@@ -108,4 +108,8 @@ export function HeadFor(arg) {
 
 export function CssVariables ({ mainColorName, mainColorHex }) {
 	return <style>{`:root { accent-color: var(--color-primary); ${pallatte.getVariables(mainColorName)} ${!mainColorName ? `--color-primary: #${mainColorHex};` : ''} }`}</style>;
+}
+
+function padEnd (str, char) {
+	return str.endsWith(char) ? str : `${str}${char}`;
 }
