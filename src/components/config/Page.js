@@ -11,7 +11,12 @@ export default function Page({ pageContext, background, children }) {
 }
 
 export function wrapPageElement({ element, props }) {
-	return createElement(Page, { ...element.type.config, ...props }, element);
+	return createElement(Page, {
+		// downstream props
+		...props,
+		// a reminiscence of the old code, required for shila's theme
+		...element.type.config,
+	}, element);
 }
 
 function Background({ background: url }) {
