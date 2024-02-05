@@ -128,10 +128,10 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 					<img ref={ref} srcSet={imageToFocus.srcSet} />
 				</div>
 				<div className='is-flex is-justify-content-space-evenly is-align-items-center mt-5'>
-					<div className='mx-auto' style={{ width: '6rem', height: '10rem', overflow: 'hidden' }}>
+					<div className='mx-auto has-radius' style={{ width: '6rem', height: '10rem', overflow: 'hidden', border: '0.25em solid var(--color-primary)' }}>
 						<img srcSet={imageToFocus.srcSet} style={{ objectFit: 'cover', width: '100%', height: '100%', objectPosition: position }} />
 					</div>
-					<div className='mx-auto' style={{ width: '10rem', height: '6rem', overflow: 'hidden' }}>
+					<div className='mx-auto has-radius' style={{ width: '10rem', height: '6rem', overflow: 'hidden', border: '0.25em solid var(--color-primary)' }}>
 						<img srcSet={imageToFocus.srcSet} style={{ objectFit: 'cover', width: '100%', height: '100%', objectPosition: position }} />
 					</div>
 				</div>
