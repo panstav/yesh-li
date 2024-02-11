@@ -1,3 +1,6 @@
+// a function that queries the URL for a specified search parameter and removes it from the URL
+// useful for avoiding ugly URLs when using query parameters for one-time use
+
 export default function snatchParameter(paramName) {
 
 	// Get the URLSearchParams
