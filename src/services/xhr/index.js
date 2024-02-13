@@ -7,7 +7,7 @@ export default {
 
 	// auth
 	getUserIdentity: () => get('user-identity'),
-	postEmailToLogin: ({ email }) => post('login-link', { email }),
+	postEmailToLogin: ({ email, rememberMe }) => post('login-link', { email, rememberMe }),
 	getLoginCodeVerification: (loginCode) => get(`login-code-verification?loginCode=${loginCode}`),
 	verifyEmail: (data) => post('email-verification', data),
 	verifyEmailCode: (code) => post('email-verification-code', { code }),
