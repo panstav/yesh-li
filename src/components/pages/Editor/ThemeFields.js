@@ -7,6 +7,8 @@ import Loader from '@elements/Loader';
 
 import xhr from '@services/xhr';
 import { fieldsMap } from '@themes/map';
+
+import { innerFieldsContainer, saveButtonContainer } from './index.module.sass';
 import { AuthContext } from '@pages/Editor/Auth';
 import copy from '@pages/Editor/copy';
 
@@ -42,8 +44,14 @@ export default function ThemeFields() {
 
 	return <>
 		<Suspense fallback={<Loader />}>
-			<FieldGroup />
-			<button onClick={submitForm} disabled={hasErrors || isLoading} title={hasErrors ? 'בעיות בעריכת העמוד מוצגות באדום' : ''} className={submitClassName}>{copy.submit}</button>
+			<div className={innerFieldsContainer}>
+				<FieldGroup />
+			</div>
+			<div className={saveButtonContainer}>
+				<button onClick={submitForm} disabled={hasErrors || isLoading} title={hasErrors ? 'בעיות בעריכת העמוד מוצגות באדום' : ''} className={submitClassName}>
+					{copy.submit}
+				</button>
+			</div>
 		</Suspense>
 
 		<Modal {...savedSuccessfullyModal} render={() => 'העמוד נשמר בהצלחה!'} />

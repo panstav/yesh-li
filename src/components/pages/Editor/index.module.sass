@@ -1,12 +1,14 @@
 @import @styles/common
 
 $windowHeight: calc(100vh - $navbar-height)
+$primary-very-light: #cbefdf
 
 .fieldsContainer
 	+desktop
 		min-width: min(40%, 27rem)
 		width: min-content
 		height: $windowHeight
+		background-color: $primary-very-light
 
 	.innerFieldsContainer
 		min-height: 10rem
@@ -27,14 +29,27 @@ $windowHeight: calc(100vh - $navbar-height)
 				background-color: $danger
 				color: white
 
+	.saveButtonContainer
+
+		padding-inline-start: $size-7
+
+		+touch
+			background-color: $primary-very-light
+			padding-inline-end: $size-7
+			padding-top: $size-5
+			padding-bottom: $size-7
+
+		button
+			+desktop
+				box-shadow: 0px 5px 50px 25px #ffffff
+
 details.details
 
-	border-bottom: 2px solid white
-
+	background-color: $primary-very-light
+	&:not([has-errors]):hover
+		background-color: #daf5e8
 	&[has-errors]
 		background-color: $danger-light
-	&:not([has-errors])
-		background-color: #cbefdf
 
 	summary
 		padding: $size-5

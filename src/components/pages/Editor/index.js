@@ -14,7 +14,7 @@ import Preview from './Preview';
 import Footer from './Footer';
 import Auth, { AuthContext } from './Auth';
 
-import { fieldsContainer, innerFieldsContainer, previewContainer } from './index.module.sass';
+import { fieldsContainer, previewContainer } from './index.module.sass';
 
 export default function Editor () {
 	return <Auth>
@@ -42,18 +42,15 @@ function EditorForm() {
 	if (redirect) return navigate(`${redirect}/editor`, { replace: true });
 
 	const previewContainerClassName = classNames('p-3', previewContainer);
-	const fieldsContainerClassName = classNames('p-3', fieldsContainer);
-	const innerFieldsContainerClassName = classNames('has-strong-radius', innerFieldsContainer);
+	const fieldsContainerClassName = classNames('is-flex is-flex-direction-column is-justify-content-space-between pb-3', fieldsContainer);
 
 	return <>
 
 		<FormProvider {...form}>
 			<Header />
-			<div className='is-flex-desktop mt-2'>
+			<div className='is-flex-desktop'>
 				<div className={fieldsContainerClassName}>
-					<div className={innerFieldsContainerClassName}>
-						<ThemeFields />
-					</div>
+					<ThemeFields />
 				</div>
 				<div className={previewContainerClassName}>
 					<Preview />
