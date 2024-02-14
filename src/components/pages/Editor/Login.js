@@ -17,8 +17,10 @@ export default function Login() {
 
 	const form = useForm();
 	const [isLoading, setIsLoading] = useState(false);
+	const [isTried, setIsTried] = useState(false);
 
 	const [postEmailToLogin, isSuccess, isError] = useFetch(async (data) => {
+		setIsTried(true);
 		setIsLoading(true);
 		return xhr.postEmailToLogin(data)
 			.then(() => setIsLoading(false));
@@ -49,7 +51,7 @@ export default function Login() {
 								label="זוכר אותי"
 								besideLabel={<Tooltip content="אם זהו מכשיר פרטי אפשר להשאר מחוברים ליותר זמן" className="is-flex is-is-align-items-center ms-2"><Help size="small" /></Tooltip>} />
 
-							<button className={submitClassName}>שלח לי לינק התחברות</button>
+							<button className={submitClassName}>שלח לי {isTried ? 'עוד ' : ''}לינק התחברות</button>
 							{isError && <div className="notification has-text-centered has-background-warning-light p-4">שגיאת מערכת, נסו שוב מאוחר יותר.</div>}
 							{isSuccess && <div className="notification has-text-centered has-background-success-light p-4">יש! לינק התחברות נשלח בהצלחה ל- <span className='has-text-weight-bold'>{form.getValues('email')}</span></div>}
 						</form>
