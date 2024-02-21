@@ -1,11 +1,12 @@
 import ContentPage from "@elements/ContentPage";
+import LastUpdated from "@elements/LastUpdated";
 
 export const description = 'ב-יש.לי, מערכת הנגישה בכתובת http://yesh.li, אנחנו מתייחסים לנושאים כמו אבטחה, פרטיות ושקיפות באותו אופן שבו אנחנו מתייחסים לשאר ההיבטים של המערכת ופועלים לשמר, לתחזק ולשדרג אותם בכל הזדמנות.';
 
 export default function PrivacyPolicy() {
 	return <ContentPage>
 
-		<p className="help"><span className="has-text-grey-light">עידכון אחרון:</span> 29/11/23</p>
+		<LastUpdated date={new Date('2023-11-29')} />
 
 		<h1 className="mt-0">מדיניות פרטיות</h1>
 
