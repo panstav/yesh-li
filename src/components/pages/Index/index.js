@@ -74,9 +74,9 @@ function Footer () {
 
 	return <>
 		<Section noTopMargin className="my-1">
-			<Link to="/editor">התחברות</Link>
-			<span className="has-text-weight-bold px-2" style={{ fontSize: '0.75em' }}>·</span>
-			<Link to="/privacy-policy">מדיניות פרטיות</Link>
+			<BottomLink dotPrefix={false} href="/editor" label="התחברות" />
+			<BottomLink href="/terms-of-use" label="תנאי שימוש" />
+			<BottomLink href="/privacy-policy" label="מדיניות פרטיות" />
 		</Section>
 		<footer className="is-relative" style={{ overflow: 'hidden' }}>
 			<div className={footerGlow} />
@@ -86,6 +86,13 @@ function Footer () {
 				<div className="is-size-7 has-text-end" style={{ paddingTop: '0.1em', width: '8rem' }}>2019-{new Date().getFullYear()} ©</div>
 			</Section>
 		</footer>
+	</>;
+}
+
+function BottomLink ({ dotPrefix = true, href, label }) {
+	return <>
+		{dotPrefix && <span className="has-text-weight-bold px-2" style={{ fontSize: '0.75em' }}>·</span>}
+		<Link to={href}>{label}</Link>
 	</>;
 }
 

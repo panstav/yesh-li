@@ -7,7 +7,7 @@ export const description = 'ב-יש.לי, מערכת הנגישה בכתובת h
 export default function PrivacyPolicy() {
 	return <ContentPage>
 
-		<LastUpdated date={new Date('2023-11-29')} />
+		<LastUpdated date={new Date('2024-02-21')} />
 
 		<h1 className="mt-0">מדיניות פרטיות</h1>
 
