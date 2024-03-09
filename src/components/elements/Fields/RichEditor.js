@@ -9,7 +9,7 @@ import copy from '@pages/Editor/copy';
 
 let Quill;
 
-export default function RichEditor({ id, label, placeholder, maxLength }) {
+export default function RichEditor({ id, label, placeholder, maxLength, withLink }) {
 	import('quill/dist/quill.core.css');
 	import('quill/dist/quill.snow.css');
 
@@ -39,12 +39,14 @@ export default function RichEditor({ id, label, placeholder, maxLength }) {
 		const value = getValues(id);
 		const bounds = `[data-id="${editorMountElemId}"]`;
 
+		const link = withLink ? ['link'] : [];
+
 		editor = new Quill.default(bounds, {
 			bounds,
 			modules: {
 				toolbar: [
 					['strike', 'underline', 'italic', 'bold'],
-					[{ 'color': [] }],
+					[...link, { 'color': [] }],
 					['clean']
 				]
 			},
