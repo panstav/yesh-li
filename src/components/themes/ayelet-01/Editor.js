@@ -70,7 +70,7 @@ export default function Ayelet_01() {
 				singleName="חדר"
 				minLength="1"
 				emptyItem={{
-					name: 'חדר אחר',
+					name: '',
 					persons: 1,
 					totalPrice: 1000
 				}}>
