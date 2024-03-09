@@ -43,7 +43,9 @@ function Header() {
 		setIsEmailRecentlyVerified(localDb.get('email-recently-verified'));
 	}, []);
 
-	const spreadSheetAddress = `https://docs.google.com/spreadsheets/d/${getValues('leadsTarget.address') }`;
+	const leadsTarget = getValues('leadsTarget');
+	const isSpreadSheetAddress = leadsTarget.type === 'spreadsheet';
+	const spreadSheetAddress = `https://docs.google.com/spreadsheets/d/${leadsTarget.address }`;
 
 	const menuItems = [
 		{
@@ -110,9 +112,9 @@ function Header() {
 			</div>
 
 			<div className={menuClasses}>
-				<div className="navbar-start is-flex-grow-1">
+				{isSpreadSheetAddress && <div className="navbar-start is-flex-grow-1">
 					<MenuItem label="גיליון הפניות שלי" path={spreadSheetAddress} Icon={Sheet} />
-				</div>
+				</div>}
 				<div className="navbar-end">
 					{menuItems.map(MenuItem)}
 				</div>
