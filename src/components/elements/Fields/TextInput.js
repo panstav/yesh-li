@@ -10,7 +10,11 @@ export default function TextInput({ id, label, labelClassName: labelClasses, typ
 	const { register, getFieldState, formState } = useFormContext();
 	const { error } = getFieldState(id, formState);
 
-	const valueAs = (val) => setValueAs(cleanUGT(val));
+	const valueAs = (val) => {
+		if (type === 'number') return setValueAs(val);
+		return setValueAs(cleanUGT(val));
+	};
+
 	const labelClassName = classNames('label', labelClasses);
 	const inputClassName = classNames('input', isSmall && 'is-small');
 
@@ -59,6 +63,12 @@ export function EmailInput(props) {
 	return <TextInput
 		type="email"
 		pattern={{ value: /\S+@\S+\.\S+/, message: copy.invalidEmail }}
+		{...props} />;
+}
+
+export function NumberInput(props) {
+	return <TextInput
+		type="number"
 		{...props} />;
 }
 
