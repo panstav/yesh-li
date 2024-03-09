@@ -37,8 +37,10 @@ export default function RichEditor({ id, label, placeholder, maxLength }) {
 		if (editor || !isModuleLoaded) return;
 
 		const value = getValues(id);
+		const bounds = `[data-id="${editorMountElemId}"]`;
 
-		editor = new Quill.default(`[data-id="${editorMountElemId}"]`, {
+		editor = new Quill.default(bounds, {
+			bounds,
 			modules: {
 				toolbar: [
 					['strike', 'underline', 'italic', 'bold'],
