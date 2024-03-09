@@ -2,7 +2,8 @@ import { lazy } from 'react';
 
 const mapped = [
 	'alon-01',
-	'elyse-01'
+	'elyse-01',
+	'ayelet-01'
 ];
 
 export const defaultTheme = 'alon-01';

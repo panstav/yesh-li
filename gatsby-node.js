@@ -18,7 +18,6 @@ exports.createPages = async ({ actions }) => {
 		createRootSite();
 	} else {
 		createMultiSite();
-		createLegacySites();
 	}
 
 	function createMultiSite () {
@@ -70,13 +69,6 @@ exports.createPages = async ({ actions }) => {
 			path: '/',
 			component: require.resolve(`${__dirname}/src/themes/${siteData.theme}.js`),
 			context: siteData
-		});
-	}
-
-	function createLegacySites () {
-		actions.createPage({
-			path: '/from-junk-to-magic',
-			component: require.resolve(`${__dirname}/src/components/pages/FromJunkToMagic/index.js`)
 		});
 	}
 

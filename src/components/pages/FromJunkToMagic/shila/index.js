@@ -1,9 +1,0 @@
-export { default as Hero } from "./Hero";
-export { default as Description } from "./Description";
-export { default as Delimiter } from "./Delimiter";
-export { default as Guides } from "./Guides";
-export { default as WhosThisFor } from "./WhosThisFor";
-export { default as Signup } from './Signup';
-export { default as Gallery } from './Gallery';
-export { default as Footer } from './Footer';
-export { default as Section } from './Section';
