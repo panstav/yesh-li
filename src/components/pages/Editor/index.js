@@ -11,7 +11,7 @@ import snatchParameter from '@lib/snatch-parameter';
 import Header from './Header';
 import ThemeFields from './ThemeFields';
 import Preview from './Preview';
-import Footer from './Footer';
+// import Footer from './Footer';
 import Auth, { AuthContext } from './Auth';
 
 import { fieldsContainer, previewContainer } from './index.module.sass';
@@ -41,8 +41,7 @@ function EditorForm() {
 	const redirect = form.getValues().redirect;
 	if (redirect) return navigate(`${redirect}/editor`, { replace: true });
 
-	const previewContainerClassName = classNames('p-3', previewContainer);
-	const fieldsContainerClassName = classNames('is-flex is-flex-direction-column is-justify-content-space-between pb-3', fieldsContainer);
+	const fieldsContainerClassName = classNames('is-flex is-flex-direction-column is-justify-content-space-between', fieldsContainer);
 
 	return <>
 
@@ -52,11 +51,11 @@ function EditorForm() {
 				<div className={fieldsContainerClassName}>
 					<ThemeFields />
 				</div>
-				<div className={previewContainerClassName}>
+				<div className={previewContainer}>
 					<Preview />
 				</div>
 			</div>
-			<Footer />
+			{/* <Footer /> */}
 		</FormProvider>
 
 		<Modal {...newPageModal} render={() => <>

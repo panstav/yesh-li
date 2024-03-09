@@ -1,6 +1,6 @@
 @import @styles/common
 
-$windowHeight: calc(100vh - $navbar-height)
+$windowHeight: calc(100vh - $navbar-height - $size-7)
 $primary-very-light: #cbefdf
 
 .fieldsContainer
@@ -8,17 +8,28 @@ $primary-very-light: #cbefdf
 		min-width: min(40%, 27rem)
 		width: min-content
 		height: $windowHeight
-		background-color: $primary-very-light
 
 	.innerFieldsContainer
 		min-height: 10rem
 		overflow-y: auto
 		max-height: 100%
+		padding: $size-7 $size-8 0 $size-7
+		+desktop
+			padding-inline-start: $size-6
+
+	details.details
+		+has-mid-radius
+		margin-bottom: $size-7
+
+	.compound-field, [class*="select"] select, input[class*="textarea"], input[class*="input"], button[class*="button"], [class*="ql-toolbar"][class*="ql-snow"]
+		border-color: #a5d7cf
 
 	.compound-field
+		+has-radius
 		padding: $size-8
-		border: 2px solid white
-		border-radius: $radius
+		border-width: 2px
+		border-style: solid
+		background-color: rgba($primary, 0.1)
 
 		// extendeing bulma's .field
 		&:not(:last-child)
@@ -29,14 +40,19 @@ $primary-very-light: #cbefdf
 				background-color: $danger
 				color: white
 
+	[class*="label"]
+		font-size: unset
+		font-weight: unset
+		&:not(:last-child)
+			margin-bottom: $size-9
+
 	.saveButtonContainer
+		margin-inline-start: $size-8
 
 		+touch
-			background-color: $primary-very-light
-			padding-inline-start: $size-7
 			padding-inline-end: $size-7
 			padding-top: $size-5
-			padding-bottom: $size-7
+			padding-bottom: $size-5
 
 		button
 			+desktop
@@ -44,31 +60,25 @@ $primary-very-light: #cbefdf
 
 details.details
 
-	background-color: $primary-very-light
-	&:not([has-errors]):hover
-		background-color: #daf5e8
+	background-color: #dff7f3
 	&[has-errors]
 		background-color: $danger-light
 
 	summary
-		padding: $size-5
+		padding: $size-8 $size-7
 		font-weight: bold
-		font-size: calc($size-6 + 0.2rem)
 
 		&:after
-			inset-inline-end: $size-3
+			inset-inline-end: $size-6
 			font-size: 0.5rem
+			margin-top: -$size-9$size-6
 
 	.inner-container
 		box-sizing: border-box
 		padding: $size-8
-		padding-right: $size-8
-		padding-left: $size-8
+		padding-right: $size-7
+		padding-left: $size-7
 		padding-bottom: $size-5
-		+desktop
-			padding-top: $size-6
-			padding-right: $size-5
-			padding-left: $size-5
 
 .richTextContainer
 
@@ -100,10 +110,19 @@ details.details
 		color: white
 
 .previewContainer
+	padding: $size-7 $size-8 $size-7 $size-7
 	width: 100%
 	height: $windowHeight
+	+desktop
+		padding-bottom: 0
+
+	[class*="iframe-container"]
+		+has-mid-radius
+		border: 2px solid $primary
 
 .imagePreviewContainer
+	background-color: white
+
 	&:hover
 		img
 			opacity: 0.1

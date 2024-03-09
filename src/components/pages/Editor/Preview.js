@@ -32,7 +32,7 @@ function Preview(props) {
 
 	const injection = `<!DOCTYPE html><html dir="rtl" lang="he"><head>${interactionBlocker}${styles}</head><body><div id="mountTarget"></div></body></html>`;
 
-	return <div className='has-strong-radius is-relative' style={{ height: '100%', border: '3px solid var(--color-primary)' }}>
+	return <div className='iframe-container is-relative' style={{ height: '100%' }}>
 		<Frame initialContent={injection} mountTarget='#mountTarget' style={{ width: '100%', height: '100%' }}><>
 			{props.hasErrors && <p className="has-background-danger has-text-centered has-text-white has-text-weight-bold py-2" style={{ position: 'fixed', top: '0', right: '0', left: '0', zIndex: '1000' }}>התצוגה המקדימה אינה מתעדכנת כאשר יש בעיות בעריכת העמוד</p>}
 			<CssVariables mainColorName={props.mainColor} />
