@@ -20,12 +20,10 @@ div, section
 .is-overlay
 	+overlay
 
-.has-radius, .has-strong-radius
-	overflow: hidden
 .has-radius
-	border-radius: $radius
+	@include has-radius
 .has-strong-radius
-	border-radius: 1rem
+	@include has-strong-radius
 
 .is-hidden-tiny
 	display: none
