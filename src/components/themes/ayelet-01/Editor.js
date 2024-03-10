@@ -103,6 +103,7 @@ export default function Ayelet_01() {
 				{(id) => <>
 					<div className="block">
 						<ImageInput
+							sizes={[850]}
 							isCompoundField={false}
 							hasNoFocus
 							id={id} />
@@ -136,13 +137,14 @@ export default function Ayelet_01() {
 						id={`${id}.name`}
 						label="שם"
 						maxLength={30} />
+					<ImageInput
+						id={`${id}.image`}
+						hasNoFocus
+						sizes={[200]} />
 					<TextArea
 						id={`${id}.description`}
 						label="תיאור"
 						maxLength={250} />
-					<ImageInput
-						id={`${id}.image`}
-						sizes={[200]} />
 				</>}
 			</Repeater>
 		</Details>
