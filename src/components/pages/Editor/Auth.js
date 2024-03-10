@@ -9,6 +9,8 @@ import Login from './Login';
 
 import './index.sass';
 
+const siteId = process.env.SITEID_TO_EDIT;
+
 const roles = {
 	GUEST: 'GUEST',
 	EDITOR: 'EDITOR',
@@ -47,7 +49,8 @@ export default function Auth({ children }) {
 	// user is neither logged in nor is trying to, start the login process
 	if (user.role === roles.GUEST) return <Login />;
 
-	user.siteId = user.sites[0];
+	user.siteId = siteId || user.sites[0];
+
 	// user is logged in, render the editor
 	return <AuthContext.Provider value={user}>
 		{children}
