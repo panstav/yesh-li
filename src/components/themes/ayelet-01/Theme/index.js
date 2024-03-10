@@ -54,12 +54,17 @@ function splitGalleryItemsToRows(arr, perRow) {
 	const rows = [];
 	for (let i = 0; i < arr.length; i++) {
 
-		if (!rows.length) rows.push([arr[i]]);
-		else if (rows[rows.length - 1].reduce((accu, item) => accu + Number(item.size), 0) >= perRow) {
-			rows.push([arr[i]]);
-		} else {
-			rows[rows.length - 1].push(arr[i]);
-		}
+		const iteratedItem = arr[i];
+
+		// if it's the first item, create a new row
+		if (!rows.length) rows.push([iteratedItem]);
+
+		// if the current row is full, create a new row
+		else if (rows[rows.length - 1].reduce((accu, allocatedItem) => accu + Number(allocatedItem.size), 0) + Number(iteratedItem.size) > perRow) {
+			rows.push([iteratedItem]);
+
+		// otherwise, add the item to the current row
+		} else rows[rows.length - 1].push(iteratedItem);
 	}
 
 	return rows;
