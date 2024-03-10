@@ -10,7 +10,7 @@ export default function Gallery() {
 
 			return <div key={slideRow[0].srcSet} className="is-flex is-flex-wrap-wrap" style={{ gap: '1rem' }}>
 				{slideRow.map((slide) => {
-					slide.className = slide.size === 1 ? 'is-flex-grow-1' : 'is-flex-grow-2';
+					slide.className = slide.size === '1' ? 'is-flex-grow-1' : 'is-flex-grow-2';
 					return <GalleryItem key={slide.srcSet} {...slide} />;
 				})}
 			</div>;
