@@ -20,6 +20,17 @@
 summary
 	@extend .is-clickable
 
+.buttons.has-addons .button
+	border-radius: 0
+	&:first-child
+		&.is-small:not(.is-rounded)
+			border-start-start-radius: 2px
+			border-end-start-radius: 2px
+	&:last-child
+		&.is-small:not(.is-rounded)
+			border-start-end-radius: 2px
+			border-end-end-radius: 2px
+
 .reset-anchors
 	@include reset-anchors
 
