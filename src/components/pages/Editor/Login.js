@@ -12,7 +12,6 @@ import Help from '@elements/Help';
 import xhr from '@services/xhr';
 import useFetch from '@hooks/use-fetch';
 
-
 export default function Login() {
 
 	const form = useForm();
@@ -27,6 +26,9 @@ export default function Login() {
 	}, form);
 
 	const submitClassName = classNames("button block is-primary is-justify-content-center is-fullwidth has-text-white has-text-weight-bold mt-4", isLoading && 'is-loading');
+
+	const emailAddress = form.getValues('email');
+	const providerUrl = emailAddress && `https://${emailAddress.split('@')[1]}`;
 
 	return <>
 		<Spacer />
@@ -53,7 +55,7 @@ export default function Login() {
 
 							<button className={submitClassName}>שלח לי {isTried ? 'עוד ' : ''}לינק התחברות</button>
 							{isError && <div className="notification has-text-centered has-background-warning-light p-4">שגיאת מערכת, נסו שוב מאוחר יותר.</div>}
-							{isSuccess && <div className="notification has-text-centered has-background-success-light p-4">יש! לינק התחברות נשלח בהצלחה ל- <span className='has-text-weight-bold'>{form.getValues('email')}</span></div>}
+							{isSuccess && <div className="notification has-text-centered has-background-success-light p-4">יש! לינק התחברות נשלח בהצלחה ל- <a href={providerUrl} className='has-text-weight-bold'>{form.getValues('email')}</a></div>}
 						</form>
 					</FormProvider>
 				</div>
