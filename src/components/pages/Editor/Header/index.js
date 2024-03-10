@@ -13,6 +13,8 @@ import TrialNotice from './TrialNotice';
 import SlugChoice from './SlugChoice';
 import { AuthContext } from '@pages/Editor/Auth';
 
+import { eyeIcon } from './index.module.sass';
+
 export const noticeClassName = 'py-2';
 
 export default memo(Header);
@@ -50,7 +52,7 @@ function Header() {
 	const menuItems = [
 		{
 			label: 'יציאה',
-			Icon: Logout,
+			Icon: () => <Logout className="w-1-touch" />,
 			onClick: () => {
 				localDb.clear();
 				window.location.reload();
@@ -63,7 +65,7 @@ function Header() {
 		// add publish button
 		menuItems.unshift({
 			label: 'הוצאה לאור',
-			Icon: () => <span style={{ fontSize: '1.7rem' }}>★</span>,
+			Icon: () => <span className='w-1-touch' style={{ fontSize: '1.7rem' }}>★</span>,
 			path: '/'
 		});
 	} else {
@@ -73,14 +75,14 @@ function Header() {
 			// add slug button
 			menuItems.unshift({
 				label: 'בחירת כתובת',
-				Icon: () => <span className='is-size-7 has-text-weight-bold me-1' style={{ lineHeight: 1 }}>www</span>,
+				Icon: () => <span className='is-size-7 has-text-weight-bold me-1 w-1-touch' style={{ lineHeight: 1 }}>www</span>,
 				onClick: () => showSlugModal()
 			});
 		} else {
 			// site is published and has a slug
 			menuItems.unshift({
 				label: 'מעבר לעמוד',
-				Icon: () => <Eye style={{ width: '1.3rem' }} />,
+				Icon: () => <Eye className={eyeIcon} />,
 				path: `/${getValues('slug')}`
 			});
 		}
@@ -113,7 +115,7 @@ function Header() {
 
 			<div className={menuClasses}>
 				{isSpreadSheetAddress && <div className="navbar-start is-flex-grow-1">
-					<MenuItem label="גיליון הפניות שלי" path={spreadSheetAddress} Icon={Sheet} />
+					<MenuItem label="גיליון הפניות שלי" path={spreadSheetAddress} Icon={() => <Sheet className="w-1-touch" />} />
 				</div>}
 				<div className="navbar-end">
 					{menuItems.map(MenuItem)}
