@@ -17,6 +17,9 @@ const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 const acceptedTypes = allowedTypes.join(',').replaceAll('image/', '.');
 
 export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true, onChange, required = true }) {
+
+	if (!sizes) throw new Error('ImageInput component requires a "sizes" prop');
+
 	const { register, setValue, getValues, getFieldState, formState } = useFormContext();
 
 	const [supportedFileTyesModal, showSupportedFileTyesModal] = useErrorModal();
