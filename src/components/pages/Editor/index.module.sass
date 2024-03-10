@@ -26,14 +26,14 @@ $primary-very-light: #cbefdf
 
 	.compound-field
 		+has-radius
-		padding: $size-8
+		padding: $size-7
 		border-width: 2px
 		border-style: solid
-		background-color: rgba($primary, 0.1)
+		background-color: rgba($primary, 0.05)
 
 		// extendeing bulma's .field
 		&:not(:last-child)
-			margin-bottom: 1.5rem
+			margin-bottom: $size-75
 
 		.removeButton
 			&:hover
@@ -45,6 +45,7 @@ $primary-very-light: #cbefdf
 		font-weight: unset
 		&:not(:last-child)
 			margin-bottom: $size-9
+			margin-inline-start: 1px
 
 	.saveButtonContainer
 		margin-inline-start: $size-8
@@ -60,12 +61,12 @@ $primary-very-light: #cbefdf
 
 details.details
 
-	background-color: #dff7f3
+	background-color: #e9f1f0
 	&[has-errors]
 		background-color: $danger-light
 
 	summary
-		padding: $size-8 $size-7
+		padding: $size-8 calc($size-7 + 1px)
 		font-weight: bold
 
 		&:after
@@ -78,7 +79,7 @@ details.details
 		padding: $size-8
 		padding-right: $size-7
 		padding-left: $size-7
-		padding-bottom: $size-5
+		padding-bottom: 0.85rem
 
 .richTextContainer
 

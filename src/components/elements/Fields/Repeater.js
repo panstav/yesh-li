@@ -16,13 +16,12 @@ export default function Repeater({ arrayId, singleName, emptyItem, minLength, ma
 	const cantRemove = (minLength && fields.length == minLength) ? `מינימום ${minLength} פריטים` : '';
 	const cantAdd = maxLength && fields.length == maxLength ? `מקסימום ${maxLength} פריטים` : '';
 
-	const compoundFieldClassName = classNames(compoundField, 'mb-5');
 	const removeButtonClassName = classNames(removeButton, 'button is-small has-text-weight-bold');
 	const addButtonClassName = classNames(addButton, 'button is-fullwidth has-text-weight-bold');
 
 	return <>
 		{fields.map((field, index) => {
-			return <div className={compoundFieldClassName} key={field.id}>
+			return <div className={compoundField} key={field.id}>
 
 				<div className="is-flex is-justify-content-space-between is-align-items-center mb-4">
 					<h3 className="is-size-5 m-0">{singleName} #{index + 1}</h3>
