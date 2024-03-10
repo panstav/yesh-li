@@ -101,10 +101,12 @@ export default function Ayelet_01() {
 					srcSet: "https://storage.googleapis.com/yeshli-www/assets/placeholder-250x250-01.jpg"
 				}}>
 				{(id) => <>
-					<ImageInput
-						isCompoundField={false}
-						hasNoFocus
-						id={id} />
+					<div className="block">
+						<ImageInput
+							isCompoundField={false}
+							hasNoFocus
+							id={id} />
+					</div>
 					<Select
 						id={`${id}.size`}
 						label="גודל"
