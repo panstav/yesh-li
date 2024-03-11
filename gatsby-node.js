@@ -14,6 +14,8 @@ exports.createPages = async ({ actions }) => {
 	// at the package root folder, there's a data folder and inside it, if there's a root.json file, we'll use it as the root page
 	const rootSiteFilePath = `${__dirname}/data/root.json`;
 
+	cleanPagesDirectory();
+
 	if (fs.existsSync(rootSiteFilePath)) {
 		createRootSite();
 	} else {
@@ -91,3 +93,15 @@ exports.createPages = async ({ actions }) => {
 	}
 
 };
+
+function cleanPagesDirectory() {
+
+	// remove all files from the pages directory
+	fs.readdirSync(`./src/pages`).forEach((file) => {
+		// don't delete .gitignore file
+		if (file === '.gitignore') return;
+
+		// delete all other files
+		fs.unlinkSync(`./src/pages/${file}`);
+	});
+}
