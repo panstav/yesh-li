@@ -22,6 +22,16 @@ exports.createPages = async ({ actions }) => {
 	}
 
 	function createMultiSite () {
+
+		// we're on a multi-tenant site, so we'll create its pages along with the global ones
+		// gatsby will do the heavy lifting, we just choose the specific multiSite
+		fs.readdirSync(`./src/pages-shared`).forEach((file) => {
+			fs.copyFileSync(`./src/pages-shared/${file}`, `./src/pages/${file}`);
+		});
+		fs.readdirSync(`./src/pages-yeshli`).forEach((file) => {
+			fs.copyFileSync(`./src/pages-yeshli/${file}`, `./src/pages/${file}`);
+		});
+
 		// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 		const sitesDirectory = `${__dirname}/data`;
 

@@ -7,7 +7,7 @@
     "start-from-scratch": "npm run clean && gatsby develop",
     "start": "gatsby develop",
     "prebuild": "node scripts/prebuild.js",
-    "clean": "gatsby clean",
+    "clean": "gatsby clean && rm -rf src/pages/*!(.gitignore)",
     "lint": "eslint .",
     "build-debug": "npm run clean && npm run build && gatsby serve",
     "build": "gatsby build",
