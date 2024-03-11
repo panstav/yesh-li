@@ -34,14 +34,12 @@ const fullDomain = process.env.URL;
 
 })();
 
-function saveAllSites(sites) {
+async function saveAllSites(sites) {
 
-	const links = [
-		{ url: '/', changefreq: 'monthly', priority: 1 },
-		{ url: '/editor', changefreq: 'monthly', priority: 0.7 },
-		{ url: '/start', changefreq: 'monthly', priority: 0.7 },
-		{ url: '/privacy-policy', changefreq: 'monthly', priority: 0.7 }
-	].concat(sites.map(site => ({ url: `/${site.slug}`, changefreq: 'daily', priority: 1 })));
+	const links = (await fs.promises.readdir('./src/pages-yeshli')).map((pageFileName) => {
+		if (pageFileName === 'index.js') return { url: '/', changefreq: 'monthly', priority: 1 };
+		return { url: `/${pageFileName.replace('.js', '')}`, changefreq: 'monthly', priority: 0.7 };
+	}).concat(sites.map(site => ({ url: `/${site.slug}`, changefreq: 'daily', priority: 1 })));
 
 	return sites.reduce((accu, site) => accu.then(async () => {
 
