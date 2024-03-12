@@ -19,15 +19,16 @@ export default function Modal({ modalId, ...props }) {
 	return createPortal(<ModalOrFormOnModal {...props} />, document.getElementById('modal-root'));
 }
 
-function ModalOrFormOnModal({ render, hideModal, type, isLarge, confirmBeforeHiding, shouldUseNativeValidation, ...modalProps }) {
+function ModalOrFormOnModal({ render, hideModal, type, isLarge, confirmBeforeHiding, shouldUseNativeValidation, hideable, ...modalProps }) {
 
-	if (modalProps.onSubmit) return <ComponentWithForm {...{ render, hideModal, type, isLarge, confirmBeforeHiding, shouldUseNativeValidation, ...modalProps }} />;
+	if (modalProps.onSubmit) return <ComponentWithForm {...{ render, hideModal, type, isLarge, confirmBeforeHiding, shouldUseNativeValidation, hideable, ...modalProps }} />;
 
 	const props = {
 		title: modalProps.title,
 		hideModal,
 		type,
 		isLarge,
+		hideable,
 		children: render({ hideModal, ...modalProps })
 	};
 
