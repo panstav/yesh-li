@@ -47,7 +47,7 @@ export default function SharingModal ({ qr }) {
 		</div>
 
 		<Title className="is-justify-content-center">שתפו:</Title>
-		<ShaingButtons url={url} title={`${occupation} • ${fullName}`} className="mb-5" />
+		<SharingButtons url={url} title={`${occupation} • ${fullName}`} className="mb-5" />
 
 	</>;
 }
@@ -92,7 +92,7 @@ const copyByPlatform = {
 	}
 };
 
-function ShaingButtons({ className: classes, ...props }) {
+function SharingButtons({ className: classes, ...props }) {
 	const className = classNames('tags is-centered', classes);
 	return <div className={className}>
 		{Object.entries(copyByPlatform).map(([type, { Icon, label, href }]) => {
