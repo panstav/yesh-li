@@ -15,6 +15,7 @@ exports.createPages = async ({ actions }) => {
 	const rootSiteFilePath = `${__dirname}/data/root.json`;
 
 	cleanPagesDirectory();
+	copyGlobalPages();
 
 	if (fs.existsSync(rootSiteFilePath)) {
 		createRootSite();
@@ -27,9 +28,6 @@ exports.createPages = async ({ actions }) => {
 
 		// we're on a multi-tenant site, so we'll create its pages along with the global ones
 		// gatsby will do the heavy lifting, we just choose the specific multiSite
-		fs.readdirSync(`./src/pages-shared`).forEach((file) => {
-			fs.copyFileSync(`./src/pages-shared/${file}`, `./src/pages/${file}`);
-		});
 		fs.readdirSync(`./src/pages-yeshli`).forEach((file) => {
 			fs.copyFileSync(`./src/pages-yeshli/${file}`, `./src/pages/${file}`);
 		});
@@ -69,6 +67,12 @@ exports.createPages = async ({ actions }) => {
 				}
 
 			});
+		});
+	}
+
+	function copyGlobalPages() {
+		fs.readdirSync(`./src/pages-shared`).forEach((file) => {
+			fs.copyFileSync(`./src/pages-shared/${file}`, `./src/pages/${file}`);
 		});
 	}
 
