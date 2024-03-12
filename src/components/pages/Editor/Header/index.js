@@ -127,7 +127,7 @@ function Header() {
 		<Modal {...slugModal} render={SlugChoice} />
 
 		<Modal {...slugUpdateSuccess} render={() => <>
-			כתובת האתר עודכנה, העמוד שלך יהיה זמין בכתובת זו בתוך פחות משעה.
+			כתובת האתר עודכנה, תוך פחות משעה העמוד שלך יהיה נגיש.
 		</>} />
 
 	</>;
