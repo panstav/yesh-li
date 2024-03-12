@@ -1,9 +1,10 @@
 import { navigate } from 'gatsby';
 import { useContext, useEffect } from 'react';
+import { ErrorBoundary } from "react-error-boundary";
 import { FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 
-import Modal, { useSuccessModal } from '@wrappers/Modal';
+import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
 import Loader from '@elements/Loader';
 import xhr from '@services/xhr';
 import snatchParameter from '@lib/snatch-parameter';
@@ -35,6 +36,8 @@ function EditorForm() {
 		if (snatchParameter('newPage')) showNewPageModal();
 	}, []);
 
+	const [fatalErrorModalProps, showFatalErrorModal] = useErrorModal({ hideable: false });
+
 	if (!Object.keys(form.getValues()).length) return <Loader />;
 
 	// if the site has moved out to it's own domain, redirect to its editor page
@@ -46,16 +49,21 @@ function EditorForm() {
 	return <>
 
 		<FormProvider {...form}>
+
 			<Header />
-			<div className='is-flex-desktop'>
-				<div className={fieldsContainerClassName}>
-					<ThemeFields />
+
+			<ErrorBoundary FallbackComponent={() => {}} onError={(error) => showFatalErrorModal({ error })}>
+				<div className='is-flex-desktop'>
+					<div className={fieldsContainerClassName}>
+						<ThemeFields />
+					</div>
+					<div className={previewContainer}>
+						<Preview />
+					</div>
 				</div>
-				<div className={previewContainer}>
-					<Preview />
-				</div>
-			</div>
-			{/* <Footer /> */}
+				{/* <Footer /> */}
+			</ErrorBoundary>
+
 		</FormProvider>
 
 		<Modal {...newPageModal} render={() => <>
@@ -65,6 +73,18 @@ function EditorForm() {
 				<p className='mt-3'>בתצוגה המקדימה - כפתורים ושדות מסויימים בעמוד שלך יהיו בלתי פעילים. בתצוגה למבקרים - כל אלה יפעלו כשורה אחרי שהעמוד ייצא לאור.</p>
 			</div>
 			<p className='has-text-weight-bold'>המון הצלחה!</p>
+		</>} />
+
+		<Modal {...fatalErrorModalProps} render={({ error }) => <>
+			<div className='block content has-text-start mt-5'>
+				<p>נתקלנו בשגיאת מערכת.<br />השגיאה שוגרה למערכת ותתוקן בהקדם האפשרי.</p>
+				<p>ניתן לנסות לרענן את הדף ולנסות שוב. אם השגיאה חוזרת - כדאי לפנות לתמיכה.</p>
+			</div>
+
+			<div className='buttons has-addons is-centered'>
+				<button className='button' onClick={() => window.location.reload()}>לרענן את הדף</button>
+				<a className='button' href={`mailto:hello@yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`} target="_blank" rel="noopener noreferrer">לפנות לתמיכה</a>
+			</div>
 		</>} />
 
 	</>;
