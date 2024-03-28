@@ -25,7 +25,7 @@ export default function SharingModal ({ qr }) {
 		setHasCopied(timer);
 	};
 
-	const inputClassName = classNames('input', hasCopied ? 'has-background-success-light' : 'has-text-left');
+	const inputClassName = classNames('input', hasCopied ? 'has-background-success-light' : 'is-ltr');
 
 	return <>
 
