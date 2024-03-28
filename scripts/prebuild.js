@@ -9,6 +9,7 @@ if (!process.env.GATSBY_API_URL) {
 }
 
 const fullDomain = process.env.URL;
+const shortDomain = new URL(fullDomain).hostname;
 
 (async () => {
 
@@ -29,7 +30,7 @@ const fullDomain = process.env.URL;
 	await saveAllSites(sites);
 
 	function getAllSites() {
-		return got.get(`${process.env.GATSBY_API_URL}/sites?domain=${fullDomain.substring(8)}`).json();
+		return got.get(`${process.env.GATSBY_API_URL}/sites?domain=${shortDomain}`).json();
 	}
 
 })();
@@ -76,7 +77,7 @@ async function saveRootSite(sites) {
 }
 
 function getManifest({ title, shortName = title, slug, id = slug, mainColor }) {
-	const pageShortUrl = `${fullDomain}${slug ? `/${slug}` : ''}`.slice(fullDomain.indexOf('://') + 3);
+	const pageShortUrl = `${shortDomain}${slug ? `/${slug}` : ''}`;
 	return {
 		"id": id,
 		"name": title,
@@ -106,7 +107,7 @@ async function getGot() {
 }
 
 async function createSitemap(items) {
-	const stream = new SitemapStream({ hostname: 'https:yesh.li' });
+	const stream = new SitemapStream({ hostname: fullDomain });
 	const sitemap = await streamToPromise(Readable.from(items).pipe(stream)).then((data) => data.toString());
 
 	return fs.promises.writeFile('./static/sitemap.xml', sitemap);
