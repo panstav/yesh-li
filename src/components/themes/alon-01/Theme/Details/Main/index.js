@@ -60,7 +60,7 @@ const copy = {
 };
 
 export default function Main() {
-	const { isPublic, title, slug, qrSvgPath, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
+	const { isPublic, title, slug, qrSvg, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
 
 	const [url, setUrl] = useState();
 	useEffect(() => {
@@ -82,7 +82,7 @@ export default function Main() {
 	});
 	const contactByForm = (interest) => showContactModal({ interest });
 
-	const [sharingModal, showSharingModal] = useModal({ qr: qrSvgPath });
+	const [sharingModal, showSharingModal] = useModal({ qr: qrSvg });
 	const [sharingPublicOnlyModal, showSharingPublicOnlyModal] = useErrorModal();
 	const sharePage = () => {
 		// block sharing if the page is not public

@@ -54,8 +54,8 @@ export default function SharingModal ({ qr }) {
 
 function QR({ qr, style }) {
 	if (!qr) return null;
-	return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shapeRendering="crispEdges" {...{ style }}>
-		<path style={{ stroke: 'var(--color-primary-900)' }} d={qr} />
+	return <svg xmlns="http://www.w3.org/2000/svg" viewBox={qr.viewBox} shapeRendering="crispEdges" {...{ style }}>
+		<path style={{ stroke: 'var(--color-primary-900)' }} d={qr.d} />
 	</svg>;
 }
 
