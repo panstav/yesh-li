@@ -1,7 +1,7 @@
 {
   "name": "yesh-li",
   "description": "",
-  "version": "2.6.8-0",
+  "version": "2.6.8",
   "main": "index.js",
   "scripts": {
     "start-from-scratch": "npm run clean && gatsby develop",
