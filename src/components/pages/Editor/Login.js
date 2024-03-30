@@ -12,6 +12,8 @@ import Help from '@elements/Help';
 import xhr from '@services/xhr';
 import useFetch from '@hooks/use-fetch';
 
+import { loginWrapper } from './index.module.sass';
+
 export default function Login() {
 
 	const form = useForm();
@@ -32,7 +34,7 @@ export default function Login() {
 
 	return <>
 		<Spacer />
-		<div style={{ position: 'relative', marginTop: '6rem' }}>
+		<div className={loginWrapper}>
 			<div className='has-background-primary' style={{ margin: 'auto', filter: 'blur(100px)', borderRadius: '100%', position: 'absolute', top: '0', bottom: '0', right: '0', left: '0', width: '100%', height: '750px', opacity: '0.1', zIndex: '-10' }} />
 			<Section className='is-medium'>
 				<div className='has-text-centered mb-6'>
