@@ -52,7 +52,7 @@ export default function Login() {
 
 							<Checkbox
 								id='rememberMe'
-								label="זוכר אותי"
+								label="זכור אותי"
 								besideLabel={<Tooltip content="אם זהו מכשיר פרטי אפשר להשאר מחוברים ליותר זמן" className="is-flex is-is-align-items-center ms-2"><Help size="small" /></Tooltip>} />
 
 							<button className={submitClassName}>שלח לי {isTried ? 'עוד ' : ''}לינק התחברות</button>
