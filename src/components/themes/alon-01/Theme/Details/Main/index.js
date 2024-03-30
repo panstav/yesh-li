@@ -60,7 +60,7 @@ const copy = {
 };
 
 export default function Main() {
-	const { isPublic, title, slug, qrSvg, content: { fullName, occupation, description, statement, links, video } } = useContext(PageContext);
+	const { isPublic, title, slug, content: { fullName, occupation, description, statement, links, video, qrSvg } } = useContext(PageContext);
 
 	const [url, setUrl] = useState();
 	useEffect(() => {
