@@ -22,7 +22,7 @@ export default function TrialNotice() {
 	return <>
 
 		<div onClick={() => showEmailVerificationModal()} className={className}>
-			<b>עמוד זמני</b> הרשמו כעת כדי לשמור עליו
+			<b>העמוד זמני</b> הרשמו כעת כדי לשמור עליו
 		</div>
 
 		<Modal {...emailVerificationModal} render={() => {
