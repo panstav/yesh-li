@@ -154,7 +154,7 @@ function Header() {
 }
 
 function wwwIcon() {
-	return <span className='is-size-7 has-text-weight-bold me-1 w-1-touch' style={{ lineHeight: 1 }}>www</span>;
+	return <span className='is-flex is-justify-content-center is-size-7 is-size-8-touch has-text-weight-bold me-1 w-1-touch' style={{ lineHeight: 1 }}>www</span>;
 }
 
 function MenuItem({ Icon, label, path, onClick, ...props }) {
