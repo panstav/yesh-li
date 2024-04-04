@@ -107,7 +107,7 @@ export function HeadFor(arg) {
 }
 
 export function internalPageTitle (title) {
-	return { title: `יש.לי • ${title}` };
+	return { title: `${title} • יש.לי` };
 }
 
 export function CssVariables ({ mainColorName, mainColorHex }) {
