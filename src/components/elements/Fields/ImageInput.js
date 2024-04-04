@@ -75,14 +75,14 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 
 		<div className={compoundFieldClassName}>
 			<div className="field file is-large is-boxed has-name is-flex-direction-column">
-				<label className="file-label" style={{ width: '100%' }}>
+				<label className="file-label w-100">
 					{label && <span className='label'>{label}:</span>}
 					<input type="file" id={id} name={id} onChange={onFileChange} multiple={multiple} accept={acceptedTypes} className='file-input' />
 					<input type="text" className="is-hidden" {...register(propertyKey, { required: required && copy.requiredField })} />
 					<div className={imagePreviewContainerClassName}>
 						{imgProps.srcSet && <img srcSet={imgProps.srcSet} className='is-overlay object-fit-cover' style={{ objectPosition: imgProps.position }} />}
 						{isLoading && <Loader />}
-						<span className="file-cta" style={{ border: '1px solid lightgray', width: '100%', ...uploadButtonStyle }}>
+						<span className="file-cta w-100" style={{ border: '1px solid lightgray', ...uploadButtonStyle }}>
 							<span className="file-icon mx-0">
 								<Upload />
 							</span>

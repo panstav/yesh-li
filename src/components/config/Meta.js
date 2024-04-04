@@ -106,6 +106,10 @@ export function HeadFor(arg) {
 	};
 }
 
+export function internalPageTitle (title) {
+	return { title: `יש.לי • ${title}` };
+}
+
 export function CssVariables ({ mainColorName, mainColorHex }) {
 	return <style>{`:root { accent-color: var(--color-primary); ${pallatte.getVariables(mainColorName)} ${!mainColorName ? `--color-primary: #${mainColorHex};` : ''} }`}</style>;
 }

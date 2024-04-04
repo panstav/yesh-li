@@ -4,10 +4,12 @@ import { ErrorBoundary } from "react-error-boundary";
 import { FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 
-import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
-import Loader from '@elements/Loader';
 import xhr from '@services/xhr';
 import snatchParameter from '@lib/snatch-parameter';
+
+import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
+import Loader from '@elements/Loader';
+import OutboundLink from '@elements/OutboundLink';
 
 import Header from './Header';
 import ThemeFields from './ThemeFields';
@@ -41,8 +43,9 @@ function EditorForm() {
 	if (!Object.keys(form.getValues()).length) return <Loader />;
 
 	// if the site has moved out to it's own domain, redirect to its editor page
+	// treat the redirect property as a domain
 	const redirect = form.getValues().redirect;
-	if (redirect) return navigate(`${redirect}/editor`, { replace: true });
+	if (redirect) return navigate(`https://${redirect}/editor`, { replace: true });
 
 	const fieldsContainerClassName = classNames('is-flex is-flex-direction-column is-justify-content-space-between', fieldsContainer);
 
@@ -83,7 +86,7 @@ function EditorForm() {
 
 			<div className='buttons has-addons is-centered'>
 				<button className='button' onClick={() => window.location.reload()}>לרענן את הדף</button>
-				<a className='button' href={`mailto:hello@yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`} target="_blank" rel="noopener noreferrer">לפנות לתמיכה</a>
+				<OutboundLink className='button' href={`mailto:hello@yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`}>לפנות לתמיכה</OutboundLink>
 			</div>
 		</>} />
 

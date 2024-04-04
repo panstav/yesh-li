@@ -5,6 +5,7 @@ import classNames from "classnames";
 import Section from "@wrappers/Section";
 import Modal, { useModal } from "@wrappers/Modal";
 import { Bit, Checkmark } from "@elements/Icon";
+import OutboundLink from "@elements/OutboundLink";
 
 import { AuthContext, copy } from ".";
 import { titleFont } from './index.module.sass';
@@ -93,7 +94,7 @@ export default function CTA({ id }) {
 			<p>אנחנו כרגע מקבלים תשלום רק ב-ביט. באופן הבא:</p>
 			<ol className="mt-2 mx-4">
 				<li>העבירו ₪520 למספר 054-229-6262</li>
-				<li>צרו קשר בוואטסאפ או בכתובת המייל <a href="mailto:hello@yesh.li" target="_blank" rel="noopener noreferrer">hello@yesh.li</a></li>
+				<li>צרו קשר בוואטסאפ או בכתובת המייל <OutboundLink href="mailto:hello@yesh.li">hello@yesh.li</OutboundLink></li>
 				<li>נעדכן את החשבון שלכם עם מנוי השנתי והעמוד שלכם יהיה און-ליין</li>
 			</ol>
 		</>} />
