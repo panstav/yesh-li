@@ -3,11 +3,12 @@ import { Link } from 'gatsby';
 import { useFormContext } from 'react-hook-form';
 import classnames from 'classnames';
 
-import Modal, { useModal, useSuccessModal } from '@wrappers/Modal';
-import { Eye, Logo, Logout, Sheet } from '@elements/Icon';
-
 import xhr from '@services/xhr';
 import localDb from '@services/localDb';
+
+import Modal, { useModal, useSuccessModal } from '@wrappers/Modal';
+import { Eye, Logo, Logout, Sheet } from '@elements/Icon';
+import OutboundLink from '@elements/OutboundLink';
 
 import TrialNotice from './TrialNotice';
 import SlugChoice from './SlugChoice';
@@ -141,14 +142,10 @@ function MenuItem({ Icon, label, path, onClick, ...props }) {
 		Wrapper = 'div';
 		direction = { onClick };
 	} else {
-		// if path is outbound, add target="_blank" and rel="noopener noreferrer"
+		// if path is outbound, use the component OutboundLink, otherwise use Link
 		if (!path.includes(window.location.host) && !path.startsWith('/')) {
-			Wrapper = 'a';
-			direction = {
-				href: path,
-				target: '_blank',
-				rel: 'noopener noreferrer'
-			};
+			Wrapper = OutboundLink;
+			direction = { href: path };
 		} else {
 			Wrapper = Link;
 			direction = { to: path };

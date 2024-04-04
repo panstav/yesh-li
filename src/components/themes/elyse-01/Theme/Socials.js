@@ -2,6 +2,8 @@ import { useContext } from 'react';
 import classNames from 'classnames';
 
 import { Email, Facebook, Instagram, LinkedIn, Phone, Pinterest, TikTok, WhatsApp, X, YouTube } from '@elements/Icon';
+import OutboundLink from '@elements/OutboundLink';
+
 import hrefByAddressType from '@lib/href-by-address-type';
 
 import { PageContext } from '.';
@@ -58,10 +60,10 @@ export default function Socials ({ className: classes }) {
 			const href = hrefByAddressType(type, address);
 			const { Icon, label } = copy[type];
 			const style = { backgroundColor: `var(--color-${type}-half)`, ...(['phone', 'email'].includes(type) ? { border: '1px solid var(--color-primary)' } : {}) };
-			return <a key={type} href={href} className="tag is-rounded" style={style} target="_blank" rel="noopener noreferrer">
+			return <OutboundLink key={type} href={href} className="tag is-rounded" style={style}>
 				<Icon className="has-strong-radius" style={{ color: `var(--color-${type})` }} />
 				<span className="icon-text ms-1">{label}</span>
-			</a>;
+			</OutboundLink>;
 		})}
 	</div>;
 }

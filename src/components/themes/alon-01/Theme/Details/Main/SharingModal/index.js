@@ -3,6 +3,7 @@ import classNames from "classnames";
 
 import { Title } from "@wrappers/Modal";
 import { Email, Facebook, LinkedIn, WhatsApp, X, Copy, Telegram } from '@elements/Icon';
+import OutboundLink from "@elements/OutboundLink";
 
 import { PageContext } from "@config/Page";
 import copyToClipboard from "@lib/copy-to-clipboard";
@@ -96,10 +97,10 @@ function SharingButtons({ className: classes, ...props }) {
 	const className = classNames('tags is-centered', classes);
 	return <div className={className}>
 		{Object.entries(copyByPlatform).map(([type, { Icon, label, href }]) => {
-			return <a key={label} href={href(props)} title={`שתפו ב${label}`} className="tag is-rounded" target="_blank" rel="noopener noreferrer">
+			return <OutboundLink key={label} href={href(props)} title={`שתפו ב${label}`} className="tag is-rounded">
 				<Icon className="has-strong-radius" style={{ color: `var(--color-${type})` }} />
 				<span className="icon-text ms-1">{label}</span>
-			</a>;
+			</OutboundLink>;
 		})}
 	</div>;
 }

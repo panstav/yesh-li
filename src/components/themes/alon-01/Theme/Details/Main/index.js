@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { PageContext } from "@config/Page";
 import Modal, { useErrorModal, useModal, useSuccessModal } from "@wrappers/Modal";
 import { Email, Facebook, Instagram, LinkedIn, TikTok, WhatsApp, X, YouTube, Phone, Pinterest, AddContact, Share, Chat } from "@elements/Icon";
+import OutboundLink from "@elements/OutboundLink";
 
 import xhr from '@services/xhr';
 import hrefByAddressType from "@lib/href-by-address-type";
@@ -113,10 +114,10 @@ export default function Main() {
 				const { Icon, label } = copy[type];
 				const href = hrefByAddressType(type, address);
 				return <div key={address} className="box is-relative">
-					<a href={href} target="_blank" rel="noreferrer">
+					<OutboundLink href={href}>
 						<Icon style={{ width: '1rem', position: 'absolute', insetInlineStart: '1rem' }} />
 						<span className="icon-text px-5 mx-3">{label}</span>
-					</a>
+					</OutboundLink>
 				</div>;
 			})}
 			<div className="box is-relative">

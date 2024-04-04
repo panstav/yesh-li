@@ -2,6 +2,7 @@ import Section from "@wrappers/Section";
 import Modal, { Title, useModal, useSuccessModal } from "@wrappers/Modal";
 import { Email, Faq } from "@elements/Icon";
 import { EmailInput, TextArea, TextInput } from "@elements/Fields";
+import OutboundLink from "@elements/OutboundLink";
 
 import xhr from "@services/xhr";
 
@@ -22,10 +23,10 @@ export default function FartherQuestions() {
 			<SectionTitle>אנחנו פה לכל שאלה</SectionTitle>
 			<div className="is-flex-tablet is-flex-gap-3 has-text-centered-mobile">
 				<div className="has-text-end-tablet" style={{ flex: 1 }}>
-					<a href="mailto:hello@yesh.li" target="_blank" rel="noreferrer" className="button is-primary is-outlined is-medium is-rounded has-strong-radius">
+					<OutboundLink href="mailto:hello@yesh.li" className="button is-primary is-outlined is-medium is-rounded has-strong-radius">
 						<Email />
 						<span className="icon-text ms-2">לפנות דרך מייל</span>
-					</a>
+					</OutboundLink>
 				</div>
 				<span className="is-block" style={{ height: '0.5rem' }} />
 				<div style={{ flex: 1 }}>
