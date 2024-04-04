@@ -43,8 +43,9 @@ function EditorForm() {
 	if (!Object.keys(form.getValues()).length) return <Loader />;
 
 	// if the site has moved out to it's own domain, redirect to its editor page
+	// treat the redirect property as a domain
 	const redirect = form.getValues().redirect;
-	if (redirect) return navigate(`${redirect}/editor`, { replace: true });
+	if (redirect) return navigate(`https://${redirect}/editor`, { replace: true });
 
 	const fieldsContainerClassName = classNames('is-flex is-flex-direction-column is-justify-content-space-between', fieldsContainer);
 
