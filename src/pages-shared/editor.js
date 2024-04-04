@@ -1,4 +1,4 @@
-import { HeadFor } from "@config/Meta";
+import { HeadFor, internalPageTitle } from "@config/Meta";
 
 import GoogleAnalytics from "@elements/GoogleAnalytics";
 import MicrosoftClarity from "@elements/MicrosoftClarity";
@@ -6,7 +6,7 @@ import MicrosoftClarity from "@elements/MicrosoftClarity";
 export { default } from "@pages/Editor";
 
 export const Head = HeadFor({
-	title: "ניהול תוכן • יש.לי",
+	...internalPageTitle('ניהול תוכן'),
 	mainColorHex: '00856F',
 	isInternal: true,
 	children: <>
