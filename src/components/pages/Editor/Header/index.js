@@ -12,6 +12,7 @@ import OutboundLink from '@elements/OutboundLink';
 
 import TrialNotice from './TrialNotice';
 import SlugChoice from './SlugChoice';
+import AttachDomain from './AttachDomain';
 import { AuthContext } from '@pages/Editor/Auth';
 
 import { eyeIcon } from './index.module.sass';
@@ -37,6 +38,10 @@ function Header() {
 		}
 	});
 
+	const [domainModal, showDomainModal] = useModal();
+	const [attachDomainSuccessModal, showAttachDomainSuccessModal] = useSuccessModal();
+	const onAttachDomainSuccess = (domain) => showAttachDomainSuccessModal({ domain });
+
 	const [isEmailRecentlyVerified, setIsEmailRecentlyVerified] = useState();
 
 	const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +50,8 @@ function Header() {
 	useEffect(() => {
 		setIsEmailRecentlyVerified(localDb.get('email-recently-verified'));
 	}, []);
+
+	const slug = getValues('slug');
 
 	const leadsTarget = getValues('leadsTarget');
 	const isSpreadSheetAddress = leadsTarget.type === 'spreadsheet';
@@ -76,15 +83,24 @@ function Header() {
 			// add slug button
 			menuItems.unshift({
 				label: 'בחירת כתובת',
-				Icon: () => <span className='is-size-7 has-text-weight-bold me-1 w-1-touch' style={{ lineHeight: 1 }}>www</span>,
+				Icon: wwwIcon,
 				onClick: () => showSlugModal()
 			});
 		} else {
 			// site is published and has a slug
+			if (!slug) {
+				// site's slug is set and is not empty
+				// if isSetSlug was set to true, but the slug is empty - the user has connected a domain
+				menuItems.unshift({
+					label: 'חיבור דומיין',
+					Icon: wwwIcon,
+					onClick: () => showDomainModal()
+				});
+			}
 			menuItems.unshift({
 				label: 'מעבר לעמוד',
 				Icon: () => <Eye className={eyeIcon} />,
-				path: `/${getValues('slug')}`
+				path: `/${slug}`
 			});
 		}
 	}
@@ -127,11 +143,18 @@ function Header() {
 
 		<Modal {...slugModal} render={SlugChoice} />
 
-		<Modal {...slugUpdateSuccess} render={() => <>
-			כתובת האתר עודכנה, תוך פחות משעה העמוד שלך יהיה נגיש.
+		<Modal {...domainModal} render={AttachDomain} onSuccess={onAttachDomainSuccess} />
+		<Modal {...attachDomainSuccessModal} render={({ domain }) => <>
+			מעולה. הדומיין יחובר תוך פחות מ-48 שעות.<br />לאחר מכן - ניהול התוכן יהיה נגיש בכתובת <OutboundLink href={`https://${domain}/editor`}>{domain}/editor</OutboundLink>.<br/><br/>נתראה שם!
 		</>} />
 
+		<Modal {...slugUpdateSuccess} render={() => 'כתובת האתר עודכנה, תוך פחות משעה העמוד שלך יהיה נגיש.'} />
+
 	</>;
+}
+
+function wwwIcon() {
+	return <span className='is-size-7 has-text-weight-bold me-1 w-1-touch' style={{ lineHeight: 1 }}>www</span>;
 }
 
 function MenuItem({ Icon, label, path, onClick, ...props }) {

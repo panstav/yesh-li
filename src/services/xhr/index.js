@@ -20,6 +20,8 @@ export default {
 	createTrial: (data) => post('trial', data, { timeout: false }),
 	updateSlug: ({ slug, siteId }) => put('slug', { slug, siteId }),
 	checkSlugVacancy: (slug) => get(`slug-vacancy?slug=${slug}`),
+	createTempRootSite: (domain) => post('temp-root-site', { domain }, { timeout: false }),
+	validateNameServers: ({ domain, nameServers, siteId }) => get(`validate-name-servers?domain=${domain}&siteId=${siteId}&required=${nameServers.join(',')}`),
 
 	// marketing-facing routes
 	postEnquiry: (data) => post('enquiry', data)
