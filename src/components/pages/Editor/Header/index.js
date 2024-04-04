@@ -88,7 +88,7 @@ function Header() {
 			});
 		} else {
 			// site is published and has a slug
-			if (!slug) {
+			if (slug) {
 				// site's slug is set and is not empty
 				// if isSetSlug was set to true, but the slug is empty - the user has connected a domain
 				menuItems.unshift({
