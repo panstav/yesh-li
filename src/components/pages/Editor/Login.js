@@ -14,7 +14,7 @@ import useFetch from '@hooks/use-fetch';
 
 import { loginWrapper } from './index.module.sass';
 
-export default function Login() {
+export default function Login({ jwtExpired }) {
 
 	const form = useForm();
 	const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +39,7 @@ export default function Login() {
 			<Section className='is-medium'>
 				<div className='has-text-centered mb-6'>
 					<Logo style={{ width: '4rem' }} />
+					{jwtExpired && <p className='is-size-7 has-text-grey mt-2'>הסשן שלך הסתיים - נא להתחבר מחדש</p>}
 				</div>
 				<div className='has-background-white has-strong-radius py-5 px-4'>
 					<h2 className='is-size-4 has-text-centered mb-5'>התחברות</h2>

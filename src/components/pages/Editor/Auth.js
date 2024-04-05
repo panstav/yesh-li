@@ -39,7 +39,10 @@ export default function Auth({ children }) {
 			}).catch(() => window.location.reload());
 		} else {
 			// we don't have a login code, but we might already have a jwt
-			xhr.getUserIdentity().then(setUser);
+			xhr.getUserIdentity().then((data) => {
+				if (data.jwtExpired) localDb.unset('jwt');
+				setUser(data);
+			});
 		}
 	}, [user]);
 
@@ -47,7 +50,7 @@ export default function Auth({ children }) {
 	if (!user) return <Loader />;
 
 	// user is neither logged in nor is trying to, start the login process
-	if (user.role === roles.GUEST) return <Login />;
+	if (user.role === roles.GUEST) return <Login jwtExpired={user.jwtExpired} />;
 
 	user.siteId = siteId || user.sites[0];
 
