@@ -13,6 +13,7 @@ export default {
 	altDescription: 'לא יופיע חזותית, מיועד לצרכי הנגשה ע"י מקריאי מסך וקידום אורגני ע"י מנועי חיפוש.',
 
 	requiredField: 'שדה חובה',
+	minLengthField: (minLength) => `מינימום ${minLength} תווים`,
 	maxLengthField: (maxLength) => `מקסימום ${maxLength} תווים`,
 
 	invalidUrl: 'כתובת האינטרנט לא תקינה',

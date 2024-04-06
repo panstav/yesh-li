@@ -20,6 +20,7 @@ export default function SlugChoice ({ formState }) {
 			prefix={location.origin}
 			validate={{ vacantSlug }}
 			pattern={{ value: /^[a-zA-Z-0-9]+$/, message: 'כתובת העמוד יכולה להכיל אותיות באנגלית, ספרות ומקפים בלבד.' }}
+			minLength={{ value: 4, message: copy.minLengthField(4) }}
 			maxLength={{ value: 30, message: copy.maxLengthField(30) }}
 		/>
 		<div className='is-flex is-justify-content-end'>

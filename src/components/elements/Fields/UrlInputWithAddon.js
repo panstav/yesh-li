@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 
-export default function UrlInputWithAddon({ id, label, prefix, validate, pattern, maxLength }) {
+export default function UrlInputWithAddon({ id, label, prefix, validate, pattern, minLength, maxLength }) {
 	const { register, getFieldState, formState } = useFormContext();
 	const { error } = getFieldState(id, formState);
 
@@ -10,6 +10,7 @@ export default function UrlInputWithAddon({ id, label, prefix, validate, pattern
 		pattern
 	};
 
+	if (minLength) config.minLength = minLength;
 	if (maxLength) config.maxLength = maxLength;
 
 	return <>
