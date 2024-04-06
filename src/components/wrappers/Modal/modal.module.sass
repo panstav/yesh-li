@@ -11,17 +11,13 @@ $breakpoint: 550px
 		max-height: 100%
 		max-width: 100%
 		overflow: unset
-		.box
-				border-radius: 0
+		[class*="box"]
+			border-radius: 0
 		@include from($breakpoint)
 			max-height: calc(100% - 2rem)
 			max-width: calc(100% - 2rem)
-			.box
+			[class*="box"]
 				border-radius: $radius
-
-	// fix odd pulling downwards of buttons stack
-	.buttons:last-child
-		margin-bottom: unset
 
 .raw-modal-inner
 	padding-top: $size-6
