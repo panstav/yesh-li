@@ -63,7 +63,6 @@ exports.createPages = async ({ actions }) => {
 
 				} catch (err) {
 					console.error(`Error creating page for ${siteData.slug} using theme ${siteData.theme}`, err);
-
 				}
 
 			});
