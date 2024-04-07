@@ -143,7 +143,7 @@ function Header() {
 
 		<Modal {...slugModal} render={SlugChoice} />
 
-		<Modal {...domainModal} render={AttachDomain} onSuccess={onAttachDomainSuccess} />
+		<Modal {...domainModal} render={AttachDomain} onSuccess={onAttachDomainSuccess} slug={slug} />
 		<Modal {...attachDomainSuccessModal} render={({ domain }) => <>
 			מעולה. הדומיין יחובר תוך פחות מ-48 שעות.<br />לאחר מכן - ניהול התוכן יהיה נגיש בכתובת <OutboundLink href={`https://${domain}/editor`}>{domain}/editor</OutboundLink>.<br/><br/>נתראה שם!
 		</>} />

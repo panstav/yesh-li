@@ -32,6 +32,15 @@ exports.createPages = async ({ actions }) => {
 			fs.copyFileSync(`./src/pages-yeshli/${file}`, `./src/pages/${file}`);
 		});
 
+		// create redirects for all the sites that used to be on this multi-tenant site and have since moved to their own domains
+		const redirectsData = JSON.parse(fs.readFileSync(`${__dirname}/data/redirects.json`));
+		redirectsData.forEach(({ oldSlug, newDomain }) => {
+			actions.createRedirect({
+				fromPath: `/${oldSlug}`,
+				toPath: `https://${newDomain}`
+			});
+		});
+
 		// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 		const sitesDirectory = `${__dirname}/data`;
 

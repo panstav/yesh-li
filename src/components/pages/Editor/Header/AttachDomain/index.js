@@ -8,7 +8,7 @@ import ExistingDomain from "./ExistingDomain";
 
 import { liveDnsHref, nameCheapHref } from "/variables";
 
-export default function AttachDomain({ onSuccess: onSuccessHandler, hideModal }) {
+export default function AttachDomain({ onSuccess: onSuccessHandler, slug: currentSlug, hideModal }) {
 
 	const [panel, setPanel] = useState('existing');
 
@@ -29,7 +29,12 @@ export default function AttachDomain({ onSuccess: onSuccessHandler, hideModal })
 			<a onClick={() => setPanel('new')} className={newDomainClassName}>רכישת דומיין חדש</a>
 		</p>
 
-		{panel === 'existing' && <ExistingDomain wrapper={Wrapper} contactUs={ContactUs} onSuccess={onSuccess} />}
+		{panel === 'existing' && <ExistingDomain {...{
+			wrapper: Wrapper,
+			contactUs: ContactUs,
+			onSuccess,
+			currentSlug
+		}} />}
 
 		{panel === 'new' && <Wrapper className="content">
 			<p>בשלב זה אין אפשרות לרכוש דומיין דרך המערכת.</p>

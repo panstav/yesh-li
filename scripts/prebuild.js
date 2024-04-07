@@ -20,14 +20,14 @@ const shortDomain = new URL(fullDomain).hostname;
 	const got = await getGot();
 
 	// get sites from api
-	const { sites } = await getAllSites();
+	const { sites, redirects } = await getAllSites();
 
 	// check whether we're on a dedicated domain or a multi-tenant app
 	if (sites.length === 1 && sites[0].slug === '') return await saveRootSite(sites);
 
 	// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 	// iterate through the sites array
-	await saveAllSites(sites);
+	await saveAllSites(sites, redirects);
 
 	function getAllSites() {
 		return got.get(`${process.env.GATSBY_API_URL}/sites?domain=${shortDomain}`).json();
@@ -35,12 +35,15 @@ const shortDomain = new URL(fullDomain).hostname;
 
 })();
 
-async function saveAllSites(sites) {
+async function saveAllSites(sites, redirects) {
 
 	const links = (await fs.promises.readdir('./src/pages-yeshli')).map((pageFileName) => {
 		if (pageFileName === 'index.js') return { url: '/', changefreq: 'monthly', priority: 1 };
 		return { url: `/${pageFileName.replace('.js', '')}`, changefreq: 'monthly', priority: 0.7 };
 	}).concat(sites.map(site => ({ url: `/${site.slug}`, changefreq: 'daily', priority: 1 })));
+
+	// create a redirects file for all the sites that used to be on this multi-tenant site and have since moved to their own domains
+	await fs.promises.writeFile('./data/redirects.json', JSON.stringify(redirects));
 
 	return sites.reduce((accu, site) => accu.then(async () => {
 

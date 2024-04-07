@@ -8,7 +8,7 @@ import UrlInputWithAddon from "@elements/Fields/UrlInputWithAddon";
 import Loader from "@elements/Loader";
 import { AuthContext } from "@pages/Editor/Auth";
 
-export default function ExistingDomain({ wrapper: Wrapper, contactUs: ContactUs, onSuccess }) {
+export default function ExistingDomain({ wrapper: Wrapper, contactUs: ContactUs, onSuccess, currentSlug }) {
 
 	const { siteId } = useContext(AuthContext);
 
@@ -34,7 +34,14 @@ export default function ExistingDomain({ wrapper: Wrapper, contactUs: ContactUs,
 
 	const validateNameServers = async () => {
 		setIsValidatingNameServers(true);
-		const data = await xhr.validateNameServers({ domain, nameServers: requiredNameServers, siteId });
+
+		const data = await xhr.validateNameServers({
+			domain,
+			siteId,
+			currentSlug,
+			nameServers: requiredNameServers
+		});
+
 		setIsValidatingNameServers(false);
 		if (data.isValid) return onSuccess(domain);
 		// if current name servers don't match required name servers, we'll show the user the current name servers
