@@ -2,10 +2,6 @@ import '@styles/index.sass';
 
 export { wrapPageElement } from '@config/Page';
 
-export function onRenderBody({ setHtmlAttributes }) {
-	setHtmlAttributes({ lang: 'he', dir: 'rtl' });
-}
-
 export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) => {
 	const headComponents = getHeadComponents();
 

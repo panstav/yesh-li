@@ -89,9 +89,12 @@ export function HeadFor(arg) {
 			args = arg;
 		}
 
-		const { preload, children, ...props } = args;
+		const { lang = 'he', preload, children, ...props } = args;
+		const direction = lang === 'he' ? 'rtl' : 'ltr';
 
 		return <>
+			<html lang={lang} dir={direction} />
+			
 			{preload && preload.map((preload) => <link rel="preload" key={preload.href} {...preload} />)}
 
 			<Meta
