@@ -55,18 +55,12 @@ exports.createPages = async ({ actions }) => {
 			fs.readdirSync(themeDirectory).forEach((siteName) => {
 				const siteData = JSON.parse(fs.readFileSync(`${themeDirectory}/${siteName}`));
 
-				let themeComponent;
+				// do not throw on creating pages from files at themes/{themeName}, just log the error
 				try {
-					themeComponent = siteData.redirect
-						// some sites moved out to their own domains, we'll use a component that redirects them to their new domain
-						? require.resolve(`${__dirname}/src/components/templates/redirect-to-root/index.js`)
-						// otherwise, we'll use the theme's component
-						: require.resolve(`${__dirname}/src/themes/${siteData.theme}.js`);
-
 					// create the page for this site using the theme's component and the site's data as it's pageContext prop
 					actions.createPage({
 						path: `/${siteData.slug}`,
-						component: themeComponent,
+						component: require.resolve(`${__dirname}/src/themes/${siteData.theme}.js`),
 						context: siteData
 					});
 
