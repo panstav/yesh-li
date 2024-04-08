@@ -1,7 +1,7 @@
 import { memo, useContext, useEffect, useState } from 'react';
 import { Link } from 'gatsby';
 import { useFormContext } from 'react-hook-form';
-import classnames from 'classnames';
+import classNames from 'classnames';
 
 import xhr from '@services/xhr';
 import localDb from '@services/localDb';
@@ -18,6 +18,8 @@ import { AuthContext } from '@pages/Editor/Auth';
 import { eyeIcon } from './index.module.sass';
 
 export const noticeClassName = 'py-2';
+
+export const SafeHeader = () => <Nav className="is-justify-content-center" />;
 
 export default memo(Header);
 
@@ -105,8 +107,8 @@ function Header() {
 		}
 	}
 
-	const burgerClasses = classnames('navbar-burger has-text-white', isOpen && 'is-active');
-	const menuClasses = classnames('navbar-menu has-background-primary', isOpen && 'is-active');
+	const burgerClasses = classNames('navbar-burger has-text-white', isOpen && 'is-active');
+	const menuClasses = classNames('navbar-menu has-background-primary', isOpen && 'is-active');
 
 	return <>
 
@@ -118,18 +120,7 @@ function Header() {
 					: null
 			: null}
 
-		<nav className="navbar has-background-primary" style={{ boxShadow: '0px 20px 30px 10px var(--color-background)' }}>
-			<div className="navbar-brand is-justify-content-center">
-				<div className="navbar-item is-clickable">
-					<Logo className="has-text-white mx-0" style={{ width: '3.5rem' }} />
-				</div>
-				<div className={burgerClasses} onClick={toggleMenu}>
-					<span aria-hidden="true" />
-					<span aria-hidden="true" />
-					<span aria-hidden="true" />
-				</div>
-			</div>
-
+		<Nav burgerClasses={burgerClasses} burgerOnClick={toggleMenu}>
 			<div className={menuClasses}>
 				{isSpreadSheetAddress && <div className="navbar-start is-flex-grow-1">
 					<MenuItem label="גיליון הפניות שלי" path={spreadSheetAddress} Icon={() => <Sheet className="w-1-touch" />} />
@@ -138,8 +129,7 @@ function Header() {
 					{menuItems.map(MenuItem)}
 				</div>
 			</div>
-
-		</nav>
+		</Nav>
 
 		<Modal {...slugModal} render={SlugChoice} />
 
@@ -151,6 +141,23 @@ function Header() {
 		<Modal {...slugUpdateSuccess} render={() => 'כתובת האתר עודכנה, תוך פחות משעה העמוד שלך יהיה נגיש.'} />
 
 	</>;
+}
+
+function Nav({ className: classes, burgerClasses, burgerOnClick, children }) {
+	const className = classNames("navbar has-background-primary", classes);
+	return <nav className={className} style={{ boxShadow: '0px 20px 30px 10px var(--color-background)' }}>
+		<div className="navbar-brand is-justify-content-center">
+			<div className="navbar-item is-clickable">
+				<Logo className="has-text-white mx-0" style={{ width: '3.5rem' }} />
+			</div>
+			{burgerClasses && <div className={burgerClasses} onClick={burgerOnClick}>
+				<span aria-hidden="true" />
+				<span aria-hidden="true" />
+				<span aria-hidden="true" />
+			</div>}
+		</div>
+		{children}
+	</nav>;
 }
 
 function wwwIcon() {
@@ -189,7 +196,7 @@ function EmailIsVerifiedNotice () {
 		setIsHidden(true);
 	};
 
-	const className = classnames("has-background-success is-relative", noticeClassName);
+	const className = classNames("has-background-success is-relative", noticeClassName);
 
 	if (isHidden) return null;
 

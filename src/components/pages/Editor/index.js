@@ -11,7 +11,7 @@ import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
 import Loader from '@elements/Loader';
 import OutboundLink from '@elements/OutboundLink';
 
-import Header from './Header';
+import Header, { SafeHeader } from './Header';
 import ThemeFields from './ThemeFields';
 import Preview from './Preview';
 // import Footer from './Footer';
@@ -20,9 +20,30 @@ import Auth, { AuthContext } from './Auth';
 import { fieldsContainer, previewContainer } from './index.module.sass';
 
 export default function Editor () {
-	return <Auth>
-		<EditorForm />
-	</Auth>;
+
+	const [fatalErrorModalProps, showFatalErrorModal] = useErrorModal({ hideable: false });
+
+	return <>
+
+		<ErrorBoundary FallbackComponent={SafeHeader} onError={(error) => showFatalErrorModal({ error })}>
+			<Auth>
+				<EditorForm />
+			</Auth>
+		</ErrorBoundary>
+
+		<Modal {...fatalErrorModalProps} render={({ error }) => <>
+			<div className='block content has-text-start mt-5'>
+				<p>נתקלנו בשגיאת מערכת.<br />השגיאה שוגרה למערכת ותתוקן בהקדם האפשרי.</p>
+				<p>ניתן לנסות לרענן את הדף ולנסות שוב. אם השגיאה חוזרת - כדאי לפנות לתמיכה.</p>
+			</div>
+
+			<div className='buttons has-addons is-centered'>
+				<button className='button' onClick={() => window.location.reload()}>לרענן את הדף</button>
+				<OutboundLink className='button' href={`mailto:hello@yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`}>לפנות לתמיכה</OutboundLink>
+			</div>
+		</>} />
+
+	</>;
 }
 
 function EditorForm() {
@@ -37,8 +58,6 @@ function EditorForm() {
 	useEffect(() => {
 		if (snatchParameter('newPage')) showNewPageModal();
 	}, []);
-
-	const [fatalErrorModalProps, showFatalErrorModal] = useErrorModal({ hideable: false });
 
 	if (!Object.keys(form.getValues()).length) return <Loader />;
 
@@ -55,17 +74,15 @@ function EditorForm() {
 
 			<Header />
 
-			<ErrorBoundary FallbackComponent={() => {}} onError={(error) => showFatalErrorModal({ error })}>
-				<div className='is-flex-desktop'>
-					<div className={fieldsContainerClassName}>
-						<ThemeFields />
-					</div>
-					<div className={previewContainer}>
-						<Preview />
-					</div>
+			<div className='is-flex-desktop'>
+				<div className={fieldsContainerClassName}>
+					<ThemeFields />
 				</div>
-				{/* <Footer /> */}
-			</ErrorBoundary>
+				<div className={previewContainer}>
+					<Preview />
+				</div>
+			</div>
+			{/* <Footer /> */}
 
 		</FormProvider>
 
@@ -76,18 +93,6 @@ function EditorForm() {
 				<p className='mt-3'>בתצוגה המקדימה - כפתורים ושדות מסויימים בעמוד שלך יהיו בלתי פעילים. בתצוגה למבקרים - כל אלה יפעלו כשורה אחרי שהעמוד ייצא לאור.</p>
 			</div>
 			<p className='has-text-weight-bold'>המון הצלחה!</p>
-		</>} />
-
-		<Modal {...fatalErrorModalProps} render={({ error }) => <>
-			<div className='block content has-text-start mt-5'>
-				<p>נתקלנו בשגיאת מערכת.<br />השגיאה שוגרה למערכת ותתוקן בהקדם האפשרי.</p>
-				<p>ניתן לנסות לרענן את הדף ולנסות שוב. אם השגיאה חוזרת - כדאי לפנות לתמיכה.</p>
-			</div>
-
-			<div className='buttons has-addons is-centered'>
-				<button className='button' onClick={() => window.location.reload()}>לרענן את הדף</button>
-				<OutboundLink className='button' href={`mailto:hello@yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`}>לפנות לתמיכה</OutboundLink>
-			</div>
 		</>} />
 
 	</>;
