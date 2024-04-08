@@ -44,8 +44,6 @@ async function saveAllSites(sites, redirects) {
 
 	// create a redirects file for all the sites that used to be on this multi-tenant site and have since moved to their own domains
 	await fs.promises.writeFile('./data/redirects.json', JSON.stringify(redirects));
-	console.log(redirects);
-
 
 	return sites.reduce((accu, site) => accu.then(async () => {
 
