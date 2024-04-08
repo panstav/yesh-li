@@ -59,54 +59,6 @@ function Header() {
 	const isSpreadSheetAddress = leadsTarget.type === 'spreadsheet';
 	const spreadSheetAddress = `https://docs.google.com/spreadsheets/d/${leadsTarget.address }`;
 
-	const menuItems = [
-		{
-			label: 'יציאה',
-			Icon: () => <Logout className="w-1-touch" />,
-			onClick: () => {
-				localDb.clear();
-				window.location.reload();
-			}
-		}
-	];
-
-	if (!getValues('isPublic')) {
-		// site has yet to be published
-		// add publish button
-		menuItems.unshift({
-			label: 'הוצאה לאור',
-			Icon: () => <span className='w-1-touch' style={{ fontSize: '1.7rem' }}>★</span>,
-			path: '/'
-		});
-	} else {
-		// site is published
-		if (!getValues('isSetSlug')) {
-			// site has yet to be assigned a slug
-			// add slug button
-			menuItems.unshift({
-				label: 'בחירת כתובת',
-				Icon: wwwIcon,
-				onClick: () => showSlugModal()
-			});
-		} else {
-			// site is published and has a slug
-			if (slug) {
-				// site's slug is set and is not empty
-				// if isSetSlug was set to true, but the slug is empty - the user has connected a domain
-				menuItems.unshift({
-					label: 'חיבור דומיין',
-					Icon: wwwIcon,
-					onClick: () => showDomainModal()
-				});
-			}
-			menuItems.unshift({
-				label: 'מעבר לעמוד',
-				Icon: () => <Eye className={eyeIcon} />,
-				path: `/${slug}`
-			});
-		}
-	}
-
 	const burgerClasses = classNames('navbar-burger has-text-white', isOpen && 'is-active');
 	const menuClasses = classNames('navbar-menu has-background-primary', isOpen && 'is-active');
 
@@ -126,7 +78,9 @@ function Header() {
 					<MenuItem label="גיליון הפניות שלי" path={spreadSheetAddress} Icon={() => <Sheet className="w-1-touch" />} />
 				</div>}
 				<div className="navbar-end">
-					{menuItems.map(MenuItem)}
+					<MenuItems {...{
+						showSlugModal, showDomainModal
+					}} />
 				</div>
 			</div>
 		</Nav>
@@ -180,6 +134,70 @@ function Version({ className }) {
 
 function wwwIcon() {
 	return <span className='is-flex is-justify-content-center is-size-7 is-size-8-touch has-text-weight-bold me-1 w-1-touch' style={{ lineHeight: 1 }}>www</span>;
+}
+
+function MenuItems({ showSlugModal, showDomainModal }) {
+
+	const { getValues } = useFormContext();
+	const slug = getValues('slug');
+
+	const menuItems = [
+		{
+			label: 'יציאה',
+			Icon: () => <Logout className="w-1-touch" />,
+			onClick: () => {
+				// empty the local storage
+				localDb.clear();
+				// reload the page
+				window.location.reload();
+			}
+		}
+	];
+
+	if (!getValues('isPublic')) {
+		// site has yet to be published
+		// add publish button
+		menuItems.unshift({
+			label: 'הוצאה לאור',
+			Icon: () => <span className='w-1-touch' style={{ fontSize: '1.7rem' }}>★</span>,
+			path: '/'
+		});
+
+	} else {
+		// site is published
+
+		if (!getValues('isSetSlug')) {
+			// site has yet to be assigned a slug
+			// add slug button
+			menuItems.unshift({
+				label: 'בחירת כתובת',
+				Icon: wwwIcon,
+				onClick: () => showSlugModal()
+			});
+
+		} else {
+			// site is published and has a slug
+
+			if (slug) {
+				// site's slug is set and is not empty
+				// isSetSlug is set to true and the slug is empty when the user has already connected a domain
+				menuItems.unshift({
+					label: 'חיבור דומיין',
+					Icon: wwwIcon,
+					onClick: () => showDomainModal()
+				});
+			}
+
+			menuItems.unshift({
+				label: 'מעבר לעמוד',
+				Icon: () => <Eye className={eyeIcon} />,
+				path: `/${slug}`
+			});
+		}
+	}
+
+	return menuItems.map(MenuItem);
+
 }
 
 function MenuItem({ Icon, label, path, onClick, ...props }) {
