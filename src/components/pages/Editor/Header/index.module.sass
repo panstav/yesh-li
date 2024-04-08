@@ -1,5 +1,18 @@
 @import @styles/common
 
+.logo-container
+	justify-content: space-evenly
+	padding: 0 $size-7
+
+	.version-by-logo
+		display: none
+
+	&:hover
+		flex-direction: column
+
+		.version-by-logo
+			display: block
+
 // ensure these styles override the .icon class
 .eye-icon[class*="icon"]
 	width: 1rem

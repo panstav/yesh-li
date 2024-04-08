@@ -1,5 +1,5 @@
 import { memo, useContext, useEffect, useState } from 'react';
-import { Link } from 'gatsby';
+import { Link, graphql, useStaticQuery } from 'gatsby';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
 
@@ -15,7 +15,7 @@ import SlugChoice from './SlugChoice';
 import AttachDomain from './AttachDomain';
 import { AuthContext } from '@pages/Editor/Auth';
 
-import { eyeIcon } from './index.module.sass';
+import { logoContainer, versionByLogo, eyeIcon } from './index.module.sass';
 
 export const noticeClassName = 'py-2';
 
@@ -145,10 +145,13 @@ function Header() {
 
 function Nav({ className: classes, burgerClasses, burgerOnClick, children }) {
 	const className = classNames("navbar has-background-primary", classes);
+	const logoContainerClassName = classNames('navbar-item is-clickable', logoContainer);
+	const versionClassName = classNames('is-size-8 has-text-white', versionByLogo);
 	return <nav className={className} style={{ boxShadow: '0px 20px 30px 10px var(--color-background)' }}>
 		<div className="navbar-brand is-justify-content-center">
-			<div className="navbar-item is-clickable">
+			<div className={logoContainerClassName}>
 				<Logo className="has-text-white mx-0" style={{ width: '3.5rem' }} />
+				<Version className={versionClassName} />
 			</div>
 			{burgerClasses && <div className={burgerClasses} onClick={burgerOnClick}>
 				<span aria-hidden="true" />
@@ -158,6 +161,21 @@ function Nav({ className: classes, burgerClasses, burgerOnClick, children }) {
 		</div>
 		{children}
 	</nav>;
+}
+
+function Version({ className }) {
+
+	const { site: { siteMetadata: { version } } } = useStaticQuery(graphql`
+		query {
+			site {
+				siteMetadata {
+					version
+				}
+			}
+		}
+	`);
+
+	return <span className={className}>v{version}</span>;
 }
 
 function wwwIcon() {
