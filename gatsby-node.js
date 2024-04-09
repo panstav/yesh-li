@@ -29,6 +29,7 @@ exports.createPages = async ({ actions }) => {
 		// we're on a multi-tenant site, so we'll create its pages along with the global ones
 		// gatsby will do the heavy lifting, we just choose the specific multiSite
 		fs.readdirSync(`./src/pages-yeshli`).forEach((file) => {
+			if (!file.endsWith('.js')) return;
 			fs.copyFileSync(`./src/pages-yeshli/${file}`, `./src/pages/${file}`);
 		});
 
@@ -45,7 +46,9 @@ exports.createPages = async ({ actions }) => {
 		const sitesDirectory = `${__dirname}/data`;
 
 		// get all directories from the data folder
-		const themesWithSites = fs.readdirSync(sitesDirectory, { withFileTypes: true }).filter(dirent => dirent.isDirectory()).map(dirent => dirent.name);
+		const themesWithSites = fs.readdirSync(sitesDirectory, { withFileTypes: true })
+			.filter(directory => directory.isDirectory())
+			.map(directory => directory.name);
 
 		// for each directory, get all the sites which are json files in the theme's directory
 		themesWithSites.forEach((themeName) => {
@@ -73,7 +76,7 @@ exports.createPages = async ({ actions }) => {
 	}
 
 	function copyGlobalPages() {
-		fs.readdirSync(`./src/pages-shared`).forEach((file) => {
+		fs.readdirSync(`./src/pages-shared`).filter((fileName) => fileName.endsWith('.js')).forEach((file) => {
 			fs.copyFileSync(`./src/pages-shared/${file}`, `./src/pages/${file}`);
 		});
 	}

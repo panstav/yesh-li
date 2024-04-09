@@ -37,7 +37,7 @@ const shortDomain = new URL(fullDomain).hostname;
 
 async function saveAllSites(sites, redirects) {
 
-	const links = (await fs.promises.readdir('./src/pages-yeshli')).map((pageFileName) => {
+	const links = (await fs.promises.readdir('./src/pages-yeshli')).filter((fileName) => fileName.endsWith('.js')).map((pageFileName) => {
 		if (pageFileName === 'index.js') return { url: '/', changefreq: 'monthly', priority: 1 };
 		return { url: `/${pageFileName.replace('.js', '')}`, changefreq: 'monthly', priority: 0.7 };
 	}).concat(sites.map(site => ({ url: `/${site.slug}`, changefreq: 'daily', priority: 1 })));
