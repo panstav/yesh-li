@@ -1,7 +1,8 @@
 import { HeadFor } from "@config/Meta";
-import Page from "@themes/alon-01/Theme";
 
 import parseSrcSet from "@lib/parse-srcset";
+
+export { default } from "@themes/alon-01/Theme";
 
 export const Head = HeadFor(({ pageContext: { content: { description, featuredImage } } }) => {
 	const srcs = parseSrcSet(featuredImage.srcSet);
@@ -11,7 +12,3 @@ export const Head = HeadFor(({ pageContext: { content: { description, featuredIm
 		featuredImage: srcs[srcs.length - 1]
 	};
 });
-
-export default function Alon_01({ pageContext: { content } }) {
-	return Page({ content });
-}
