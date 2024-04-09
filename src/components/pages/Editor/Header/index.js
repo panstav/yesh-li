@@ -72,7 +72,7 @@ function Header() {
 					: null
 			: null}
 
-		<Nav burgerClasses={burgerClasses} burgerOnClick={toggleMenu}>
+		<Nav logoClassName="is-clickable" burgerClasses={burgerClasses} burgerOnClick={toggleMenu}>
 			<div className={menuClasses}>
 				{isSpreadSheetAddress && <div className="navbar-start is-flex-grow-1">
 					<MenuItem label="גיליון הפניות שלי" path={spreadSheetAddress} Icon={() => <Sheet className="w-1-touch" />} />
@@ -97,16 +97,18 @@ function Header() {
 	</>;
 }
 
-function Nav({ className: classes, burgerClasses, burgerOnClick, children }) {
+function Nav({ className: classes, logoClassName, burgerClasses, burgerOnClick, children }) {
 	const className = classNames("navbar has-background-primary", classes);
-	const logoContainerClassName = classNames('navbar-item is-clickable', logoContainer);
+	const logoContainerClassName = classNames('navbar-item', logoClassName, logoContainer);
 	const versionClassName = classNames('is-size-8 has-text-white', versionByLogo);
 	return <nav className={className} style={{ boxShadow: '0px 20px 30px 10px var(--color-background)' }}>
 		<div className="navbar-brand is-justify-content-center">
-			<div className={logoContainerClassName}>
-				<Logo className="has-text-white mx-0" style={{ width: '3.5rem' }} />
-				<Version className={versionClassName} />
-			</div>
+			<LogoLinkWrapper className="is-flex">
+				<div className={logoContainerClassName}>
+					<Logo className="has-text-white mx-0" style={{ width: '3.5rem' }} />
+					<Version className={versionClassName} />
+				</div>
+			</LogoLinkWrapper>
 			{burgerClasses && <div className={burgerClasses} onClick={burgerOnClick}>
 				<span aria-hidden="true" />
 				<span aria-hidden="true" />
@@ -115,6 +117,16 @@ function Nav({ className: classes, burgerClasses, burgerOnClick, children }) {
 		</div>
 		{children}
 	</nav>;
+}
+
+function LogoLinkWrapper(props) {
+
+	// by default slug would be falsy
+	// by default users at a multisite - have a slug
+	// and users that move to their own domain - don't have a slug on their siteData but multisite reserved their slug to redirect
+	if (!useFormContext()?.getValues('slug')) return props.children;
+
+	return <Link to="/" {...props} />;
 }
 
 function Version({ className }) {
