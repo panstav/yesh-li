@@ -1,17 +1,15 @@
 import { navigate } from 'gatsby';
 import { useContext, useEffect } from 'react';
-import { ErrorBoundary } from "react-error-boundary";
 import { FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 
 import xhr from '@services/xhr';
 import snatchParameter from '@lib/snatch-parameter';
 
-import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
+import Modal, { useSuccessModal } from '@wrappers/Modal';
 import Loader from '@elements/Loader';
-import OutboundLink from '@elements/OutboundLink';
 
-import Header, { SafeHeader } from './Header';
+import Header from './Header';
 import ThemeFields from './ThemeFields';
 import Preview from './Preview';
 // import Footer from './Footer';
@@ -20,30 +18,9 @@ import Auth, { AuthContext } from './Auth';
 import { fieldsContainer, previewContainer } from './index.module.sass';
 
 export default function Editor () {
-
-	const [fatalErrorModalProps, showFatalErrorModal] = useErrorModal({ hideable: false });
-
-	return <>
-
-		<ErrorBoundary FallbackComponent={SafeHeader} onError={(error) => showFatalErrorModal({ error })}>
-			<Auth>
-				<EditorForm />
-			</Auth>
-		</ErrorBoundary>
-
-		<Modal {...fatalErrorModalProps} render={({ error }) => <>
-			<div className='block content has-text-start mt-5'>
-				<p>נתקלנו בשגיאת מערכת.<br />השגיאה שוגרה למערכת ותתוקן בהקדם האפשרי.</p>
-				<p>ניתן לנסות לרענן את הדף ולנסות שוב. אם השגיאה חוזרת - כדאי לפנות לתמיכה.</p>
-			</div>
-
-			<div className='buttons has-addons is-centered'>
-				<button className='button' onClick={() => window.location.reload()}>לרענן את הדף</button>
-				<OutboundLink className='button' href={`mailto:hello@yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`}>לפנות לתמיכה</OutboundLink>
-			</div>
-		</>} />
-
-	</>;
+	return <Auth>
+		<EditorForm />
+	</Auth>;
 }
 
 function EditorForm() {
