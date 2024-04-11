@@ -1,6 +1,7 @@
 import { graphql, useStaticQuery } from 'gatsby';
 
 import pallatte from '@lib/pallatte';
+import getDirByLang from '@lib/get-dir-by-lang';
 
 const isRemote = !process.env.GATSBY_IS_LOCAL;
 
@@ -90,11 +91,10 @@ export function HeadFor(arg) {
 		}
 
 		const { lang = 'he', preload, children, ...props } = args;
-		const direction = lang === 'he' ? 'rtl' : 'ltr';
 
 		return <>
-			<html lang={lang} dir={direction} />
-			
+			<html lang={lang} dir={getDirByLang(lang)} />
+
 			{preload && preload.map((preload) => <link rel="preload" key={preload.href} {...preload} />)}
 
 			<Meta
