@@ -17,6 +17,7 @@ const crossEnvPlugins = [
 				"@config": "src/components/config",
 				"@elements": "src/components/elements",
 				"@pages": "src/components/pages",
+				"@domains": "src/components/domains",
 				"@themes": "src/components/themes",
 				"@wrappers": "src/components/wrappers",
 				"@lib": "src/lib",
