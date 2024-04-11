@@ -4,14 +4,17 @@ import classNames from "classnames";
 
 import cleanUGT from "@lib/clean-user-generated-text";
 
+import { useFieldLabels } from "@hooks/use-i18n";
+
 import { richTextContainer } from '@pages/Editor/index.module.sass';
-import copy from '@pages/Editor/copy';
 
 let Quill;
 
 export default function RichEditor({ id, label, placeholder, maxLength, withLink }) {
 	import('quill/dist/quill.core.css');
 	import('quill/dist/quill.snow.css');
+
+	const t = useFieldLabels();
 
 	const [isModuleLoaded, setIsModuleLoaded] = useState(!!Quill);
 
@@ -67,7 +70,7 @@ export default function RichEditor({ id, label, placeholder, maxLength, withLink
 
 			// if it is, set the value to an empty string instead of an empty paragraph or span or whatever
 			if (!strippedText) return setValue(id, '');
-			if (maxLength && strippedText.length > maxLength) return setError(id, { type: 'maxLength', message: copy.maxLengthField(maxLength) });
+			if (maxLength && strippedText.length > maxLength) return setError(id, { type: 'maxLength', message: t.maxLengthField(maxLength) });
 
 			// if it's not, set the value to the editor's innerHTML after cleaning it
 			setValue(id, cleanUGT(editor.root.innerHTML.replaceAll('<br>', '')));

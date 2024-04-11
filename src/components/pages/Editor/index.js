@@ -6,16 +6,21 @@ import classNames from 'classnames';
 import xhr from '@services/xhr';
 import snatchParameter from '@lib/snatch-parameter';
 
+import useI18n from '@hooks/use-i18n';
+
 import Modal, { useSuccessModal } from '@wrappers/Modal';
 import Loader from '@elements/Loader';
 
 import Header from './Header';
 import ThemeFields from './ThemeFields';
 import Preview from './Preview';
-// import Footer from './Footer';
 import Auth, { AuthContext } from './Auth';
 
 import { fieldsContainer, previewContainer } from './index.module.sass';
+
+export const editorProps = {
+	isInternal: true
+};
 
 export default function Editor () {
 	return <Auth>
@@ -24,6 +29,7 @@ export default function Editor () {
 }
 
 function EditorForm() {
+	const [{ Editor: { NewPageModal } }] = useI18n();
 	const { siteId } = useContext(AuthContext);
 
 	const form = useForm({
@@ -63,14 +69,7 @@ function EditorForm() {
 
 		</FormProvider>
 
-		<Modal {...newPageModal} render={() => <>
-			<p>העמוד שלך מוכן!</p>
-			<div className='is-size-6 has-text-start mt-4 mb-5'>
-				<p>במסך זה אפשר להעשיר את העמוד שלך בפרטים ומאפיינים נוספים. אלה שתבחרו יופיעו בתצוגה המקדימה של העמוד.</p>
-				<p className='mt-3'>בתצוגה המקדימה - כפתורים ושדות מסויימים בעמוד שלך יהיו בלתי פעילים. בתצוגה למבקרים - כל אלה יפעלו כשורה אחרי שהעמוד ייצא לאור.</p>
-			</div>
-			<p className='has-text-weight-bold'>המון הצלחה!</p>
-		</>} />
+		<Modal {...newPageModal} render={NewPageModal} />
 
 	</>;
 }

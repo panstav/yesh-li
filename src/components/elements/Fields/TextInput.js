@@ -1,12 +1,13 @@
 import { useFormContext } from "react-hook-form";
 import classNames from "classnames";
 
+import { useFieldLabels } from "@hooks/use-i18n";
+
 import cleanUGT from "@lib/clean-user-generated-text";
 import isUrl from "@lib/is-url";
 
-import copy from '@pages/Editor/copy';
-
 export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, onChange, isSmall, autoComplete }) {
+	const t = useFieldLabels();
 	const { register, getFieldState, formState } = useFormContext();
 	const { error } = getFieldState(id, formState);
 
@@ -19,8 +20,8 @@ export default function TextInput({ id, label, labelClassName: labelClasses, typ
 	const inputClassName = classNames('input', isSmall && 'is-small');
 
 	const inputConfig = {
-		required: required && copy.requiredField,
-		maxLength: maxLength && { value: maxLength, message: copy.maxLengthField(maxLength) },
+		required: required && t.required_field,
+		maxLength: maxLength && { value: maxLength, message: t.maxLengthField(maxLength) },
 		setValueAs: valueAs
 	};
 
@@ -39,30 +40,38 @@ export default function TextInput({ id, label, labelClassName: labelClasses, typ
 }
 
 export function UrlInput({ type = 'url', validate, includes, required, ...props }) {
+	const t = useFieldLabels();
 	return <TextInput
 		type={type}
 		validate={{
 			...validate,
 			// only invalidate these if value is present, otherwise it's the required validator's responsibility
-			incldues: (s) => (!s || s.includes(includes)) || `הכתובת צריכה להכיל "${includes}"`,
-			isUrl: (s) => (!s || isUrl(s)) || copy.invalidUrl
+			incldues: (str) => (!str || str.includes(includes)) || t.urlMissingOn(includes),
+			isUrl: (str) => (!str || isUrl(str)) || t.invalid_url
 		}}
 		required={required}
 		{...props} />;
 }
 
 export function TelInput(props) {
+	const t = useFieldLabels();
 	return <TextInput
 		type='tel'
-		pattern={{ value: /^\+972\d{8,9}$/, message: copy.invalidPhoneNumber }}
-		setValueAs={(str) => str.trim().replace(/-/g, '').replace(/^0/, '+972')}
+		pattern={{ value: /^\+972\d{8,9}$/, message: t.invalid_phone_number }}
+		setValueAs={(str) => {
+			const cleanStr = str.trim().replace(/-/g, '');
+			// i18n might include a specific country code
+			// replace any leading 0 with the country code if so
+			return t.country_phone_code ? cleanStr.replace(/^0/, t.country_code) : cleanStr;
+		}}
 		{...props} />;
 }
 
 export function EmailInput(props) {
+	const t = useFieldLabels();
 	return <TextInput
 		type="email"
-		pattern={{ value: /\S+@\S+\.\S+/, message: copy.invalidEmail }}
+		pattern={{ value: /\S+@\S+\.\S+/, message: t.invalid_email }}
 		{...props} />;
 }
 
