@@ -1,14 +1,13 @@
-import { useContext } from 'react';
-
 import Section from '@wrappers/Section';
 import xhr from '@services/xhr';
-import useFetch from '@hooks/use-fetch';
 
-import { PageContext } from '..';
+import useFetch from '@hooks/use-fetch';
+import usePageData from '@hooks/use-page-data';
+
 import Fields from './FormFields';
 
 export default function ContactForm() {
-	const { content: { ctaHeader } } = useContext(PageContext);
+	const { content: { ctaHeader } } = usePageData();
 	const [postLead, isSuccess, isError] = useFetch(xhr.postLead);
 
 	return <>

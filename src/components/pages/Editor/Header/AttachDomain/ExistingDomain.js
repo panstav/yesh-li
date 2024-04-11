@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import classNames from "classnames";
 
 import xhr from "@services/xhr";
+import useI18n from "@hooks/use-i18n";
 
 import Form from "@wrappers/Form";
 import UrlInputWithAddon from "@elements/Fields/UrlInputWithAddon";
@@ -10,6 +11,7 @@ import { AuthContext } from "@pages/Editor/Auth";
 
 export default function ExistingDomain({ wrapper: Wrapper, contactUs: ContactUs, onSuccess, currentSlug }) {
 
+	const [i18n, { Editor: { AttachDomain: t } }] = useI18n();
 	const { siteId } = useContext(AuthContext);
 
 	const [domain, setDomain] = useState('');
@@ -55,20 +57,20 @@ export default function ExistingDomain({ wrapper: Wrapper, contactUs: ContactUs,
 		<div className="is-relative" style={{ height: '8rem' }}>
 			<Loader />
 		</div>
-		<p>המערכת מכינה את האתר לחיבור הדומיין. פעולה זו עשויה להמשך מספר דקות, אפשר לחכות שתסתיים ואפשר גם לסגור את העמוד ולחזור לכאן מאוחר יותר.</p>
+		<p>{t.attaching_domain_wait_or_come_later}</p>
 	</>;
 
 	// we have the name servers, so we can show them to the user
 	if (requiredNameServers) {
 		return <Wrapper>
 			<div className="content">
-				<p>המערכת מוכנה לחבר את הדומיין שלך.</p>
-				<p> על מנת להשלים את החיבור יש להגדיר את שמות השרת (Name Servers) הבאים מול הספק עימו רשמתם את הדומיין.</p>
+				<p>{t.site_ready_for_domain}</p>
+				<p>{t.set_nameservers_to_complete}</p>
 			</div>
-			<NameServerList title="שמות השרת הרצויים" nameServers={requiredNameServers} />
-			{currentNameServers && <NameServerList title="שמות השרת המצויים" nameServers={currentNameServers} noMatch={true} emptyState="טרם נרשמו שמות שרת בדומיין זה." />}
+			<NameServerList title={t.required_nameservers} nameServers={requiredNameServers} />
+			{currentNameServers && <NameServerList title={t.current_nameservers} nameServers={currentNameServers} noMatch={true} emptyState={t.no_nameservers_found} />}
 			<ContactUs className="block" />
-			<button className={validateNameServersButtonClassName} onClick={validateNameServers}>המשך</button>
+			<button className={validateNameServersButtonClassName} onClick={validateNameServers}>${i18n.misc.continue}</button>
 		</Wrapper>;
 	}
 
@@ -76,17 +78,18 @@ export default function ExistingDomain({ wrapper: Wrapper, contactUs: ContactUs,
 		<Form {...existingDomainForm}>
 			<UrlInputWithAddon
 				id={'domain'}
-				label="כתובת הדומיין"
+				label={t.domain_url}
 				prefix="https://"
-				pattern={{ value: /^(http:\/\/|https:\/\/)?(www.)?[a-zA-Z-0-9]+.[a-zA-Z-0-9]+$/, message: 'הכתובת יכולה להכיל אותיות באנגלית, ספרות ומקפים בלבד.' }}
+				pattern={{ value: /^(http:\/\/|https:\/\/)?(www.)?[a-zA-Z-0-9]+.[a-zA-Z-0-9]+$/, message: t.domain_url_pattern_error }}
 			/>
-			<button className="button">המשך</button>
+			<button className="button">{i18n.misc.continue}</button>
 		</Form>
 	</Wrapper>;
 
 }
 
 function NameServerList({ title, nameServers, emptyState, noMatch }) {
+	const [{ Editor: { AttachDomain: t } }] = useI18n();
 	return <div className="block">
 		<span className="has-text-weight-bold">{title}:</span>
 		{nameServers.length > 0
@@ -95,7 +98,7 @@ function NameServerList({ title, nameServers, emptyState, noMatch }) {
 			</pre>
 			: <div>{emptyState}</div>}
 		{/* don't show the error message if no name servers were set at all */}
-		{noMatch && nameServers.length > 0 && <p className="help has-text-danger">שימו לב שהרשימות לא תואמות.</p>}
+		{noMatch && nameServers.length > 0 && <p className="help has-text-danger">{t.no_lists_match}</p>}
 	</div>;
 }
 

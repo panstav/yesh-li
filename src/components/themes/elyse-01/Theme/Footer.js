@@ -1,12 +1,11 @@
-import { useContext } from 'react';
-
 import Section from '@wrappers/Section';
 
-import { PageContext } from '.';
+import usePageData from '@hooks/use-page-data';
+
 import Socials from './Socials';
 
 export default function Footer () {
-	const { css, content: { fullName, socials } } = useContext(PageContext);
+	const { css, content: { fullName, socials } } = usePageData();
 
 	return <footer className="footer has-text-centered has-background-white pb-5" style={{ borderTop: css.border }}>
 

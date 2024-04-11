@@ -1,13 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
 
-import { PageContext } from "@config/Page";
 import Modal, { useErrorModal, useModal, useSuccessModal } from "@wrappers/Modal";
 import { Email, Facebook, Instagram, LinkedIn, TikTok, WhatsApp, X, YouTube, Phone, Pinterest, AddContact, Share, Chat } from "@elements/Icon";
 import OutboundLink from "@elements/OutboundLink";
 
 import xhr from '@services/xhr';
 import hrefByAddressType from "@lib/href-by-address-type";
+
+import usePageData from "@hooks/use-page-data";
 
 import Sections from "./Sections";
 import Video from "./Video";
@@ -61,7 +62,7 @@ const copy = {
 };
 
 export default function Main() {
-	const { isPublic, title, slug, content: { fullName, occupation, description, statement, links, video, qrSvg } } = useContext(PageContext);
+	const { isPublic, title, slug, content: { fullName, occupation, description, statement, links, video, qrSvg } } = usePageData();
 
 	const [url, setUrl] = useState();
 	useEffect(() => {

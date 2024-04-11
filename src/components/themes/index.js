@@ -1,9 +1,6 @@
 import { lazy } from 'react';
 
-const mapped = [
-	'alon-01',
-	'elyse-01'
-];
+import map from './map.json';
 
 export const defaultTheme = 'alon-01';
 
@@ -12,11 +9,8 @@ export const fieldsMap = getMappedComponents('Editor');
 export const onboardingStepsMap = getMappedComponents('Onboarding');
 
 function getMappedComponents (type) {
-
-	const map = mapped.reduce((accu, themeName) => {
+	return map.reduce((accu, { themeName }) => {
 		accu[themeName] = lazy(() => import(`./${themeName}/${type}`));
 		return accu;
 	}, {});
-
-	return map;
 }

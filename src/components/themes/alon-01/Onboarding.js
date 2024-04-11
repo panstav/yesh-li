@@ -1,11 +1,11 @@
 import { useFormContext } from "react-hook-form";
 
-import { Step } from "@pages/Onboarding";
+import { useFieldLabels } from "@hooks/use-i18n";
+
+import { Step } from "@domains/yeshli/Onboarding";
 
 import { FeaturedImageFile, FullNameInput, MainColorSelect, WhatsappContact, PhoneContact, EmailContact, FacebookContact, OccupationInput } from "@themes/alon-01/shared";
 import Checkbox from "@elements/Checkbox";
-
-import copy from "@pages/Editor/copy";
 
 export default function Onboarding() {
 	return <>
@@ -31,19 +31,20 @@ export default function Onboarding() {
 }
 
 function ContactStep () {
+	const t = useFieldLabels();
 	const { watch } = useFormContext();
 
 	const internal = watch('internal');
 
 	return <>
 		<h2 className="is-size-5 mb-4">איך לקוחות יוצרים איתכם קשר?</h2>
-		<div className="mt-2"><Checkbox id="internal.contactMethods.whatsapp" label={<b>{copy.whatsapp}{internal?.contactMethods?.whatsapp ? ':' : ''}</b>} /></div>
+		<div className="mt-2"><Checkbox id="internal.contactMethods.whatsapp" label={<b>{t.whatsapp}{internal?.contactMethods?.whatsapp ? ':' : ''}</b>} /></div>
 		{internal?.contactMethods?.whatsapp && <WhatsappContact />}
-		<div className="mt-2"><Checkbox id="internal.contactMethods.phone" label={<b>{copy.phone}{internal?.contactMethods?.phone ? ':' : ''}</b>} /></div>
+		<div className="mt-2"><Checkbox id="internal.contactMethods.phone" label={<b>{t.phone}{internal?.contactMethods?.phone ? ':' : ''}</b>} /></div>
 		{internal?.contactMethods?.phone && <PhoneContact />}
-		<div className="mt-2"><Checkbox id="internal.contactMethods.email" label={<b>{copy.email}{internal?.contactMethods?.email ? ':' : ''}</b>} /></div>
+		<div className="mt-2"><Checkbox id="internal.contactMethods.email" label={<b>{t.email}{internal?.contactMethods?.email ? ':' : ''}</b>} /></div>
 		{internal?.contactMethods?.email && <EmailContact />}
-		<div className="mt-2"><Checkbox id="internal.contactMethods.facebook" label={<b>{copy.facebook}{internal?.contactMethods?.facebook ? ':' : ''}</b>} /></div>
+		<div className="mt-2"><Checkbox id="internal.contactMethods.facebook" label={<b>{t.facebook}{internal?.contactMethods?.facebook ? ':' : ''}</b>} /></div>
 		{internal?.contactMethods?.facebook && <FacebookContact />}
 	</>;
 

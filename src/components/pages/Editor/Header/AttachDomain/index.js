@@ -1,14 +1,15 @@
 import { useState } from "react";
 import classNames from "classnames";
 
+import useI18n from "@hooks/use-i18n";
+
 import { Title } from "@wrappers/Modal";
-import OutboundLink from "@elements/OutboundLink";
 
 import ExistingDomain from "./ExistingDomain";
 
-import { liveDnsHref, nameCheapHref } from "/variables";
-
 export default function AttachDomain({ onSuccess: onSuccessHandler, slug: currentSlug, hideModal }) {
+
+	const [{ Editor: { AttachDomain: { ContactUs, BuyingDomainUnavailable, ...t } } }] = useI18n();
 
 	const [panel, setPanel] = useState('existing');
 
@@ -23,10 +24,10 @@ export default function AttachDomain({ onSuccess: onSuccessHandler, slug: curren
 	};
 
 	return <>
-		<Title>חיבור דומיין לאתר</Title>
+		<Title>{t.attach_domain_to_site}</Title>
 		<p className="panel-tabs">
-			<a onClick={goToExistingDomainPanel} className={existingDomainClassName}>חיבור דומיין קיים</a>
-			<a onClick={() => setPanel('new')} className={newDomainClassName}>רכישת דומיין חדש</a>
+			<a onClick={goToExistingDomainPanel} className={existingDomainClassName}>{t.use_existing_domain}</a>
+			<a onClick={() => setPanel('new')} className={newDomainClassName}>{t.buy_new_domain}</a>
 		</p>
 
 		{panel === 'existing' && <ExistingDomain {...{
@@ -37,10 +38,9 @@ export default function AttachDomain({ onSuccess: onSuccessHandler, slug: curren
 		}} />}
 
 		{panel === 'new' && <Wrapper className="content">
-			<p>בשלב זה אין אפשרות לרכוש דומיין דרך המערכת.</p>
-			<p>אנו ממליצים לרכוש את הדומיין שלכם דרך <OutboundLink href={liveDnsHref}>LiveDNS</OutboundLink> במידה ואתם רוצים סיומת ישראלית ודרך <OutboundLink href={nameCheapHref}>Namecheap</OutboundLink> עבור כל סיומת אחרת.</p>
-			<p>לאחר שתרכשו את הדומיין שלכם תוכלו להמשיך עם ההוראות שבלשונית <a onClick={goToExistingDomainPanel}>חיבור דומיין קיים</a>.</p>
-			<ContactUs />
+			<BuyingDomainUnavailable {...{
+				goToExistingDomainPanel
+			}} />
 		</Wrapper>}
 	</>;
 }
@@ -50,8 +50,4 @@ function Wrapper ({ className: classes, children }) {
 	return <div className={className}>
 		{children}
 	</div>;
-}
-
-function ContactUs ({ className }) {
-	return <p className={className}>תרגישו חופשי <OutboundLink href="mailto:hello@yesh.li">ליצור איתנו קשר</OutboundLink> אם תצטרכו עזרה בתהליך.</p>;
 }

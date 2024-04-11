@@ -1,16 +1,16 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
 import classNames from "classnames";
 
-import { PageContext } from "@config/Page";
 import Modal, { useRawModal } from "@wrappers/Modal";
 import { Gallery as GalleryIcon } from "@elements/Icon";
 
+import { usePageContent } from "@hooks/use-page-data";
 import useKeyPress from "@hooks/use-key-press";
 
 import { container, edge } from "./gallery.module.sass";
 
 export default function Gallery({ className }) {
-	const { content: { gallery } } = useContext(PageContext);
+	const { gallery } = usePageContent();
 
 	const [galleryModal, showGalleryModal] = useRawModal({
 		isLarge: true
@@ -36,7 +36,7 @@ export default function Gallery({ className }) {
 }
 
 function GalleryModal() {
-	const { content: { gallery } } = useContext(PageContext);
+	const { gallery } = usePageContent();
 
 	const [index, setIndex] = useState(0);
 	// next goes to the next image, unless it's the last one, in which case it goes to the first one

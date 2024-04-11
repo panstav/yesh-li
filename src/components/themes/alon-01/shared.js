@@ -1,39 +1,43 @@
+import { useFieldLabels } from "@hooks/use-i18n";
+
 import { EmailInput, ImageInput, Select, TelInput, TextInput, UrlInput } from "@elements/Fields";
 
-import copy from "@pages/Editor/copy";
-
 export function FullNameInput (props = {}) {
+	const t = useFieldLabels();
 	return <TextInput
 		id="content.fullName"
-		label={copy.fullName}
+		label={t.full_name}
 		maxLength={20}
 		autoComplete='name'
 		{...props} />;
 }
 
 export function OccupationInput (props = {}) {
+	const t = useFieldLabels();
 	return <TextInput
 		id="content.occupation"
-		label={copy.occupation}
-		description={copy.occupationDescription}
+		label={t.occupation}
+		description={t.occupation_description}
 		maxLength={30}
 		autoComplete='organization-title'
 		{...props} />;
 }
 
 export function MainColorSelect (props = {}) {
+	const t = useFieldLabels();
 	return <Select
 		id="mainColor"
-		label={copy.mainColor}
+		label={t.main_color}
 		oneOf={availableColors}
 		{...props} />;
 }
 
 export function FeaturedImageFile (props = {}) {
+	const t = useFieldLabels();
 	return <ImageInput
 		id="content.featuredImage"
-		label={copy.mainImage}
-		description={copy.mainImageDescription}
+		label={t.main_image}
+		description={t.main_image_description}
 		sizes={[450, 800, 1024, 1400]}
 		{...props} />;
 }

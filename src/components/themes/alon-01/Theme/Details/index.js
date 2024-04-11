@@ -1,13 +1,11 @@
-import { useContext } from "react";
-
-import { PageContext } from "@config/Page";
+import { usePageContent } from "@hooks/use-page-data";
 
 import Main from "./Main";
 
 import { details } from "./details.module.sass";
 
 export default function Details () {
-	const { content: { fullName } } = useContext(PageContext);
+	const { fullName } = usePageContent();
 
 	return <div className={details}>
 		<div className="is-flex-tablet is-flex-direction-column is-justify-content-center is-relative" style={{ minHeight: '100%', padding: '3rem 0' }}>

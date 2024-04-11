@@ -6,14 +6,17 @@ import classNames from 'classnames';
 import xhr from '@services/xhr';
 import localDb from '@services/localDb';
 
+import useI18n from '@hooks/use-i18n';
+
 import Modal, { useModal, useSuccessModal } from '@wrappers/Modal';
-import { Eye, Logo, Logout, Sheet } from '@elements/Icon';
+import { Eye, Logout, Sheet } from '@elements/Icon';
 import OutboundLink from '@elements/OutboundLink';
+
+import { AuthContext } from '../Auth';
 
 import TrialNotice from './TrialNotice';
 import SlugChoice from './SlugChoice';
 import AttachDomain from './AttachDomain';
-import { AuthContext } from '@pages/Editor/Auth';
 
 import { logoContainer, versionByLogo, eyeIcon } from './index.module.sass';
 
@@ -24,6 +27,8 @@ export const SafeHeader = () => <Nav className="is-justify-content-center" />;
 export default memo(Header);
 
 function Header() {
+
+	const [{ Editor: { Header: t, AttachDomain: { DomainAttachedSuccessFullyModal } }}] = useI18n();
 
 	const { role, emailVerified, siteId } = useContext(AuthContext);
 	const { getValues } = useFormContext();
@@ -75,7 +80,7 @@ function Header() {
 		<Nav logoClassName="is-clickable" burgerClasses={burgerClasses} burgerOnClick={toggleMenu}>
 			<div className={menuClasses}>
 				{isSpreadSheetAddress && <div className="navbar-start is-flex-grow-1">
-					<MenuItem label="גיליון הפניות שלי" path={spreadSheetAddress} Icon={() => <Sheet className="w-1-touch" />} />
+					<MenuItem label={t.my_leads_sheet} path={spreadSheetAddress} Icon={() => <Sheet className="w-1-touch" />} />
 				</div>}
 				<div className="navbar-end">
 					<MenuItems {...{
@@ -88,16 +93,17 @@ function Header() {
 		<Modal {...slugModal} render={SlugChoice} />
 
 		<Modal {...domainModal} render={AttachDomain} onSuccess={onAttachDomainSuccess} slug={slug} />
-		<Modal {...attachDomainSuccessModal} render={({ domain }) => <>
-			מעולה. הדומיין יחובר תוך פחות מ-48 שעות.<br />לאחר מכן - ניהול התוכן יהיה נגיש בכתובת <OutboundLink href={`https://${domain}/editor`}>{domain}/editor</OutboundLink>.<br/><br/>נתראה שם!
-		</>} />
+		<Modal {...attachDomainSuccessModal} render={DomainAttachedSuccessFullyModal} />
 
-		<Modal {...slugUpdateSuccess} render={() => 'כתובת האתר עודכנה, תוך פחות משעה העמוד שלך יהיה נגיש.'} />
+		<Modal {...slugUpdateSuccess} render={() => t.slug_updated_successfully} />
 
 	</>;
 }
 
-function Nav({ className: classes, logoClassName, burgerClasses, burgerOnClick, children }) {
+function Nav ({ className: classes, logoClassName, burgerClasses, burgerOnClick, children }) {
+
+	const [{ multi: { Logo } }] = useI18n();
+
 	const className = classNames("navbar has-background-primary", classes);
 	const logoContainerClassName = classNames('navbar-item', logoClassName, logoContainer);
 	const versionClassName = classNames('is-size-8 has-text-white', versionByLogo);
@@ -150,12 +156,14 @@ function wwwIcon() {
 
 function MenuItems({ showSlugModal, showDomainModal }) {
 
+	const [{ Editor: { Header: t } }] = useI18n();
+
 	const { getValues } = useFormContext();
 	const slug = getValues('slug');
 
 	const menuItems = [
 		{
-			label: 'יציאה',
+			label: t.log_out,
 			Icon: () => <Logout className="w-1-touch" />,
 			onClick: () => {
 				// empty the local storage
@@ -170,7 +178,7 @@ function MenuItems({ showSlugModal, showDomainModal }) {
 		// site has yet to be published
 		// add publish button
 		menuItems.unshift({
-			label: 'הוצאה לאור',
+			label: t.publish_site,
 			Icon: () => <span className='w-1-touch' style={{ fontSize: '1.7rem' }}>★</span>,
 			path: '/'
 		});
@@ -182,7 +190,7 @@ function MenuItems({ showSlugModal, showDomainModal }) {
 			// site has yet to be assigned a slug
 			// add slug button
 			menuItems.unshift({
-				label: 'בחירת כתובת',
+				label: t.choose_slug,
 				Icon: wwwIcon,
 				onClick: () => showSlugModal()
 			});
@@ -194,14 +202,14 @@ function MenuItems({ showSlugModal, showDomainModal }) {
 				// site's slug is set and is not empty
 				// isSetSlug is set to true and the slug is empty when the user has already connected a domain
 				menuItems.unshift({
-					label: 'חיבור דומיין',
+					label: t.choose_domain,
 					Icon: wwwIcon,
 					onClick: () => showDomainModal()
 				});
 			}
 
 			menuItems.unshift({
-				label: 'מעבר לעמוד',
+				label: t.go_to_site,
 				Icon: () => <Eye className={eyeIcon} />,
 				path: `/${slug}`
 			});
@@ -238,6 +246,8 @@ function MenuItem({ Icon, label, path, onClick, ...props }) {
 
 function EmailIsVerifiedNotice () {
 
+	const [{ Editor: { Header: t } }] = useI18n();
+
 	const [isHidden, setIsHidden] = useState(false);
 	const hideNotice = () => {
 		localDb.unset('email-recently-verified');
@@ -251,7 +261,7 @@ function EmailIsVerifiedNotice () {
 	return <div className={className}>
 		<span onClick={hideNotice} className='delete is-overlay m-auto' style={{ 'inset-inline-start': 'unset', 'inset-inline-end': '0.5rem' }} />
 		<div className='has-text-centered has-text-white'>
-			כתובת המייל אומתה בהצלחה.
+			{t.email_verified_successfully}
 		</div>
 	</div>;
 }
