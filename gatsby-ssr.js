@@ -10,7 +10,14 @@ export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) =>
 
 	// replace the default generator meta tag with our own
 	set(headComponents, (item) => item?.props?.name === 'generator', (item) => {
-		item.props.content = `YeshLi ${process.env.npm_package_version} (https://yesh.li)`;
+
+		// yesh.li => YeshLi
+		const name = process.env.URL.split('.').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('');
+
+		const url = `https://${process.env.URL}`;
+		const version = process.env.npm_package_version;
+
+		item.props.content = `${name} ${version} (${url})`;
 		return item;
 	});
 
