@@ -1,7 +1,7 @@
 import { navigate } from "gatsby";
 import { useEffect } from 'react';
 
-export default function NotFoundPage() {
+export default function RedirectHome() {
 
 	// redirect to homepage
 	useEffect(() => navigate('/'), []);

@@ -19,9 +19,6 @@ exports.createPages = async ({ actions }) => {
 	// at the package root folder, there's a data folder and inside it, if there's a root.json file, we'll use it as the root page
 	const rootSiteFilePath = `${__dirname}/data/root.json`;
 
-	cleanPagesDirectory();
-	createGlobalPages();
-
 	if (fs.existsSync(rootSiteFilePath)) {
 		createRootSite();
 	} else {
@@ -109,17 +106,6 @@ exports.createPages = async ({ actions }) => {
 
 	}
 
-	function createGlobalPages() {
-		// files at @domains that aren't part of a specific domain remain in this directory and are treat as cross-domain pages
-		fs.readdirSync(`./src/domains`).filter((fileName) => fileName.endsWith('.js')).forEach((fileName) => {
-			actions.createPage({
-				path: fileName.split('.')[0],
-				component: `${__dirname}/src/domains/${fileName}`,
-				context: {}
-			});
-		});
-	}
-
 	function createRootSite () {
 		// instance is running on a dedicated domain
 
@@ -157,15 +143,3 @@ exports.createPages = async ({ actions }) => {
 	}
 
 };
-
-function cleanPagesDirectory() {
-
-	// remove all files from the pages directory
-	fs.readdirSync(`./src/pages`).forEach((file) => {
-		// don't delete .gitignore file
-		if (file === '.gitignore') return;
-
-		// delete all other files
-		fs.unlinkSync(`./src/pages/${file}`);
-	});
-}
