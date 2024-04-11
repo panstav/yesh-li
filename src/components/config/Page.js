@@ -1,36 +1,13 @@
 import { createContext, createElement } from 'react';
-import { ErrorBoundary } from "react-error-boundary";
-
-import { SafeHeader } from '@pages/Editor/Header';
-import Modal, { useErrorModal } from '@wrappers/Modal';
-import OutboundLink from '@elements/OutboundLink';
 
 export const PageContext = createContext();
 
 export default function Page({ pageContext, background, children }) {
-
-	const [fatalErrorModalProps, showFatalErrorModal] = useErrorModal({ hideable: false });
-
 	return <PageContext.Provider value={pageContext}>
 
-		<ErrorBoundary FallbackComponent={SafeHeader} onError={(error) => showFatalErrorModal({ error })}>
-			<Background {...{ background }} />
-			{children}
-		</ErrorBoundary>
-
+		<Background {...{ background }} />
+		{children}
 		<div id="modal-root" />
-
-		<Modal {...fatalErrorModalProps} render={({ error }) => <>
-			<div className='block content has-text-start mt-5'>
-				<p>נתקלנו בשגיאת מערכת.<br />השגיאה שוגרה למערכת לבדיקה ותתוקן בהקדם האפשרי.</p>
-				<p>ניתן לנסות לרענן את הדף ולנסות שוב. אם השגיאה חוזרת - כדאי לפנות לתמיכה.</p>
-			</div>
-
-			<div className='buttons has-addons is-centered'>
-				<button className='button' onClick={() => window.location.reload()}>לרענן את הדף</button>
-				<OutboundLink className='button' href={`mailto:hello@yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`}>לפנות לתמיכה</OutboundLink>
-			</div>
-		</>} />
 
 	</PageContext.Provider>;
 }

@@ -105,10 +105,6 @@ export function HeadFor(arg) {
 	};
 }
 
-export function internalPageTitle (title) {
-	return { title: `${title} • יש.לי` };
-}
-
 export function CssVariables ({ mainColorName, mainColorHex }) {
 	return <style>{`:root { accent-color: var(--color-primary); ${pallatte.getVariables(mainColorName)} ${!mainColorName ? `--color-primary: #${mainColorHex};` : ''} }`}</style>;
 }
