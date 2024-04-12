@@ -20,11 +20,9 @@ const shortDomain = new URL(fullDomain).hostname;
 
 	// get sites from api
 	const { sites, redirects } = await getUserSites();
-	console.log({ sites, redirects });
-
 
 	// check whether we're on a dedicated domain or a multi-tenant app
-	if (sites.length === 1 && sites[0].slug === '') return await scaffoldRootSite(sites);
+	if (sites.length === 1 && sites[0].slug === '') return scaffoldRootSite(sites);
 
 	// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 	// iterate through the sites array
@@ -86,6 +84,9 @@ async function scaffoldRootSite(site) {
 	await createSitemap([
 		{ url: '/', changefreq: 'daily', priority: 1 }
 	]);
+
+	// create an empty redirects file
+	await fs.promises.writeFile('./data/redirects.json', JSON.stringify([]));
 
 	// save the site's data to a json file at /data/root.json
 	await fs.promises.writeFile('./data/root.json', JSON.stringify(site));

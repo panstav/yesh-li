@@ -1,7 +1,5 @@
 const fs = require('fs');
 
-const map = require('./src/components/themes/map.json');
-
 const isOnNetlify = process.env.NETLIFY;
 const shortDomain = new URL(process.env.URL).hostname;
 
@@ -110,11 +108,12 @@ exports.createPages = async ({ actions }) => {
 		// instance is running on a dedicated domain
 
 		// get homepage
-		const siteData = JSON.parse(fs.readFileSync(rootSiteFilePath));
+		const siteData = JSON.parse(fs.readFileSync(rootSiteFilePath))[0];
+		const themesMap = JSON.parse(fs.readFileSync(`${__dirname}/src/components/themes/map.json`));
 
 		// get the editor with which he created the site and prep it for generation
-		const parentDomain = map.find(({ themeName }) => themeName === siteData.theme).parentDomain.replace('.', '');
-		const domainData = JSON.parse(fs.readFileSync(`./src/domains/${parentDomain}/index.json`));
+		const parentDomain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain.replace('.', '');
+		const domainData = JSON.parse(fs.readFileSync(`./src/components/domains/${parentDomain}/index.json`));
 
 		// create the editor page
 		actions.createPage({
