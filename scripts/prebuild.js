@@ -20,6 +20,8 @@ const shortDomain = new URL(fullDomain).hostname;
 
 	// get sites from api
 	const { sites, redirects } = await getUserSites();
+	console.log({ sites, redirects });
+
 
 	// check whether we're on a dedicated domain or a multi-tenant app
 	if (sites.length === 1 && sites[0].slug === '') return await scaffoldRootSite(sites);
