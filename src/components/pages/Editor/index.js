@@ -1,9 +1,9 @@
-import { navigate } from 'gatsby';
 import { useContext, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 
 import xhr from '@services/xhr';
+import localDb from '@services/localDb';
 import snatchParameter from '@lib/snatch-parameter';
 
 import useI18n from '@hooks/use-i18n';
@@ -47,7 +47,7 @@ function EditorForm() {
 	// if the site has moved out to it's own domain, redirect to its editor page
 	// treat the redirect property as a domain
 	const redirect = form.getValues().redirect;
-	if (redirect) return window.location.replace(`https://${redirect}/editor`);
+	if (redirect) return wrongDomain();
 
 	const fieldsContainerClassName = classNames('is-flex is-flex-direction-column is-justify-content-space-between', fieldsContainer);
 
@@ -72,4 +72,13 @@ function EditorForm() {
 		<Modal {...newPageModal} render={NewPageModal} />
 
 	</>;
+
+	function wrongDomain () {
+		// we should be loading the editor from the site's domain
+		// lets delete the localstorage and redirect to the site's editor
+		localDb.clear();
+		// if user comes back here he'll be redirected again from the Login domain
+		return window.location.replace(`https://${redirect}/editor`);
+	}
+
 }
