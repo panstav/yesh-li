@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 import '@styles/index.sass';
 
 const shortDomain = new URL(process.env.URL).hostname;
@@ -13,10 +15,19 @@ export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) =>
 	// replace the default generator meta tag with our own
 	set(headComponents, (item) => item?.props?.name === 'generator', (item) => {
 
-		// yesh.li => YeshLi
-		const name = shortDomain.split('.').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('');
+		let name, url, domain = shortDomain;
+		try {
+			const siteData = JSON.parse(fs.readFileSync(`${__dirname}/data/root.json`))[0];
+			const themesMap = JSON.parse(fs.readFileSync(`${__dirname}/src/components/themes/map.json`));
+			domain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain.replace('.', '');
+		} catch (error) {
+			return null;
+		}
 
-		const url = `https://${shortDomain}`;
+		// yesh.li => YeshLi
+		name = domain.split('.').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('');
+		url = `https://${domain}`;
+
 		const version = process.env.npm_package_version;
 
 		item.props.content = `${name} ${version} (${url})`;
