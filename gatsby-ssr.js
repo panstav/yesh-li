@@ -15,13 +15,14 @@ export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) =>
 	// replace the default generator meta tag with our own
 	set(headComponents, (item) => item?.props?.name === 'generator', (item) => {
 
-		let name, url, domain = shortDomain;
+		let name, url, domain;
+
 		try {
-			const siteData = JSON.parse(fs.readFileSync(`${__dirname}/data/root.json`))[0];
-			const themesMap = JSON.parse(fs.readFileSync(`${__dirname}/src/components/themes/map.json`));
-			domain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain.replace('.', '');
+			const siteData = JSON.parse(fs.readFileSync(`./data/root.json`))[0];
+			const themesMap = JSON.parse(fs.readFileSync(`./src/components/themes/map.json`));
+			domain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain;
 		} catch (error) {
-			return null;
+			domain = shortDomain;
 		}
 
 		// yesh.li => YeshLi
