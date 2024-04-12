@@ -1,5 +1,7 @@
 import '@styles/index.sass';
 
+const shortDomain = new URL(process.env.URL).hostname;
+
 export { wrapPageElement } from '@config/Page';
 
 export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) => {
@@ -12,9 +14,9 @@ export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) =>
 	set(headComponents, (item) => item?.props?.name === 'generator', (item) => {
 
 		// yesh.li => YeshLi
-		const name = process.env.URL.split('.').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('');
+		const name = shortDomain.split('.').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('');
 
-		const url = `https://${process.env.URL}`;
+		const url = `https://${shortDomain}`;
 		const version = process.env.npm_package_version;
 
 		item.props.content = `${name} ${version} (${url})`;
