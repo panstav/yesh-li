@@ -9,10 +9,14 @@ import Checkbox from "@elements/Checkbox";
 import xhr from "@services/xhr";
 import localDb from "@services/localDb";
 
+import useI18n from "@hooks/use-i18n";
+
 import { noticeClassName } from ".";
 import { reportConversion } from "@elements/GoogleAnalytics";
 
 export default function TrialNotice() {
+
+	const [i18n, { Editor: { TrialNotice: t } }] = useI18n();
 
 	const [emailVerificationModal, showEmailVerificationModal] = useModal();
 	const [emailVerificationFailedModal, showEmailVerificationFailedModal] = useErrorModal();
@@ -22,7 +26,7 @@ export default function TrialNotice() {
 	return <>
 
 		<div onClick={() => showEmailVerificationModal()} className={className}>
-			<b>העמוד זמני</b> הרשמו כעת כדי לשמור עליו
+			<b>{t.page_is_temporary}</b> {t.signup_to_keep}
 		</div>
 
 		<Modal {...emailVerificationModal} render={() => {
@@ -75,22 +79,22 @@ export default function TrialNotice() {
 			const submitCodeButtonClassName = classNames("button is-primary is-fullwidth mt-4", isSendingCodeForm && "is-loading");
 
 			if (!sentEmail) return <FormProvider {...emailEntryForm}>
-				<Title>הרשמה</Title>
+				<Title>{t.registration}</Title>
 				<EmailInput
-					label="כתובת מייל"
+					label={i18n.misc.email_address}
 					id='email'
 					autoComplete='email'
-					description="כשתלחצו על &quot;המשך&quot; המערכת תשלח מייל עם קוד חד פעמי שיעזור לנו לוודא שכתובת המייל תקינה ושיש לך גישה אליה. עם כתובת מייל זו אפשר יהיה להתחבר למערכת ללא צורך בסיסמה."
+					description={t.email_validation_instruction}
 					labelClassName="mt-4" />
-				<Checkbox id="consentUpgrades" label="אשמח לקבל עידכונים על שידרוגים ופיצ'רים חדשים" className="mb-1" />
-				<Checkbox id="consentCommercial" label="אשמח לקבל עידכונים על מבצעים ושירותים נלווים" />
-				<button onClick={submitEmailForm} className={submitEmailButtonClassName}>המשך</button>
+				<Checkbox id="consentUpgrades" label={t.upgrades_updates_consent} className="mb-1" />
+				<Checkbox id="consentCommercial" label={t.products_services_updates_consent} />
+				<button onClick={submitEmailForm} className={submitEmailButtonClassName}>{i18n.misc.continue}</button>
 			</FormProvider>;
 
 			return <>
-				<Title>אימות</Title>
+				<Title>{t.validation}</Title>
 				<div className="field">
-					<label htmlFor="code1" className="label">הקוד שקיבלת למייל:</label>
+					<label htmlFor="code1" className="label">{t.code_you_received}:</label>
 					<div className="is-flex is-flex-direction-row-reverse is-flex-gap-3 is-justify-content-center">
 						{[1, 2, 3, 4].map((i) => <input
 							{...emailVerificationForm.register(`code${i}`, { required: true })}
@@ -103,14 +107,12 @@ export default function TrialNotice() {
 							style={{ width: '5rem' }} />)}
 					</div>
 				</div>
-				<button onClick={submitCodeForm} className={submitCodeButtonClassName}>המשך</button>
+				<button onClick={submitCodeForm} className={submitCodeButtonClassName}>{i18n.misc.email_address}</button>
 			</>;
 
 		}} />
 
-		<Modal {...emailVerificationFailedModal} render={() => <>
-			אירעה שגיאה באימות כתובת המייל - נסו שנית מאוחר יותר
-		</>} />
+		<Modal {...emailVerificationFailedModal} render={() => t.validation_error_try_again} />
 
 	</>;
 }

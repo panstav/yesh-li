@@ -2,17 +2,19 @@ import { Suspense, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
 
+import { useFieldLabels } from '@hooks/use-i18n';
+
 import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
 import Loader from '@elements/Loader';
 
 import xhr from '@services/xhr';
-import { fieldsMap } from '@themes/map';
+import { fieldsMap } from '@themes';
 
 import { innerFieldsContainer, saveButtonContainer } from './index.module.sass';
-import { AuthContext } from '@pages/Editor/Auth';
-import copy from '@pages/Editor/copy';
+import { AuthContext } from './Auth';
 
 export default function ThemeFields() {
+	const t = useFieldLabels();
 	const { siteId } = useContext(AuthContext);
 	const { watch, handleSubmit, getValues, formState: { errors } } = useFormContext();
 	watch();
@@ -48,14 +50,14 @@ export default function ThemeFields() {
 				<FieldGroup />
 			</div>
 			<div className={saveButtonContainer}>
-				<button onClick={submitForm} disabled={hasErrors || isLoading} title={hasErrors ? 'בעיות בעריכת העמוד מוצגות באדום' : ''} className={submitClassName}>
-					{copy.submit}
+				<button onClick={submitForm} disabled={hasErrors || isLoading} title={hasErrors ? t.errors_are_red : ''} className={submitClassName}>
+					{t.submit}
 				</button>
 			</div>
 		</Suspense>
 
-		<Modal {...savedSuccessfullyModal} render={() => 'העמוד נשמר בהצלחה!'} />
-		<Modal {...errorWhileSavingModal} render={() => 'אירעה שגיאה בעת שמירת העמוד. המידע נשמר אך העמוד לא התעדכן - צרו עימנו קשר בהקדם'} />
+		<Modal {...savedSuccessfullyModal} render={() => t.page_successfully_saved} />
+		<Modal {...errorWhileSavingModal} render={() => t.page_failed_saving} />
 	</>;
 }
 

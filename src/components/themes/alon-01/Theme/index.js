@@ -1,7 +1,6 @@
-import { useContext } from "react";
 import classNames from "classnames";
 
-import { PageContext } from "@config/Page";
+import { usePageContent } from "@hooks/use-page-data";
 
 import Media from "./Media";
 import Details from "./Details";
@@ -9,7 +8,7 @@ import Details from "./Details";
 import { container } from "./index.module.sass";
 
 export default function Alon_1() {
-	const { content } = useContext(PageContext);
+	const content = usePageContent();
 
 	if (content.links) {
 		Object.entries(content.links).forEach(([platform, address]) => {

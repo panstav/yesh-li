@@ -1,17 +1,17 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import classNames from "classnames";
 
 import { Title } from "@wrappers/Modal";
 import { Email, Facebook, LinkedIn, WhatsApp, X, Copy, Telegram } from '@elements/Icon';
 import OutboundLink from "@elements/OutboundLink";
 
-import { PageContext } from "@config/Page";
+import usePageData from "@hooks/use-page-data";
 import copyToClipboard from "@lib/copy-to-clipboard";
 
 import { topContainer } from "./sharing-modal.module.sass";
 
 export default function SharingModal ({ qr }) {
-	const { slug, content: { fullName, occupation } } = useContext(PageContext);
+	const { slug, content: { fullName, occupation } } = usePageData();
 
 	const url = `${window.location.origin}/${slug}`;
 

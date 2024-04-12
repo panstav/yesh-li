@@ -5,19 +5,21 @@ import { ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea
 import Details from "@elements/Details";
 import xhr from "@services/xhr";
 
-import copy from '@pages/Editor/copy';
+import { useFieldLabels } from "@hooks/use-i18n";
+
 import { compoundField } from '@pages/Editor/index.module.sass';
 
 import { EmailContact, FacebookContact, FeaturedImageFile, FullNameInput, MainColorSelect, OccupationInput, PhoneContact, WhatsappContact, availableColors } from "@themes/alon-01/shared";
 
 export default function Alon_01 () {
+	const t = useFieldLabels();
 	const { setValue, getValues } = useFormContext();
 
 	useEffect(updateTitle, []);
 
 	return <>
 
-		<Details title='אודות'>
+		<Details title={t.about}>
 
 			<FullNameInput
 				onChange={updateTitle} />
@@ -28,27 +30,27 @@ export default function Alon_01 () {
 			<div className={compoundField}>
 				<TextArea
 					id="content.statement.content"
-					label={copy.statement}
-					description={copy.statementDescription}
+					label={t.statement}
+					description={t.statement_description}
 					required={false}
 					maxLength={200} />
 
 				<TextInput
 					id="content.statement.author"
-					label="מחבר"
-					description='אם בחרת בציטוט למשפט המפתח, אפשר לציין כאן את שם המצוטט.'
+					label={t.author}
+					description={t.quote_can_have_author}
 					required={false}
 					maxLength={20} />
 			</div>
 
 			<RichEditor
 				id="content.about"
-				label={copy.about}
+				label={t.about}
 				maxLength={1500} />
 
 		</Details>
 
-		<Details title='עיצוב'>
+		<Details title={t.design}>
 
 			<MainColorSelect />
 
@@ -57,67 +59,67 @@ export default function Alon_01 () {
 
 		</Details>
 
-		<Details title='קישורים'>
+		<Details title={t.connections}>
 
 			<FacebookContact
-				label={copy.facebook}
+				label={t.facebook}
 				required={false} />
 
 			<UrlInput isSmall
 				id={'content.links.instagram'}
-				label={copy.instagram}
+				label={t.instagram}
 				required={false}
 				includes='instagram.com' />
 
 			<UrlInput isSmall
 				id={'content.links.linkedin'}
-				label={copy.linkedin}
+				label={t.linkedin}
 				required={false}
 				includes='linkedin.com' />
 
 			<UrlInput isSmall
 				id={'content.links.twitter'}
-				label={copy.twitter}
+				label={t.twitter}
 				required={false}
 				includes='twitter.com' />
 
 			<UrlInput isSmall
 				id={'content.links.pinterest'}
-				label={copy.pinterest}
+				label={t.pinterest}
 				required={false}
 				includes='pinterest.com' />
 
 			<UrlInput isSmall
 				id={'content.links.youtube'}
-				label={copy.youtube}
+				label={t.youtube}
 				required={false}
 				includes='youtube.com' />
 
 			<UrlInput isSmall
 				id={'content.links.tiktok'}
-				label={copy.tiktok}
+				label={t.tiktok}
 				required={false}
 				includes='tiktok.com' />
 
 			<WhatsappContact
-				label={copy.whatsapp}
+				label={t.whatsapp}
 				required={false} />
 
 			<PhoneContact
-				label={copy.phone}
+				label={t.phone}
 				required={false} />
 
 			<EmailContact
-				label={copy.email}
+				label={t.email}
 				required={false} />
 
 		</Details>
 
-		<Details title='מדיה'>
+		<Details title={t.media}>
 			<div className={compoundField}>
 				<UrlInput isSmall
 					id={'content.video.url'}
-					label="כתובת סרטון יוטיוב"
+					label={t.youtube_url}
 					required={false}
 					includes='youtube.com/watch?v'
 					setValueAs={(val) => val.split('&')[0]}
@@ -128,16 +130,16 @@ export default function Alon_01 () {
 
 				<TextInput
 					id={'content.video.title'}
-					label="כותרת לסרטון"
+					label={t.video_title}
 					labelClassName="is-small"
 					required={false}
-					description={copy.altDescription}
+					description={t.alt_description}
 					maxLength={30} />
 			</div>
 
 			<Repeater
 				arrayId="content.gallery"
-				singleName="תמונה"
+				singleName={t.image}
 				minLength="0" maxLength="10"
 				emptyItem={{
 					alt: "",
@@ -152,47 +154,47 @@ export default function Alon_01 () {
 
 		</Details>
 
-		<Details title='שירותים'>
+		<Details title={t.services}>
 			<Repeater
 				arrayId="content.sections"
-				singleName="שירות"
+				singleName={t.service}
 				minLength="0" maxLength="6"
 				emptyItem={(data) => ({
-					title: 'כותרת',
+					title: t.title,
 					color: data.mainColor,
-					content: 'תיאור',
-					ctaText: 'הזמנה'
+					content: t.short_description,
+					ctaText: t.invitation
 				})}>{(id) => <>
 
 					<Select
 						id={`${id}.color`}
-						label="צבע"
+						label={t.color}
 						oneOf={availableColors} />
 
 					<TextInput
 						id={`${id}.title`}
-						label="כותרת"
+						label={t.title}
 						maxLength={30} />
 
 					<RichEditor
 						id={`${id}.content`}
-						label='תיאור'
+						label={t.description}
 						maxLength={250} />
 
 					<TextInput
 						id={`${id}.ctaText`}
-						label="טקסט על כפתור הבחירה בשירות"
-						description='ביחרו צמד מילים שמביע את האופן שבו ניתן להנות מהשירות, למשל "הזמנה" או "הרשמה".'
+						label={t.choose_service_button}
+						description={t.choose_service_button_help}
 						maxLength={15} />
 
 				</>}
 			</Repeater>
 		</Details>
 
-		<Details title='שאלות נפוצות'>
+		<Details title={t.faq}>
 			<Repeater
 				arrayId="content.faq"
-				singleName="שאלה ותשובה"
+				singleName={t.question_and_answer}
 				minLength="0" maxLength="10"
 				emptyItem={{
 					question: '',
@@ -201,12 +203,12 @@ export default function Alon_01 () {
 
 					<TextInput
 						id={`${id}.question`}
-						label="שאלה"
+						label={t.question}
 						maxLength={30} />
 
 					<RichEditor
 						id={`${id}.answer`}
-						label="תשובה"
+						label={t.answer}
 						maxLength={750} />
 
 				</>}

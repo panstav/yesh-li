@@ -1,7 +1,12 @@
 const fs = require('fs');
 
+const map = require('./src/components/themes/map.json');
+
+const isOnNetlify = process.env.NETLIFY;
+const shortDomain = new URL(process.env.URL).hostname;
+
 exports.onCreateWebpackConfig = ({ actions }) => {
-	if (process.env.NETLIFY) {
+	if (isOnNetlify) {
 		// We're building in production - turn off source maps
 		actions.setWebpackConfig({
 			devtool: false
@@ -14,9 +19,6 @@ exports.createPages = async ({ actions }) => {
 	// at the package root folder, there's a data folder and inside it, if there's a root.json file, we'll use it as the root page
 	const rootSiteFilePath = `${__dirname}/data/root.json`;
 
-	cleanPagesDirectory();
-	copyGlobalPages();
-
 	if (fs.existsSync(rootSiteFilePath)) {
 		createRootSite();
 	} else {
@@ -26,11 +28,9 @@ exports.createPages = async ({ actions }) => {
 
 	function createMultiSite () {
 
-		// we're on a multi-tenant site, so we'll create its pages along with the global ones
-		// gatsby will do the heavy lifting, we just choose the specific multiSite
-		fs.readdirSync(`./src/pages-yeshli`).forEach((file) => {
-			fs.copyFileSync(`./src/pages-yeshli/${file}`, `./src/pages/${file}`);
-		});
+		const multiName = shortDomain.replace('.', '');
+
+		createCustomPages();
 
 		// create redirects for all the sites that used to be on this multi-tenant site and have since moved to their own domains
 		const redirectsData = JSON.parse(fs.readFileSync(`${__dirname}/data/redirects.json`));
@@ -45,7 +45,9 @@ exports.createPages = async ({ actions }) => {
 		const sitesDirectory = `${__dirname}/data`;
 
 		// get all directories from the data folder
-		const themesWithSites = fs.readdirSync(sitesDirectory, { withFileTypes: true }).filter(dirent => dirent.isDirectory()).map(dirent => dirent.name);
+		const themesWithSites = fs.readdirSync(sitesDirectory, { withFileTypes: true })
+			.filter(directory => directory.isDirectory())
+			.map(directory => directory.name);
 
 		// for each directory, get all the sites which are json files in the theme's directory
 		themesWithSites.forEach((themeName) => {
@@ -55,12 +57,17 @@ exports.createPages = async ({ actions }) => {
 			fs.readdirSync(themeDirectory).forEach((siteName) => {
 				const siteData = JSON.parse(fs.readFileSync(`${themeDirectory}/${siteName}`));
 
-				// do not throw on creating pages from files at themes/{themeName}, just log the error
+				// do not throw on creating pages, just log the error
 				try {
+
+					// we might have a got data about sites that don't have a theme yet, that's a dev/prod issue, ignore these sites
+					const componentPath = `${__dirname}/src/components/themes/${siteData.theme}/index.js`;
+					if (!fs.existsSync(componentPath)) return;
+
 					// create the page for this site using the theme's component and the site's data as it's pageContext prop
 					actions.createPage({
 						path: `/${siteData.slug}`,
-						component: require.resolve(`${__dirname}/src/themes/${siteData.theme}.js`),
+						component: componentPath,
 						context: siteData
 					});
 
@@ -70,24 +77,61 @@ exports.createPages = async ({ actions }) => {
 
 			});
 		});
-	}
 
-	function copyGlobalPages() {
-		fs.readdirSync(`./src/pages-shared`).forEach((file) => {
-			fs.copyFileSync(`./src/pages-shared/${file}`, `./src/pages/${file}`);
-		});
+		function createCustomPages () {
+
+			const multiDir = `${__dirname}/src/domains/${multiName}`;
+
+			// some domains don't even have a custom pages directory - we'll skip them
+			if (!fs.existsSync(multiDir)) return;
+
+			// we're on a multi-tenant site, so we'll create its pages along with the global ones
+			fs.readdirSync(multiDir).forEach((fileName) => {
+				if (!fileName.endsWith('.js')) return;
+
+				const domainData = JSON.parse(fs.readFileSync(`${__dirname}/src/components/domains/${multiName}/index.json`));
+
+				// derive path from fileName, except for the homepage, who's path is always "/"
+				const path = fileName == 'index.js' ? '/' : fileName.split('.')[0];
+				actions.createPage({
+					path,
+					component: `${multiDir}/${fileName}`,
+					context: {
+						...domainData,
+						parentDomain: multiName
+					}
+				});
+			});
+		}
+
 	}
 
 	function createRootSite () {
-		// instance is running on a dedicated domain, the root page is the only page
+		// instance is running on a dedicated domain
 
+		// get homepage
 		const siteData = JSON.parse(fs.readFileSync(rootSiteFilePath));
+
+		// get the editor with which he created the site and prep it for generation
+		const parentDomain = map.find(({ themeName }) => themeName === siteData.theme).parentDomain.replace('.', '');
+		const domainData = JSON.parse(fs.readFileSync(`./src/domains/${parentDomain}/index.json`));
+
+		// create the editor page
+		actions.createPage({
+			path: '/editor',
+			component: `${__dirname}/src/components/domains/${parentDomain}/Editor.js`,
+			context: {
+				...domainData,
+				...siteData,
+				parentDomain
+			}
+		});
 
 		// create the root page
 		actions.createPage({
 			path: '/',
-			component: require.resolve(`${__dirname}/src/themes/${siteData.theme}.js`),
-			context: siteData
+			component: `${__dirname}/src/components/themes/${siteData.theme}/index.js`,
+			context: { parentDomain, ...siteData }
 		});
 	}
 
@@ -99,15 +143,3 @@ exports.createPages = async ({ actions }) => {
 	}
 
 };
-
-function cleanPagesDirectory() {
-
-	// remove all files from the pages directory
-	fs.readdirSync(`./src/pages`).forEach((file) => {
-		// don't delete .gitignore file
-		if (file === '.gitignore') return;
-
-		// delete all other files
-		fs.unlinkSync(`./src/pages/${file}`);
-	});
-}

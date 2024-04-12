@@ -1,73 +1,75 @@
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
+import { useFieldLabels } from "@hooks/use-i18n";
+
 import { ImageInput, Select, TextInput, Repeater, RichEditor, UrlInput, TextArea, TelInput, EmailInput } from "@elements/Fields";
 import Details from "@elements/Details";
-import copy from '@pages/Editor/copy';
 
 export default function Elyse_01 () {
+	const t = useFieldLabels();
 	const { setValue, getValues } = useFormContext();
 
 	useEffect(updateTitle, []);
 
 	return <>
-		<Details title='אודות'>
+		<Details title={t.about}>
 			<TextInput
 				id="content.fullName"
-				label={copy.fullName}
+				label={t.full_name}
 				maxLength={20}
 				onChange={updateTitle} />
 
 			<TextInput
 				id="content.occupation"
-				label={copy.occupation}
-				description={copy.occupationDescription}
+				label={t.occupation}
+				description={t.occupation_description}
 				maxLength={30}
 				onChange={updateTitle} />
 
 			<TextArea
 				id="content.description"
-				label={copy.description}
-				description={copy.descriptionDescription}
+				label={t.description}
+				description={t.description_description}
 				maxLength={150} />
 
 			<TextArea
 				id="content.statement"
-				label={copy.statement}
-				description={copy.statementDescription}
+				label={t.statement}
+				description={t.statement_description}
 				required={false}
 				maxLength={200} />
 		</Details>
 
-		<Details title='עיצוב'>
+		<Details title={t.design}>
 			<Select
 				id="mainColor"
-				label={copy.mainColor}
+				label={t.main_color}
 				oneOf={[
-					{ label: 'כחול', value: 'blue' },
-					{ label: 'ירוק', value: 'green' },
-					{ label: 'צהוב', value: 'yellow' },
-					{ label: 'אדום', value: 'red' },
-					{ label: 'סגול', value: 'purple' }
+					{ label: t.blue, value: 'blue' },
+					{ label: t.green, value: 'green' },
+					{ label: t.yellow, value: 'yellow' },
+					{ label: t.red, value: 'red' },
+					{ label: t.purple, value: 'purple' }
 				]} />
 
 			<ImageInput
 				id="content.portrait"
-				label={copy.mainImage}
-				description={copy.mainImageDescription}
+				label={t.main_image}
+				description={t.main_image_description}
 				sizes={[450, 800]} />
 		</Details>
 
-		<Details title='שירותים'>
+		<Details title={t.services}>
 			<Repeater
 				arrayId="content.sections"
-				singleName="שירות"
+				singleName={t.service}
 				minLength="3" maxLength="6"
 				emptyItem={(data) => ({
-					label: 'כותרת השירות החדש',
+					label: t.new_service_title,
 					color: data.mainColor,
-					content: 'תיאור השירות החדש',
-					ctaText: 'להזמנה',
+					content: t.new_service_description,
+					ctaText: t.order_cta,
 					image: {
 						// https://placehold.jp/d9d9d9/ffffff/250x250.jpg?text=תמונה זמנית
 						srcSet: 'https://storage.googleapis.com/yeshli-www/assets/placeholder-250x250-01.jpg',
@@ -77,109 +79,109 @@ export default function Elyse_01 () {
 
 					<Select
 						id={`${id}.color`}
-						label="צבע"
+						label={t.color}
 						oneOf={[
-							{ label: 'כחול', value: 'blue' },
-							{ label: 'ירוק', value: 'green' },
-							{ label: 'צהוב', value: 'yellow' },
-							{ label: 'אדום', value: 'red' },
-							{ label: 'סגול', value: 'purple' }
+							{ label: t.blue, value: 'blue' },
+							{ label: t.green, value: 'green' },
+							{ label: t.yellow, value: 'yellow' },
+							{ label: t.red, value: 'red' },
+							{ label: t.purple, value: 'purple' }
 						]} />
 
 					<TextInput
 						id={`${id}.label`}
-						label="כותרת"
+						label={t.title}
 						maxLength={30} />
 
 					<ImageInput
 						id={`${id}.image`}
-						label="תמונה לצד השירות"
+						label={t.image_beside_service}
 						sizes={[450]} />
 
 					<RichEditor
 						id={`${id}.content`}
-						label='תיאור' />
+						label={t.description} />
 
 					<TextInput
 						id={`${id}.ctaText`}
-						label="טקסט על הכפתור שלצד התיאור"
-						description="ביחרו צמד מילים שמביע את האופן שבו ניתן להנות מהשירות."
+						label={t.service_cta}
+						description={t.service_cta_description}
 						maxLength={15} />
 
 				</>}
 			</Repeater>
 		</Details>
 
-		<Details title='טופס הפניות'>
+		<Details title={t.contact_form}>
 			<TextInput
 				id="content.ctaHeader"
-				label="כותרת מעל טופס הפניות"
+				label={t.contact_form_title}
 				maxLength={50} />
 
 			<TextInput
 				id="content.submitText"
-				label="טקסט על כפתור שליחת הטופס"
-				description="המילים שיופיעו על גבי כפתור שבלחיצה עליו נשלח טופס הפניות."
+				label={t.contact_form_cta}
+				description={t.contact_form_cta_description}
 				maxLength={15} />
 		</Details>
 
-		<Details title='קישורים'>
+		<Details title={t.connections}>
 
 			<UrlInput isSmall
 				id={'content.socials.facebook'}
-				label="פייסבוק"
+				label={t.facebook}
 				required={false}
 				includes='facebook.com' />
 
 			<UrlInput isSmall
 				id={'content.socials.instagram'}
-				label="אינסטגרם"
+				label={t.instagram}
 				required={false}
 				includes='instagram.com' />
 
 			<UrlInput isSmall
 				id={'content.socials.linkedin'}
-				label="לינקדאין"
+				label={t.linkedin}
 				required={false}
 				includes='linkedin.com' />
 
 			<UrlInput isSmall
 				id={'content.socials.twitter'}
-				label="טוויטר"
+				label={t.twitter}
 				required={false}
 				includes='twitter.com' />
 
 			<UrlInput isSmall
 				id={'content.socials.pinterest'}
-				label="פינטרסט"
+				label={t.pinterest}
 				required={false}
 				includes='pinterest.com' />
 
 			<UrlInput isSmall
 				id={'content.socials.youtube'}
-				label="יוטיוב"
+				label={t.youtube}
 				required={false}
 				includes='youtube.com' />
 
 			<UrlInput isSmall
 				id={'content.socials.tiktok'}
-				label="טיקטוק"
+				label={t.tiktok}
 				required={false}
 				includes='tiktok.com' />
 
 			<TelInput isSmall
 				id={'content.socials.whatsapp'}
-				label="וואטסאפ"
+				label={t.whatsapp}
 				required={false} />
 
 			<TelInput isSmall
 				id={'content.socials.phone'}
-				label="טלפון"
+				label={t.phone}
 				required={false} />
 
 			<EmailInput isSmall
 				id={'content.socials.email'}
-				label={copy.email}
+				label={t.email}
 				required={false} />
 
 		</Details>

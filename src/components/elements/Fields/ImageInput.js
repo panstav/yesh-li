@@ -3,6 +3,8 @@ import { useFormContext } from 'react-hook-form';
 import { FocusPicker } from 'image-focus';
 import classNames from 'classnames';
 
+import { useFieldLabels } from '@hooks/use-i18n';
+
 import Modal, { Title, useErrorModal, useModal } from '@wrappers/Modal';
 import { Upload } from '@elements/Icon';
 import Loader from '@elements/Loader';
@@ -11,14 +13,14 @@ import xhr from '@services/xhr';
 import cleanUGT from '@lib/clean-user-generated-text';
 
 import { compoundField, imagePreviewContainer } from '@pages/Editor/index.module.sass';
-import copy from '@pages/Editor/copy';
 
 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-const acceptedTypes = allowedTypes.join(',').replaceAll('image/', '.');
 
 export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true, onChange, required = true }) {
 
 	if (!sizes) throw new Error('ImageInput component requires a "sizes" prop');
+
+	const t = useFieldLabels();
 
 	const { register, setValue, getValues, getFieldState, formState } = useFormContext();
 
@@ -66,6 +68,9 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 		});
 	};
 
+	const acceptedFileSuffixes = allowedTypes.join(',').replaceAll('image/', '.');
+	const acceptedExtnames = allowedTypes.join(', ').replaceAll('image/', '.');
+
 	const compoundFieldClassName = classNames(isCompoundField && compoundField, 'is-relative');
 	const imagePreviewContainerClassName = classNames(imagePreviewContainer, 'is-relative');
 	const setFocusButtonStyle = { top: isCompoundField ? '0.35rem' : 0, insetInlineEnd: isCompoundField ? '0.5rem' : 0 };
@@ -77,8 +82,8 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 			<div className="field file is-large is-boxed has-name is-flex-direction-column">
 				<label className="file-label w-100">
 					{label && <span className='label'>{label}:</span>}
-					<input type="file" id={id} name={id} onChange={onFileChange} multiple={multiple} accept={acceptedTypes} className='file-input' />
-					<input type="text" className="is-hidden" {...register(propertyKey, { required: required && copy.requiredField })} />
+					<input type="file" id={id} name={id} onChange={onFileChange} multiple={multiple} accept={acceptedFileSuffixes} className='file-input' />
+					<input type="text" className="is-hidden" {...register(propertyKey, { required: required && t.required_field })} />
 					<div className={imagePreviewContainerClassName}>
 						{imgProps.srcSet && <img srcSet={imgProps.srcSet} className='is-overlay object-fit-cover' style={{ objectPosition: imgProps.position }} />}
 						{isLoading && <Loader />}
@@ -86,7 +91,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 							<span className="file-icon mx-0">
 								<Upload />
 							</span>
-							<span className="file-label is-size-6">{imgProps.srcSet ? 'ליחצו להחלפת התמונה' : 'ליחצו לבחירת תמונה'}</span>
+							<span className="file-label is-size-6">{imgProps.srcSet ? t.click_to_change_image : t.click_to_choose_image}</span>
 						</span>
 					</div>
 					{fileName && <span className="file-name has-text-centered is-size-7" style={{ maxWidth: "100%" }}>{fileName}</span>}
@@ -95,17 +100,17 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 					? <p className='help is-danger'>{state.error.message}</p>
 					: <p className='help'>{description}</p>}
 			</div>
-			{hasNoFocus || <button type="button" onClick={setFocus} className='button is-small' style={{ position: 'absolute', ...setFocusButtonStyle }}>בחירת פוקוס לתמונה</button>}
+			{hasNoFocus || <button type="button" onClick={setFocus} className='button is-small' style={{ position: 'absolute', ...setFocusButtonStyle }}>{t.set_image_focus}</button>}
 			<div className='field'>
-				<label htmlFor={`${id}-alt`} className='label is-small'>טקסט חלופי לתמונה:</label>
+				<label htmlFor={`${id}-alt`} className='label is-small'>{t.image_alt}:</label>
 				<input id={`${id}-alt`} className='input' type='text' {...register(`${id}.alt`, { setValueAs: cleanUGT })} />
-				<p className='help'>{copy.altDescription}</p>
+				<p className='help'>{t.alt_description}</p>
 			</div>
 		</div>
 
-		<Modal {...supportedFileTyesModal} render={() => 'סוגי הקבצים שנתמכים כאן: jpg, jpeg, png'} />
-		<Modal {...moderationModal} render={() => <><p>המערכת זיהתה בתמונה תוכן בלתי מתאים מאחד הסוגים הבאים: תוכן למבוגרים, זיוף, דימוי רפואי, תוכן אלים או תוכן פרובוקטיבי.</p><br /><p>צרו קשר אם מדובר בטעות בזיהוי.</p></>} />
-		<Modal {...serverErrorModal} render={() => 'אירעה שגיאה בהעלאת התמונה. נסו שנית מאוחר יותר'} />
+		<Modal {...supportedFileTyesModal} render={() => `${t.image_types_supported}: ${acceptedExtnames}`} />
+		<Modal {...moderationModal} render={t.ModerationInvalidatedModal} />
+		<Modal {...serverErrorModal} render={() => t.image_upload_error} />
 
 		<Modal {...focusModal} render={({ setValue, getValues, imageToFocus, watch }) => {
 
@@ -126,7 +131,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 			}, [ref]);
 
 			return <>
-				<Title>בחירת פוקוס לתמונה</Title>
+				<Title>{t.set_image_focus}</Title>
 				<div className='mx-auto' style={{ width: '20rem' }}>
 					<img ref={ref} srcSet={imageToFocus.srcSet} />
 				</div>
@@ -139,7 +144,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 					</div>
 				</div>
 				<div className='is-flex is-justify-content-end'>
-					<button className='button is-primary mt-5'>{copy.submit}</button>
+					<button className='button is-primary mt-5'>{t.submit}</button>
 				</div>
 			</>;
 		}} />

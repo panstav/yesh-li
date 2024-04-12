@@ -1,6 +1,7 @@
 import { graphql, useStaticQuery } from 'gatsby';
 
 import pallatte from '@lib/pallatte';
+import getDirByLang from '@lib/get-dir-by-lang';
 
 const isRemote = !process.env.GATSBY_IS_LOCAL;
 
@@ -14,13 +15,11 @@ export default function Meta({
 	hasAdvancedSeo = true
 }) {
 
-	const { site: { siteMetadata: { siteUrl, title: siteTitle, description: siteDescription } } } = useStaticQuery(graphql`
+	const { site: { siteMetadata: { siteUrl } } } = useStaticQuery(graphql`
 		query {
 			site {
 				siteMetadata {
 					siteUrl
-					title
-					description
 				}
 			}
 		}
@@ -28,8 +27,6 @@ export default function Meta({
 
 	const normalizedDescription = Array.isArray(description) ? description.join(' ') : description;
 
-	const pageTitle = title || siteTitle;
-	const pageDescription = normalizedDescription || siteDescription;
 	const pagePathname = siteUrl + pathname;
 	const pageShortUrl = ((shortUrl) => {
 		return `${shortUrl}${shortUrl.endsWith('/') ? '' : '/'}`;
@@ -38,19 +35,19 @@ export default function Meta({
 	mainColorHex = mainColorHex || pallatte.getColor(mainColorName);
 
 	return <>
-		<title>{pageTitle}</title>
-		<meta name="title" content={pageTitle} />
-		<meta name="description" content={pageDescription} />
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={normalizedDescription} />
 
 		{!isInternal && <>
 			<meta property="og:type" content="website" />
 			<meta property="og:url" content={pagePathname} />
-			<meta property="og:title" content={pageTitle} />
-			<meta property="og:description" content={pageDescription} />
+			<meta property="og:title" content={title} />
+			<meta property="og:description" content={normalizedDescription} />
 			<meta property="twitter:card" content="summary_large_image" />
 			<meta property="twitter:url" content={pagePathname} />
-			<meta property="twitter:title" content={pageTitle} />
-			<meta property="twitter:description" content={pageDescription} />
+			<meta property="twitter:title" content={title} />
+			<meta property="twitter:description" content={normalizedDescription} />
 
 			{pageFeaturedImage && <>
 				<meta property="og:image" content={pageFeaturedImage} />
@@ -60,8 +57,8 @@ export default function Meta({
 			{(isRemote && hasAdvancedSeo) && <>
 				<link rel="manifest" href={`${padEnd(pagePathname, '/')}manifest.json`} />
 
-				<meta name="apple-mobile-web-app-title" content={siteTitle} />
-				<meta name="application-name" content={siteTitle} />
+				<meta name="apple-mobile-web-app-title" content={title} />
+				<meta name="application-name" content={title} />
 				<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}apple-touch-icon.png`} />
 				<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}favicon-32x32.png`} />
 				<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${pageShortUrl}favicon-16x16.png`} />
@@ -89,9 +86,11 @@ export function HeadFor(arg) {
 			args = arg;
 		}
 
-		const { preload, children, ...props } = args;
+		const { lang = 'he', preload, children, ...props } = args;
 
 		return <>
+			<html lang={lang} dir={getDirByLang(lang)} />
+
 			{preload && preload.map((preload) => <link rel="preload" key={preload.href} {...preload} />)}
 
 			<Meta
@@ -104,10 +103,6 @@ export function HeadFor(arg) {
 			{children}
 		</>;
 	};
-}
-
-export function internalPageTitle (title) {
-	return { title: `${title} • יש.לי` };
 }
 
 export function CssVariables ({ mainColorName, mainColorHex }) {

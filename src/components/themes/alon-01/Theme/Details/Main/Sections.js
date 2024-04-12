@@ -1,15 +1,15 @@
-import { Fragment, useContext } from "react";
+import { Fragment } from "react";
 import classNames from "classnames";
+
+import { usePageContent } from "@hooks/use-page-data";
 
 import Modal, { Title, useModal, useRawModal } from "@wrappers/Modal";
 import { Faq, Gift, Person } from "@elements/Icon";
 
-import { PageContext } from "@config/Page";
-
 import { boxes, summary } from "./main.module.sass";
 
 export default function Sections({ contactByForm, className }) {
-	const { content: { about, sections, faq } } = useContext(PageContext);
+	const { about, sections, faq } = usePageContent();
 
 	const [aboutModal, showAboutModal] = useModal({
 		title: 'אודותיי'

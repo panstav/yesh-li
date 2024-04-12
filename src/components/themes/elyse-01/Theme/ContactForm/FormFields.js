@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 
-import { PageContext } from "..";
+import usePageData from "@hooks/use-page-data";
 
 export default function FormFields ({ isSuccess, isError }) {
 	const { register } = useFormContext();
-	const { content: { submitText, sections } } = useContext(PageContext);
+	const { content: { submitText, sections } } = usePageData();
 	return <>
 		<div className="field">
 			<label className="label" htmlFor="contact-name">שם:</label>

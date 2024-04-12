@@ -4,9 +4,11 @@ export const PageContext = createContext();
 
 export default function Page({ pageContext, background, children }) {
 	return <PageContext.Provider value={pageContext}>
+
 		<Background {...{ background }} />
 		{children}
 		<div id="modal-root" />
+
 	</PageContext.Provider>;
 }
 

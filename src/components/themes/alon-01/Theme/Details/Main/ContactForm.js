@@ -1,11 +1,10 @@
-import { useContext } from "react";
+import { usePageContent } from "@hooks/use-page-data";
 
-import { PageContext } from "@config/Page";
 import { Title } from "@wrappers/Modal";
 
 export default function ContactForm({ register, getValues, setValue, interest, formState: { errors } }) {
 
-	const { content: { ctaHeader, submitText, sections } } = useContext(PageContext);
+	const { ctaHeader, submitText, sections } = usePageContent();
 
 	return <>
 		<Title>{ctaHeader}</Title>
