@@ -9,6 +9,6 @@ export default HeadFor({
 	preload: [{ href: domainProps.topImageSrc.small, as: 'image' }, { href: domainProps.topImageSrc.regular, as: 'image' }, { href: assistantFont, as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' }],
 
 	...domainProps,
-	...wrapTitle(domainProps.title),
+	...wrapTitle('עמוד הבית', { flip: true }),
 	description: "פיתרון איכותי לשדרוג הנוכחות ברשת, מבלי ללמוד את הפרטים הטכניים של אתר אינטרנט, תהליך שלוקח שנים לאנשי המקצוע. המערכת מציעה פיתרון נוח, יעיל ומיידי שמאפשר לך להתקדם בפיתוח העסקי.",
 });
