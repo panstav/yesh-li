@@ -13,8 +13,7 @@
     "build": "gatsby build",
     "preversion": "npm run lint && npm test && npm run test:production",
     "test": "jest",
-    "test:production": "jest --testMatch='**/production-test.js'",
-    "debug-test": "node --inspect-brk node_modules/.bin/jest --runInBand"
+    "test:production": "jest --testMatch='**/production-test.js'"
   },
   "dependencies": {
     "@fontsource/assistant": "^4.5.11",
