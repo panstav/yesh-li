@@ -31,7 +31,7 @@ export default function Tooltip({ children, content, html, onClick, onClickSelec
 	if (desktopOnly) options.theme = 'desktop-only';
 
 	useEffect(() => {
-		tippy(ref.current.base || ref.current, Object.assign({}, defaults, options));
+		tippy(ref.current?.base || ref.current, Object.assign({}, defaults, options));
 		if (ref.current) ref.current.addEventListener('click', preventDefault);
 		return () => {
 			if (ref.current) ref.current.removeEventListener('click', preventDefault);

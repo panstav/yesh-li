@@ -32,5 +32,22 @@
 			"error",
 			"always"
 		]
-	}
+	},
+	"overrides": [
+		{
+			"env": {
+				"jest/globals": true
+			},
+			"files": [
+				"/test/**/*.js",
+				"**/*.test.js"
+			],
+			"plugins": [
+				"jest"
+			],
+			"extends": [
+				"plugin:jest/recommended"
+			]
+		}
+	]
 }
