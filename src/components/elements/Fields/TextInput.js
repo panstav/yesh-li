@@ -5,6 +5,7 @@ import { useFieldLabels } from "@hooks/use-i18n";
 
 import cleanUGT from "@lib/clean-user-generated-text";
 import isUrl from "@lib/is-url";
+import regexes from "@lib/regexes";
 
 export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, onChange, isSmall, autoComplete }) {
 	const t = useFieldLabels();
@@ -57,7 +58,7 @@ export function TelInput(props) {
 	const t = useFieldLabels();
 	return <TextInput
 		type='tel'
-		pattern={{ value: /^\+972\d{8,9}$/, message: t.invalid_phone_number }}
+		pattern={{ value: regexes.israeliTelephone, message: t.invalid_phone_number }}
 		setValueAs={(str) => {
 			const cleanStr = str.trim().replace(/-/g, '');
 			// i18n might include a specific country code
@@ -71,7 +72,7 @@ export function EmailInput(props) {
 	const t = useFieldLabels();
 	return <TextInput
 		type="email"
-		pattern={{ value: /\S+@\S+\.\S+/, message: t.invalid_email }}
+		pattern={{ value: regexes.email, message: t.invalid_email }}
 		{...props} />;
 }
 

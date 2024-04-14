@@ -2,14 +2,16 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import classNames from "classnames";
 
+import xhr from "@services/xhr";
+import localDb from "@services/localDb";
+import regexes from "@lib/regexes";
+
+import useI18n from "@hooks/use-i18n";
+
 import Modal, { Title, useModal, useErrorModal } from "@wrappers/Modal";
 import { EmailInput } from "@elements/Fields";
 import Checkbox from "@elements/Checkbox";
 
-import xhr from "@services/xhr";
-import localDb from "@services/localDb";
-
-import useI18n from "@hooks/use-i18n";
 
 import { noticeClassName } from ".";
 import { reportConversion } from "@elements/GoogleAnalytics";
@@ -41,7 +43,7 @@ export default function TrialNotice() {
 			const handlePaste = (event) => {
 				event.preventDefault();
 				const pastedText = event.clipboardData.getData('text/plain');
-				if (!/[0-9]{4}/.test(pastedText)) return;
+				if (!regexes.first4Digits.test(pastedText)) return;
 				const digits = pastedText.split('');
 				emailVerificationForm.setValue('code1', digits[0]);
 				emailVerificationForm.setValue('code2', digits[1]);
@@ -52,7 +54,7 @@ export default function TrialNotice() {
 			const handleDigitChange = (event) => {
 				if (event.ctrlKey) return;
 				event.preventDefault();
-				const value = event.key.match(/[0-9]{1}/)?.[0] || '';
+				const value = event.key.match(regexes.firstDigit)?.[0] || '';
 				if (!value) return;
 				event.currentTarget.value = value;
 				const nextInput = event.currentTarget.nextSibling;

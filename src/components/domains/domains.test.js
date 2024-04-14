@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+import regexes from '@lib/regexes';
+
 const i18nProperties = {
 	strings: []
 };
@@ -33,6 +35,6 @@ beforeAll(() => {
 it('should have snake_case for i18n strings', () => {
 	expect(i18nProperties.strings.length).toBeGreaterThan(0);
 	i18nProperties.strings.forEach((key) => {
-		expect(key).toMatch(/^[a-z0-9_]+$/);
+		expect(key).toMatch(regexes.snakeCase);
 	});
 });

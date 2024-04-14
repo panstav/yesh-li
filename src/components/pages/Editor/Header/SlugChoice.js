@@ -1,6 +1,8 @@
 import classNames from "classnames";
 
 import xhr from "@services/xhr";
+import regexes from "@lib/regexes";
+
 import useI18n from "@hooks/use-i18n";
 
 import { Title } from "@wrappers/Modal";
@@ -24,7 +26,7 @@ export default function SlugChoice ({ formState }) {
 			id={id}
 			prefix={location.origin}
 			validate={{ vacantSlug }}
-			pattern={{ value: /^[a-zA-Z-0-9]+$/, message: slugT.valid_slug_requirements }}
+			pattern={{ value: regexes.slug, message: slugT.valid_slug_requirements }}
 			minLength={{ value: 4, message: fieldT.minLengthField(4) }}
 			maxLength={{ value: 30, message: fieldT.maxLengthField(30) }}
 		/>

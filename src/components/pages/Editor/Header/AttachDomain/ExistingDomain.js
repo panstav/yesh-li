@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import classNames from "classnames";
 
 import xhr from "@services/xhr";
+import regexes from "@lib/regexes";
+
 import useI18n from "@hooks/use-i18n";
 
 import Form from "@wrappers/Form";
@@ -80,7 +82,7 @@ export default function ExistingDomain({ wrapper: Wrapper, contactUs: ContactUs,
 				id={'domain'}
 				label={t.domain_url}
 				prefix="https://"
-				pattern={{ value: /^(http:\/\/|https:\/\/)?(www.)?[a-zA-Z-0-9]+.[a-zA-Z-0-9]+$/, message: t.domain_url_pattern_error }}
+				pattern={{ value: regexes.domain, message: t.domain_url_pattern_error }}
 			/>
 			<button className="button">{i18n.misc.continue}</button>
 		</Form>
