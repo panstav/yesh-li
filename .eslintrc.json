@@ -11,10 +11,10 @@
 		"sourceType": "module"
 	},
 	"ignorePatterns": [
-		"/.cache",
-		"/.vscode",
-		"/node_modules",
-		"/public"
+		".cache",
+		".vscode",
+		"node_modules",
+		"public"
 	],
 	"rules": {
 		"indent": [
@@ -35,18 +35,34 @@
 	},
 	"overrides": [
 		{
+			"files": [
+				// all files inside top level test directory
+				"test/*.js",
+				// all files with .test.js extension
+				"**/*.test.js"
+			],
 			"env": {
 				"jest/globals": true
 			},
-			"files": [
-				"/test/**/*.js",
-				"**/*.test.js"
-			],
+			"globals": {
+				"__dirname": "readonly",
+				"require": "readonly"
+			},
+			"rules": {
+				"no-import-assign": "off",
+				"react/react-in-jsx-scope": "off"
+			},
 			"plugins": [
 				"jest"
 			],
+			"settings": {
+				"react": {
+					"version": "detect"
+				}
+			},
 			"extends": [
-				"plugin:jest/recommended"
+				"plugin:jest/recommended",
+				"plugin:react/recommended"
 			]
 		}
 	]

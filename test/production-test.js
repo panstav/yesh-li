@@ -5,6 +5,7 @@ const { signal } = controller;
 
 it('should run production build with no errors', async () => {
 
+	let error;
 	try {
 		await new Promise((resolve, reject) => {
 			const script = cp.exec('gatsby clean', { signal });
@@ -23,11 +24,14 @@ it('should run production build with no errors', async () => {
 				if (data.includes('ERROR')) reject(data);
 			});
 		});
-		
-	} catch (error) {
+
+	} catch (err) {
 		controller.abort();
-		throw error;
+		error = err;
+		throw err;
 	}
 	controller.abort();
+
+	expect(error).toBeUndefined();
 
 }, 500000);
