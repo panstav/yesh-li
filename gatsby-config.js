@@ -78,9 +78,7 @@ const plugins = crossEnvPlugins.concat(isOnNetlify ? productionOnlyPlugins : dev
 module.exports = {
 	siteMetadata: {
 		version: packageJsonVersion,
-		siteUrl,
-		title: 'יש.לי',
-		description: 'יום אחד גם לך יהיה'
+		siteUrl
 	},
 	plugins,
 	trailingSlash: 'never',
