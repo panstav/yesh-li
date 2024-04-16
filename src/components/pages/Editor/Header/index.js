@@ -151,7 +151,9 @@ function Version({ className }) {
 }
 
 function wwwIcon() {
-	return <span className='is-flex is-justify-content-center is-size-7 is-size-8-touch has-text-weight-bold me-1 w-1-touch' style={{ lineHeight: 1 }}>www</span>;
+	return <div className='w-1-touch'>
+		<span className='is-flex is-justify-content-center is-size-7 is-size-8-touch has-text-weight-bold' style={{ lineHeight: 1, marginBottom: '0.05em' }}>www</span>
+	</div>;
 }
 
 function MenuItems({ showSlugModal, showDomainModal }) {
