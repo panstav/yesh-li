@@ -6,7 +6,7 @@ const i18nProperties = {
 	strings: []
 };
 
-beforeAll(() => {
+it('should have snake_case for i18n strings', () => {
 
 	const domains = [];
 	fs.readdirSync(__dirname).forEach(fileName => {
@@ -30,9 +30,6 @@ beforeAll(() => {
 		}
 	});
 
-});
-
-it('should have snake_case for i18n strings', () => {
 	expect(i18nProperties.strings.length).toBeGreaterThan(0);
 	i18nProperties.strings.forEach((key) => {
 		expect(key).toMatch(regexes.snakeCase);
