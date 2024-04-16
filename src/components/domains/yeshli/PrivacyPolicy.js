@@ -1,9 +1,9 @@
 import { HeadFor } from "@config/Meta";
 
+import ContentPage from "@wrappers/ContentPage";
+
 import ContactParagraph from "@domains/yeshli/elements/ContactParagraph";
 import LastUpdated from "@domains/yeshli/elements/LastUpdated";
-
-import ContentPage from "@elements/ContentPage";
 
 import { domainProps, wrapPage, wrapTitle } from "@domains/yeshli";
 

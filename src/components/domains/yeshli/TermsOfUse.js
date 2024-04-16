@@ -1,10 +1,10 @@
 import { HeadFor } from "@config/Meta";
 
+import ContentPage from "@wrappers/ContentPage";
+
 import { wrapPage, domainProps, wrapTitle } from "@domains/yeshli";
 import ContactParagraph from "@domains/yeshli/elements/ContactParagraph";
 import LastUpdated from "@domains/yeshli/elements/LastUpdated";
-
-import ContentPage from "@elements/ContentPage";
 
 export const Head = HeadFor({
 	...domainProps,
