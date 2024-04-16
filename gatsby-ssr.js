@@ -1,42 +1,45 @@
-import fs from 'fs';
-
 import '@styles/index.sass';
 
 const shortDomain = new URL(process.env.URL).hostname;
 
+let generator;
+
 export { wrapPageElement } from '@config/Page';
 
-export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) => {
+export const onPreRenderHTML = async ({ getHeadComponents, replaceHeadComponents }) => {
 	const headComponents = getHeadComponents();
 
 	// promote the preconnect and preload tags to the top of the head, so they are loaded before the css dump and everything else
 	promote(headComponents, (item) => ['preload', 'preconnect'].includes(item?.props?.rel));
 
 	// replace the default generator meta tag with our own
+	if (!generator) getGenerator();
 	set(headComponents, (item) => item?.props?.name === 'generator', (item) => {
-
-		let name, url, domain;
-
-		try {
-			const siteData = JSON.parse(fs.readFileSync(`./data/root.json`))[0];
-			const themesMap = JSON.parse(fs.readFileSync(`./src/components/themes/map.json`));
-			domain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain;
-		} catch (error) {
-			domain = shortDomain;
-		}
-
-		// yesh.li => YeshLi
-		name = domain.split('.').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('');
-		url = `https://${domain}`;
-
-		const version = process.env.npm_package_version;
-
-		item.props.content = `${name} ${version} (${url})`;
+		item.props.content = generator;
 		return item;
 	});
 
 	replaceHeadComponents(headComponents);
 };
+
+function getGenerator() {
+
+	let domain;
+	try {
+		const siteData = require(`./data/root.json`)[0];
+		const themesMap = require(`./src/components/themes/map.json`);
+		domain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain;
+	} catch (error) {
+		domain = shortDomain;
+	}
+
+	// yesh.li => YeshLi
+	const name = domain.split('.').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('');
+	const url = `https://${domain}`;
+	const version = process.env.npm_package_version;
+
+	generator = `${name} ${version} (${url})`;
+}
 
 function promote(array, findFn) {
 	// find indexes of all items that match the findFn
