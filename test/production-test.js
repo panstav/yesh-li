@@ -12,7 +12,7 @@ it('should run production build with no errors', async () => {
 
 			script.stdout.on('data', (data) => {
 				if (data.includes('info Successfully deleted directories')) resolve();
-				if (data.includes('ERROR')) reject(data);
+				if (data.toLowerCase().includes('error')) reject(data);
 			});
 		});
 
@@ -21,7 +21,7 @@ it('should run production build with no errors', async () => {
 
 			script.stdout.on('data', (data) => {
 				if (data.includes('info Done building')) resolve();
-				if (data.includes('ERROR')) reject(data);
+				if (data.toLowerCase().includes('error')) reject(data);
 			});
 		});
 
