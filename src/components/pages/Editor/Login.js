@@ -4,7 +4,6 @@ import classNames from 'classnames';
 
 import Section from '@wrappers/Section';
 import Tooltip from '@wrappers/Tooltip';
-import Spacer from '@elements/Spacer';
 import Checkbox from '@elements/Checkbox';
 import Help from '@elements/Help';
 
@@ -35,10 +34,9 @@ export default function Login({ jwtExpired }) {
 	const providerUrl = emailAddress && `https://${emailAddress.split('@')[1]}`;
 
 	return <>
-		<Spacer />
 		<div className={loginWrapper}>
 			<div className='has-background-primary w-100' style={{ margin: 'auto', filter: 'blur(100px)', borderRadius: '100%', position: 'absolute', top: '0', bottom: '0', right: '0', left: '0', height: '750px', opacity: '0.1', zIndex: '-10' }} />
-			<Section className='is-medium'>
+			<Section className='is-medium mt-0'>
 				<div className='has-text-centered mb-6'>
 					<MultiLogo style={{ width: '4rem' }} />
 					{jwtExpired && <p className='is-size-7 has-text-grey mt-2'>{t.session_over_please_reconnect}</p>}
