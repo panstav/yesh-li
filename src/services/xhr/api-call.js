@@ -3,6 +3,7 @@ import ky from 'ky';
 import localDb from '@services/localDb';
 
 const apiUrl = process.env.GATSBY_API_URL;
+const frontUrl = process.env.URL;
 
 export const get = transformApiCall('get');
 export const post = transformApiCall('post');
@@ -17,8 +18,13 @@ function transformApiCall(method) {
 
 	return (endpoint, data, optionsExtension = {}) => {
 
+		const headers = {
+			yl_domain: new URL(frontUrl).hostname
+		};
+
 		const jwt = localDb.get('jwt');
-		const headers = jwt ? { 'Authorization': `Bearer ${jwt}` } : {};
+		if (jwt) headers.Authorization = `Bearer ${jwt}`;
+
 		const options = { json: data, headers, ...optionsExtension };
 
 		if (data && 'formData' in data) {
