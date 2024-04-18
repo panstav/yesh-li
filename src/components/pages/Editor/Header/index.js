@@ -181,7 +181,7 @@ function MenuItems({ showSlugModal, showDomainModal }) {
 		// add publish button
 		menuItems.unshift({
 			label: t.publish_site,
-			Icon: () => <span className='w-1-touch' style={{ fontSize: '1.7rem' }}>★</span>,
+			Icon: () => <span className='w-1-touch' style={{ fontSize: '115%' }}>★</span>,
 			path: '/'
 		});
 
