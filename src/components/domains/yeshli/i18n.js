@@ -21,7 +21,7 @@ export default {
 
 	Editor: {
 
-		New_Page_Modal,
+		NewPageModal,
 
 		fieldLabels: {
 			full_name: 'שם מלא',
@@ -182,7 +182,7 @@ export default {
 
 };
 
-function New_Page_Modal() {
+function NewPageModal() {
 	return <>
 		<p>העמוד שלך מוכן!</p>
 		<div className='is-size-6 has-text-start mt-4 mb-5'>

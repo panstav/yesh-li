@@ -3,10 +3,11 @@ import fs from 'fs';
 import regexes from '@lib/regexes';
 
 const i18nProperties = {
-	strings: []
+	strings: [],
+	functions: []
 };
 
-it('should have snake_case for i18n strings', () => {
+beforeAll(() => {
 
 	const domains = [];
 	fs.readdirSync(__dirname).forEach(fileName => {
@@ -23,13 +24,23 @@ it('should have snake_case for i18n strings', () => {
 
 		function iterate(keys) {
 			const prop = keys.reduce((obj, key) => obj[key], i18n);
-			if (typeof prop === 'function') return;
+			if (typeof prop === 'function') return i18nProperties.functions.push(keys.slice(-1)[0]);
 			if (typeof prop === 'string') return i18nProperties.strings.push(keys.slice(-1)[0]);
 			if (typeof prop === 'object') return Object.keys(prop).forEach(key => iterate(keys.concat(key)));
 			throw new Error('Unknown type');
 		}
 	});
 
+});
+
+it('should have not underscores for i18n functions', () => {
+	expect(i18nProperties.functions.length).toBeGreaterThan(0);
+	i18nProperties.functions.forEach((key) => {
+		expect(key).not.toContain('_');
+	});
+});
+
+it('should have snake_case for i18n strings', () => {
 	expect(i18nProperties.strings.length).toBeGreaterThan(0);
 	i18nProperties.strings.forEach((key) => {
 		expect(key).toMatch(regexes.snakeCase);
