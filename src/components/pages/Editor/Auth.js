@@ -40,7 +40,7 @@ export default function Auth({ children }) {
 		} else {
 			// we don't have a login code, but we might already have a jwt
 			xhr.getUserIdentity().then((data) => {
-				if (data.jwtExpired) localDb.unset('jwt');
+				if (data.jwtExpired || data.removeJwt) localDb.unset('jwt');
 				setUser(data);
 			});
 		}
