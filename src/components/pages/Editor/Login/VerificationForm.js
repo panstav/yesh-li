@@ -8,6 +8,8 @@ import useI18n from '@hooks/use-i18n';
 
 import regexes from '@lib/regexes';
 
+import { digitInput } from './index.module.sass';
+
 export default function VerificationCode({ email, buttonClassName, onChange }) {
 
 	const [{ Login: t }] = useI18n();
@@ -57,6 +59,7 @@ export default function VerificationCode({ email, buttonClassName, onChange }) {
 		if (nextInput) nextInput.focus();
 	};
 
+	const digitClassName = classNames("input has-text-centered", digitInput);
 	const submitCodeButtonClassName = classNames(buttonClassName, isSendingCodeForm && "is-loading");
 
 	return <>
@@ -70,8 +73,7 @@ export default function VerificationCode({ email, buttonClassName, onChange }) {
 					onKeyDown={handleDigitChange}
 					pattern="[0-9]"
 					type="text"
-					className="input has-text-centered"
-					style={{ width: '5rem' }} />)}
+					className={digitClassName} />)}
 			</div>
 			{helpText && <p className='help has-text-danger has-text-centered mt-3'>{helpText}</p>}
 		</div>

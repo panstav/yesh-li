@@ -10,7 +10,7 @@ import useI18n from '@hooks/use-i18n';
 import EmailForm from './EmailForm';
 import VerificationForm from './VerificationForm';
 
-import { loginWrapper } from '../index.module.sass';
+import { loginWrapper } from './index.module.sass';
 
 export default function Login({ jwtExpired }) {
 
