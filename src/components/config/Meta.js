@@ -5,8 +5,6 @@ import getDirByLang from '@lib/get-dir-by-lang';
 
 const isRemote = !process.env.GATSBY_IS_LOCAL;
 
-export let domain;
-
 export default function Meta({
 	title,
 	description,
@@ -26,7 +24,6 @@ export default function Meta({
 			}
 		}
 	`);
-	domain = siteUrl;
 
 	const normalizedDescription = Array.isArray(description) ? description.join(' ') : description;
 
@@ -41,6 +38,8 @@ export default function Meta({
 		<title>{title}</title>
 		<meta name="title" content={title} />
 		<meta name="description" content={normalizedDescription} />
+
+		<meta name="yl:domain" content={siteUrl} />
 
 		{!isInternal && <>
 			<meta property="og:type" content="website" />

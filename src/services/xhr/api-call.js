@@ -2,8 +2,6 @@ import ky from 'ky';
 
 import localDb from '@services/localDb';
 
-import { domain } from '@config/Meta';
-
 const apiUrl = process.env.GATSBY_API_URL;
 
 export const get = transformApiCall('get');
@@ -19,8 +17,9 @@ function transformApiCall(method) {
 
 	return (endpoint, data, optionsExtension = {}) => {
 
+		const domain = new URL(document.head.querySelector('[name="yl:domain"]').getAttribute('content')).hostname;
 		const headers = {
-			yl_domain: new URL(domain).hostname
+			yl_domain: domain
 		};
 
 		const jwt = localDb.get('jwt');
