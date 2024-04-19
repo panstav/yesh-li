@@ -55,7 +55,7 @@ function Onboarding () {
 
 	const current = steps.find(step => step.isActive)?.title;
 
-	const containerClassName = classNames(container, 'pt-4');
+	const containerClassName = classNames(container, 'py-4');
 
 	return <OnboardingContext.Provider value={{ setup, next, current, defaultValues: fullForm }}>
 		<div className={containerClassName}>
