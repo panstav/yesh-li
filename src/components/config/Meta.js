@@ -5,6 +5,8 @@ import getDirByLang from '@lib/get-dir-by-lang';
 
 const isRemote = !process.env.GATSBY_IS_LOCAL;
 
+export let domain;
+
 export default function Meta({
 	title,
 	description,
@@ -24,6 +26,7 @@ export default function Meta({
 			}
 		}
 	`);
+	domain = siteUrl;
 
 	const normalizedDescription = Array.isArray(description) ? description.join(' ') : description;
 
