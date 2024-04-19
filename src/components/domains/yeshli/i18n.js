@@ -2,7 +2,7 @@ import OutboundLink from "@elements/OutboundLink";
 
 import YeshLiLogo from "@domains/yeshli/elements/Logo";
 
-export default {
+const i18n = {
 
 	multi: {
 		Logo: YeshLiLogo,
@@ -84,6 +84,8 @@ export default {
 			click_to_change_image: 'ליחצו להחלפת התמונה',
 			set_image_focus: 'בחירת פוקוס לתמונה',
 			ModerationInvalidatedModal,
+			ExtensionMatchesFileDoesNot,
+			file_type_not_matching_extention: 'הסיומת של הקובץ תואמת אך הקובץ עצמו הוא מסוג אחר שאינו נתמך.',
 			image_upload_error: 'אירעה שגיאה בהעלאת התמונה. נסו שנית מאוחר יותר',
 
 			youtube_url: "כתובת סרטון יוטיוב",
@@ -184,6 +186,15 @@ export default {
 	}
 
 };
+
+export default i18n;
+
+function ExtensionMatchesFileDoesNot({ allowedTypes }) {
+	return <>
+		<p>{i18n.Editor.fieldLabels.image_types_supported}: <span style={{ direction: 'ltr', display: 'inline-block' }}>{allowedTypes}</span></p>
+		<p>לקובץ שבחרת יש סיומת שנתמכת אך הקובץ עצמו מסוג אחר.</p>
+	</>;
+}
 
 function NewPageModal() {
 	return <>

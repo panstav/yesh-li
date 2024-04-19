@@ -26,6 +26,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 
 	const [supportedFileTyesModal, showSupportedFileTyesModal] = useErrorModal();
 	const [moderationModal, showModerationModal] = useErrorModal();
+	const [fileTypeMisname, showFileTypeMisnameModal] = useErrorModal();
 	const [serverErrorModal, showServerErrorModal] = useErrorModal();
 
 	const propertyKey = `${id}.srcSet`;
@@ -64,6 +65,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 		}).catch((err) => {
 			setLoading(false);
 			if (err.responseData?.reasoning === 'moderation') return showModerationModal();
+			if (err.responseData?.reasoning === 'type-not-allowed') return showFileTypeMisnameModal();
 			showServerErrorModal();
 		});
 	};
@@ -110,6 +112,7 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 
 		<Modal {...supportedFileTyesModal} render={() => `${t.image_types_supported}: ${acceptedExtnames}`} />
 		<Modal {...moderationModal} render={t.ModerationInvalidatedModal} />
+		<Modal {...fileTypeMisname} render={t.ExtensionMatchesFileDoesNot} allowedTypes={acceptedExtnames} />
 		<Modal {...serverErrorModal} render={() => t.image_upload_error} />
 
 		<Modal {...focusModal} render={FocusModal} />
