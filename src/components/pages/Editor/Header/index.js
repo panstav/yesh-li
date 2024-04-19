@@ -1,4 +1,4 @@
-import { memo, useContext, useEffect, useState } from 'react';
+import { memo, useContext, useState } from 'react';
 import { Link, graphql, useStaticQuery } from 'gatsby';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
@@ -13,14 +13,10 @@ import { Eye, Logout, Sheet } from '@elements/Icon';
 import OutboundLink from '@elements/OutboundLink';
 
 import { AuthContext } from '../Auth';
-
-import TrialNotice from './TrialNotice';
 import SlugChoice from './SlugChoice';
 import AttachDomain from './AttachDomain';
 
 import { logoContainer, versionByLogo, eyeIcon } from './index.module.sass';
-
-export const noticeClassName = 'py-2';
 
 export const SafeHeader = () => <Nav className="is-justify-content-center" />;
 
@@ -30,7 +26,7 @@ function Header() {
 
 	const [{ Editor: { Header: t, AttachDomain: { DomainAttachedSuccessFullyModal } }}] = useI18n();
 
-	const { role, emailVerified, siteId } = useContext(AuthContext);
+	const { siteId } = useContext(AuthContext);
 	const { getValues } = useFormContext();
 
 	const [slugUpdateSuccess, showSlugUpdateSuccess] = useSuccessModal({
@@ -49,14 +45,8 @@ function Header() {
 	const [attachDomainSuccessModal, showAttachDomainSuccessModal] = useSuccessModal();
 	const onAttachDomainSuccess = (domain) => showAttachDomainSuccessModal({ domain });
 
-	const [isEmailRecentlyVerified, setIsEmailRecentlyVerified] = useState();
-
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleMenu = () => setIsOpen(!isOpen);
-
-	useEffect(() => {
-		setIsEmailRecentlyVerified(localDb.get('email-recently-verified'));
-	}, []);
 
 	const slug = getValues('slug');
 
@@ -68,14 +58,6 @@ function Header() {
 	const menuClasses = classNames('navbar-menu has-background-primary', isOpen && 'is-active');
 
 	return <>
-
-		{role === 'TRIAL'
-			? emailVerified === false
-				? <TrialNotice />
-				: isEmailRecentlyVerified
-					? <EmailIsVerifiedNotice />
-					: null
-			: null}
 
 		<Nav logoClassName="is-clickable" burgerClasses={burgerClasses} burgerOnClick={toggleMenu}>
 			<div className={menuClasses}>
@@ -244,26 +226,4 @@ function MenuItem({ Icon, label, path, onClick, ...props }) {
 		<Icon />
 		<div className="icon-text ms-1">{label}</div>
 	</Wrapper>;
-}
-
-function EmailIsVerifiedNotice () {
-
-	const [{ Editor: { Header: t } }] = useI18n();
-
-	const [isHidden, setIsHidden] = useState(false);
-	const hideNotice = () => {
-		localDb.unset('email-recently-verified');
-		setIsHidden(true);
-	};
-
-	const className = classNames("has-background-success is-relative", noticeClassName);
-
-	if (isHidden) return null;
-
-	return <div className={className}>
-		<span onClick={hideNotice} className='delete is-overlay m-auto' style={{ 'inset-inline-start': 'unset', 'inset-inline-end': '0.5rem' }} />
-		<div className='has-text-centered has-text-white'>
-			{t.email_verified_successfully}
-		</div>
-	</div>;
 }

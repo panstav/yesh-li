@@ -14,9 +14,14 @@ export default {
 		connect: "התחברות",
 		email_registered_with: "כתובת המייל שנרשמת איתה",
 		remember_me: "זכור אותי",
-		why_remember_me: "להשאר מחוברים עם מכשיר זה לזמן רב יותר",
+		why_remember_me: "סמנו על מנת להשאר מחוברים לזמן רב יותר",
 		SendLoginLinkButtonText: ({ isTried }) => <>שלח לי {isTried ? 'עוד ' : ''}לינק התחברות</>,
-		link_successfully_sent_to: "יש! לינק התחברות נשלח בהצלחה ל-"
+		link_successfully_sent_to: "לינק וקוד לאימות נשלחו אלייך למייל",
+		validation: "אימות",
+		code_you_received: "הקוד שקיבלת למייל",
+		email_address_verification: "אימות כתובת מייל",
+		digitsOnlyWhileYouPasted: (badPaste) => `הקוד יכיל ספרות בלבד. ניסית להדביק: '${badPaste}'`,
+		bad_verification_code: "קוד האימות שגוי",
 	},
 
 	Editor: {
@@ -139,12 +144,10 @@ export default {
 			page_is_temporary: "העמוד זמני",
 			signup_to_keep: "הרשמו כעת כדי לשמור עליו",
 			registration: "הרשמה",
-			email_validation_instruction: "כשתלחצו על &quot;המשך&quot; המערכת תשלח מייל עם קוד חד פעמי שיעזור לנו לוודא שכתובת המייל תקינה ושיש לך גישה אליה. עם כתובת מייל זו אפשר יהיה להתחבר למערכת ללא צורך בסיסמה.",
+			email_validation_instruction: "כשתלחצו על 'המשך' המערכת תשלח מייל שיעזור לנו לאמת שכתובת המייל תקינה ושיש לך גישה אליה. עם כתובת מייל זו אפשר יהיה להתחבר למערכת גם ללא צורך בסיסמה.",
+			link_successfully_sent_to: "המייל נשלח בהצלחה ל-",
 			upgrades_updates_consent: "אשמח לקבל עידכונים על שידרוגים ופיצ'רים חדשים",
-			products_services_updates_consent: "אשמח לקבל עידכונים על מבצעים ושירותים נלווים",
-			validation: "אימות",
-			code_you_received: "הקוד שקיבלת למייל",
-			validation_error_try_again: "אירעה שגיאה באימות כתובת המייל - נסו שנית מאוחר יותר"
+			products_services_updates_consent: "אשמח לקבל עידכונים על מבצעים ושירותים נלווים"
 		},
 
 		AttachSlug: {

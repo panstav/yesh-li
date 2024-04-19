@@ -8,7 +8,7 @@ import Fields from './FormFields';
 
 export default function ContactForm() {
 	const { content: { ctaHeader } } = usePageData();
-	const [postLead, isSuccess, isError] = useFetch(xhr.postLead);
+	const [postLead, isSuccess, isError] = useFetch(xhr.createLead);
 
 	return <>
 		<span id="contact-form" />

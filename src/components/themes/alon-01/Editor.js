@@ -124,7 +124,7 @@ export default function Alon_01 () {
 					includes='youtube.com/watch?v'
 					setValueAs={(val) => val.split('&')[0]}
 					onChange={(videoUrl) => {
-						if (videoUrl) xhr.postYoutubeThumbnail({ videoUrl, siteSlug: getValues('slug') })
+						if (videoUrl) xhr.createYoutubeThumbnail({ videoUrl, siteSlug: getValues('slug') })
 							.then(({ thumbnailPath }) => setValue('content.video.thumbnail', thumbnailPath));
 					}} />
 

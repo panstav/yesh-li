@@ -2,16 +2,18 @@ import { Suspense, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
 
+import xhr from '@services/xhr';
 import { useFieldLabels } from '@hooks/use-i18n';
 
 import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
 import Loader from '@elements/Loader';
 
-import xhr from '@services/xhr';
+import { AuthContext } from './Auth';
+import TopBanner from './TopBanner';
+
 import { fieldsMap } from '@themes';
 
 import { innerFieldsContainer, saveButtonContainer } from './index.module.sass';
-import { AuthContext } from './Auth';
 
 export default function ThemeFields() {
 	const t = useFieldLabels();
@@ -47,6 +49,7 @@ export default function ThemeFields() {
 	return <>
 		<Suspense fallback={<Loader />}>
 			<div className={innerFieldsContainer}>
+				<TopBanner className="mb-3" />
 				<FieldGroup />
 			</div>
 			<div className={saveButtonContainer}>

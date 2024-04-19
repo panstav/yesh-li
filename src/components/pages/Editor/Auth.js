@@ -25,21 +25,32 @@ export default function Auth({ children }) {
 
 	useEffect(() => {
 		if (user) return;
-
 		// user is not logged in
-		// check if user is attempting to login but navigating from a login email to the editor
+
+		// check if user is attempting to validate their email via an email link
+		const emailVerificationCode = snatchParameter('emailVerificationCode');
+		// check if user is attempting to login via an email link
 		const loginCode = snatchParameter('loginCode');
 
 		if (loginCode) {
 			// we have a login code, send it to the server to verify and install a jwt
-			xhr.getLoginCodeVerification(loginCode).then(({ jwt, ...user }) => {
+			xhr.login(loginCode).then(({ jwt, ...user }) => {
 				// we have a jwt, save it to localstorage and set the user
 				localDb.set('jwt', jwt);
 				setUser(user);
 			}).catch(() => window.location.reload());
+
+		} else if (emailVerificationCode) {
+			// we have an email verification code, send it to the server to verify and if it is - reload the page so that the user get get an updated jwt
+			xhr.verifyCodeAndRegister(emailVerificationCode).then(({ isVerified }) => {
+				if (!isVerified) return;
+				localDb.set('email-recently-verified', true);
+				window.location.reload();
+			}).catch(() => window.location.reload());
 		} else {
-			// we don't have a login code, but we might already have a jwt
-			xhr.getUserIdentity().then((data) => {
+
+			// we don't have a login code or an email verification code, but we might already have a jwt
+			xhr.getSession().then((data) => {
 				if (data.jwtExpired || data.removeJwt) localDb.unset('jwt');
 				setUser(data);
 			});

@@ -17,7 +17,7 @@ export default function SlugChoice ({ formState }) {
 	const buttonClassName = classNames('button is-primary', formState.isSubmitting && 'is-loading');
 
 	const vacantSlug = async (slug) => {
-		return xhr.checkSlugVacancy(slug).then(({ isVacant }) => isVacant || slugT.address_unavailable);
+		return xhr.confirmSlugVacancy(slug).then(({ isVacant }) => isVacant || slugT.address_unavailable);
 	};
 
 	return <>

@@ -56,7 +56,7 @@ function Auth ({ children }) {
 
 	useEffect(() => {
 		if (user) return;
-		xhr.getUserIdentity().then(setUser);
+		xhr.getSession().then(setUser);
 	}, []);
 
 	return <AuthContext.Provider value={user || {}}>

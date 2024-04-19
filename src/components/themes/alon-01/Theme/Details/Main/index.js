@@ -77,7 +77,7 @@ export default function Main() {
 	const [contactModal, showContactModal] = useModal({
 		onSubmit: ({ name, email, tel, interest }) => {
 			const whatsappLink = `https://wa.me/${tel}`;
-			return xhr.postLead({ name, email, tel, interest, whatsappLink })
+			return xhr.createLead({ name, email, tel, interest, whatsappLink })
 				.then(() => showSavedLeadModal())
 				.catch(() => showErrorWhileSavingModal());
 		}
