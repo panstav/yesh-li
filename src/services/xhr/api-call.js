@@ -4,6 +4,9 @@ import localDb from '@services/localDb';
 
 const apiUrl = process.env.GATSBY_API_URL;
 
+// assign value to the domain, it will remain undefined unless we're on development
+let domain = process.env.URL;
+
 export const get = transformApiCall('get');
 export const post = transformApiCall('post');
 export const put = transformApiCall('put');
@@ -17,7 +20,7 @@ function transformApiCall(method) {
 
 	return (endpoint, data, optionsExtension = {}) => {
 
-		const domain = new URL(document.head.querySelector('[name="yl:domain"]').getAttribute('content')).hostname;
+		if (!domain) domain = new URL(document.head.querySelector('[name="yl:domain"]').getAttribute('content')).hostname;
 		const headers = {
 			yl_domain: domain
 		};
