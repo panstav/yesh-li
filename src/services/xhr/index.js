@@ -8,7 +8,7 @@ export default {
 	// auth
 	getSession: () => get('session'),
 	sendLoginEmail: ({ email, rememberMe }) => post('login-email', { email, rememberMe }),
-	confirmLoginCode: ({ email, code }) => get(`login-code-confirmation?email=${email}&loginCode=${code}`),
+	confirmLoginCode: ({ email, code }) => post('login-code-confirmation', { email, loginCode: code }),
 	login: (loginCode) => post('session', { loginCode }),
 	sendRegistrationEmail: (data) => post('email-verification', data),
 	verifyCodeAndRegister: (code) => post('email-registration', { code }),
