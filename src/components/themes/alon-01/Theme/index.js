@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-import { usePageContent } from "@hooks/use-page-data";
+import { useSiteContent } from "@hooks/use-site-data";
 
 import Media from "./Media";
 import Details from "./Details";
@@ -8,7 +8,7 @@ import Details from "./Details";
 import { container } from "./index.module.sass";
 
 export default function Alon_1() {
-	const content = usePageContent();
+	const content = useSiteContent();
 
 	if (content.links) {
 		Object.entries(content.links).forEach(([platform, address]) => {

@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import classNames from "classnames";
 
-import { usePageContent } from "@hooks/use-page-data";
+import { useSiteContent } from "@hooks/use-site-data";
 
 import Modal, { Title, useModal, useRawModal } from "@wrappers/Modal";
 import { Faq, Gift, Person } from "@elements/Icon";
@@ -9,7 +9,7 @@ import { Faq, Gift, Person } from "@elements/Icon";
 import { boxes, summary } from "./main.module.sass";
 
 export default function Sections({ contactByForm, className }) {
-	const { about, sections, faq } = usePageContent();
+	const { about, sections, faq } = useSiteContent();
 
 	const [aboutModal, showAboutModal] = useModal({
 		title: 'אודותיי'

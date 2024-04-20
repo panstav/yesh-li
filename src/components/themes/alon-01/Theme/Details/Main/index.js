@@ -8,7 +8,7 @@ import OutboundLink from "@elements/OutboundLink";
 import xhr from '@services/xhr';
 import hrefByAddressType from "@lib/href-by-address-type";
 
-import usePageData from "@hooks/use-page-data";
+import useSiteData from "@hooks/use-site-data";
 
 import Sections from "./Sections";
 import Video from "./Video";
@@ -62,7 +62,7 @@ const copy = {
 };
 
 export default function Main() {
-	const { isPublic, title, slug, content: { fullName, occupation, description, statement, links, video, qrSvg } } = usePageData();
+	const { isPublic, title, slug, content: { fullName, occupation, description, statement, links, video, qrSvg } } = useSiteData();
 
 	const [url, setUrl] = useState();
 	useEffect(() => {

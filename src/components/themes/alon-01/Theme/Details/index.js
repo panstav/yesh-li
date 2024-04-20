@@ -1,11 +1,11 @@
-import { usePageContent } from "@hooks/use-page-data";
+import { useSiteContent } from "@hooks/use-site-data";
 
 import Main from "./Main";
 
 import { details } from "./details.module.sass";
 
 export default function Details () {
-	const { fullName } = usePageContent();
+	const { fullName } = useSiteContent();
 
 	return <div className={details}>
 		<div className="is-flex-tablet is-flex-direction-column is-justify-content-center is-relative" style={{ minHeight: '100%', padding: '3rem 0' }}>

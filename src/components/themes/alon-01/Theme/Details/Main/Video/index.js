@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-import { usePageContent } from "@hooks/use-page-data";
+import { useSiteContent } from "@hooks/use-site-data";
 
 import Modal, { useRawModal } from "@wrappers/Modal";
 import { YouTube } from "@elements/Icon";
@@ -8,7 +8,7 @@ import { YouTube } from "@elements/Icon";
 import { youtubeImageContainer, youtubeThumbnail, youtubeIcon } from './video.module.sass';
 
 export default function Video ({ className }) {
-	const { video } = usePageContent();
+	const { video } = useSiteContent();
 
 	const [youtubeModal, showYoutubeModal] = useRawModal({
 		isLarge: true

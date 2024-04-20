@@ -2,10 +2,10 @@ import { useContext } from "react";
 
 import { PageContext } from "@config/Page";
 
-export default function usePageData () {
+export default function useSiteData () {
 	return useContext(PageContext);
 }
 
-export function usePageContent () {
-	return usePageData().content;
+export function useSiteContent () {
+	return useSiteData().content;
 }

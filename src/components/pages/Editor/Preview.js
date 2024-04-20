@@ -4,7 +4,7 @@ import { useFormContext } from "react-hook-form";
 import cloneDeep from "lodash.clonedeep";
 
 import useI18n from "@hooks/use-i18n";
-import usePageData from "@hooks/use-page-data";
+import useSiteData from "@hooks/use-site-data";
 
 import Page from "@config/Page";
 import { CssVariables } from "@config/Meta";
@@ -20,7 +20,7 @@ let validProps = {};
 function Preview(props) {
 
 	const [{ Editor: { Preview: t } }] = useI18n();
-	const { lang } = usePageData();
+	const { lang } = useSiteData();
 
 	const Theme = themesMap[props.theme];
 
