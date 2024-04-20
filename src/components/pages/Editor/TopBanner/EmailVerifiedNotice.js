@@ -22,7 +22,7 @@ export default function EmailVerifiedNotice() {
 	if (isHidden) return null;
 
 	return <div className={className}>
-		<span onClick={hideNotice} className='delete is-overlay m-auto' style={{ 'inset-inline-start': 'unset', 'inset-inline-end': '0.5rem' }} />
+		<span onClick={hideNotice} className='delete is-overlay m-auto' style={{ 'inset-inline-start': 'unset', 'inset-inline-end': '0.7rem' }} />
 		<div className='has-text-centered has-text-white'>
 			{t.email_verified_successfully}
 		</div>
