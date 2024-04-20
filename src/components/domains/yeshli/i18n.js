@@ -85,7 +85,6 @@ const i18n = {
 			set_image_focus: 'בחירת פוקוס לתמונה',
 			ModerationInvalidatedModal,
 			ExtensionMatchesFileDoesNot,
-			file_type_not_matching_extention: 'הסיומת של הקובץ תואמת אך הקובץ עצמו הוא מסוג אחר שאינו נתמך.',
 			image_upload_error: 'אירעה שגיאה בהעלאת התמונה. נסו שנית מאוחר יותר',
 
 			youtube_url: "כתובת סרטון יוטיוב",
@@ -221,7 +220,11 @@ function AttachDomainContactUs({ className }) {
 }
 
 function ModerationInvalidatedModal() {
-	return <><p>המערכת זיהתה בתמונה תוכן בלתי מתאים מאחד הסוגים הבאים: תוכן למבוגרים, זיוף, דימוי רפואי, תוכן אלים או פרובוקטיבי.</p><br /><OutboundLink href="mailto:hello@yesh.li">צרו קשר אם מדובר בטעות בזיהוי.</OutboundLink></>;
+	return <>
+		<p>המערכת זיהתה בתמונה תוכן בלתי מתאים מאחד הסוגים הבאים: תוכן למבוגרים, זיוף, דימוי רפואי, תוכן אלים או פרובוקטיבי.</p>
+		<br />
+		<OutboundLink href="mailto:hello@yesh.li">צרו קשר אם מדובר בטעות בזיהוי.</OutboundLink>
+	</>;
 }
 
 function DomainAttachedSuccessFullyModal ({ domain }) {
@@ -238,7 +241,7 @@ function FatalErrorModal({ error }) {
 
 		<div className='buttons has-addons is-centered'>
 			<button className='button' onClick={() => window.location.reload()}>לרענן את הדף</button>
-			<OutboundLink className='button' href={`mailto:hello@$yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`}>לפנות לתמיכה</OutboundLink>
+			<OutboundLink className='button' href={`mailto:hello@yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`}>לפנות לתמיכה</OutboundLink>
 		</div>
 	</>;
 }

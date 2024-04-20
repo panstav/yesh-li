@@ -1,12 +1,11 @@
-
 import { wrapI18n } from "@config/I18n";
 
+import PageWrapper from "@wrappers/PageWrapper";
 import GoogleAnalytics from "@elements/GoogleAnalytics";
 import MicrosoftClarity from "@elements/MicrosoftClarity";
 
 import i18n from './i18n';
 import domainData from './index.json';
-import PageWrapper from "@wrappers/PageWrapper";
 
 export const domainProps = {
 	...domainData,
