@@ -52,7 +52,7 @@ async function scaffoldMultiSite(sites, redirects) {
 		.concat(sites.map(site => ({ url: `/${site.slug}`, changefreq: 'daily', priority: 1 })));
 
 	// create a redirects file for all the sites that used to be on this multi-tenant site and have since moved to their own domains
-	await fs.promises.writeFile('./data/redirects.json', JSON.stringify(redirects));
+	await createRedirects(redirects);
 
 	return sites.reduce((accu, site) => accu.then(async () => {
 
@@ -85,7 +85,7 @@ async function scaffoldRootSite(site) {
 	]);
 
 	// create an empty redirects file
-	await fs.promises.writeFile('./data/redirects.json', JSON.stringify([]));
+	await createRedirects([]);
 
 	// save the site's data to a json file at /data/root.json
 	await fs.promises.writeFile('./data/root.json', JSON.stringify(site));
@@ -128,6 +128,10 @@ async function createSitemap(items) {
 	const sitemap = await streamToPromise(Readable.from(items).pipe(stream)).then((data) => data.toString());
 
 	return fs.promises.writeFile('./static/sitemap.xml', sitemap);
+}
+
+function createRedirects(redirects) {
+	return fs.promises.writeFile('./data/redirects.json', JSON.stringify(redirects));
 }
 
 function cleanUp() {
