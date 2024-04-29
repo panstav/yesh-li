@@ -142,3 +142,22 @@ exports.createPages = async ({ actions }) => {
 	}
 
 };
+
+exports.onCreateWebpackConfig = ({ getConfig, actions }) => {
+	const config = getConfig();
+
+	silenceOrderWarning();
+
+	// Update the config.
+	actions.replaceWebpackConfig(config);
+
+	function silenceOrderWarning () {
+		// Get the mini-css-extract-plugin
+		const miniCssExtractPlugin = config.plugins.find(
+			(plugin) => plugin.constructor.name === 'MiniCssExtractPlugin'
+		);
+
+		// Set the option here to true.
+		if (miniCssExtractPlugin) miniCssExtractPlugin.options.ignoreOrder = true;
+	}
+};
