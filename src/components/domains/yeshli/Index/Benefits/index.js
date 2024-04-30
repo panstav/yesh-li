@@ -75,7 +75,7 @@ const benefits = [
 	{
 		title: 'אפשרות לדומיין משלך',
 		description: 'להראות מקצועי בפני מבקרים ומנועי חיפוש + תכונות ייחודיות כמו למשל התראות לנייד של לקוח וחזרה לעמוד ללא חיבור לאינטרנט.',
-		Icon: ({ className, style }) => <span className={`has-text-weight-bold ${className}`} style={{ lineHeight: 1, marginTop: '0.4rem', fontSize: '0.65rem', ...style }}>www</span>
+		Icon: ({ className, style = {} }) => <span className={`has-text-weight-bold ${className}`} style={{ lineHeight: 1, marginTop: '0.4rem', fontSize: '0.65rem', ...style }}>www</span>
 	},
 	{
 		title: 'פוסטים אחרונים מרשתות חברתיות',
