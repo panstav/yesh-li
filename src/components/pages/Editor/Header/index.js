@@ -1,5 +1,5 @@
 import { memo, useContext, useState } from 'react';
-import { Link, graphql, useStaticQuery } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
 
@@ -114,7 +114,7 @@ function LogoLinkWrapper(props) {
 	// and users that move to their own domain - don't have a slug on their siteData but multisite reserved their slug to redirect
 	if (!useFormContext()?.getValues('slug')) return props.children;
 
-	return <Link to="/" {...props} />;
+	return <a href="/" {...props} />;
 }
 
 function Version({ className }) {
@@ -217,7 +217,7 @@ function MenuItem({ Icon, label, path, onClick, ...props }) {
 			Wrapper = OutboundLink;
 			direction = { href: path };
 		} else {
-			Wrapper = Link;
+			Wrapper = 'a';
 			direction = { to: path };
 		}
 	}

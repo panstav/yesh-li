@@ -1,4 +1,3 @@
-import { Link } from "gatsby";
 import { createContext, useEffect, useState } from "react";
 import classNames from "classnames";
 
@@ -88,7 +87,7 @@ function Footer () {
 function BottomLink ({ dotPrefix = true, href, label }) {
 	return <>
 		{dotPrefix && <span className="has-text-weight-bold px-2" style={{ fontSize: '0.75em' }}>·</span>}
-		<Link to={href}>{label}</Link>
+		<a href={href}>{label}</a>
 	</>;
 }
 
