@@ -74,6 +74,9 @@ async function scaffoldMultiSite(sites, redirects) {
 			slug: ''
 		})));
 
+		// create an empty file to indicate that we're not deploying a root site
+		return writeRootSiteDataFile();
+
 	}), createSitemap(links));
 }
 
