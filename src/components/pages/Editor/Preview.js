@@ -43,9 +43,10 @@ function Preview({ frameRef, framePath = '', hasErrors, ...props }) {
 		<Frame ref={frameRef} data-path={framePath} initialContent={initialContent} mountTarget='#mountTarget' style={{ width: '100%', height: '100%' }}><>
 			{hasErrors && <p className="has-background-danger has-text-centered has-text-white has-text-weight-bold py-2" style={{ position: 'fixed', top: '0', right: '0', left: '0', zIndex: '1000' }}>{t.no_preview_while_invalid}</p>}
 			<CssVariables mainColorName={props.mainColor} />
-			<Page pageContext={props}>
+			<Page pageContext={props} customComponents={customComponents}>
 				<Suspense fallback={<Loader />}>
-					<Theme {...props} />
+					<CustomComponentsSetter />
+					<ThemedPage {...props} />
 				</Suspense>
 			</Page>
 		</></Frame>
