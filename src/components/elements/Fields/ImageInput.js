@@ -16,7 +16,7 @@ import { compoundField, imagePreviewContainer } from '@pages/Editor/index.module
 
 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
-export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true, onChange, required = true }) {
+export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, hasNoAlt, isCompoundField = !hasNoAlt, onChange, required = true }) {
 
 	const t = useFieldLabels();
 
@@ -103,11 +103,11 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 					: <p className='help'>{description}</p>}
 			</div>
 			{hasNoFocus || <button type="button" onClick={setFocus} className='button is-small' style={{ position: 'absolute', ...setFocusButtonStyle }}>{t.set_image_focus}</button>}
-			<div className='field'>
+			{hasNoAlt || <div className='field'>
 				<label htmlFor={`${id}-alt`} className='label is-small'>{t.image_alt}:</label>
 				<input id={`${id}-alt`} className='input' type='text' {...register(`${id}.alt`, { setValueAs: cleanUGT })} />
 				<p className='help'>{t.alt_description}</p>
-			</div>
+			</div>}
 		</div>
 
 		<Modal {...supportedFileTyesModal} render={() => `${t.image_types_supported}: ${acceptedExtnames}`} />
