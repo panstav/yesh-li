@@ -8,6 +8,11 @@ import { ArrowDown, ArrowUp, Close } from "@elements/Icon";
 
 export default function Repeater({ arrayId, singleName, emptyItem, minLength, maxLength, children }) {
 
+	if (!arrayId) throw new Error('Repeater: arrayId is required');
+	if (!singleName) throw new Error(`Repeater (${arrayId}): singleName is required`);
+	if (!emptyItem) throw new Error(`Repeater (${arrayId}): emptyItem is required`);
+	if (!children || typeof children !== 'function') throw new Error(`Repeater: children is required and must (${arrayId}) be a function`);
+
 	const t = useFieldLabels();
 	const { getValues } = useFormContext();
 	const { fields, append, remove, move } = useFieldArray({ name: arrayId });
