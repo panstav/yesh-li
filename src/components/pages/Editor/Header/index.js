@@ -20,7 +20,7 @@ import { logoContainer, versionByLogo, eyeIcon } from './index.module.sass';
 
 export const SafeHeader = () => <Nav className="is-justify-content-center" />;
 
-export default memo(Header);
+export default memo(Header, () => true);
 
 function Header() {
 
