@@ -27,7 +27,7 @@ export const editorProps = {
 export default function Editor ({ pageContext }) {
 	const { forward, backward } = getDirByLang(pageContext.lang, { bothSides: true });
 	return <Auth>
-		<EditorContextHandler extend={{ forward, backward }}>
+		<EditorContextHandler extend={{ dir: { forward, backward } }}>
 			<EditorForm  />
 		</EditorContextHandler>
 	</Auth>;
