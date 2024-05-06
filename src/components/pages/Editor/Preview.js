@@ -34,22 +34,10 @@ function Preview({ frameRef, framePath = '', hasErrors, ...props }) {
 	const [{ Editor: { Preview: t } }] = useI18n();
 	const { lang } = useSiteData();
 
-	const Theme = themesMap[props.theme];
+	const [customComponents, setCustomComponents] = useState();
+	const initialContent = getInitialContent({ lang, theme: props.theme });
 
-	let styles;
-
-	if (isProduction) {
-		const siteAssets = JSON.parse(window.___chunkMapping);
-		styles = `<link rel="stylesheet" href="${siteAssets.app.find((src) => src.includes('.css'))}"><link rel="stylesheet" href="${siteAssets[Object.keys(siteAssets).find((key) => key.includes(props.theme))].find((src) => src.includes('.css'))}">`;
-	} else {
-		styles = Array.from(document.head.children).filter((elem) => ['LINK', 'STYLE'].includes(elem.nodeName)).map((elem) => elem.outerHTML).join('');
-	}
-
-	// set a (except for outbound), button, input, textarea to pointer-events: none
-	// set input, textarea to disabled
-	const interactionBlocker = `<style>* a:not([href^="https://"]):not([href^="tel:"]):not([href^="mailto:"]), * button, * label, * input, * textarea { pointer-events: none !important; }</style><script defer>const observer = new MutationObserver(disableFields);const interval = setInterval(disableFields, 100);function disableFields() {const elems = Array.from(document.querySelectorAll('input, textarea'));if (elems.length) {clearInterval(interval);elems.forEach((elem) => elem.setAttribute('disabled', true));observer.observe(document.querySelector('#modal-root'), { childList: true });}}</script>`;
-
-	const injection = `<!DOCTYPE html><html dir="${getDirByLang(lang)}" lang="${lang}"><head>${interactionBlocker}${styles}</head><body><div id="mountTarget"></div></body></html>`;
+	const ThemedPage = themesMap[`${props.theme}${framePath}`];
 
 	return <div className='iframe-container is-relative' style={{ height: '100%' }}>
 		<Frame ref={frameRef} data-path={framePath} initialContent={initialContent} mountTarget='#mountTarget' style={{ width: '100%', height: '100%' }}><>
@@ -62,18 +50,51 @@ function Preview({ frameRef, framePath = '', hasErrors, ...props }) {
 			</Page>
 		</></Frame>
 	</div>;
+
+	function CustomComponentsSetter () {
+		// this component renders only when ThemedPage is loaded
+		// only then do we have access to the custom components
+		// so we'll set them here to rerender the page with the correct components
+
+		useEffect(() => {
+			const customComponents = ThemedPage?._payload?._result?.default?.customComponents;
+			if (!customComponents) return;
+			setCustomComponents(customComponents);
+		}, [ThemedPage?._payload?._status]);
+
+		return null;
+	}
 }
 
-export default function PreviewGate() {
-	const { getValues, watch, formState: { errors, isValidating } } = useFormContext();
-	watch();
+function getInitialContent({ theme, lang }) {
+
+	const styles = (() => {
+		if (isProduction) {
+			const siteAssets = JSON.parse(window.___chunkMapping);
+			return `<link rel="stylesheet" href="${siteAssets.app.find((src) => src.includes('.css'))}"><link rel="stylesheet" href="${siteAssets[Object.keys(siteAssets).find((key) => key.includes(theme))].find((src) => src.includes('.css'))}">`;
+		} else {
+			return Array.from(document.head.children).filter((elem) => ['LINK', 'STYLE'].includes(elem.nodeName)).map((elem) => elem.outerHTML).join('');
+		}
+	})();
+
+	// set a (except for outbound), button, input, textarea to pointer-events: none, unless they have data-allow-events attribute
+	// set input, textarea to disabled
+	const interactionBlocker = `<style>* a:not([href^="https://"]):not([href^="tel:"]):not([href^="mailto:"]):not([data-allow-events]), * button:not([data-allow-events]), * label:not([data-allow-events]), * input:not([data-allow-events]), * textarea:not([data-allow-events]) { pointer-events: none !important; }</style><script defer>const observer = new MutationObserver(disableFields);const interval = setInterval(disableFields, 100);function disableFields() {const elems = Array.from(document.querySelectorAll('input, textarea'));if (elems.length) {clearInterval(interval);elems.forEach((elem) => elem.setAttribute('disabled', true));observer.observe(document.querySelector('#modal-root'), { childList: true });}}</script>`;
+
+	return `<!DOCTYPE html><html dir="${getDirByLang(lang)}" lang="${lang}"><head>${interactionBlocker}${styles}</head><body><div id="mountTarget"></div></body></html>`;
+}
+
+function useEditorValidation () {
+	const { formState: { errors } } = useFormContext();
 
 	const hasErrors = !!Object.keys(errors).length;
+
 	// if we're certain that props are clean, use them in the next render of Preview
-	if (!hasErrors && !isValidating) validProps = cloneDeep(getValues());
+	// otherwise the use the last clean props
+	const currentValues = useWatch();
+	if (!hasErrors) validProps = cloneDeep(currentValues);
 
 	return hasErrors;
-
 }
 
 function useNavigationWorkaround({ theme }) {
