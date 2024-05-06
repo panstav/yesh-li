@@ -88,7 +88,8 @@ async function scaffoldRootSite(site) {
 	await createRedirects([]);
 
 	// save the site's data to a json file at /data/root.json
-	await fs.promises.writeFile('./data/root.json', JSON.stringify(site));
+
+	await writeRootSiteDataFile(site);
 	await fs.promises.writeFile('./static/manifest.json', JSON.stringify(getManifest(site)));
 }
 
@@ -132,6 +133,10 @@ async function createSitemap(items) {
 
 function createRedirects(redirects) {
 	return fs.promises.writeFile('./data/redirects.json', JSON.stringify(redirects));
+}
+
+function writeRootSiteDataFile(data = []) {
+	return fs.promises.writeFile('./data/root.json', JSON.stringify(data));
 }
 
 function cleanUp() {
