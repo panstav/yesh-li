@@ -27,7 +27,6 @@ function Header() {
 	const [{ Editor: { Header: t, AttachDomain: { DomainAttachedSuccessFullyModal } }}] = useI18n();
 
 	const { siteId } = useContext(AuthContext);
-	const { getValues } = useFormContext();
 
 	const [slugUpdateSuccess, showSlugUpdateSuccess] = useSuccessModal({
 		onHide: () => window.location.reload()
@@ -48,12 +47,6 @@ function Header() {
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleMenu = () => setIsOpen(!isOpen);
 
-	const slug = getValues('slug');
-
-	const leadsTarget = getValues('leadsTarget');
-	const isSpreadSheetAddress = leadsTarget.type === 'spreadsheet';
-	const spreadSheetAddress = `https://docs.google.com/spreadsheets/d/${leadsTarget.address }`;
-
 	const burgerClasses = classNames('navbar-burger has-text-white', isOpen && 'is-active');
 	const menuClasses = classNames('navbar-menu has-background-primary', isOpen && 'is-active');
 
@@ -61,9 +54,7 @@ function Header() {
 
 		<Nav logoClassName="is-clickable" burgerClasses={burgerClasses} burgerOnClick={toggleMenu}>
 			<div className={menuClasses}>
-				{isSpreadSheetAddress && <div className="navbar-start is-flex-grow-1">
-					<MenuItem label={t.my_leads_sheet} path={spreadSheetAddress} Icon={() => <Sheet className="w-1-touch" />} />
-				</div>}
+				<GoToSpreadsheet />
 				<div className="navbar-end">
 					<MenuItems {...{
 						showSlugModal, showDomainModal
@@ -74,7 +65,7 @@ function Header() {
 
 		<Modal {...slugModal} render={SlugChoice} />
 
-		<Modal {...domainModal} render={AttachDomain} onSuccess={onAttachDomainSuccess} slug={slug} />
+		<Modal {...domainModal} render={AttachDomain} onSuccess={onAttachDomainSuccess} />
 		<Modal {...attachDomainSuccessModal} render={DomainAttachedSuccessFullyModal} />
 
 		<Modal {...slugUpdateSuccess} render={() => t.slug_updated_successfully} />
@@ -105,6 +96,22 @@ function Nav ({ className: classes, logoClassName, burgerClasses, burgerOnClick,
 		</div>
 		{children}
 	</nav>;
+}
+
+function GoToSpreadsheet () {
+
+	const [{ Editor: { Header: t } }] = useI18n();
+
+	const leadsTarget = useFormContext().getValues('leadsTarget');
+
+	const isSpreadSheetAddress = leadsTarget.type === 'spreadsheet';
+	const spreadSheetAddress = `https://docs.google.com/spreadsheets/d/${leadsTarget.address}`;
+
+	if (!isSpreadSheetAddress) return null;
+
+	return <div className="navbar-start is-flex-grow-1">
+		<MenuItem label={t.my_leads_sheet} path={spreadSheetAddress} Icon={() => <Sheet className="w-1-touch" />} />
+	</div>;
 }
 
 function LogoLinkWrapper(props) {
