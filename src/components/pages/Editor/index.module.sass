@@ -15,9 +15,10 @@ $primary-very-light: rgba(0, 149, 130, 0.1)
 		min-height: 10rem
 		overflow-y: auto
 		max-height: 100%
-		padding: $size-7 $size-8 0 $size-8
+		padding: $size-7 $size-8 0
 		+desktop
-			padding-inline-start: $size-6
+			// in reverse because of the scrollbar reversal
+			padding-inline-start: $size-9
 
 	details.details
 		+has-mid-radius
@@ -27,6 +28,13 @@ $primary-very-light: rgba(0, 149, 130, 0.1)
 		border-color: #a5d7cf
 	input[class*="textarea"], [class*="ql-editor"]
 		min-height: 8em
+		max-height: 60vh
+
+	[class*="ql-toolbar"]
+		[class*="ql-formats"]
+			display: inline-flex
+		[class*="ql-picker-label"]
+			font-size: 0.8rem
 
 	.compound-field
 		+has-radius
@@ -119,7 +127,10 @@ details.details
 		color: white
 
 .previewContainer
-	padding: $size-7 $size-8 $size-7 $size-7
+	padding-top: $size-7
+	padding-bottom: $size-7
+	padding-inline-start: $size-8
+	padding-inline-end: $size-9
 	width: 100%
 	height: $windowHeight
 	+desktop
