@@ -18,8 +18,6 @@ const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, isCompoundField = true, onChange, required = true }) {
 
-	if (!sizes) throw new Error('ImageInput component requires a "sizes" prop');
-
 	const t = useFieldLabels();
 
 	const { register, setValue, getValues, getFieldState, formState } = useFormContext();
@@ -54,7 +52,9 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 		// we're done with validation, let's upload the image
 		setLoading(true);
 
-		const { base64: imageBase64 } = await limitImageSize(file, 1200);
+		const { base64: imageBase64, width, height } = await limitImageSize(file, 1200);
+
+		if (!sizes) sizes = [Math.max(width, height)];
 
 		const siteSlug = getValues('slug');
 		xhr.processImage({ imageBase64, fileName: file.name, sizes, siteSlug }).then(({ srcSet }) => {
