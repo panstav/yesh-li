@@ -12,14 +12,16 @@ import { AuthContext } from './Auth';
 import TopBanner from './TopBanner';
 
 import { fieldsMap } from '@themes';
+import { EditorContext } from '@pages/Editor';
 
 import { innerFieldsContainer, saveButtonContainer } from './index.module.sass';
 
 export default function ThemeFields() {
+
 	const t = useFieldLabels();
 	const { siteId } = useContext(AuthContext);
-	const { watch, handleSubmit, getValues, formState: { errors } } = useFormContext();
-	watch();
+	const { dir: { forward, backward } } = useContext(EditorContext);
+	const { handleSubmit, getValues, formState: { errors } } = useFormContext();
 
 	const [isLoading, setLoading] = useState(false);
 
@@ -48,9 +50,11 @@ export default function ThemeFields() {
 
 	return <>
 		<Suspense fallback={<Loader />}>
-			<div className={innerFieldsContainer}>
-				<TopBanner className="mb-3" />
-				<FieldGroup />
+			<div className={innerFieldsContainer} style={{ direction: backward }}>
+				<div style={{ direction: forward }}>
+					<TopBanner className="mb-3" />
+					<FieldGroup />
+				</div>
 			</div>
 			<div className={saveButtonContainer}>
 				<button onClick={submitForm} disabled={hasErrors || isLoading} title={hasErrors ? t.errors_are_red : ''} className={submitClassName}>

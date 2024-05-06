@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import xhr from '@services/xhr';
 import localDb from '@services/localDb';
 import snatchParameter from '@lib/snatch-parameter';
+import getDirByLang from '@lib/get-dir-by-lang';
 
 import useI18n from '@hooks/use-i18n';
 
@@ -23,9 +24,10 @@ export const editorProps = {
 	isInternal: true
 };
 
-export default function Editor () {
+export default function Editor ({ pageContext }) {
+	const { forward, backward } = getDirByLang(pageContext.lang, { bothSides: true });
 	return <Auth>
-		<EditorContextHandler>
+		<EditorContextHandler extend={{ forward, backward }}>
 			<EditorForm  />
 		</EditorContextHandler>
 	</Auth>;
