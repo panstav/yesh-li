@@ -19,7 +19,6 @@ import { footerGlow } from './index.module.sass';
 import './index.sass';
 
 export const AuthContext = createContext();
-
 export const copy = {
 	freeAndCommitmentFree: 'חינם וללא התחייבות'
 };

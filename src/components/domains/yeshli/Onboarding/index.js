@@ -11,7 +11,6 @@ import { Checkmark } from "@elements/Icon";
 import xhr from "@services/xhr";
 import localDb from "@services/localDb";
 import { onboardingStepsMap, defaultTheme } from "@themes";
-
 import { wrapPage } from "@domains/yeshli";
 
 import './index.sass';
