@@ -42,12 +42,11 @@ function EditorForm() {
 		if (snatchParameter('newPage')) showNewPageModal();
 	}, []);
 
-	if (!Object.keys(form.getValues()).length) return <Loader />;
+	if (!form.formState.defaultValues) return <Loader />;
 
 	// if the site has moved out to it's own domain, redirect to its editor page
 	// treat the redirect property as a domain
-	const redirect = form.getValues().redirect;
-	if (redirect) return wrongDomain();
+	if (form.formState.defaultValues.redirect) return wrongDomain(form.formState.defaultValues.redirect);
 
 	const fieldsContainerClassName = classNames('is-flex is-flex-direction-column is-justify-content-space-between', fieldsContainer);
 
@@ -73,7 +72,7 @@ function EditorForm() {
 
 	</>;
 
-	function wrongDomain () {
+	function wrongDomain(redirect) {
 		// we should be loading the editor from the site's domain
 		// lets delete the localstorage and redirect to the site's editor
 		localDb.clear();
