@@ -88,10 +88,13 @@ export function HeadFor(arg) {
 			args = arg;
 		}
 
-		const { lang = 'he', preload, children, ...props } = args;
+		const { lang = 'he', preload, fontSize = '18px', textColor, children, ...props } = args;
+
+		const baseStyle = { fontSize };
+		if (textColor) baseStyle.color = textColor;
 
 		return <>
-			<html lang={lang} dir={getDirByLang(lang)} />
+			<html lang={lang} dir={getDirByLang(lang)} style={baseStyle} />
 
 			{preload && preload.map((preload) => <link rel="preload" key={preload.href} {...preload} />)}
 
