@@ -16,9 +16,8 @@ export const domainProps = {
 };
 
 export function wrapTitle(title, { flip } = {}) {
-	const domainName = 'יש.לי';
-	const first = flip ? domainName : title;
-	const second = flip ? title : domainName;
+	const first = flip ? domainData.title : title;
+	const second = flip ? title : domainData.title;
 	return { title: `${first} • ${second}` };
 }
 
