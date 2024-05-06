@@ -38,6 +38,27 @@ summary
 			border-start-end-radius: 2px
 			border-end-end-radius: 2px
 
+.navbar
+	.navbar-burger, .navbar-end
+		margin-right: unset
+		margin-inline-start: auto
+	.navbar-link:not(.is-arrowless)
+		padding-left: 0.75rem
+		padding-inline-end: 2.5em
+		&:after
+			left: unset
+			inset-inline-end: 1.3rem
+	.navbar-dropdown
+		right: unset
+		.navbar-item
+			padding-left: 1rem
+			padding-inline-end: 3rem
+
+.buttons.has-addons
+	.button:not(:last-child)
+		margin-left: unset
+		margin-inline-end: -1px
+
 .reset-anchors
 	@include reset-anchors
 
