@@ -73,9 +73,9 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 	const acceptedFileSuffixes = allowedTypes.join(',').replaceAll('image/', '.');
 	const acceptedExtnames = allowedTypes.join(', ').replaceAll('image/', '.');
 
-	const compoundFieldClassName = classNames(isCompoundField && compoundField, 'is-relative');
+	const compoundFieldClassName = classNames(isCompoundField && compoundField, 'is-relative field');
 	const imagePreviewContainerClassName = classNames(imagePreviewContainer, 'is-relative');
-	const setFocusButtonStyle = { top: isCompoundField ? '0.35rem' : 0, insetInlineEnd: isCompoundField ? '0.5rem' : 0 };
+	const setFocusButtonStyle = { top: isCompoundField ? '0.35rem' : '-0.35rem', insetInlineEnd: isCompoundField ? '0.5rem' : 0 };
 	const uploadButtonStyle = { backgroundColor: imgProps.srcSet ? 'transparent' : 'white', visibility: isLoading ? 'hidden' : 'visible' };
 
 	return <>
