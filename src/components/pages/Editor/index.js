@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 
@@ -18,13 +18,16 @@ import Auth, { AuthContext } from './Auth';
 
 import { fieldsContainer, previewContainer } from './index.module.sass';
 
+export const EditorContext = createContext();
 export const editorProps = {
 	isInternal: true
 };
 
 export default function Editor () {
 	return <Auth>
-		<EditorForm />
+		<EditorContextHandler>
+			<EditorForm  />
+		</EditorContextHandler>
 	</Auth>;
 }
 
@@ -79,5 +82,33 @@ function EditorForm() {
 		// if user comes back here he'll be redirected again from the Login domain
 		return window.location.replace(`https://${redirect}/editor`);
 	}
+
+}
+
+export function PreviewLink({ href, children }) {
+
+	const goTo = useContext(EditorContext).navigate;
+
+	return <a onClick={navigate}>{children}</a>;
+
+	function navigate(event) {
+		event.preventDefault();
+		goTo(href);
+	}
+
+}
+
+function EditorContextHandler({ extend, children }) {
+	const [navigate, setNavigate] = useState();
+
+	const registerNavigation = useCallback((navigationFn) => {
+		if (!navigate) return setNavigate(() => navigationFn);
+	}, [navigate]);
+
+	const ctx = Object.assign({ navigate, registerNavigation }, extend);
+
+	return <EditorContext.Provider value={ctx}>
+		{children}
+	</EditorContext.Provider>;
 
 }

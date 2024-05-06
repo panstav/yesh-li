@@ -1,6 +1,6 @@
-import { Suspense } from "react";
+import { Suspense, useCallback, useContext, useEffect, useRef, useState } from "react";
 import Frame from 'react-frame-component';
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import cloneDeep from "lodash.clonedeep";
 
 import useI18n from "@hooks/use-i18n";
@@ -11,13 +11,25 @@ import { CssVariables } from "@config/Meta";
 import Loader from "@elements/Loader";
 
 import { themesMap } from "@themes";
+import { EditorContext } from "@pages/Editor";
 import getDirByLang from "@lib/get-dir-by-lang";
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 let validProps = {};
 
-function Preview(props) {
+export default function PreviewWrapper() {
+
+	const hasErrors = useEditorValidation();
+
+	const { framePath, frameRef, renderAllowed } = useNavigationWorkaround({ theme: validProps.theme });
+
+	if (!renderAllowed) return null;
+
+	return <Preview key={framePath} {...validProps} {...{ frameRef, framePath, hasErrors }} />;
+}
+
+function Preview({ frameRef, framePath = '', hasErrors, ...props }) {
 
 	const [{ Editor: { Preview: t } }] = useI18n();
 	const { lang } = useSiteData();
@@ -40,8 +52,8 @@ function Preview(props) {
 	const injection = `<!DOCTYPE html><html dir="${getDirByLang(lang)}" lang="${lang}"><head>${interactionBlocker}${styles}</head><body><div id="mountTarget"></div></body></html>`;
 
 	return <div className='iframe-container is-relative' style={{ height: '100%' }}>
-		<Frame initialContent={injection} mountTarget='#mountTarget' style={{ width: '100%', height: '100%' }}><>
-			{props.hasErrors && <p className="has-background-danger has-text-centered has-text-white has-text-weight-bold py-2" style={{ position: 'fixed', top: '0', right: '0', left: '0', zIndex: '1000' }}>{t.no_preview_while_invalid}</p>}
+		<Frame ref={frameRef} data-path={framePath} initialContent={initialContent} mountTarget='#mountTarget' style={{ width: '100%', height: '100%' }}><>
+			{hasErrors && <p className="has-background-danger has-text-centered has-text-white has-text-weight-bold py-2" style={{ position: 'fixed', top: '0', right: '0', left: '0', zIndex: '1000' }}>{t.no_preview_while_invalid}</p>}
 			<CssVariables mainColorName={props.mainColor} />
 			<Page pageContext={props}>
 				<Suspense fallback={<Loader />}>
@@ -60,6 +72,62 @@ export default function PreviewGate() {
 	// if we're certain that props are clean, use them in the next render of Preview
 	if (!hasErrors && !isValidating) validProps = cloneDeep(getValues());
 
-	// otherwise the use the last clean props
-	return <Preview {...validProps} hasErrors={hasErrors} />;
+	return hasErrors;
+
+}
+
+function useNavigationWorkaround({ theme }) {
+
+	const { registerNavigation } = useContext(EditorContext);
+
+	const [renderAllowed, setRenderAllowed] = useState(true);
+	const [framePath, setFramePath] = useState();
+
+	const frameRef = useRef();
+
+	const navigate = useCallback((pathname) => {
+		// fix undefined pathname bug due to race condition
+		if (!pathname) return;
+
+		const mapKey = pathname === '/' ? '' : pathname;
+		const comp = themesMap[`${theme}${mapKey}`];
+
+		const currentPath = frameRef.current.dataset.path;
+
+		// only navigate if
+		if (
+			// pathname starts with a slash - it's a valid path
+			!pathname.startsWith('/')
+			// the component exists
+			|| !comp
+			// next path is different from the current path
+			|| pathname === currentPath
+			// ^- next and current path aren't the homepage
+			|| mapKey === currentPath
+		) return;
+
+		setFramePath(mapKey);
+		setRenderAllowed(false);
+	}, []);
+	useEffect(() => registerNavigation(navigate), []);
+
+	useEffect(() => {
+		if (!renderAllowed) setTimeout(() => setRenderAllowed(true), 0);
+	}, [renderAllowed]);
+
+	useEffect(() => {
+		let listener;
+
+		// set on load event
+		if (frameRef.current) {
+			listener = frameRef.current.addEventListener('load', () => {
+				navigate(frameRef.current?.contentWindow?.location?.pathname);
+			});
+		}
+
+		return () => frameRef?.current?.removeEventListener('load', listener);
+	}, [frameRef.current, framePath]);
+
+	return { framePath, frameRef, renderAllowed, navigate };
+
 }
