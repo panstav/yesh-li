@@ -18,18 +18,18 @@ const shortDomain = new URL(fullDomain).hostname;
 	if (!process.env.NETLIFY) await cleanUp();
 
 	// get sites from api
-	const { sites, redirects } = await getUserSites();
+	const { sites, redirects } = await fetchUserSites();
 
 	// check whether we're on a dedicated domain or a multi-tenant app
-	if (sites.length === 1 && sites[0].slug === '') return scaffoldRootSite(sites);
+	if (sites.length === 1 && sites[0].slug === '') return createRootSite(sites);
 
 	// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 	// iterate through the sites array
-	await scaffoldMultiSite(sites, redirects);
+	await createMultiSite(sites, redirects);
 
 })();
 
-async function getUserSites() {
+async function fetchUserSites() {
 
 	// got doesn't like to be `require`d
 	const got = await getGot();
@@ -37,7 +37,7 @@ async function getUserSites() {
 	return got.get(`${process.env.GATSBY_API_URL}/sites?domain=${shortDomain}`).json();
 }
 
-async function scaffoldMultiSite(sites, redirects) {
+async function createMultiSite(sites, redirects) {
 
 	const multiName = shortDomain.replace('.', '');
 
@@ -52,7 +52,7 @@ async function scaffoldMultiSite(sites, redirects) {
 		.concat(sites.map(site => ({ url: `/${site.slug}`, changefreq: 'daily', priority: 1 })));
 
 	// create a redirects file for all the sites that used to be on this multi-tenant site and have since moved to their own domains
-	await createRedirects(redirects);
+	await writeRedirectsFile(redirects);
 
 	return sites.reduce((accu, site) => accu.then(async () => {
 
@@ -77,18 +77,18 @@ async function scaffoldMultiSite(sites, redirects) {
 		// create an empty file to indicate that we're not deploying a root site
 		return writeRootSiteDataFile();
 
-	}), createSitemap(links));
+	}), writeSitemapFile(links));
 }
 
-async function scaffoldRootSite(site) {
+async function createRootSite(site) {
 	// instance is running on a dedicated domain, the root page is the only page
 
-	await createSitemap([
+	await writeSitemapFile([
 		{ url: '/', changefreq: 'daily', priority: 1 }
 	]);
 
 	// create an empty redirects file
-	await createRedirects([]);
+	await writeRedirectsFile([]);
 
 	// save the site's data to a json file at /data/root.json
 
@@ -127,14 +127,14 @@ async function getGot() {
 	return (await import('got')).got;
 }
 
-async function createSitemap(items) {
+async function writeSitemapFile(items) {
 	const stream = new SitemapStream({ hostname: fullDomain });
 	const sitemap = await streamToPromise(Readable.from(items).pipe(stream)).then((data) => data.toString());
 
 	return fs.promises.writeFile('./static/sitemap.xml', sitemap);
 }
 
-function createRedirects(redirects) {
+function writeRedirectsFile(redirects) {
 	return fs.promises.writeFile('./data/redirects.json', JSON.stringify(redirects));
 }
 
