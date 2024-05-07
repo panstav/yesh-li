@@ -9,7 +9,7 @@ import RenderChildren from "@wrappers/RenderChildren";
 
 import { compoundField, repeatedButton, addButton } from "@pages/Editor/index.module.sass";
 
-export default function Repeater({ arrayId, singleName, emptyItem, collapseItems, minLength, maxLength, wrapper: Wrapper, children }) {
+export default function Repeater({ arrayId, singleName, emptyItem, collapseItems, addButtonOnTop, minLength, maxLength, wrapper: Wrapper, children }) {
 
 	if (!arrayId) throw new Error('Repeater: arrayId is required');
 	if (!singleName) throw new Error(`Repeater (${arrayId}): singleName is required`);
@@ -32,9 +32,10 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 	const cantAdd = maxLength && fields.length == maxLength ? t.maxItemsRepeater(maxLength) : '';
 
 	const repeatedButtonClassName = classNames(repeatedButton, 'button is-small has-text-weight-bold');
-	const addButtonClassName = classNames(addButton, 'button is-fullwidth has-text-weight-bold');
+	const addButtonClassName = classNames(addButton, 'button is-fullwidth has-text-weight-bold', addButtonOnTop && fields.length ? 'mb-3' : '');
 
 	return <>
+		{addButtonOnTop && <button type="button" onClick={addToBottom} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
 		{fields.map((field, index) => {
 
 			let itemTitle = `${singleName} #${index + 1}`;
@@ -81,7 +82,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 				</div>
 			</Wrapper>;
 		})}
-		<button type="button" onClick={addToBottom} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>
+		{!addButtonOnTop && <button type="button" onClick={addToBottom} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
 	</>;
 
 }
