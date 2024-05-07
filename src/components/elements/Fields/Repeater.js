@@ -3,12 +3,13 @@ import classNames from "classnames";
 
 import { useFieldLabels } from "@hooks/use-i18n";
 
-import RenderChildren from "@wrappers/RenderChildren";
+import Details from "@elements/Details";
 import { ArrowDown, ArrowUp, Close } from "@elements/Icon";
+import RenderChildren from "@wrappers/RenderChildren";
 
 import { compoundField, repeatedButton, addButton } from "@pages/Editor/index.module.sass";
 
-export default function Repeater({ arrayId, singleName, titleFieldId, emptyItem, hideItemTitle, minLength, maxLength, wrapper: Wrapper = RenderChildren, children }) {
+export default function Repeater({ arrayId, singleName, emptyItem, collapseItems, minLength, maxLength, wrapper: Wrapper, children }) {
 
 	if (!arrayId) throw new Error('Repeater: arrayId is required');
 	if (!singleName) throw new Error(`Repeater (${arrayId}): singleName is required`);
@@ -35,48 +36,49 @@ export default function Repeater({ arrayId, singleName, titleFieldId, emptyItem,
 	return <>
 		{fields.map((field, index) => {
 
-			const itemId = `${arrayId}.[${index}]`;
-
-			let itemTitle;
+			let itemTitle = `${singleName} #${index + 1}`;
 			// prefer fieldTitle if titleId is given and is not empty
-			if (!hideItemTitle) itemTitle = (titleFieldId ? getValues(`${arrayId}.[${index}].${titleFieldId}`) : '') || `${singleName} #${index + 1}`;
+			if (collapseItems) itemTitle = getValues(`${arrayId}.[${index}].${collapseItems}`);
 
-			return <Wrapper itemId={itemId} key={field.id}>
+			const fieldHeaderClassName = classNames('is-flex is-align-items-center ', collapseItems ? 'is-justify-content-end' : 'is-justify-content-space-between mb-4');
+
+			return <Wrapper title={itemTitle} key={field.id}>
 				<div className={compoundField}>
 
-					<div className="is-flex is-justify-content-space-between is-align-items-center mb-4">
-						{hideItemTitle ? <span /> : <h3 className="is-size-5 m-0">{itemTitle}</h3>}
+					<div className={fieldHeaderClassName}>
+						{!collapseItems && <h3 className="is-size-5 m-0">{itemTitle}</h3>}
 						<div className="buttons has-addons">
 
-						{index !== 0 && <button
-							type="button" className={repeatedButtonClassName}
-							onClick={() => move(index, index - 1)}
-							title={t.move_up} data-index={index}
-						>
-							<ArrowUp style={{ width: '0.75rem' }} />
-						</button>}
+							{index !== 0 && <button
+								type="button" className={repeatedButtonClassName}
+								onClick={() => move(index, index - 1)}
+								title={t.move_up} data-index={index}
+							>
+								<ArrowUp style={{ width: '0.75rem' }} />
+							</button>}
 
-						{index !== fields.length - 1 && <button
-							type="button" className={repeatedButtonClassName}
-							onClick={() => move(index, index + 1)}
-							title={t.move_down}
-						>
-							<ArrowDown style={{ width: '0.75rem' }} />
-						</button>}
-						<button
-							type="button" className={repeatedButtonClassName}
-							disabled={!!cantRemove} onClick={() => remove(index)}
-							title={cantRemove || t.remove} data-index={index}
-						>
-							<Close />
-						</button>
+							{index !== fields.length - 1 && <button
+								type="button" className={repeatedButtonClassName}
+								onClick={() => move(index, index + 1)}
+								title={t.move_down}
+							>
+								<ArrowDown style={{ width: '0.75rem' }} />
+							</button>}
+
+							<button
+								type="button" className={repeatedButtonClassName}
+								disabled={!!cantRemove} onClick={() => remove(index)}
+								title={cantRemove || t.remove} data-index={index}
+							>
+								<Close />
+							</button>
+
+						</div>
 					</div>
 
-					{children(itemId)}
+					{children(`${arrayId}.[${index}]`)}
 				</div>
-
-				{children(`${arrayId}.[${index}]`)}
-			</div>;
+			</Wrapper>;
 		})}
 		<button type="button" onClick={addToBottom} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>
 	</>;
