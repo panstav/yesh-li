@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import { details, innerContainer } from "@pages/Editor/index.module.sass";
 
-export default function Details({ title, children }) {
+export default function Details({ title, detailsRef, children }) {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleDetails = (event) => {
@@ -16,7 +16,7 @@ export default function Details({ title, children }) {
 
 	const detailsClassName = classNames(details, "details");
 
-	return <details className={detailsClassName} onClick={preventDefaultEvent} {...isOpen ? { open: true } : {}}>
+	return <details ref={detailsRef} className={detailsClassName} onClick={preventDefaultEvent} {...isOpen ? { open: true } : {}}>
 		<summary onClick={toggleDetails}>
 			<Title />
 		</summary>

@@ -87,7 +87,7 @@ function EditorForm() {
 
 }
 
-export function PreviewLink({ href, children }) {
+export function PreviewLink({ href, onClick, children }) {
 
 	const goTo = useContext(EditorContext).navigate;
 
@@ -95,6 +95,7 @@ export function PreviewLink({ href, children }) {
 
 	function navigate(event) {
 		event.preventDefault();
+		onClick(event);
 		goTo(href);
 	}
 
