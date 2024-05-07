@@ -14,6 +14,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 	if (!arrayId) throw new Error('Repeater: arrayId is required');
 	if (!singleName) throw new Error(`Repeater (${arrayId}): singleName is required`);
 	if (!emptyItem) throw new Error(`Repeater (${arrayId}): emptyItem is required`);
+	if (collapseItems && !emptyItem[collapseItems]) throw new Error(`Repeater (${arrayId}): emptyItem must have a non-falsy property named ${collapseItems}`);
 	if (!children || typeof children !== 'function') throw new Error(`Repeater: children is required and must (${arrayId}) be a function`);
 
 	if (!Wrapper) Wrapper = collapseItems ? CollapsedRepeaterItem : RenderChildren;

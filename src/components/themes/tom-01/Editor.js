@@ -58,7 +58,7 @@ export default function Tom_01 () {
 				singleName="Film"
 				minLength={1}
 				emptyItem={{
-					title: '',
+					title: 'New Film',
 					length: '15',
 					description: '',
 					credits: [],
@@ -96,7 +96,7 @@ export default function Tom_01 () {
 						minLength={1}
 						singleName={'Credit'}
 						emptyItem={{
-							creditTitle: '',
+							creditTitle: 'New Role',
 							creditName: ''
 						}}>
 						{(creditId) => <>
