@@ -6,19 +6,20 @@ $primary-very-light: rgba(0, 149, 130, 0.1)
 .fieldsContainer
 	color: #4a4a4a
 
-	+desktop
-		min-width: min(40%, 27rem)
-		width: min-content
-		height: $windowHeight
-
-	.innerFieldsContainer
-		min-height: 10rem
-		overflow-y: auto
-		max-height: 100%
-		padding: $size-7 $size-8 0
+	&:has(.innerFieldsContainer)
 		+desktop
-			// in reverse because of the scrollbar reversal
-			padding-inline-start: $size-9
+			min-width: min(40%, 27rem)
+			width: min-content
+			height: $windowHeight
+
+		.innerFieldsContainer
+			min-height: 10rem
+			overflow-y: auto
+			max-height: 100%
+			padding: $size-7 $size-8 0
+			+desktop
+				// in reverse because of the scrollbar reversal
+				padding-inline-start: $size-9
 
 	details.details
 		+has-mid-radius
