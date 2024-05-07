@@ -219,13 +219,12 @@ function MenuItem({ Icon, label, path, onClick, ...props }) {
 		Wrapper = 'div';
 		direction = { onClick };
 	} else {
+		direction = { href: path };
 		// if path is outbound, use the component OutboundLink, otherwise use Link
 		if (!path.includes(window.location.host) && !path.startsWith('/')) {
 			Wrapper = OutboundLink;
-			direction = { href: path };
 		} else {
 			Wrapper = 'a';
-			direction = { to: path };
 		}
 	}
 
