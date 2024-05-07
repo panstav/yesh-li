@@ -4,7 +4,7 @@ import { useFormContext } from "react-hook-form";
 
 import Section from "@wrappers/Section";
 
-import { PageContext, onClickMarkInterest } from ".";
+import { PageContext, onClickMarkInterest } from "./Theme";
 import Socials from "./Socials";
 import FlexImage from "./FlexImage";
 

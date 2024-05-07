@@ -14,11 +14,15 @@ exports.onCreateWebpackConfig = ({ actions }) => {
 
 exports.createPages = async ({ actions }) => {
 
+	const themeCustomPages = [];
+
 	// at the package root folder, there's a data folder and inside it, if there's a root.json file, we'll use it as the root page
 	const rootSiteFilePath = `${__dirname}/data/root.json`;
+	const rootSiteData = safelyReadFile(rootSiteFilePath)?.[0];
 
-	if (fs.existsSync(rootSiteFilePath)) {
+	if (rootSiteData) {
 		createRootSite();
+
 	} else {
 		createMultiSite();
 		createLegacySites();
@@ -55,24 +59,7 @@ exports.createPages = async ({ actions }) => {
 			fs.readdirSync(themeDirectory).forEach((siteName) => {
 				const siteData = JSON.parse(fs.readFileSync(`${themeDirectory}/${siteName}`));
 
-				// do not throw on creating pages, just log the error
-				try {
-
-					// we might have a got data about sites that don't have a theme yet, that's a dev/prod issue, ignore these sites
-					const componentPath = `${__dirname}/src/components/themes/${siteData.theme}/index.js`;
-					if (!fs.existsSync(componentPath)) return;
-
-					// create the page for this site using the theme's component and the site's data as it's pageContext prop
-					actions.createPage({
-						path: `/${siteData.slug}`,
-						component: componentPath,
-						context: siteData
-					});
-
-				} catch (err) {
-					console.error(`Error creating page for ${siteData.slug} using theme ${siteData.theme}`, err);
-				}
-
+				createThemePages(siteData);
 			});
 		});
 
@@ -107,12 +94,10 @@ exports.createPages = async ({ actions }) => {
 	function createRootSite () {
 		// instance is running on a dedicated domain
 
-		// get homepage
-		const siteData = JSON.parse(fs.readFileSync(rootSiteFilePath))[0];
 		const themesMap = JSON.parse(fs.readFileSync(`${__dirname}/src/components/themes/map.json`));
 
 		// get the editor with which he created the site and prep it for generation
-		const parentDomain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain.replace('.', '');
+		const parentDomain = themesMap.find(({ themeName }) => themeName === rootSiteData.theme).parentDomain.replace('.', '');
 		const domainData = JSON.parse(fs.readFileSync(`./src/components/domains/${parentDomain}/index.json`));
 
 		// create the editor page
@@ -121,17 +106,76 @@ exports.createPages = async ({ actions }) => {
 			component: `${__dirname}/src/components/domains/${parentDomain}/Editor.js`,
 			context: {
 				...domainData,
-				...siteData,
+				...rootSiteData,
 				parentDomain
 			}
 		});
 
-		// create the root page
-		actions.createPage({
-			path: '/',
-			component: `${__dirname}/src/components/themes/${siteData.theme}/index.js`,
-			context: { parentDomain, ...siteData }
+		createThemePages(rootSiteData, { parentDomain, ...rootSiteData });
+
+		if (themeCustomPages.length) {
+			fs.writeFileSync(rootSiteFilePath, JSON.stringify([{ ...rootSiteData, customPages: themeCustomPages }]));
+		}
+	}
+
+	function createThemePages(siteData, context = siteData) {
+
+		const { theme, slug } = siteData;
+		const innerPagesPath = `${__dirname}/src/components/themes/${theme}/Theme/pages`;
+
+		if (!fs.existsSync(innerPagesPath)) {
+			// the theme doesn't have a pages directory, we'll treat it as a single page site
+			return createThemePage({
+				theme,
+				context,
+				componentPath: `index.js`,
+				path: `/${slug}`
+			});
+		}
+
+		// create a page for each file in the pages directory
+		fs.readdirSync(innerPagesPath).forEach((fileName) => {
+			if (!fileName.endsWith('.js')) return;
+
+			const pathPrefix = slug ? `/${slug}/` : '/';
+			const path = fileName == 'index.js' ? pathPrefix : `${pathPrefix}${fileName.split('.')[0]}`;
+			createThemePage({
+				theme,
+				path,
+				context,
+				key: fileName.split('.')[0],
+				componentPath: `pages/${fileName}`
+			});
 		});
+	}
+
+	function createThemePage({ key, theme, componentPath, path, context }) {
+		// do not throw on creating pages, just log the error
+
+		try {
+
+			// we might have a got data about sites that don't have a theme yet, that's a dev/prod issue, ignore these sites
+			const componentFullPath = `${__dirname}/src/components/themes/${theme}/Theme/${componentPath}`;
+			if (!fs.existsSync(componentFullPath)) return;
+
+			// create the page for this site using the theme's component and the site's data as it's pageContext prop
+			actions.createPage({
+				path,
+				context,
+				component: componentFullPath,
+			});
+
+			// add pages to a map that will be used by Editor->Preview to navigate between pages
+			// homepage is already taken care of so ignore it
+			if (key && path !== '/') themeCustomPages.push({
+				key,
+				theme,
+				path: componentPath
+			});
+
+		} catch (err) {
+			console.error(`Error creating page for ${path} using theme ${theme}`, err);
+		}
 	}
 
 	function createLegacySites () {
@@ -161,3 +205,11 @@ exports.onCreateWebpackConfig = ({ getConfig, actions }) => {
 		if (miniCssExtractPlugin) miniCssExtractPlugin.options.ignoreOrder = true;
 	}
 };
+
+function safelyReadFile (path) {
+	try {
+		return JSON.parse(fs.readFileSync(path));
+	} catch (err) {
+		return null;
+	}
+}

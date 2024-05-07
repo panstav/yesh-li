@@ -1,37 +1,14 @@
-import classNames from "classnames";
+import { HeadFor } from "@config/Meta";
 
-import { useSiteContent } from "@hooks/use-site-data";
+import parseSrcSet from "@lib/parse-srcset";
 
-import Media from "./Media";
-import Details from "./Details";
+export { default } from "./Theme";
 
-import { container } from "./index.module.sass";
-
-export default function Alon_1() {
-	const content = useSiteContent();
-
-	if (content.links) {
-		Object.entries(content.links).forEach(([platform, address]) => {
-			if (!address) delete content.links[platform];
-		});
-	}
-
-	if (content.video?.url) {
-		const videoId = (new URL(content.video.url)).searchParams.get('v');
-		content.video.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&cc_lang_pref=he&hl=he&rel=0`;
-	}
-
-	if (content.sections) {
-		content.sections.forEach((section) => {
-			// add a random id to each section to be used as a key
-			section.id = Math.random().toString(36).substring(2, 9);
-		});
-	}
-
-	const containerClassName = classNames(container, "is-flex-direction-row-reverse");
-
-	return <div className={containerClassName}>
-		<Media {...content.featuredImage} />
-		<Details />
-	</div>;
-}
+export const Head = HeadFor(({ pageContext: { content: { description, featuredImage } } }) => {
+	const srcs = parseSrcSet(featuredImage.srcSet);
+	return {
+		preload: [{ href: srcs[0], as: 'image' }, { href: srcs[1], as: 'image' }],
+		description,
+		featuredImage: srcs[srcs.length - 1]
+	};
+});

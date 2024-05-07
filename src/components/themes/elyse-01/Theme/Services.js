@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import Section from "@wrappers/Section";
 
-import { PageContext, onClickMarkInterest } from ".";
+import { PageContext, onClickMarkInterest } from "./Theme";
 import FlexImage from "./FlexImage";
 import { serviceMediaSide } from './theme.module.sass';
 
