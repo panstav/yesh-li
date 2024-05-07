@@ -10,5 +10,9 @@ export default {
 	slug: /^[a-zA-Z0-9]+[a-zA-Z-0-9]+[a-zA-Z0-9]+$/,
 
 	firstDigit: /[0-9]{1}/,
-	first4Digits: /[0-9]{4}/
+	first4Digits: /[0-9]{4}/,
+
+	startsWithVowel: /^[aeiou]/i,
+
+	vimeoOrYoutubeVideoUrl: /^(https:\/\/(www\.)?(vimeo\.com\/|youtube\.com\/watch\?v=)\w+\/?)$/
 };

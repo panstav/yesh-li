@@ -1,4 +1,4 @@
-import { wrapI18n } from "@config/I18n";
+import { createI18nWrapper } from "@config/I18n";
 
 import PageWrapper from "@wrappers/PageWrapper";
 import GoogleAnalytics from "@elements/GoogleAnalytics";
@@ -15,17 +15,30 @@ export const domainProps = {
 	</>
 };
 
+export const wrapPage = createDomainWrapper(i18n);
+
 export function wrapTitle(title, { flip } = {}) {
 	const first = flip ? domainData.title : title;
 	const second = flip ? title : domainData.title;
 	return { title: `${first} • ${second}` };
 }
 
-export function wrapPage(Page) {
-	return wrapI18n(DomainWrapper, i18n);
-	function DomainWrapper() {
-		return <PageWrapper>
-			<Page />
-		</PageWrapper>;
-	}
+export function createDomainWrapper(i18n) {
+
+	const I18nWrapper = createI18nWrapper(i18n);
+
+	return (page) => {
+
+		page.Wrapper = Wrapper;
+		return page;
+
+		function Wrapper({ children }) {
+			return <I18nWrapper>
+				<PageWrapper>
+					{children}
+				</PageWrapper>
+			</I18nWrapper>;
+		}
+	};
+
 }

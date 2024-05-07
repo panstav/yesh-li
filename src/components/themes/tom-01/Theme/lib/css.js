@@ -1,0 +1,1 @@
+export const buttonPrimaryColor = { backgroundColor: 'var(--color-primary-300)' };

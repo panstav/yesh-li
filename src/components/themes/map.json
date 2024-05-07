@@ -6,5 +6,9 @@
 	{
 		"themeName": "elyse-01",
 		"parentDomain": "yesh.li"
+	},
+	{
+		"themeName": "tom-01",
+		"parentDomain": "yesh.li-eng"
 	}
 ]

@@ -9,3 +9,7 @@ export default function useSiteData () {
 export function useSiteContent () {
 	return useSiteData().content;
 }
+
+export function usePageContent (page) {
+	return useSiteContent().pages[page];
+}

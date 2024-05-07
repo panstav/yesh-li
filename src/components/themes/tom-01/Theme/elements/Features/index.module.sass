@@ -1,0 +1,16 @@
+@import @styles/common
+
+.single-feature
+
+	width: 100%
+	img
+		width: 100%
+
+	+tablet
+		&[class*="is-2-columns"]
+			width: calc(50% - 0.5rem)
+		&[class*="is-3-columns"]
+			width: calc(33.333% - 0.5rem)
+
+.image-in-viewport
+	max-height: 80vh

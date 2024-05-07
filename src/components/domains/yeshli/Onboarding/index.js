@@ -20,9 +20,7 @@ export const OnboardingContext = createContext();
 
 export { default as Head } from './Head';
 
-export default wrapPage(Onboarding);
-
-function Onboarding () {
+export default wrapPage(function Onboarding () {
 
 	const [fullForm, setFullForm] = useState();
 	const setPartial = (partial) => {
@@ -129,7 +127,7 @@ function Onboarding () {
 		});
 	}
 
-}
+});
 
 export function Step ({ title, children }) {
 	const { setup, next, current, defaultValues } = useContext(OnboardingContext);

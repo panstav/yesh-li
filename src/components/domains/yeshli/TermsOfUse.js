@@ -12,9 +12,7 @@ export const Head = HeadFor({
 	hasAdvancedSeo: false
 });
 
-export default wrapPage(TermsOfUse);
-
-function TermsOfUse() {
+export default wrapPage(function TermsOfUse() {
 	return <ContentPage>
 
 		<LastUpdated date={new Date('2024-02-21')} />
@@ -32,4 +30,4 @@ function TermsOfUse() {
 		<ContactParagraph />
 
 	</ContentPage>;
-}
+});

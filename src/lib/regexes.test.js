@@ -83,3 +83,40 @@ describe('first4Digits', () => {
 		expect(regexes.first4Digits.exec('a123456')[0]).toBe('1234');
 	});
 });
+
+describe('startsWithVowel', () => {
+	it('should match a string that starts with a vowel', () => {
+		expect(regexes.startsWithVowel.test('apple')).toBe(true);
+		expect(regexes.startsWithVowel.test('Apple')).toBe(true);
+		expect(regexes.startsWithVowel.test('orange')).toBe(true);
+		expect(regexes.startsWithVowel.test('Orange')).toBe(true);
+		expect(regexes.startsWithVowel.test('ice')).toBe(true);
+		expect(regexes.startsWithVowel.test('Ice')).toBe(true);
+		expect(regexes.startsWithVowel.test('ear')).toBe(true);
+		expect(regexes.startsWithVowel.test('Ear')).toBe(true);
+
+		expect(regexes.startsWithVowel.test('banana')).toBe(false);
+		expect(regexes.startsWithVowel.test('Banana')).toBe(false);
+		expect(regexes.startsWithVowel.test('pear')).toBe(false);
+		expect(regexes.startsWithVowel.test('Pear')).toBe(false);
+		expect(regexes.startsWithVowel.test('grape')).toBe(false);
+		expect(regexes.startsWithVowel.test('Grape')).toBe(false);
+		expect(regexes.startsWithVowel.test('kiwi')).toBe(false);
+		expect(regexes.startsWithVowel.test('Kiwi')).toBe(false);
+	});
+});
+
+describe('vimeoOrYoutubeVideoUrl', () => {
+	it('should match a string that is a vimeo or youtube video URL', () => {
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://vimeo.com/123456')).toBe(true);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://www.vimeo.com/123456')).toBe(true);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://youtube.com/watch?v=123456')).toBe(true);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://www.youtube.com/watch?v=123456')).toBe(true);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://vimeo.com/123456/')).toBe(true);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://youtube.com/watch?v=123456/')).toBe(true);
+
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://vimeo.com/')).toBe(false);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://youtube.com/watch?v=')).toBe(false);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://youtube.com/1235')).toBe(false);
+	});
+});
