@@ -10,7 +10,7 @@ import { richTextContainer } from '@pages/Editor/index.module.sass';
 
 let Quill;
 
-export default function RichEditor({ id, label, placeholder, maxLength, withLink }) {
+export default function RichEditor({ id, label, placeholder, maxLength, withLink, withHeaders }) {
 	import('quill/dist/quill.core.css');
 	import('quill/dist/quill.snow.css');
 
@@ -43,13 +43,14 @@ export default function RichEditor({ id, label, placeholder, maxLength, withLink
 		const bounds = `[data-id="${editorMountElemId}"]`;
 
 		const link = withLink ? ['link'] : [];
+		const headers = withHeaders ? [{ header: [1, 2, 3, 4, 5, 6, false] }] : [];
 
 		editor = new Quill.default(bounds, {
 			bounds,
 			modules: {
 				toolbar: [
-					['strike', 'underline', 'italic', 'bold'],
-					[...link, { 'color': [] }],
+					['bold', 'italic', 'underline', 'strike'],
+					[...headers, ...link, { 'color': [] }],
 					['clean']
 				]
 			},
