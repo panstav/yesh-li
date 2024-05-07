@@ -47,7 +47,7 @@ export function UrlInput({ type = 'url', validate, includes, required, ...props 
 		validate={{
 			...validate,
 			// only invalidate these if value is present, otherwise it's the required validator's responsibility
-			incldues: (str) => (!str || str.includes(includes)) || t.urlMissingOn(includes),
+			incldues: (str) => (!includes || (!str || str.includes(includes))) || t.urlMissingOn(includes),
 			isUrl: (str) => (!str || isUrl(str)) || t.invalid_url
 		}}
 		required={required}
