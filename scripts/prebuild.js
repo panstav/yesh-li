@@ -15,8 +15,7 @@ const shortDomain = new URL(fullDomain).hostname;
 
 (async () => {
 
-	// if not in production - exit
-	if (!process.env.NETLIFY) return;
+	if (!process.env.NETLIFY) await cleanUp();
 
 	// get sites from api
 	const { sites, redirects } = await getUserSites();
@@ -129,4 +128,19 @@ async function createSitemap(items) {
 	const sitemap = await streamToPromise(Readable.from(items).pipe(stream)).then((data) => data.toString());
 
 	return fs.promises.writeFile('./static/sitemap.xml', sitemap);
+}
+
+function cleanUp() {
+
+	const paths = ['./data', './static'];
+
+	return Promise.all(paths.map(deleteAllButGitIgnoreAt));
+}
+
+async function deleteAllButGitIgnoreAt(pathPrefix) {
+	const files = await fs.promises.readdir(pathPrefix);
+	return Promise.all(files.map((fileName) => {
+		if (fileName === '.gitignore') return;
+		return fs.promises.rm(`${pathPrefix}/${fileName}`, { recursive: true });
+	}));
 }
