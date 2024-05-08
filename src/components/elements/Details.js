@@ -16,7 +16,7 @@ export default function Details({ title, detailsRef, children }) {
 
 	const detailsClassName = classNames(details, "details");
 
-	return <details ref={detailsRef} className={detailsClassName} onClick={preventDefaultEvent} {...isOpen ? { open: true } : {}}>
+	return <details ref={detailsRef} className={detailsClassName} {...isOpen ? { open: true } : {}}>
 		<summary onClick={toggleDetails}>
 			<Title />
 		</summary>
@@ -24,11 +24,6 @@ export default function Details({ title, detailsRef, children }) {
 			{children}
 		</div>}
 	</details>;
-}
-
-function preventDefaultEvent(event) {
-	event.preventDefault();
-	event.stopPropagation();
 }
 
 // eslint-disable-next-line no-unused-vars
