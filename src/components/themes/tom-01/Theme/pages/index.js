@@ -2,7 +2,7 @@ import { HeadFor } from "@config/Meta";
 
 import Homepage from "@themes/tom-01/Theme/pages/Homepage";
 
-import wrapPage from "@themes/tom-01/Theme/lib/wrap-page-element";
+import wrapPage from "@themes/tom-01/Theme/lib/wrap-page";
 import wrapHeadProps from "@themes/tom-01/Theme/lib/wrap-head-props";
 
 export default wrapPage(Homepage);
