@@ -4,9 +4,9 @@
   "version": "2.9.1",
   "main": "index.js",
   "scripts": {
-    "start-from-scratch": "npm run clean && gatsby develop",
+    "dev": "npm run clean && gatsby develop",
+    "dev-from-scratch": "node scripts/prebuild.js && npm run dev",
     "start": "gatsby develop",
-    "prebuild": "node scripts/prebuild.js",
     "clean": "gatsby clean",
     "lint": "eslint ./",
     "build-debug": "npm run clean && npm run build && gatsby serve",
