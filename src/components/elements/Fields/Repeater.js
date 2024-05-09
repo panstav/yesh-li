@@ -36,10 +36,13 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 	const cantRemove = (minLength && fields.length == minLength) ? t.minItemsRepeater(minLength) : '';
 	const cantAdd = maxLength && fields.length == maxLength ? t.maxItemsRepeater(maxLength) : '';
 
-	const addButtonClassName = classNames(addButton, 'button is-fullwidth has-text-weight-bold', addButtonOnTop && fields.length ? 'mb-3' : '');
+	const addButtonClassName = classNames(addButton, 'button is-fullwidth has-text-weight-bold',
+		addButtonOnTop && fields.length ? 'mb-3' : '',
+		!addButtonOnTop && fields.length ? 'mt-3' : ''
+	);
 
 	return <>
-		{addButtonOnTop && <button type="button" onClick={addToBottom} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
+		{addButtonOnTop && <button type="button block" onClick={addToBottom} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
 		{fields.map((field, index) => {
 
 			const arrayOrderControl = { move, cantRemove, remove, itemIndex: index, lastIndex: fields.length - 1 };
@@ -63,7 +66,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 				</ArrayOrderControlContext.Provider>
 			</Fragment>;
 		})}
-		{!addButtonOnTop && <button type="button" onClick={addToBottom} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
+		{!addButtonOnTop && <button type="button block" onClick={addToBottom} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
 	</>;
 
 }
