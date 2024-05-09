@@ -1,5 +1,8 @@
 html.with-modal
 	overflow-y: hidden
+	&.blur-modal-background
+		#gatsby-focus-wrapper > *:not(#modal-root)
+			filter: blur(10px)
 
 .object-fit-cover
 	object-fit: cover

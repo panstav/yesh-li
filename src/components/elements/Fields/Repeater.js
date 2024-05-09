@@ -118,7 +118,7 @@ function Buttons({ onlyOnHover, style }) {
 function ModalizedRepeaterItem({ title, children }) {
 	const [{ misc: t }] = useI18n();
 
-	const [repeaterItemModal, showModal] = useModal();
+	const [repeaterItemModal, showModal] = useModal({ blurBackground: true });
 
 	const titleWrapperClassName = classNames(repeaterItemTitle, 'is-clickable');
 

@@ -7,7 +7,9 @@ export default function useModal(propsFromHook = {}) {
 	const [modalProps, setModalProps] = useState();
 
 	const hideModal = (event) => {
-		window.document.documentElement.classList.toggle('with-modal', false);
+		setHtmlClass('with-modal', false);
+		setHtmlClass('blur-background', false);
+
 		// unless the modal is being closed by the browser's back button - go back
 		if (event?.type !== 'popstate') history.back();
 		propsFromHook.onHide?.();
@@ -28,12 +30,15 @@ export default function useModal(propsFromHook = {}) {
 
 	const showModal = useCallback((propsFromCallback = {}) => {
 		const modalId = Math.random().toString(36).slice(2);
-		const newProps = Object.assign({ hideModal, modalId },
+		const { blurBackground, ...newProps } = Object.assign({ hideModal, modalId },
 			typeof propsFromHook === 'function'
 				? propsFromHook(propsFromCallback)
 				: Object.assign(propsFromHook, propsFromCallback)
 		);
-		window.document.documentElement.classList.toggle('with-modal', true);
+
+		setHtmlClass('with-modal', true);
+		if (blurBackground) setHtmlClass('blur-background', true);
+
 		// this is to identify the modal so that if 2 are open and the user triggers hideModal - it wouldn't close both
 		history.replaceState({ modalId }, '');
 		history.pushState({}, '');
@@ -62,4 +67,8 @@ function modalType (type) {
 		});
 
 	};
+}
+
+function setHtmlClass(className, value) {
+	document.documentElement.classList.toggle(className, value);
 }
