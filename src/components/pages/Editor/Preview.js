@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import Frame from 'react-frame-component';
 import { useFormContext, useWatch } from "react-hook-form";
 import cloneDeep from "lodash.clonedeep";
@@ -35,7 +35,7 @@ function Preview({ frameRef, framePath = '', hasErrors, ...props }) {
 	const { lang } = useSiteData();
 
 	const [customComponents, setCustomComponents] = useState();
-	const initialContent = getInitialContent({ lang, theme: props.theme });
+	const initialContent = useMemo(() => getInitialContent({ lang, theme: props.theme }), [lang, props.theme]);
 
 	const ThemedPage = themesMap[`${props.theme}${framePath}`];
 
