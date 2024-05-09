@@ -114,7 +114,7 @@ function useNavigationWorkaround({ theme }) {
 		const mapKey = pathname === '/' ? '' : pathname;
 		const comp = themesMap[`${theme}${mapKey}`];
 
-		const currentPath = frameRef.current.dataset.path;
+		const currentPath = frameRef.current?.dataset.path;
 
 		// only navigate if
 		if (
