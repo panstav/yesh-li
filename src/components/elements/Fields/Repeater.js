@@ -78,11 +78,16 @@ function Buttons({ onlyOnHover, style }) {
 	const repeatedButtonClassName = classNames('button is-small has-text-weight-bold', !onlyOnHover && 'is-block');
 	const buttonStyle = { height: 'auto', ...style };
 
+	const handle = (fn) => (event) => {
+		event.stopPropagation();
+		fn();
+	};
+
 	return <div className="buttons has-addons is-flex-shrink-0 ps-4">
 
 		{itemIndex !== 0 && <button
 			type="button" className={repeatedButtonClassName}
-			onClick={() => move(itemIndex, itemIndex - 1)}
+			onClick={handle(() => move(itemIndex, itemIndex - 1))}
 			title={t.move_up} data-index={itemIndex}
 			style={buttonStyle}
 		>
@@ -91,7 +96,7 @@ function Buttons({ onlyOnHover, style }) {
 
 		{itemIndex !== lastIndex && <button
 			type="button" className={repeatedButtonClassName}
-			onClick={() => move(itemIndex, itemIndex + 1)}
+			onClick={handle(() => move(itemIndex, itemIndex + 1))}
 			title={t.move_down}
 			style={buttonStyle}
 		>
@@ -100,7 +105,7 @@ function Buttons({ onlyOnHover, style }) {
 
 		<button
 			type="button" className={repeatedButtonClassName}
-			disabled={!!cantRemove} onClick={() => remove(itemIndex)}
+			disabled={!!cantRemove} onClick={handle(() => remove(itemIndex))}
 			title={cantRemove || t.remove} data-index={itemIndex}
 			style={buttonStyle}
 		>
@@ -114,17 +119,13 @@ function ModalizedRepeaterItem({ title, children }) {
 	const [{ misc: t }] = useI18n();
 
 	const [repeaterItemModal, showModal] = useModal();
-	const handleShowingModal = (event) => {
-		if (event.target !== event.currentTarget) return;
-		showModal();
-	};
 
 	const titleWrapperClassName = classNames(repeaterItemTitle, 'is-clickable');
 
 	return <>
 		<TitleWithButtons
 			title={title}
-			onClick={handleShowingModal}
+			onClick={() => showModal()}
 			className={titleWrapperClassName} />
 
 		<Modal {...repeaterItemModal} noCloseButton render={() => <div className={fieldsContainer}>
