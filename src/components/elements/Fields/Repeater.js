@@ -1,3 +1,4 @@
+import { Fragment, createContext, useContext } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import classNames from "classnames";
 
@@ -7,7 +8,9 @@ import Details from "@elements/Details";
 import Modal, { SaveButton, useModal } from "@wrappers/Modal";
 import { ArrowDown, ArrowUp, Close } from "@elements/Icon";
 
-import { fieldsContainer, compoundField, repeatedButton, addButton, repeaterItemTitle } from "@pages/Editor/index.module.sass";
+import { fieldsContainer, compoundField, addButton, repeaterItemTitle } from "@pages/Editor/index.module.sass";
+
+const ArrayOrderControlContext = createContext();
 
 export default function Repeater({ arrayId, singleName, emptyItem, collapseItems, openItemInModal, addButtonOnTop, minLength, maxLength, wrapper: Wrapper, children }) {
 
@@ -33,12 +36,13 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 	const cantRemove = (minLength && fields.length == minLength) ? t.minItemsRepeater(minLength) : '';
 	const cantAdd = maxLength && fields.length == maxLength ? t.maxItemsRepeater(maxLength) : '';
 
-	const repeatedButtonClassName = classNames(repeatedButton, 'button is-small has-text-weight-bold');
 	const addButtonClassName = classNames(addButton, 'button is-fullwidth has-text-weight-bold', addButtonOnTop && fields.length ? 'mb-3' : '');
 
 	return <>
 		{addButtonOnTop && <button type="button" onClick={addToBottom} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
 		{fields.map((field, index) => {
+
+			const arrayOrderControl = { move, cantRemove, remove, itemIndex: index, lastIndex: fields.length - 1 };
 
 			const itemId = `${arrayId}.[${index}]`;
 			let itemTitle = `${singleName} #${index + 1}`;
@@ -47,52 +51,70 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 
 			const fieldHeaderClassName = classNames('is-flex is-align-items-center ', collapseItems ? 'is-justify-content-end' : 'is-justify-content-space-between mb-4');
 
-			return <Wrapper title={itemTitle} itemId={itemId} key={field.id}>
-				<div className={fieldHeaderClassName}>
-					{!collapseItems && <h3 className="is-size-5 m-0">{itemTitle}</h3>}
-					<div className="buttons has-addons">
-
-						{index !== 0 && <button
-							type="button" className={repeatedButtonClassName}
-							onClick={() => move(index, index - 1)}
-							title={t.move_up} data-index={index}
-						>
-							<ArrowUp style={{ width: '0.75rem' }} />
-						</button>}
-
-						{index !== fields.length - 1 && <button
-							type="button" className={repeatedButtonClassName}
-							onClick={() => move(index, index + 1)}
-							title={t.move_down}
-						>
-							<ArrowDown style={{ width: '0.75rem' }} />
-						</button>}
-
-						<button
-							type="button" className={repeatedButtonClassName}
-							disabled={!!cantRemove} onClick={() => remove(index)}
-							title={cantRemove || t.remove} data-index={index}
-						>
-							<Close />
-						</button>
-
-					</div>
-				</div>
-
-				{children(itemId)}
-			</Wrapper>;
+			return <Fragment key={field.id}>
+				<ArrayOrderControlContext.Provider value={arrayOrderControl}>
+					<Wrapper title={itemTitle} itemId={itemId} key={field.id}>
+						{!collapseItems && <div className={fieldHeaderClassName}>
+							<h3 className="is-size-5 m-0 has-text-wrap-ellipsis">{itemTitle}</h3>
+							<Buttons />
+						</div>}
+						{children(itemId)}
+					</Wrapper>
+				</ArrayOrderControlContext.Provider>
+			</Fragment>;
 		})}
 		{!addButtonOnTop && <button type="button" onClick={addToBottom} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
 	</>;
 
 }
 
+function Buttons({ onlyOnHover, style }) {
+	const t = useFieldLabels();
+	const { move, cantRemove, remove, itemIndex, lastIndex } = useContext(ArrayOrderControlContext);
+
+	const repeatedButtonClassName = classNames('button is-small has-text-weight-bold', !onlyOnHover && 'is-block');
+	const buttonStyle = { height: 'auto', ...style };
+
+	return <div className="buttons has-addons is-flex-shrink-0 ps-4">
+
+		{itemIndex !== 0 && <button
+			type="button" className={repeatedButtonClassName}
+			onClick={() => move(itemIndex, itemIndex - 1)}
+			title={t.move_up} data-index={itemIndex}
+			style={buttonStyle}
+		>
+			<ArrowUp style={{ width: '0.75rem' }} />
+		</button>}
+
+		{itemIndex !== lastIndex && <button
+			type="button" className={repeatedButtonClassName}
+			onClick={() => move(itemIndex, itemIndex + 1)}
+			title={t.move_down}
+			style={buttonStyle}
+		>
+			<ArrowDown style={{ width: '0.75rem' }} />
+		</button>}
+
+		<button
+			type="button" className={repeatedButtonClassName}
+			disabled={!!cantRemove} onClick={() => remove(itemIndex)}
+			title={cantRemove || t.remove} data-index={itemIndex}
+			style={buttonStyle}
+		>
+			<Close />
+		</button>
+
+	</div>;
+}
+
 function ModalizedRepeaterItem({ title, children }) {
 	const [{ misc: t }] = useI18n();
 
 	const [repeaterItemModal, showModal] = useModal();
-
-	const Title = typeof title === "function" ? title : () => <>{title}</>;
+	const handleShowingModal = (event) => {
+		if (event.target !== event.currentTarget) return;
+		showModal();
+	};
 
 	const titleWrapperClassName = classNames(repeaterItemTitle, 'is-clickable');
 

@@ -7,6 +7,13 @@ export default function Details({ title, detailsRef, children }) {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleDetails = (event) => {
+
+		// elements in details shouldn't toggle the details onClick, unless they have the allowing attribute
+		if (event.target !== event.currentTarget) {
+			if (event.target.tagName === "BUTTON" || event.target.closest('button')) return;
+			if ((!event.target.getAttribute("data-onclick-avoid-closing-details") || event.target.closest('[data-onclick-avoid-closing-details]')) && isOpen) return;
+		}
+
 		event.preventDefault();
 		event.stopPropagation();
 		setIsOpen(!isOpen);

@@ -12,7 +12,7 @@ const modalTypes = {
 	success: SuccessModal
 };
 
-export default function Modal({ type = 'default', title, hideModal: hideModalProp, hideable = true, isLarge, children }) {
+export default function Modal({ type = 'default', title, hideModal: hideModalProp, hideable = true, noCloseButton, isLarge, children }) {
 
 	const hideModal = !hideable ? () => {} : hideModalProp;
 
@@ -22,14 +22,32 @@ export default function Modal({ type = 'default', title, hideModal: hideModalPro
 
 	return <div className={modal}>
 		<div className={modalBackground} onClick={hideModal} style={{ opacity: '0.75' }}/>
-		<ModalContent {...{ title, hideable, hideModal, isLarge, children }} />
+		<ModalContent {...{ title, hideable, hideModal, noCloseButton, isLarge, children }} />
 	</div>;
 }
 
-function RawModal({ hideable, hideModal, children, isLarge }) {
+export function Title({ isMarginless, className: classes, style, children }) {
+	const className = classNames('title is-4 is-flex is-align-items-center has-text-grey', isMarginless || 'mb-4', classes);
+	return <div {...{ className, style }}>{children}</div>;
+}
+
+export function ContextTitle({ children }) {
+	return <div className="has-text-grey-light has-text-weight-bold mb-3 text-wrap">
+		{children}
+	</div>;
+}
+
+export function SaveButton({ className: classes, children }) {
+	const buttonClassName = classNames('button is-primary', classes);
+	return <div className='is-flex is-justify-content-end'>
+		<button className={buttonClassName}>{children}</button>
+	</div>;
+}
+
+function RawModal({ hideable, hideModal, noCloseButton, children, isLarge }) {
 	return <div className={modalContent} style={isLarge ? { width: '100%', maxHeight: 'unset' } : {}}>
 		<div style={{ maxHeight: '100%', overflowY: 'auto' }}>
-			{hideable && <div onClick={hideModal} className='is-flex is-overlay is-clickable' style={{ insetInlineStart: 'unset', bottom: 'unset', zIndex: 100 }}>
+			{hideable && !noCloseButton && <div onClick={hideModal} className='is-flex is-overlay is-clickable' style={{ insetInlineStart: 'unset', bottom: 'unset', zIndex: 100 }}>
 				<div className="delete is-large" style={{ margin: '0.25rem' }} />
 			</div>}
 			<div className={rawModalInner}>
@@ -39,11 +57,11 @@ function RawModal({ hideable, hideModal, children, isLarge }) {
 	</div>;
 }
 
-function RegularModal({ title, hideable, hideModal, children }) {
+function RegularModal({ title, hideable, noCloseButton, hideModal, children }) {
 	return <div className={modalContent}>
 		<div className="box p-0" style={{ maxHeight: '100%', overflowY: 'auto' }}>
 
-			{hideable && <div onClick={hideModal} className='is-flex is-overlay is-clickable p-1' style={{ insetInlineStart: 'unset', bottom: 'unset' }}>
+			{hideable && !noCloseButton && <div onClick={hideModal} className='is-flex is-overlay is-clickable p-1' style={{ insetInlineStart: 'unset', bottom: 'unset' }}>
 				<div className="delete" />
 			</div>}
 
@@ -58,8 +76,8 @@ function RegularModal({ title, hideable, hideModal, children }) {
 	</div>;
 }
 
-function SimpleModal ({ Icon, hideable, hideModal, children }) {
-	return <RegularModal {...{ hideable, hideModal }}>
+function SimpleModal ({ Icon, children, ...props }) {
+	return <RegularModal {...props}>
 		<div className="has-text-centered py-4">
 			<div className='mb-2'>
 				<Icon style={{ width: '6rem', height: 'auto' }} />
@@ -77,15 +95,4 @@ function ErrorModal(props) {
 
 function SuccessModal(props) {
 	return <SimpleModal {...props} Icon={(props) => <Confirm {...props} className="has-text-success" />} />;
-}
-
-export function Title ({ isMarginless, className: classes, style, children }) {
-	const className = classNames('title is-4 is-flex is-align-items-center has-text-grey', isMarginless || 'mb-4', classes);
-	return <div {...{ className, style }}>{children}</div>;
-}
-
-export function ContextTitle ({ children }) {
-	return <div className="has-text-grey-light has-text-weight-bold mb-3 text-wrap">
-		{children}
-	</div>;
 }

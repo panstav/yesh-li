@@ -28,13 +28,13 @@ summary
 	&:first-child:not(.is-rounded)
 		border-start-start-radius: $radius
 		border-end-start-radius: $radius
-		&.is-small
+		&.is-small:not(.has-strong-radius)
 			border-start-start-radius: 2px
 			border-end-start-radius: 2px
 	&:last-child:not(.is-rounded)
 		border-start-end-radius: $radius
 		border-end-end-radius: $radius
-		&.is-small
+		&.is-small:not(.has-strong-radius)
 			border-start-end-radius: 2px
 			border-end-end-radius: 2px
 

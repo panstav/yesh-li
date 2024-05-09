@@ -2,11 +2,11 @@ import { createPortal } from 'react-dom';
 import { useFrame } from 'react-frame-component';
 
 import ComponentWithForm from './Form';
-import Component, { Title, ContextTitle } from './Modal';
+import Component, { Title, ContextTitle, SaveButton } from './Modal';
 
 export { default as useModal, useRawModal, useErrorModal, useSuccessModal } from './use-modal';
 
-export { Title, ContextTitle };
+export { Title, ContextTitle, SaveButton };
 
 export default function Modal({ modalId, ...props }) {
 	const { document } = useFrame();
@@ -19,7 +19,7 @@ export default function Modal({ modalId, ...props }) {
 	return createPortal(<ModalOrFormOnModal {...props} />, document.getElementById('modal-root'));
 }
 
-function ModalOrFormOnModal({ render, hideModal, type, isLarge, confirmBeforeHiding, shouldUseNativeValidation, hideable, ...modalProps }) {
+function ModalOrFormOnModal({ render, hideModal, type, isLarge, confirmBeforeHiding, shouldUseNativeValidation, hideable, noCloseButton, ...modalProps }) {
 
 	if (modalProps.onSubmit) return <ComponentWithForm {...{ render, hideModal, type, isLarge, confirmBeforeHiding, shouldUseNativeValidation, hideable, ...modalProps }} />;
 
@@ -29,9 +29,11 @@ function ModalOrFormOnModal({ render, hideModal, type, isLarge, confirmBeforeHid
 		type,
 		isLarge,
 		hideable,
-		children: render({ hideModal, ...modalProps })
+		noCloseButton
 	};
 
-	return <Component {...props} />;
+	return <Component {...props}>
+		{render({ hideModal, ...modalProps })}
+	</Component>;
 
 }
