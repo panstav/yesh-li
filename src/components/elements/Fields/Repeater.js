@@ -136,7 +136,7 @@ function ModalizedRepeaterItem({ title, children }) {
 }
 
 function CollapsedRepeaterItem({ title, children, ...props }) {
-	const Title = () => <TitleWithButtons title={title} titleProps={{ ['data-onclick-avoid-closing-details']: true }} />;
+	const Title = () => <TitleWithButtons title={title} titleProps={{ ['data-avoid-closing-details']: true }} />;
 	return <Details title={Title} {...props}>
 		{children}
 	</Details>;
