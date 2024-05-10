@@ -6,6 +6,11 @@ $primary-very-light: rgba(0, 149, 130, 0.1)
 .fieldsContainer
 	color: #4a4a4a
 
+	summary a
+		color: $primary
+		&:hover
+			color: inherit
+
 	&:has(.innerFieldsContainer)
 		+desktop
 			min-width: min(40%, 27rem)
