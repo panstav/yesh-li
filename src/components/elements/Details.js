@@ -6,18 +6,6 @@ import { details, innerContainer } from "@pages/Editor/index.module.sass";
 export default function Details({ title, detailsRef, children }) {
 
 	const [isOpen, setIsOpen] = useState(false);
-	const toggleDetails = (event) => {
-
-		// elements in details shouldn't toggle the details onClick, unless they have the allowing attribute
-		if (event.target !== event.currentTarget) {
-			if (event.target.tagName === "BUTTON" || event.target.closest('button')) return;
-			if ((!event.target.getAttribute("[data-avoid-closing-details]") || event.target.closest('[data-avoid-closing-details]')) && isOpen) return;
-		}
-
-		event.preventDefault();
-		event.stopPropagation();
-		setIsOpen(!isOpen);
-	};
 
 	const Title = typeof title === "function" ? title : () => <>{title}</>;
 
@@ -31,6 +19,20 @@ export default function Details({ title, detailsRef, children }) {
 			{children}
 		</div>}
 	</details>;
+
+	function toggleDetails(event) {
+
+		// elements in details shouldn't toggle the details onClick, unless they have the allowing attribute
+		if (event.target !== event.currentTarget) {
+			if (event.target.tagName === "BUTTON" || event.target.closest('button')) return;
+			if ((!event.target.getAttribute("[data-avoid-closing-details]") || event.target.closest('[data-avoid-closing-details]')) && isOpen) return;
+		}
+
+		event.preventDefault();
+		event.stopPropagation();
+		setIsOpen(!isOpen);
+	}
+
 }
 
 // eslint-disable-next-line no-unused-vars

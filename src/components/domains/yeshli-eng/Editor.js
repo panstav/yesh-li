@@ -1,10 +1,10 @@
 import { HeadFor } from "@config/Meta";
 
-import Editor, { editorProps } from "@pages/Editor";
+import EditorWrapper, { editorProps } from "@pages/Editor";
 
 import { wrapTitle, domainProps, wrapPage } from "@domains/yeshli-eng";
 
-export default wrapPage(Editor);
+export default wrapPage(EditorWrapper);
 
 export const Head = HeadFor(() => ({
 	...domainProps,

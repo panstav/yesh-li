@@ -1,35 +1,16 @@
-import { Suspense, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Frame from 'react-frame-component';
-import { useFormContext, useWatch } from "react-hook-form";
-import cloneDeep from "lodash.clonedeep";
-
 import useI18n from "@hooks/use-i18n";
 import useSiteData from "@hooks/use-site-data";
-
 import Page from "@config/Page";
 import { CssVariables } from "@config/Meta";
 import Loader from "@elements/Loader";
-
-import { themesMap } from "@themes";
-import { EditorContext } from "@pages/Editor";
 import getDirByLang from "@lib/get-dir-by-lang";
+import { themesMap } from "@themes";
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-let validProps = {};
-
-export default function PreviewWrapper() {
-
-	const hasErrors = useEditorValidation();
-
-	const { framePath, frameRef, renderAllowed } = useNavigationWorkaround({ theme: validProps.theme });
-
-	if (!renderAllowed) return null;
-
-	return <Preview key={framePath} {...validProps} {...{ frameRef, framePath, hasErrors }} />;
-}
-
-function Preview({ frameRef, framePath = '', hasErrors, ...props }) {
+export default function Preview({ frameRef, framePath = '', hasErrors, ...props }) {
 
 	const [{ Editor: { Preview: t } }] = useI18n();
 	const { lang } = useSiteData();
@@ -44,20 +25,19 @@ function Preview({ frameRef, framePath = '', hasErrors, ...props }) {
 			<Frame ref={frameRef} data-path={framePath} initialContent={initialContent} mountTarget='#mountTarget' style={{ width: '100%', height: '100%' }}><>
 				{hasErrors && <p className="has-background-danger has-text-centered has-text-white has-text-weight-bold py-2" style={{ position: 'fixed', top: '0', right: '0', left: '0', zIndex: '1000' }}>{t.no_preview_while_invalid}</p>}
 				<CssVariables mainColorName={props.mainColor} />
-
 				<Page pageContext={props} customComponents={customComponents}>
-
 					<Suspense fallback={<Loader />}>
 
 						<CustomComponentsSetter />
 						<ThemedPage {...props} />
+						
 					</Suspense>
 				</Page>
 			</></Frame>
 		</div>
 	</>;
 
-	function CustomComponentsSetter () {
+	function CustomComponentsSetter() {
 		// this component renders only when ThemedPage is loaded
 		// only then do we have access to the custom components
 		// so we'll set them here to rerender the page with the correct components
@@ -88,73 +68,4 @@ function getInitialContent({ theme, lang }) {
 	const interactionBlocker = `<style>* a:not([href^="https://"]):not([href^="tel:"]):not([href^="mailto:"]):not([data-allow-events]), * button:not([data-allow-events]), * label:not([data-allow-events]), * input:not([data-allow-events]), * textarea:not([data-allow-events]) { pointer-events: none !important; }</style><script defer>const observer = new MutationObserver(disableFields);const interval = setInterval(disableFields, 100);function disableFields() {const elems = Array.from(document.querySelectorAll('input, textarea'));if (elems.length) {clearInterval(interval);elems.forEach((elem) => elem.setAttribute('disabled', true));observer.observe(document.querySelector('#modal-root'), { childList: true });}}</script>`;
 
 	return `<!DOCTYPE html><html dir="${getDirByLang(lang)}" lang="${lang}"><head>${interactionBlocker}${styles}</head><body><div id="mountTarget"></div></body></html>`;
-}
-
-function useEditorValidation () {
-	const { formState: { errors } } = useFormContext();
-
-	const hasErrors = !!Object.keys(errors).length;
-
-	// if we're certain that props are clean, use them in the next render of Preview
-	// otherwise the use the last clean props
-	const currentValues = useWatch();
-	if (!hasErrors) validProps = cloneDeep(currentValues);
-
-	return hasErrors;
-}
-
-function useNavigationWorkaround({ theme }) {
-
-	const { registerNavigation } = useContext(EditorContext);
-
-	const [renderAllowed, setRenderAllowed] = useState(true);
-	const [framePath, setFramePath] = useState();
-
-	const frameRef = useRef();
-
-	const navigate = useCallback((pathname) => {
-		// fix undefined pathname bug due to race condition
-		if (!pathname) return;
-
-		const mapKey = pathname === '/' ? '' : pathname;
-		const comp = themesMap[`${theme}${mapKey}`];
-
-		const currentPath = frameRef.current?.dataset.path;
-
-		// only navigate if
-		if (
-			// pathname starts with a slash - it's a valid path
-			!pathname.startsWith('/')
-			// the component exists
-			|| !comp
-			// next path is different from the current path
-			|| pathname === currentPath
-			// ^- next and current path aren't the homepage
-			|| mapKey === currentPath
-		) return;
-
-		setFramePath(mapKey);
-		setRenderAllowed(false);
-	}, []);
-	useEffect(() => registerNavigation(navigate), []);
-
-	useEffect(() => {
-		if (!renderAllowed) setRenderAllowed(true);
-	}, [renderAllowed]);
-
-	useEffect(() => {
-		let listener;
-
-		// set on load event
-		if (frameRef.current) {
-			listener = frameRef.current.addEventListener('load', () => {
-				navigate(frameRef.current?.contentWindow?.location?.pathname);
-			});
-		}
-
-		return () => frameRef?.current?.removeEventListener('load', listener);
-	}, [frameRef.current, framePath]);
-
-	return { framePath, frameRef, renderAllowed, navigate };
-
 }

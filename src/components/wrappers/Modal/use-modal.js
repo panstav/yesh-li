@@ -1,20 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useFrame } from 'react-frame-component';
 
+export const useRawModal = modalType('raw');
+export const useSuccessModal = modalType('success');
+export const useErrorModal = modalType('error');
+
 export default function useModal(propsFromHook = {}) {
 	const { window } = useFrame();
 
 	const [modalProps, setModalProps] = useState();
-
-	const hideModal = (event) => {
-		setHtmlClass('with-modal', false);
-		setHtmlClass('blur-background', false);
-
-		// unless the modal is being closed by the browser's back button - go back
-		if (event?.type !== 'popstate') history.back();
-		propsFromHook.onHide?.();
-		return setModalProps();
-	};
 
 	const hideModalById = useCallback((event) => {
 		// the modal is being closed by the browser's back button
@@ -28,7 +22,21 @@ export default function useModal(propsFromHook = {}) {
 		return () => window.removeEventListener('popstate', hideModalById);
 	}, [hideModalById, modalProps?.modalId]);
 
-	const showModal = useCallback((propsFromCallback = {}) => {
+	const showModal = useCallback(setupVisuals, [typeof propsFromHook]);
+
+	return [modalProps, showModal, hideModal];
+
+	function hideModal(event) {
+		setHtmlClass('with-modal', false);
+		setHtmlClass('blur-background', false);
+
+		// unless the modal is being closed by the browser's back button - go back
+		if (event?.type !== 'popstate') history.back();
+		propsFromHook.onHide?.();
+		return setModalProps();
+	}
+
+	function setupVisuals(propsFromCallback = {}) {
 		const modalId = Math.random().toString(36).slice(2);
 		const { blurBackground, ...newProps } = Object.assign({ hideModal, modalId },
 			typeof propsFromHook === 'function'
@@ -43,15 +51,9 @@ export default function useModal(propsFromHook = {}) {
 		history.replaceState({ modalId }, '');
 		history.pushState({}, '');
 		setModalProps(newProps);
-	}, [typeof propsFromHook]);
-
-	return [modalProps, showModal, hideModal];
+	}
 
 }
-
-export const useRawModal = modalType('raw');
-export const useErrorModal = modalType('error');
-export const useSuccessModal = modalType('success');
 
 function modalType (type) {
 	return (propsFromHook = {}) => {

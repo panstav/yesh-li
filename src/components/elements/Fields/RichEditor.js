@@ -27,15 +27,16 @@ export default function RichEditor({ id, label, placeholder, maxLength, withLink
 
 	let editor;
 
-	useEffect(() => {
-		if (Quill) return;
-		import('quill').then((mod) => {
-			Quill = mod;
-			setIsModuleLoaded(true);
-		});
-	});
+	useEffect(ensureEditorLoads);
+	useEffect(editorOnLoad, [isModuleLoaded]);
 
-	useEffect(() => {
+	return <div className={richTextContainerClassName}>
+		<label className='label'>{label}:</label>
+		<div data-id={editorMountElemId} />
+		{error?.message && <p className='help is-danger'>{error?.message}</p>}
+	</div>;
+
+	function editorOnLoad() {
 
 		if (editor || !isModuleLoaded) return;
 
@@ -76,11 +77,14 @@ export default function RichEditor({ id, label, placeholder, maxLength, withLink
 			// if it's not, set the value to the editor's innerHTML after cleaning it
 			setValue(id, cleanUGT(editor.root.innerHTML.replaceAll('<br>', '')));
 		});
-	}, [isModuleLoaded]);
+	}
 
-	return <div className={richTextContainerClassName}>
-		<label className='label'>{label}:</label>
-		<div data-id={editorMountElemId} />
-		{error?.message && <p className='help is-danger'>{error?.message}</p>}
-	</div>;
+	function ensureEditorLoads() {
+		if (Quill) return;
+		import('quill').then((mod) => {
+			Quill = mod;
+			setIsModuleLoaded(true);
+		});
+	}
+
 }

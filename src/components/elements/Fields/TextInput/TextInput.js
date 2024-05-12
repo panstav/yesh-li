@@ -4,8 +4,6 @@ import classNames from "classnames";
 import { useFieldLabels } from "@hooks/use-i18n";
 
 import cleanUGT from "@lib/clean-user-generated-text";
-import isUrl from "@lib/is-url";
-import regexes from "@lib/regexes";
 
 export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, onChange, isSmall, autoComplete }) {
 	const t = useFieldLabels();
@@ -38,48 +36,6 @@ export default function TextInput({ id, label, labelClassName: labelClasses, typ
 			? <p className='help is-danger'>{error?.message}</p>
 			: <p className='help'>{description}</p>}
 	</div>;
-}
-
-export function UrlInput({ type = 'url', validate, includes, required, ...props }) {
-	const t = useFieldLabels();
-	return <TextInput
-		type={type}
-		validate={{
-			...validate,
-			// only invalidate these if value is present, otherwise it's the required validator's responsibility
-			incldues: (str) => (!includes || (!str || str.includes(includes))) || t.urlMissingOn(includes),
-			isUrl: (str) => (!str || isUrl(str)) || t.invalid_url
-		}}
-		required={required}
-		{...props} />;
-}
-
-export function TelInput(props) {
-	const t = useFieldLabels();
-	return <TextInput
-		type='tel'
-		pattern={{ value: regexes.israeliTelephone, message: t.invalid_phone_number }}
-		setValueAs={(str) => {
-			const cleanStr = str.trim().replace(/-/g, '');
-			// i18n might include a specific country code
-			// replace any leading 0 with the country code if so
-			return t.country_phone_code ? cleanStr.replace(/^0/, t.country_code) : cleanStr;
-		}}
-		{...props} />;
-}
-
-export function EmailInput(props) {
-	const t = useFieldLabels();
-	return <TextInput
-		type="email"
-		pattern={{ value: regexes.email, message: t.invalid_email }}
-		{...props} />;
-}
-
-export function NumberInput(props) {
-	return <TextInput
-		type="number"
-		{...props} />;
 }
 
 function ifValid({ validate, pattern }, value) {

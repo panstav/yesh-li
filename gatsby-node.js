@@ -4,15 +4,36 @@ const isOnNetlify = process.env.NETLIFY;
 const shortDomain = new URL(process.env.URL).hostname;
 
 exports.onCreateWebpackConfig = ({ actions }) => {
-	if (isOnNetlify) {
-		// We're building in production - turn off source maps
-		actions.setWebpackConfig({
-			devtool: false
-		});
-	}
+	// if we're building in production - turn off source maps
+	if (isOnNetlify) actions.setWebpackConfig({
+		devtool: false
+	});
 };
 
-exports.createPages = async ({ actions }) => {
+exports.createPages = createPages;
+
+exports.onCreateWebpackConfig = onCreateWebpackConfig;
+
+function onCreateWebpackConfig({ getConfig, actions }) {
+	const config = getConfig();
+
+	silenceOrderWarning();
+
+	// Update the config.
+	actions.replaceWebpackConfig(config);
+
+	function silenceOrderWarning() {
+		// Get the mini-css-extract-plugin
+		const miniCssExtractPlugin = config.plugins.find(
+			(plugin) => plugin.constructor.name === 'MiniCssExtractPlugin'
+		);
+
+		// Set the option here to true.
+		if (miniCssExtractPlugin) miniCssExtractPlugin.options.ignoreOrder = true;
+	}
+}
+
+async function createPages({ actions }) {
 
 	const themeCustomPages = [];
 
@@ -28,7 +49,7 @@ exports.createPages = async ({ actions }) => {
 		createLegacySites();
 	}
 
-	function createMultiSite () {
+	function createMultiSite() {
 
 		const multiName = shortDomain.replace('.', '');
 
@@ -63,7 +84,7 @@ exports.createPages = async ({ actions }) => {
 			});
 		});
 
-		function createCustomPages () {
+		function createCustomPages() {
 
 			const multiDir = `${__dirname}/src/domains/${multiName}`;
 
@@ -91,9 +112,8 @@ exports.createPages = async ({ actions }) => {
 
 	}
 
-	function createRootSite () {
+	function createRootSite() {
 		// instance is running on a dedicated domain
-
 		const themesMap = JSON.parse(fs.readFileSync(`${__dirname}/src/components/themes/map.json`));
 
 		// get the editor with which he created the site and prep it for generation
@@ -151,7 +171,6 @@ exports.createPages = async ({ actions }) => {
 
 	function createThemePage({ key, theme, componentPath, path, context }) {
 		// do not throw on creating pages, just log the error
-
 		try {
 
 			// we might have a got data about sites that don't have a theme yet, that's a dev/prod issue, ignore these sites
@@ -178,33 +197,14 @@ exports.createPages = async ({ actions }) => {
 		}
 	}
 
-	function createLegacySites () {
+	function createLegacySites() {
 		actions.createPage({
 			path: '/from-junk-to-magic',
 			component: require.resolve(`${__dirname}/src/components/pages/FromJunkToMagic/index.js`)
 		});
 	}
 
-};
-
-exports.onCreateWebpackConfig = ({ getConfig, actions }) => {
-	const config = getConfig();
-
-	silenceOrderWarning();
-
-	// Update the config.
-	actions.replaceWebpackConfig(config);
-
-	function silenceOrderWarning () {
-		// Get the mini-css-extract-plugin
-		const miniCssExtractPlugin = config.plugins.find(
-			(plugin) => plugin.constructor.name === 'MiniCssExtractPlugin'
-		);
-
-		// Set the option here to true.
-		if (miniCssExtractPlugin) miniCssExtractPlugin.options.ignoreOrder = true;
-	}
-};
+}
 
 function safelyReadFile (path) {
 	try {

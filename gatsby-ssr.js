@@ -6,7 +6,7 @@ let generator;
 
 export { wrapPageElement } from '@config/Page';
 
-export const onPreRenderHTML = async ({ getHeadComponents, replaceHeadComponents }) => {
+export async function onPreRenderHTML({ getHeadComponents, replaceHeadComponents }) {
 	const headComponents = getHeadComponents();
 
 	// promote the preconnect and preload tags to the top of the head, so they are loaded before the css dump and everything else
@@ -20,7 +20,7 @@ export const onPreRenderHTML = async ({ getHeadComponents, replaceHeadComponents
 	});
 
 	replaceHeadComponents(headComponents);
-};
+}
 
 function getGenerator() {
 

@@ -19,45 +19,7 @@ export default function VerificationCode({ email, buttonClassName, onChange }) {
 
 	const form = useForm();
 
-	const onSubmit = form.handleSubmit(async (data) => {
-		const code = Object.values(data).join('');
-		setIsSendingCodeForm(true);
-		const { isConfirmed } = await xhr.confirmLoginCode({ email, code });
-		setIsSendingCodeForm(false);
-		if (!isConfirmed) return setHelpText(t.bad_verification_code);
-		window.location.href = `/editor?loginCode=${code}`;
-	});
-
-	const handlePaste = (event) => {
-		event.preventDefault();
-
-		onChange();
-		setHelpText(false);
-
-		const pastedText = event.clipboardData.getData('text/plain');
-		if (!regexes.first4Digits.test(pastedText)) return setHelpText(t.digitsOnlyWhileYouPasted(pastedText));
-
-		const digits = pastedText.match(/[0-9]{4}/)[0].split('');
-		form.setValue('code1', digits[0]);
-		form.setValue('code2', digits[1]);
-		form.setValue('code3', digits[2]);
-		form.setValue('code4', digits[3]);
-	};
-
-	const handleDigitChange = (event) => {
-		if (event.ctrlKey) return;
-		event.preventDefault();
-
-		onChange();
-		setHelpText(false);
-
-		const value = event.key.match(regexes.firstDigit)?.[0] || '';
-		if (!value) return;
-
-		event.currentTarget.value = value;
-		const nextInput = event.currentTarget.nextSibling;
-		if (nextInput) nextInput.focus();
-	};
+	const onSubmit = form.handleSubmit(onSubmitHandler);
 
 	const digitClassName = classNames("input has-text-centered", digitInput);
 	const submitCodeButtonClassName = classNames(buttonClassName, isSendingCodeForm && "is-loading");
@@ -79,5 +41,45 @@ export default function VerificationCode({ email, buttonClassName, onChange }) {
 		</div>
 		<button onClick={onSubmit} className={submitCodeButtonClassName}>{t.email_address_verification}</button>
 	</>;
+
+	async function onSubmitHandler(data) {
+		const code = Object.values(data).join('');
+		setIsSendingCodeForm(true);
+		const { isConfirmed } = await xhr.confirmLoginCode({ email, code });
+		setIsSendingCodeForm(false);
+		if (!isConfirmed) return setHelpText(t.bad_verification_code);
+		window.location.href = `/editor?loginCode=${code}`;
+	}
+
+	function handleDigitChange(event) {
+		if (event.ctrlKey) return;
+		event.preventDefault();
+
+		onChange();
+		setHelpText(false);
+
+		const value = event.key.match(regexes.firstDigit)?.[0] || '';
+		if (!value) return;
+
+		event.currentTarget.value = value;
+		const nextInput = event.currentTarget.nextSibling;
+		if (nextInput) nextInput.focus();
+	}
+
+	function handlePaste(event) {
+		event.preventDefault();
+
+		onChange();
+		setHelpText(false);
+
+		const pastedText = event.clipboardData.getData('text/plain');
+		if (!regexes.first4Digits.test(pastedText)) return setHelpText(t.digitsOnlyWhileYouPasted(pastedText));
+
+		const digits = pastedText.match(/[0-9]{4}/)[0].split('');
+		form.setValue('code1', digits[0]);
+		form.setValue('code2', digits[1]);
+		form.setValue('code3', digits[2]);
+		form.setValue('code4', digits[3]);
+	}
 
 }
