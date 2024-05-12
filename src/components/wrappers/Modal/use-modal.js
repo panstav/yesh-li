@@ -28,7 +28,7 @@ export default function useModal(propsFromHook = {}) {
 
 	function hideModal(event) {
 		setHtmlClass('with-modal', false);
-		setHtmlClass('blur-background', false);
+		setHtmlClass('blur-modal-background', false);
 
 		// unless the modal is being closed by the browser's back button - go back
 		if (event?.type !== 'popstate') history.back();
@@ -45,7 +45,7 @@ export default function useModal(propsFromHook = {}) {
 		);
 
 		setHtmlClass('with-modal', true);
-		if (blurBackground) setHtmlClass('blur-background', true);
+		if (blurBackground) setHtmlClass('blur-modal-background', true);
 
 		// this is to identify the modal so that if 2 are open and the user triggers hideModal - it wouldn't close both
 		history.replaceState({ modalId }, '');
