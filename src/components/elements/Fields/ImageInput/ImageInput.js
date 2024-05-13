@@ -8,9 +8,10 @@ import Loader from '@elements/Loader';
 
 import cleanUGT from '@lib/clean-user-generated-text';
 
+import { acceptedFileSuffixes } from '@pages/Editor';
 import { compoundField, imagePreviewContainer } from '@pages/Editor/index.module.sass';
 
-export default function ImageInput({ id, error, label, description, imgId, imgProps, fileName, multiple, acceptedFileSuffixes, onChange, isLoading, isCompoundField, hasNoAlt, hasNoFocus, setFocus, required }) {
+export default function ImageInput({ id, error, label, description, imgId, imgProps, fileName, multiple, onChange, isLoading, isCompoundField, hasNoAlt, hasNoFocus, setFocus, required }) {
 	const t = useFieldLabels();
 	const { register } = useFormContext();
 

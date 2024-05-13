@@ -5,7 +5,8 @@ export default {
 
 	email: /\S+@\S+\.\S+/,
 
-	domain: /^(http:\/\/|https:\/\/)?(www.)?[a-zA-Z-0-9]+\.[a-zA-Z-0-9]+(\.[a-zA-Z-0-9]*)?$/,
+	domain: /^(http:\/\/|https:\/\/)?(www.)?[a-zA-Z-0-9]+\.[a-zA-Z-0-9]+([.a-zA-Z-0-9]*)?$/,
+	url: /^(http:\/\/|https:\/\/)?(www.)?[a-zA-Z-0-9]+\.[a-zA-Z-0-9]+([.a-zA-Z-0-9/]*)?$/, // regexes.domain, with a trailing slash in the second to last group
 
 	slug: /^[a-zA-Z0-9]+[a-zA-Z-0-9]+[a-zA-Z0-9]+$/,
 

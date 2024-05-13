@@ -1,28 +1,29 @@
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
 
 import getDirByLang from '@lib/get-dir-by-lang';
 
 import Auth from './Auth';
 import Editor from './Editor';
+import EditorContextSetter from './ContextSetter';
 
 export const EditorContext = createContext();
-export const editorProps = {
-	isInternal: true
-};
+export const editorProps = { isInternal: true };
+
+export const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+export const acceptedFileSuffixes = allowedImageTypes.join(',').replaceAll('image/', '.');
+export const acceptedExtnames = allowedImageTypes.join(', ').replaceAll('image/', '.');
 
 export default function EditorWrapper ({ pageContext }) {
 	const { forward, backward } = getDirByLang(pageContext.lang, { bothSides: true });
 	return <Auth>
-		<EditorContextHandler extend={{ dir: { forward, backward } }}>
+		<EditorContextSetter extend={{ dir: { forward, backward } }}>
 			<Editor  />
-		</EditorContextHandler>
+		</EditorContextSetter>
 	</Auth>;
 }
 
 export function PreviewLink({ href, onClick, children }) {
-
 	const goTo = useContext(EditorContext).navigate;
-
 	return <a onClick={navigate}>{children}</a>;
 
 	function navigate(event) {
@@ -30,20 +31,5 @@ export function PreviewLink({ href, onClick, children }) {
 		onClick(event);
 		goTo(href);
 	}
-
-}
-
-function EditorContextHandler({ extend, children }) {
-	const [navigate, setNavigate] = useState();
-
-	const registerNavigation = useCallback((navigationFn) => {
-		if (!navigate) return setNavigate(() => navigationFn);
-	}, [navigate]);
-
-	const ctx = Object.assign({ navigate, registerNavigation }, extend);
-
-	return <EditorContext.Provider value={ctx}>
-		{children}
-	</EditorContext.Provider>;
 
 }

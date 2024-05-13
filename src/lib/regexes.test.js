@@ -49,11 +49,45 @@ describe('domain', () => {
 		expect(regexes.domain.test('http://example.co.il')).toBe(true);
 
 		expect(regexes.domain.test('http:/example.com')).toBe(false);
+		expect(regexes.domain.test('http://example.co.il/')).toBe(false);
 		expect(regexes.domain.test('https//example.com')).toBe(false);
 		expect(regexes.domain.test('http://example')).toBe(false);
+		expect(regexes.domain.test('http://example/')).toBe(false);
+		expect(regexes.domain.test('http://example/com')).toBe(false);
+		expect(regexes.domain.test('http://example/com/')).toBe(false);
+		expect(regexes.domain.test('http://example/com.example')).toBe(false);
+		expect(regexes.domain.test('http://example/com.example/')).toBe(false);
+		expect(regexes.domain.test('http://example/com/example')).toBe(false);
+		expect(regexes.domain.test('http://example/com/example/')).toBe(false);
 		expect(regexes.domain.test('http://example.')).toBe(false);
 		expect(regexes.domain.test('http://.com')).toBe(false);
 		expect(regexes.domain.test('http://.')).toBe(false);
+	});
+});
+describe('url', () => {
+	it('should match a string that starts with http:// or https:// followed by an optional www., followed by a domain name, followed by a TLD', () => {
+		expect(regexes.url.test('http://www.example.com')).toBe(true);
+		expect(regexes.url.test('https://www.example.com')).toBe(true);
+		expect(regexes.url.test('https://example.com')).toBe(true);
+		expect(regexes.url.test('http://example.com')).toBe(true);
+		expect(regexes.url.test('www.example.com')).toBe(true);
+		expect(regexes.url.test('example.com')).toBe(true);
+		expect(regexes.url.test('http://example.co.il')).toBe(true);
+		expect(regexes.url.test('http://example.co.il/')).toBe(true);
+
+		expect(regexes.url.test('http:/example.com')).toBe(false);
+		expect(regexes.url.test('https//example.com')).toBe(false);
+		expect(regexes.url.test('http://example')).toBe(false);
+		expect(regexes.url.test('http://example/')).toBe(false);
+		expect(regexes.url.test('http://example/com')).toBe(false);
+		expect(regexes.url.test('http://example/com/')).toBe(false);
+		expect(regexes.url.test('http://example/com.example')).toBe(false);
+		expect(regexes.url.test('http://example/com.example/')).toBe(false);
+		expect(regexes.url.test('http://example/com/example')).toBe(false);
+		expect(regexes.url.test('http://example/com/example/')).toBe(false);
+		expect(regexes.url.test('http://example.')).toBe(false);
+		expect(regexes.url.test('http://.com')).toBe(false);
+		expect(regexes.url.test('http://.')).toBe(false);
 	});
 });
 
