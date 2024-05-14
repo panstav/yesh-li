@@ -6,6 +6,7 @@ import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
 import { useFieldLabels } from '@hooks/use-i18n';
 
 import xhr from '@services/xhr';
+import markErrorOnClosestDetails from '@lib/mark-error-on-closest-details';
 
 import { fieldsMap } from '@themes';
 import { AuthContext } from '@pages/Editor/Auth';
@@ -25,9 +26,9 @@ export default function ThemeFields() {
 
 	useEffect(() => {
 		// clear all error indicators
-		document.querySelectorAll('details[has-errors]').forEach((elem) => elem.removeAttribute('has-errors'));
+		document.querySelectorAll('details[data-has-errors]').forEach((elem) => elem.removeAttribute('data-has-errors'));
 		// look for current elements with errors and set their parent details elem to indicate errors
-		findElems(errors).forEach((elem) => elem.closest('details').setAttribute('has-errors', true));
+		findElems(errors).forEach((elem) => markErrorOnClosestDetails(elem));
 	});
 
 	const onSubmit = handleSubmit((data) => {
