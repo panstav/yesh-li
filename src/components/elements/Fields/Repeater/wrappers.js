@@ -24,7 +24,7 @@ export function ModalizedRepeaterItem({ title, children }) {
 
 		<Modal {...repeaterItemModal} noCloseButton render={({ hideModal }) => <div className={fieldsContainer}>
 			{children}
-				<SaveButton onClick={hideModal}>{t.continue}</SaveButton>
+			<SaveButton onClick={hideModal}>{t.continue}</SaveButton>
 		</div>} />
 	</>;
 }
