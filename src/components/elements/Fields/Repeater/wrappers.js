@@ -1,23 +1,37 @@
+import { useEffect, useRef } from "react";
+import { useFormContext } from "react-hook-form";
 import classNames from "classnames";
 
 import useI18n from "@hooks/use-i18n";
 
-import Details from "@elements/Details";
 import Modal, { SaveButton, useModal } from "@wrappers/Modal";
+import Details from "@elements/Details";
+
+import markErrorOnClosestDetails from "@lib/mark-error-on-closest-details";
 
 import { fieldsContainer, compoundField, repeaterItemTitle } from "@pages/Editor/index.module.sass";
 
 import Buttons from "./Buttons";
 
-export function ModalizedRepeaterItem({ title, children }) {
+export function ModalizedRepeaterItem({ title, itemId, arrayId, children }) {
 	const [{ misc: t }] = useI18n();
+	const { getFieldState } = useFormContext();
+
+	const ref = useRef();
+
+	const itemHasErrors = !!getFieldState(itemId).error;
+	const arrayHasErrors = !!getFieldState(arrayId).error;
+	useEffect(() => {
+		if (ref.current) markErrorOnClosestDetails(ref.current, arrayHasErrors, true);
+	}, [arrayHasErrors, ref]);
 
 	const [repeaterItemModal, showModal] = useModal({ blurBackground: true });
 
-	const titleWrapperClassName = classNames(repeaterItemTitle, 'is-clickable');
+	const titleWrapperClassName = classNames(repeaterItemTitle, 'is-clickable', itemHasErrors && 'has-text-danger');
 
 	return <>
 		<TitleWithButtons
+			wrapperRef={ref}
 			title={title}
 			onClick={() => showModal()}
 			className={titleWrapperClassName} />
@@ -29,8 +43,14 @@ export function ModalizedRepeaterItem({ title, children }) {
 	</>;
 }
 
-export function CollapsedRepeaterItem({ title, children, ...props }) {
-	const Title = () => <TitleWithButtons title={title} titleProps={{ ['data-avoid-closing-details']: true }} />;
+export function CollapsedRepeaterItem({ title, itemId, children, ...props }) {
+
+	const { getFieldState } = useFormContext();
+
+	const titleWrapperClassName = getFieldState(itemId).error ? 'has-text-danger' : '';
+
+	const Title = () => <TitleWithButtons title={title} className={titleWrapperClassName} titleProps={{ ['data-avoid-closing-details']: true }} />;
+
 	return <Details title={Title} {...props}>
 		{children}
 	</Details>;
@@ -42,10 +62,10 @@ export function NoWrapper({ children }) {
 	</div>;
 }
 
-function TitleWithButtons({ title, className: classes, onClick, titleProps }) {
+function TitleWithButtons({ title, wrapperRef, className: classes, onClick, titleProps }) {
 	const className = classNames("is-flex is-justify-content-space-between is-align-items-center pe-5", classes);
-	return <div className={className} onClick={onClick}>
-		<h3 className="is-size-5 m-0 has-text-wrap-ellipsis" {...titleProps}>{title}</h3>
+	return <div ref={wrapperRef} className={className} onClick={onClick}>
+		<h3 className="is-size-5 m-0 has-text-wrap-ellipsis" {...titleProps}>{title || "Untitled"}</h3>
 		<Buttons onlyOnHover />
 	</div>;
 }

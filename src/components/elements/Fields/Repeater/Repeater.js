@@ -5,7 +5,7 @@ import Buttons from "./Buttons";
 
 import { ArrayOrderControlContext } from ".";
 
-export default function Repeater({ items, singleName, wrapperHandlesTitle, addItem, cantAdd, addButtonOnTop, addButtonClassName, wrapper: Wrapper, children }) {
+export default function Repeater({ items, arrayId, singleName, wrapperHandlesTitle, addItem, cantAdd, addButtonOnTop, addButtonClassName, wrapper: Wrapper, children }) {
 
 	const t = useFieldLabels();
 
@@ -14,7 +14,7 @@ export default function Repeater({ items, singleName, wrapperHandlesTitle, addIt
 		{items.map(({ id, formId, title, arrayOrder }) => {
 			return <Fragment key={id}>
 				<ArrayOrderControlContext.Provider value={arrayOrder}>
-					<Wrapper title={title} itemId={formId} key={id}>
+					<Wrapper title={title} itemId={formId} arrayId={arrayId} key={id}>
 						{!wrapperHandlesTitle && <div className="is-flex is-justify-content-space-between is-align-items-center mb-4">
 							<h3 className="is-size-5 m-0 has-text-wrap-ellipsis">{title}</h3>
 							<Buttons />

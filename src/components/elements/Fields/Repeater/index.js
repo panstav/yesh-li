@@ -38,6 +38,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 
 	const props = {
 		items: fields.map(extendField),
+		arrayId,
 		singleName,
 		wrapperHandlesTitle: !!collapseItems,
 		addItem,
@@ -51,7 +52,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 	return Component(props);
 
 	function extendField(item, index, items) {
-		
+
 		const arrayOrder = { move, remove, cantRemove, itemIndex: index, lastIndex: items.length - 1 };
 
 		let title = `${singleName} #${index + 1}`;
