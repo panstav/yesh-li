@@ -82,10 +82,15 @@ async function createMultiSite(sites, redirects) {
 
 async function createRootSite(site) {
 	// instance is running on a dedicated domain, the root page is the only page
-
-	await writeSitemapFile([
+	const siteMap = [
 		{ url: '/', changefreq: 'daily', priority: 1 }
-	]);
+	];
+	Object.keys(site[0].content?.pages || {}).forEach((path) => {
+		const effectivePath = path === 'home' ? '/' : camelToKebabCase(path);
+		return siteMap.push({ url: `/${effectivePath}`, changefreq: 'weekly', priority: 0.7 });
+	});
+
+	await writeSitemapFile(siteMap);
 
 	// create an empty redirects file
 	await writeRedirectsFile([]);
@@ -155,4 +160,14 @@ async function deleteAllButGitIgnoreAt(pathPrefix) {
 		if (fileName === '.gitignore') return;
 		return fs.promises.rm(`${pathPrefix}/${fileName}`, { recursive: true });
 	}));
+}
+
+function camelToKebabCase(str) {
+	return str
+		// kebab casing
+		.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase()
+		// ensure dashes don't repeat
+		.replace(/-+/g, '-')
+		// remove dashes from start and end of the str
+		.replace(/(^-|-$)/g, '');
 }
