@@ -11,7 +11,7 @@ export default function Buttons({ onlyOnHover, style }) {
 	const t = useFieldLabels();
 	const { move, cantRemove, remove, itemIndex, lastIndex } = useContext(ArrayOrderControlContext);
 
-	const repeatedButtonClassName = classNames('button is-small has-text-weight-bold', !onlyOnHover && 'is-block');
+	const repeatedButtonClassName = classNames('button is-small has-text-weight-bold', !onlyOnHover && 'is-flex');
 	const buttonStyle = { height: 'auto', ...style };
 
 	const handle = (fn) => (event) => {
