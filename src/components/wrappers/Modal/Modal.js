@@ -37,9 +37,9 @@ export function ContextTitle({ children }) {
 	</div>;
 }
 
-export function SaveButton({ className: classes, children }) {
+export function SaveButton({ className: classes, onClick, children }) {
 	const buttonClassName = classNames('button is-primary', classes);
 	return <div className='is-flex is-justify-content-end'>
-		<button className={buttonClassName}>{children}</button>
+		<button className={buttonClassName} onClick={onClick}>{children}</button>
 	</div>;
 }
