@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import xhr from '@services/xhr';
+import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
+
 import { useFieldLabels } from '@hooks/use-i18n';
 
-import Modal, { useErrorModal, useSuccessModal } from '@wrappers/Modal';
+import xhr from '@services/xhr';
 
 import { fieldsMap } from '@themes';
 import { AuthContext } from '@pages/Editor/Auth';
