@@ -6,6 +6,8 @@ const dotenv = require('dotenv');
 
 const themesMap = require('../src/components/themes/map.json');
 
+let got;
+
 if (!process.env.GATSBY_API_URL) {
 	dotenv.config({ path: `.env.production` });
 }
@@ -18,7 +20,7 @@ const shortDomain = new URL(fullDomain).hostname;
 	if (!process.env.NETLIFY) await cleanUp();
 
 	// get sites from api
-	const { sites, redirects } = await fetchUserSites();
+	const { sites, redirects } = await api(`sites?domain=${shortDomain}`);
 
 	// check whether we're on a dedicated domain or a multi-tenant app
 	if (sites.length === 1 && sites[0].slug === '') return createRootSite(sites);
@@ -28,14 +30,6 @@ const shortDomain = new URL(fullDomain).hostname;
 	await createMultiSite(sites, redirects);
 
 })();
-
-async function fetchUserSites() {
-
-	// got doesn't like to be `require`d
-	const got = await getGot();
-
-	return got.get(`${process.env.GATSBY_API_URL}/sites?domain=${shortDomain}`).json();
-}
 
 async function createMultiSite(sites, redirects) {
 
@@ -128,8 +122,9 @@ function getManifest({ title, shortName = title, slug, id = slug, mainColor }) {
 	};
 }
 
-async function getGot() {
-	return (await import('got')).got;
+async function api(path) {
+	if (!got) got = (await import('got')).got;
+	return got.get(`${process.env.GATSBY_API_URL}/${path}`).json();
 }
 
 async function writeSitemapFile(items) {
