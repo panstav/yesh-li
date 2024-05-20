@@ -3,12 +3,15 @@ import classNames from "classnames";
 
 import { useFieldLabels } from "@hooks/use-i18n";
 
-import { ArrowDown, ArrowUp, Close } from "@elements/Icon";
+import { ArrowDown, ArrowUp, Close, Eye } from "@elements/Icon";
+
+import { EditorContext } from "@pages/Editor";
 
 import { ArrayOrderControlContext } from ".";
 
-export default function Buttons({ onlyOnHover, style }) {
+export default function Buttons({ onlyOnHover, withGoTo, style }) {
 	const t = useFieldLabels();
+	const { navigate } = useContext(EditorContext);
 	const { move, cantRemove, remove, itemIndex, lastIndex } = useContext(ArrayOrderControlContext);
 
 	const repeatedButtonClassName = classNames('button is-small has-text-weight-bold', !onlyOnHover && 'is-flex');
@@ -21,7 +24,16 @@ export default function Buttons({ onlyOnHover, style }) {
 
 	return <div className="buttons has-addons is-flex-shrink-0 ps-4">
 
-		{itemIndex !== 0 && <button
+		{withGoTo && <button
+			type="button" className={repeatedButtonClassName}
+			onClick={handle(() => navigate(withGoTo))}
+			title={t.go_to_page} data-index={itemIndex}
+			style={buttonStyle}
+		>
+			<Eye style={{ width: '0.75rem' }} />
+		</button>}
+
+		{move && itemIndex !== 0 && <button
 			type="button" className={repeatedButtonClassName}
 			onClick={handle(() => move(itemIndex, itemIndex - 1))}
 			title={t.move_up} data-index={itemIndex}
@@ -30,7 +42,7 @@ export default function Buttons({ onlyOnHover, style }) {
 			<ArrowUp style={{ width: '0.75rem' }} />
 		</button>}
 
-		{itemIndex !== lastIndex && <button
+		{move && itemIndex !== lastIndex && <button
 			type="button" className={repeatedButtonClassName}
 			onClick={handle(() => move(itemIndex, itemIndex + 1))}
 			title={t.move_down}

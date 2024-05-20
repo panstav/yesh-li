@@ -1,4 +1,4 @@
-import { graphql, useStaticQuery } from 'gatsby';
+import { useLocation } from '@reach/router';
 
 import pallatte from '@lib/pallatte';
 
@@ -6,31 +6,16 @@ import Component from './Meta';
 
 export { default as HeadFor } from './HeadFor';
 
-export default function Meta({ title, description, pathname, featuredImage: pageFeaturedImage, mainColorName, mainColorHex, isInternal, hasAdvancedSeo = true }) {
-
-	const { site: { siteMetadata: { siteUrl } } } = useStaticQuery(graphql`
-		query {
-			site {
-				siteMetadata {
-					siteUrl
-				}
-			}
-		}
-	`);
+export default function Meta({ title, description, featuredImage: pageFeaturedImage, mainColorName, mainColorHex, isInternal, hasAdvancedSeo = true }) {
+	const location = useLocation();
 
 	const normalizedDescription = Array.isArray(description) ? description.join(' ') : description;
-
-	const pagePathname = siteUrl + pathname;
-	const shortDomain = ((shortUrl) => {
-		return `${shortUrl}${shortUrl.endsWith('/') ? '' : '/'}`;
-	})(pagePathname.slice(pagePathname.indexOf('://') + 3));
 
 	mainColorHex = mainColorHex || pallatte.getColor(mainColorName);
 
 	const props = {
-		shortDomain,
-		siteUrl,
-		pagePathname,
+		shortDomain: location.host,
+		fullPath: location.origin + location.pathname,
 		title,
 		description: normalizedDescription,
 		mainColorName,

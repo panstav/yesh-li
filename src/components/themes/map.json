@@ -9,6 +9,10 @@
 	},
 	{
 		"themeName": "tom-01",
-		"parentDomain": "yesh.li-eng"
+		"parentDomain": "yesh.li-eng",
+		"collectionPages": [
+			{ "type": "post", "prefix": "blog", "componentPath": "pages/Post/index.js" },
+			{ "type": "tag", "prefix": "blog/tag", "componentPath": "pages/Tag/index.js" }
+		]
 	}
 ]

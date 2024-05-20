@@ -2,10 +2,11 @@ import classNames from "classnames";
 
 import Section from "@wrappers/Section";
 
-export default function PageHeader({ title, subtitle, featuredImage, tags = [], className: classes, isSinglePost }) {
+export default function PageHeader({ title, subtitle, featuredImage, tags = [], isSmallFeature, className: classes, isSinglePost }) {
 
 	const className = classNames('has-text-centered py-6', classes);
-	const titleClasses = classNames('title', isSinglePost ? 'is-3 has-text-weight-bold' : 'is-2 is-uppercase');
+	const titleClasses = classNames('title', isSinglePost ? 'is-3 has-text-weight-bold' : 'is-2 is-uppercase', isSmallFeature ? 'object-fit-cover' : '');
+	const imgStyle = isSmallFeature ? { maxWidth: '350px', aspectRatio: '1/1', objectPosition: featuredImage.position } : { maxWidth: '610px' };
 
 	return <header {...{ className }}>
 		<Section noTopMargin className="py-4">
@@ -24,6 +25,6 @@ export default function PageHeader({ title, subtitle, featuredImage, tags = [], 
 			srcSet={featuredImage.srcSet}
 			alt={featuredImage.alt || `${title} - ${subtitle}`}
 			className="w-100 mt-5 mx-auto"
-			style={{ maxWidth: '610px' }} />}
+			style={imgStyle} />}
 	</header>;
 }

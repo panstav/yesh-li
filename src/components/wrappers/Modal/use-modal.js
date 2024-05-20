@@ -5,6 +5,8 @@ export const useRawModal = modalType('raw');
 export const useSuccessModal = modalType('success');
 export const useErrorModal = modalType('error');
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export default function useModal(propsFromHook = {}) {
 	const { window } = useFrame();
 
@@ -44,8 +46,10 @@ export default function useModal(propsFromHook = {}) {
 				: Object.assign(propsFromHook, propsFromCallback)
 		);
 
-		setHtmlClass('with-modal', true);
-		if (blurBackground) setHtmlClass('blur-modal-background', true);
+		if (isProduction) {
+			setHtmlClass('with-modal', true);
+			if (blurBackground) setHtmlClass('blur-modal-background', true);
+		}
 
 		// this is to identify the modal so that if 2 are open and the user triggers hideModal - it wouldn't close both
 		history.replaceState({ modalId }, '');

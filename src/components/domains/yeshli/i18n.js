@@ -72,6 +72,7 @@ const i18n = {
 
 			minItemsRepeater: (minItems) => minItems === 1 ? 'לפחות פריט 1' : `לפחות ${minItems} פריטים`,
 			maxItemsRepeater: (maxItems) => `מקסימום ${maxItems} פריטים`,
+			go_to_page: "לעבור לעמוד",
 			move_up: "לדחוף מעלה",
 			move_down: "לדחוף מטה",
 			remove: "להסיר",

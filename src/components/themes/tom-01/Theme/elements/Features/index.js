@@ -4,7 +4,7 @@ import Section from "@wrappers/Section";
 
 import VideoEmbed from "@themes/tom-01/Theme/elements/VideoEmbed";
 
-import { singleFeature, imageInViewport } from './index.module.sass';
+import { singleFeature, imageInViewport } from '@themes/tom-01/Theme//index.module.sass';
 
 export default function Features({ children: features, columns = 2 }) {
 	return <Section noTopMargin

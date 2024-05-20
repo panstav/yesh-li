@@ -4,8 +4,11 @@ import RenderChildren from '@wrappers/RenderChildren';
 
 export const PageContext = createContext();
 
-export default function Page({ pageContext, customComponents = {}, background, children }) {
+export default function Page({ location, pageContext, customComponents = {}, background, children }) {
 	const { Header = Null, Footer = Null, Background = FallbackBackground } = customComponents;
+
+	// have the location available in the page context
+	pageContext.location = location;
 
 	return <PageContext.Provider value={pageContext}>
 		<Background {...{ background }} />

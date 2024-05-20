@@ -24,11 +24,10 @@ RetreatYetziraVeOtzmaPage.config = {
 	featuredImage: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg'
 };
 
-export const Head = ({ location: { pathname } }) => {
+export const Head = () => {
 	return <>
 		<Meta
 			{...RetreatYetziraVeOtzmaPage.config}
-			pathname={pathname}
 		/>
 		{isProduction && <>
 			<GoogleAnalytics />

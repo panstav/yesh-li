@@ -3,6 +3,7 @@ export default function markErrorOnClosestDetails(elem, hasErrors = true, isolat
 }
 
 function iterate(elem, hasErrors, isolate) {
+
 	const detailsElem = elem.parentElement.closest('details');
 	if (!detailsElem) return;
 

@@ -2,21 +2,21 @@ import { CssVariables } from ".";
 
 const isRemote = !process.env.GATSBY_IS_LOCAL;
 
-export default function Meta({ shortDomain, siteUrl, pagePathname, title, description, mainColorName, mainColorHex, pageFeaturedImage, hasAdvancedSeo, isInternal }) {
+export default function Meta({ shortDomain, fullPath, title, description, mainColorName, mainColorHex, pageFeaturedImage, hasAdvancedSeo, isInternal }) {
 	return <>
 		<title>{title}</title>
 		<meta name="title" content={title} />
 		<meta name="description" content={description} />
 
-		<meta name="yl:domain" content={siteUrl} />
+		<meta name="yl:domain" content={shortDomain} />
 
 		{!isInternal && <>
 			<meta property="og:type" content="website" />
-			<meta property="og:url" content={pagePathname} />
+			<meta property="og:url" content={fullPath} />
 			<meta property="og:title" content={title} />
 			<meta property="og:description" content={description} />
 			<meta property="twitter:card" content="summary_large_image" />
-			<meta property="twitter:url" content={pagePathname} />
+			<meta property="twitter:url" content={fullPath} />
 			<meta property="twitter:title" content={title} />
 			<meta property="twitter:description" content={description} />
 
@@ -26,7 +26,7 @@ export default function Meta({ shortDomain, siteUrl, pagePathname, title, descri
 			</>}
 
 			{(isRemote && hasAdvancedSeo) && <>
-				<link rel="manifest" href={`${padEnd(pagePathname, '/')}manifest.json`} />
+				<link rel="manifest" href={`${padEnd(fullPath, '/')}manifest.json`} />
 
 				<meta name="apple-mobile-web-app-title" content={title} />
 				<meta name="application-name" content={title} />

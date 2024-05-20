@@ -23,6 +23,7 @@ export default {
 	confirmSlugVacancy: (slug) => get(`slug-vacancy?slug=${slug}`),
 	createTempRootSite: (domain) => post('temp-root-site', { domain }, { timeout: false }),
 	validateNameServers: ({ domain, nameServers, siteId, currentSlug }) => get(`name-servers-validation?domain=${domain}&currentSlug=${currentSlug}&siteId=${siteId}&required=${nameServers.join(',')}`),
+	getCollectionPage: ({ siteId, pageId }) => get(`collection-page?siteId=${siteId}&pageId=${pageId}`),
 
 	// marketing-facing routes
 	postEnquiry: (data) => post('enquiry', data)

@@ -11,10 +11,10 @@ export default function Repeater({ items, arrayId, singleName, wrapperHandlesTit
 
 	return <>
 		{addButtonOnTop && <button type="button block" onClick={addItem} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
-		{items.map(({ id, formId, title, arrayOrder }) => {
-			return <Fragment key={id}>
+		{items.map(({ title, formId, expandItem, previewPath, arrayOrder }) => {
+			return <Fragment key={formId}>
 				<ArrayOrderControlContext.Provider value={arrayOrder}>
-					<Wrapper title={title} itemId={formId} arrayId={arrayId} key={id}>
+					<Wrapper {...{ title, arrayId, expandItem, previewPath }} itemId={formId} key={formId}>
 						{!wrapperHandlesTitle && <div className="is-flex is-justify-content-space-between is-align-items-center mb-4">
 							<h3 className="is-size-5 m-0 has-text-wrap-ellipsis">{title}</h3>
 							<Buttons />

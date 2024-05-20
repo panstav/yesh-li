@@ -35,9 +35,9 @@ export default function ContextSetter({ extend, children }) {
 
 	async function uploadImage({ file, limit, sizes, slug }) {
 
-		const { base64: imageBase64, width, height } = await limitImageSize(file, limit);
+		const { base64: imageBase64, width } = await limitImageSize(file, limit);
 
-		if (!sizes) sizes = [Math.max(width, height)];
+		if (!sizes) sizes = [width];
 
 		return xhr.processImage({ imageBase64, fileName: file.name, sizes, siteSlug: slug }).catch((err) => {
 			if (err.responseData?.reasoning === 'moderation') return showImageModal.showModeration();

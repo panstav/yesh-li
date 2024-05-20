@@ -28,7 +28,8 @@ $primary-very-light: rgba(0, 149, 130, 0.1)
 
 	details.details
 		+has-mid-radius
-		margin-bottom: $size-7
+		&:not(:last-child)
+			margin-bottom: $size-7
 
 	.compound-field, [class*="select"] select, input[class*="textarea"], input[class*="input"], button[class*="button"], [class*="ql-toolbar"][class*="ql-toolbar"], [class*="ql-container"]
 		border-color: #a5d7cf

@@ -114,10 +114,12 @@ async function createPages({ actions }) {
 
 	function createRootSite() {
 		// instance is running on a dedicated domain
+
 		const themesMap = JSON.parse(fs.readFileSync(`${__dirname}/src/components/themes/map.json`));
+		const themeData = themesMap.find(({ themeName }) => themeName === rootSiteData.theme);
 
 		// get the editor with which he created the site and prep it for generation
-		const parentDomain = themesMap.find(({ themeName }) => themeName === rootSiteData.theme).parentDomain.replace('.', '');
+		const parentDomain = themeData.parentDomain.replace('.', '');
 		const domainData = JSON.parse(fs.readFileSync(`./src/components/domains/${parentDomain}/index.json`));
 
 		// create the editor page
@@ -131,10 +133,29 @@ async function createPages({ actions }) {
 			}
 		});
 
-		createThemePages(rootSiteData, { parentDomain, ...rootSiteData });
+		const context = { ...rootSiteData, parentDomain };
+		createThemePages(rootSiteData, context);
 
 		if (themeCustomPages.length) {
 			fs.writeFileSync(rootSiteFilePath, JSON.stringify([{ ...rootSiteData, customPages: themeCustomPages }]));
+		}
+
+		// create a page for each collection page in the site's data
+		if (rootSiteData.content.collectionPages) {
+			Object.keys(rootSiteData.content.collectionPages).forEach((type) => {
+				rootSiteData.content.collectionPages[type].forEach((page) => {
+					const { componentPath, prefix } = themeData.collectionPages.find((pageTypeData) => type === pageTypeData.type);
+					const key = `${prefix}/${page.slug}`;
+
+					return createThemePage({
+						theme: rootSiteData.theme,
+						path: `/${key}`,
+						context,
+						key,
+						componentPath
+					});
+				});
+			});
 		}
 	}
 

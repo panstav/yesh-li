@@ -75,14 +75,23 @@ async function createMultiSite(sites, redirects) {
 }
 
 async function createRootSite(site) {
-	// instance is running on a dedicated domain, the root page is the only page
+	// instance is running on a dedicated domain
+
 	const siteMap = [
 		{ url: '/', changefreq: 'daily', priority: 1 }
 	];
 	Object.keys(site[0].content?.pages || {}).forEach((path) => {
-		const effectivePath = path === 'home' ? '/' : camelToKebabCase(path);
+		const effectivePath = path !== 'home' ? camelToKebabCase(path) : '';
 		return siteMap.push({ url: `/${effectivePath}`, changefreq: 'weekly', priority: 0.7 });
 	});
+
+	site[0].content.collectionPages = site[0].content.collectionPages?.reduce((accu, page) => {
+		const url = `${page.type}/${page.slug}`;
+		siteMap.push({ url, changefreq: 'monthly', priority: 0.5 });
+		if (!accu[page.type]) accu[page.type] = [];
+		accu[page.type].push(page);
+		return accu;
+	}, {});
 
 	await writeSitemapFile(siteMap);
 

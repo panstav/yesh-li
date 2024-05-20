@@ -48,6 +48,7 @@ const i18n = {
 			country_phone_code: '+972',
 			minItemsRepeater: (minItems) => minItems === 1 ? 'At least 1 item' : `At least ${minItems} items`,
 			maxItemsRepeater: (maxItems) => `Maximum ${maxItems} items`,
+			go_to_page: "Go to page",
 			move_up: "Move up",
 			move_down: "Move down",
 			remove: "Remove",

@@ -92,7 +92,7 @@ export default function RichEditor({ id, label, placeholder, maxLength, withLink
 			const strippedText = elem.innerText.trim();
 
 			// if it is, set the value to an empty string instead of an empty paragraph or span or whatever
-			if (!strippedText) return setValue(id, '');
+			if (!strippedText) return setValue(id, '', { shouldValidate: true });
 			if (maxLength && strippedText.length > maxLength) return setError(id, { type: 'maxLength', message: t.maxLengthField(maxLength) });
 
 			// if it's not, set the value to the editor's innerHTML after cleaning it
