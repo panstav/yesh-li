@@ -23,7 +23,8 @@ export default function Editor() {
 	const { siteId } = useContext(AuthContext);
 
 	const form = useForm({
-		mode: 'onChange',
+		mode: 'onTouched',
+		reValidateMode: 'onChange',
 		defaultValues: () => xhr.getSiteData(siteId)
 	});
 

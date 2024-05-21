@@ -2,13 +2,16 @@ import { useFormContext } from "react-hook-form";
 import classNames from "classnames";
 
 import { useFieldLabels } from "@hooks/use-i18n";
+import useUniqueValidation from "@hooks/use-unique-validation";
 
 import cleanUGT from "@lib/clean-user-generated-text";
 
-export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, maxLength, required = true, setValueAs = x => x, onChange, isSmall, autoComplete }) {
+export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, unique, maxLength, required = true, setValueAs = x => x, onChange, isSmall, autoComplete }) {
 	const t = useFieldLabels();
 	const { register, getFieldState, formState } = useFormContext();
 	const { error } = getFieldState(id, formState);
+
+	const uniqueValidation = useUniqueValidation(unique?.id, unique?.key, unique?.name);
 
 	const valueAs = (val) => {
 		if (type === 'number') return setValueAs(val);
@@ -26,6 +29,7 @@ export default function TextInput({ id, label, labelClassName: labelClasses, typ
 
 	if (pattern) inputConfig.pattern = pattern;
 	if (validate) inputConfig.validate = validate;
+	if (unique) inputConfig.validate ? Object.assign(inputConfig.validate, uniqueValidation) : inputConfig.validate = uniqueValidation;
 	if (onChange) inputConfig.onChange = (event) => onChange(ifValid({ validate, pattern }, valueAs(event.target.value)));
 	if (autoComplete) inputConfig.autoComplete = autoComplete;
 

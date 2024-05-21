@@ -14,6 +14,7 @@ export default wrapPage(Tag);
 export const Head = HeadFor(wrapHeadProps(({ location: { pathname }, pageContext: { content: { collectionPages } } }) => {
 	const { title } = getCollectionPage(collectionPages, pathname);
 	const postsWithTag = getPostsByTag(collectionPages.post, { title });
+
 	return ({
 		...wrapTitle(title),
 		featuredImage: getLatestPost(postsWithTag).featuredImage

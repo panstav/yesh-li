@@ -1,10 +1,7 @@
 import { createContext } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
-import classNames from "classnames";
 
 import { useFieldLabels } from "@hooks/use-i18n";
-
-import { addButton } from "@pages/Editor/index.module.sass";
 
 import Component from "./Repeater";
 import { CollapsedRepeaterItem, ModalizedRepeaterItem, NoWrapper } from "./wrappers";
@@ -48,20 +45,18 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 	const cantRemove = (minLength && fields.length == minLength) ? t.minItemsRepeater(minLength) : '';
 	const cantAdd = maxLength && fields.length == maxLength ? t.maxItemsRepeater(maxLength) : '';
 
-	const addButtonClassName = classNames(addButton, 'button is-fullwidth has-text-weight-bold',
-		addButtonOnTop && fields.length ? 'mb-3' : '',
-		!addButtonOnTop && fields.length ? 'mt-3' : ''
-	);
+	const items = getValues(arrayId)
+		.map(extendField)
+		.map((item, index) => ({ ...item, uniqueId: fields[index]?.id || item.title }));
 
 	const props = {
-		items: fields.map(extendField),
+		items,
 		arrayId,
 		singleName,
 		wrapperHandlesTitle: !!collapseItems,
 		addItem,
 		cantAdd,
 		addButtonOnTop,
-		addButtonClassName,
 		wrapper: Wrapper,
 		children
 	};
@@ -84,7 +79,6 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 		if (collapseItems) title = getValues(`${arrayId}.${index}.${collapseItems}`);
 
 		const props = {
-			id: item.id,
 			formId: `${arrayId}.${index}`,
 			title,
 			arrayOrder
