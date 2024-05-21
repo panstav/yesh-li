@@ -12,7 +12,7 @@ import RenderChildren from "@wrappers/RenderChildren";
 
 export const ArrayOrderControlContext = createContext();
 
-export default function Repeater({ arrayId, singleName, emptyItem, asyncItems, collapseItems, openItemInModal, onRemove, addButtonOnTop, pathKey, minLength, maxLength, wrapper: Wrapper, children }) {
+export default function Repeater({ arrayId, singleName, emptyItem, collapseItems, openItemInModal, onRemove, addButtonOnTop, pathKey, minLength, maxLength, wrapper: Wrapper, children }) {
 
 	validate();
 
@@ -31,9 +31,8 @@ export default function Repeater({ arrayId, singleName, emptyItem, asyncItems, c
 	}
 
 	const t = useFieldLabels();
-	const { getValues, setValue } = useFormContext();
+	const { getValues } = useFormContext();
 	const { fields, append, remove, move } = useFieldArray({ name: arrayId });
-	const items = getValues(arrayId) || [];
 
 	const addItem = () => {
 		if (typeof emptyItem !== 'function') return append(emptyItem);
@@ -41,21 +40,21 @@ export default function Repeater({ arrayId, singleName, emptyItem, asyncItems, c
 	};
 
 	const removeItem = (itemIndex) => {
-		const item = items[itemIndex];
+		const item = fields[itemIndex];
 		onRemove?.(item);
 		remove(itemIndex);
 	};
 
-	const cantRemove = (minLength && items.length == minLength) ? t.minItemsRepeater(minLength) : '';
-	const cantAdd = maxLength && items.length == maxLength ? t.maxItemsRepeater(maxLength) : '';
+	const cantRemove = (minLength && fields.length == minLength) ? t.minItemsRepeater(minLength) : '';
+	const cantAdd = maxLength && fields.length == maxLength ? t.maxItemsRepeater(maxLength) : '';
 
 	const addButtonClassName = classNames(addButton, 'button is-fullwidth has-text-weight-bold',
-		addButtonOnTop && items.length ? 'mb-3' : '',
-		!addButtonOnTop && items.length ? 'mt-3' : ''
+		addButtonOnTop && fields.length ? 'mb-3' : '',
+		!addButtonOnTop && fields.length ? 'mt-3' : ''
 	);
 
 	const props = {
-		items: items.map(extendField),
+		items: fields.map(extendField),
 		arrayId,
 		singleName,
 		wrapperHandlesTitle: !!collapseItems,
@@ -84,30 +83,16 @@ export default function Repeater({ arrayId, singleName, emptyItem, asyncItems, c
 		// prefer fieldTitle if titleId is given and is not empty
 		if (collapseItems) title = getValues(`${arrayId}.${index}.${collapseItems}`);
 
-		const formId = `${arrayId}.${index}`;
-
 		const props = {
-			item,
-			expandItem: asyncItems ? isItemPartial(item) ? expand : null : null,
-			arrayOrder,
+			id: item.id,
+			formId: `${arrayId}.${index}`,
 			title,
-			formId
+			arrayOrder
 		};
 
 		if (pathKey) props.previewPath = typeof pathKey === 'function' ? pathKey(item) : item[pathKey];
 
 		return props;
-
-		async function expand() {
-			if (!isItemPartial(getValues(formId))) return Promise.resolve(item);
-			const fullItem = await asyncItems(item);
-			setValue(formId, fullItem);
-		}
-
-		// eslint-disable-next-line no-unused-vars
-		function isItemPartial({ id, docId, type, title, ...asyncContent }) {
-			return !Object.keys(asyncContent).length;
-		}
 
 	}
 

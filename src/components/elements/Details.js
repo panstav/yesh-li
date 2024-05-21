@@ -1,28 +1,21 @@
 import { useState } from "react";
 import classNames from "classnames";
 
-import Loader from "@elements/Loader";
-
 import { details, innerContainer } from "@pages/Editor/index.module.sass";
 
-export default function Details({ title, detailsRef, onPreOpen, children }) {
+export default function Details({ title, detailsRef, children }) {
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [isPending, setIsPending] = useState(false);
 
 	const Title = typeof title === "function" ? title : () => <>{title}</>;
 
 	const detailsClassName = classNames(details, "details");
-	const pendingInnerContainer = classNames(innerContainer, "is-relative");
 
-	return <details ref={detailsRef} className={detailsClassName} {...isOpen || isPending ? { open: true } : {}}>
+	return <details ref={detailsRef} className={detailsClassName} {...isOpen ? { open: true } : {}}>
 		<summary onClick={toggleDetails}>
 			<Title />
 		</summary>
 
-		{isPending && <div className={pendingInnerContainer} style={{ minHeight: '5rem' }}>
-			<Loader />
-		</div>}
 		{isOpen && <div className={innerContainer}>
 			{children}
 		</div>}
@@ -39,12 +32,6 @@ export default function Details({ title, detailsRef, onPreOpen, children }) {
 
 		event.preventDefault();
 		event.stopPropagation();
-
-		if (onPreOpen) {
-			setIsPending(true);
-			await onPreOpen();
-			setIsPending(false);
-		}
 
 		setIsOpen(!isOpen);
 	}

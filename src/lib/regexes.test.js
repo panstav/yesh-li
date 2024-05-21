@@ -66,6 +66,19 @@ describe('domain', () => {
 });
 
 describe('slug', () => {
+	it('should match any non-zero length of string', () => {
+		expect('a'.match(regexes.slug)[0]).toBe('a');
+		expect('a-b'.match(regexes.slug)[0]).toBe('a-b');
+		expect('ab-c'.match(regexes.slug)[0]).toBe('ab-c');
+		expect('a-bc'.match(regexes.slug)[0]).toBe('a-bc');
+
+		expect(regexes.slug.test('a')).toBe(true);
+		expect(regexes.slug.test('ab')).toBe(true);
+		expect(regexes.slug.test('abc')).toBe(true);
+		expect(regexes.slug.test('abcd')).toBe(true);
+
+		expect(regexes.slug.test('')).toBe(false);
+	});
 	it('should match a string that contains only dashes, letters and numbers', () => {
 		expect(regexes.slug.test('helloWorld')).toBe(true);
 		expect(regexes.slug.test('hello-world')).toBe(true);

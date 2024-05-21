@@ -1,4 +1,4 @@
-import { Fragment, act, createContext, useCallback, useContext, useRef } from "react";
+import { createContext, useCallback, useContext, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import useI18n from "@hooks/use-i18n";
@@ -11,10 +11,9 @@ import DateInput from "@elements/Fields/DateInput";
 import Details from "@elements/Details";
 import Checkbox from "@elements/Checkbox";
 
-import xhr from "@services/xhr";
 import regexes from "@lib/regexes";
 
-import { EditorContext, PreviewLink } from "@pages/Editor";
+import { PreviewLink } from "@pages/Editor";
 import { compoundField } from '@pages/Editor/index.module.sass';
 import { AuthContext } from "@pages/Editor/Auth";
 
@@ -26,7 +25,6 @@ const MethodsContext = createContext();
 export default FieldsWrapper;
 
 function Tom_01 () {
-	const { siteId } = useContext(AuthContext);
 	const { getValues, setValue } = useFormContext();
 	const { updateSlug } = useContext(MethodsContext);
 
@@ -132,7 +130,7 @@ function Tom_01 () {
 
 		</LinkedDetails>
 
-		<Details title="Blog">
+		<LinkedDetails title="Blog" href="/blog"																																								>
 
 			<TitleAndSubtitle
 				pageId="blog" />
@@ -141,7 +139,6 @@ function Tom_01 () {
 				<Repeater
 					openItemInModal
 					addButtonOnTop
-					asyncItems={fetchCollectionPage}
 					collapseItems="title"
 					arrayId="content.collectionPages.post"
 					singleName="Post"
@@ -180,8 +177,7 @@ function Tom_01 () {
 
 						<Tags
 							id={`${id}.tags`}
-							titleKey="title"
-							options={getValues(availableTagsId)} />
+							titleKey="title" />
 
 						<DateInput
 							id={`${id}.publishDate`}
@@ -200,7 +196,6 @@ function Tom_01 () {
 				<Repeater
 					addButtonOnTop
 					collapseItems="title"
-					asyncItems={fetchCollectionPage}
 					arrayId={availableTagsId}
 					singleName="Tag"
 					onRemove={removeTagFromPosts}
@@ -208,11 +203,11 @@ function Tom_01 () {
 						title: 'New Tag',
 						slug: 'new-tag'
 					}}>
-					{(id) => <NewTag id={id} />}
+					{(id) => <TagInput id={id} />}
 				</Repeater>
 			</CompoundField>
 
-		</Details>
+		</LinkedDetails>
 
 		<LinkedDetails title="Homepage" href="/">
 
@@ -269,10 +264,6 @@ function Tom_01 () {
 
 	</>;
 
-	async function fetchCollectionPage({ docId }) {
-		return xhr.getCollectionPage({ siteId, pageId: docId });
-	}
-
 	function removeTagFromPosts(removedItem) {
 		const posts = getValues('content.collectionPages.post');
 
@@ -285,14 +276,23 @@ function Tom_01 () {
 
 }
 
-function NewTag ({ id, hideModal }) {
+function TagInput ({ id, hideModal }) {
 	const [{ misc: t }] = useI18n();
-	const { getValues } = useFormContext();
+	const { getValues, setValue } = useFormContext();
 	const { updateSlug } = useContext(MethodsContext);
 
 	const index = Number(id.split('.').pop());
 	const availableTagTitles = getValues(availableTagsId).filter((tag, availableIndex) => availableIndex !== index).map((tag) => tag.title);
 	const availableTagSlugs = getValues(availableTagsId).filter((tag, availableIndex) => availableIndex !== index).map((tag) => tag.slug);
+
+	const existingPosts = getValues('content.collectionPages.post');
+	const affectedPosts = existingPosts
+		.reduce((accu, { tags }, postIndex) => {
+			const tagIndex = tags.findIndex((tag) => tag.title === getValues(`${id}.title`));
+			if (!~tagIndex) return accu;
+			accu.push({ postIndex, tagIndex });
+			return accu;
+		}, []);
 
 	return <>
 		<TextInput
@@ -300,15 +300,26 @@ function NewTag ({ id, hideModal }) {
 			label="Tag name"
 			maxLength={20}
 			validate={{ unique: validateUniqueness(availableTagTitles, "This tag already exists.")}}
-			onChange={(title) => updateSlug(`${id}.slug`, title)} />
+			onChange={(title) => {
+				updateAffectedPosts({ title });
+				return updateSlug(`${id}.slug`, title);
+			}} />
 
 		<SlugGenerator
 			id={`${id}.slug`}
 			titleId={`${id}.title`}
-			validate={{ unique: validateUniqueness(availableTagSlugs, "This slug already exists.") }} />
+			validate={{ unique: validateUniqueness(availableTagSlugs, "This slug already exists.")}}
+			onChange={(slug) => updateAffectedPosts({ slug })} />
 
 		{hideModal && <SaveButton onClick={hideModal}>{t.continue}</SaveButton>}
 	</>;
+
+	function updateAffectedPosts(obj) {
+		for (const { postIndex, tagIndex } of affectedPosts) {
+			Object.keys(obj).forEach((key) => existingPosts[postIndex].tags[tagIndex][key] = obj[key]);
+			setValue(`content.collectionPages.post.${postIndex}`, existingPosts[postIndex]);
+		}
+	}
 
 }
 
@@ -364,7 +375,7 @@ function Title (props) {
 		{...props} />;
 }
 
-function SlugGenerator({ id, titleId, validate }) {
+function SlugGenerator({ id, titleId, validate, onChange }) {
 	const [{ Editor: t }] = useI18n();
 	const { updateSlug } = useContext(MethodsContext);
 
@@ -376,6 +387,7 @@ function SlugGenerator({ id, titleId, validate }) {
 	};
 
 	if (validate) inputProps.validate = validate;
+	if (onChange) inputProps.onChange = onChange;
 
 	return <>
 		<div className="label" htmlFor={id}>Slug:</div>
@@ -409,10 +421,10 @@ function MainContent ({ pageId = '', ...props }) {
 		{...props} />;
 }
 
-function Tags({ id, titleKey, options = [] }) {
+function Tags({ id, titleKey }) {
 
 	const { getValues, setValue } = useFormContext();
-	const currentTags = useWatch({ name: id, defaultValue: [] });
+	const activeTags = useWatch({ name: id, defaultValue: [] });
 
 	const ref = useRef();
 
@@ -421,17 +433,35 @@ function Tags({ id, titleKey, options = [] }) {
 	const defaultOptionValue = `default-to-${id}`;
 	const newOptionValue = `new-to-${id}`;
 
+	const options = getValues(availableTagsId);
 	const onChange = (event) => {
 		const chosenTitle = event.currentTarget.value;
-		if (currentTags.find((activeTag) => activeTag[titleKey] === chosenTitle)) return;
-		if (chosenTitle === newOptionValue) return addNewTag();
-		setValue(id, currentTags.concat(options.find((option) => option[titleKey] === chosenTitle)));
-		ref.current.value = defaultOptionValue;
+
+		// if the user chose to create a new tag, show the modal
+		if (chosenTitle === newOptionValue) {
+			addNewTag();
+			return resetSelect();
+		}
+
+		// if the tag is already active, don't add it to the post again
+		if (activeTags.find((activeTag) => activeTag[titleKey] === chosenTitle)) return resetSelect();
+
+		// otherwise add the tag to the post
+		// eslint-disable-next-line no-unused-vars
+		const { docId, ...newTag } = options.find((option) => option[titleKey] === chosenTitle);
+		setValue(id, activeTags.concat(newTag));
+
+		// and reset the select to the default value
+		resetSelect();
+
+		function resetSelect() {
+			ref.current.value = defaultOptionValue;
+		}
 	};
 
 	const removeItem = (event) => {
 		const chosenTitle = event.currentTarget.closest('[data-title]').dataset.title;
-		setValue(id, currentTags.filter((tag) => tag[titleKey] !== chosenTitle));
+		setValue(id, activeTags.filter((tag) => tag[titleKey] !== chosenTitle));
 	};
 
 	return <>
@@ -443,23 +473,28 @@ function Tags({ id, titleKey, options = [] }) {
 					<option value={newOptionValue}>Create a new tag</option>
 				</select>
 			</div>
-			{!!currentTags.length && <div className="tags mt-2">
-				{currentTags.map((tag) => <span key={tag[titleKey]} data-title={tag[titleKey]} className="tag">
+			{!!activeTags.length && <div className="tags mt-2">
+				{activeTags.map((tag) => <span key={tag[titleKey]} data-title={tag[titleKey]} className="tag">
 					{tag[titleKey]}
 					<button className="delete is-small" onClick={removeItem}></button>
 				</span>)}
 			</div>}
 		</div>
 
-		<Modal {...newTagModel} render={NewTag} />
+		<Modal {...newTagModel} render={TagInput} />
 	</>;
 
 	function addNewTag() {
-		const previousTags = getValues(availableTagsId);
-		const newTagId = `${availableTagsId}.${previousTags?.length || 0}`;
+		// keep a record of the tags that were available before adding a new one
+		const previousAvailableTags = getValues(availableTagsId);
+		// create a new tag id
+		const newTagId = `${availableTagsId}.${previousAvailableTags?.length || 0}`;
+
+		// have the modal control the creation of the new tag at the availableTags array
+		// and save the new tag to the post when the modal is closed
 		return showNewTagModal({
 			id: newTagId,
-			onHide: () => setValue(id, getValues(id).concat(getValues(newTagId)), { shouldValidate: true })
+			onHide: () => setValue(id, activeTags.concat(getValues(newTagId)), { shouldValidate: true })
 		});
 	}
 

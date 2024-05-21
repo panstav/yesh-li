@@ -7,7 +7,7 @@ export default {
 
 	domain: /^(http:\/\/|https:\/\/)?(www.)?[a-zA-Z-0-9]+\.[a-zA-Z-0-9]+([.a-zA-Z-0-9]*)?$/,
 
-	slug: /^[a-zA-Z0-9]+([a-zA-Z-0-9][a-zA-Z0-9])*$/,
+	slug: /^[a-zA-Z0-9]+([a-zA-Z-0-9][a-zA-Z0-9]+)*$/,
 	nonSlugParts: /[^a-z-0-9]+/g,
 
 	firstDigit: /[0-9]{1}/,
