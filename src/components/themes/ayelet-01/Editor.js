@@ -69,6 +69,7 @@ export default function Ayelet_01() {
 				arrayId="content.roomTypes"
 				singleName="חדר"
 				minLength="1"
+				uniquePropKey="name"
 				emptyItem={{
 					name: 'חדר אחר',
 					persons: 1,
@@ -95,6 +96,7 @@ export default function Ayelet_01() {
 				arrayId="content.gallery"
 				singleName="תמונה"
 				minLength="0" maxLength="10"
+				uniquePropKey="srcSet"
 				emptyItem={{
 					size: '1',
 					alt: "",
@@ -121,6 +123,7 @@ export default function Ayelet_01() {
 				arrayId="content.guides"
 				singleName="מדריך\ה"
 				minLength="1"
+				uniquePropKey="name"
 				emptyItem={{
 					name: '',
 					description: '',

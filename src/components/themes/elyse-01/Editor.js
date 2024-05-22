@@ -65,6 +65,7 @@ export default function Elyse_01 () {
 				arrayId="content.sections"
 				singleName={t.service}
 				minLength="3" maxLength="6"
+				uniquePropKey="label"
 				emptyItem={(data) => ({
 					label: t.new_service_title,
 					color: data.mainColor,

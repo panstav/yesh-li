@@ -40,6 +40,7 @@ function Tom_01 () {
 				arrayId="content.pages.commercialWork.works"
 				minLength={2}
 				singleName="Commercial work"
+				uniquePropKey="embedUrl"
 				emptyItem={{
 					title: 'Work title',
 					embedUrl: 'https://vimeo.com/347119375'
@@ -71,6 +72,7 @@ function Tom_01 () {
 				arrayId="content.pages.shortFilms.films"
 				singleName="Film"
 				minLength={1}
+				uniquePropKey="watchUrl"
 				emptyItem={{
 					title: 'New Film',
 					length: '15',
@@ -109,6 +111,7 @@ function Tom_01 () {
 						arrayId={`${filmId}.credits`}
 						minLength={1}
 						singleName={'Credit'}
+						uniquePropKey="creditTitle"
 						emptyItem={{
 							creditTitle: 'New Role',
 							creditName: ''
@@ -146,6 +149,7 @@ function Tom_01 () {
 					sortBy="publishDate"
 					minLength={1}
 					pathKey={({ slug }) => slug && `/blog/${slug}`}
+					uniquePropKey="title"
 					emptyItem={{
 						type: 'post',
 						title: "New Post",
@@ -205,6 +209,7 @@ function Tom_01 () {
 					arrayId={availableTagsId}
 					singleName="Tag"
 					onRemove={removeTagFromPosts}
+					uniquePropKey="title"
 					emptyItem={emptyTag}>
 					{(id) => <TagInput id={id} />}
 				</Repeater>
