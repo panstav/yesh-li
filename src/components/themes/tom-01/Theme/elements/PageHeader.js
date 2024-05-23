@@ -4,8 +4,7 @@ import Section from "@wrappers/Section";
 import FlexImage from "@themes/elyse-01/Theme/FlexImage";
 
 export default function PageHeader({ title, subtitle, featuredImage, tags = [], isSmallFeature, className: classes, isSinglePost }) {
-
-	featuredImage.alt |= `${title} - ${subtitle}`;
+	if (featuredImage) featuredImage.alt |= `${title} - ${subtitle}`;
 
 	const className = classNames('has-text-centered py-6', classes);
 	const titleClasses = classNames('title', isSinglePost ? 'is-3 has-text-weight-bold' : 'is-2 is-uppercase');
