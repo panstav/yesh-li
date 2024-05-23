@@ -1,12 +1,15 @@
 import classNames from "classnames";
 
 import Section from "@wrappers/Section";
+import FlexImage from "@themes/elyse-01/Theme/FlexImage";
 
 export default function PageHeader({ title, subtitle, featuredImage, tags = [], isSmallFeature, className: classes, isSinglePost }) {
 
+	featuredImage.alt |= `${title} - ${subtitle}`;
+
 	const className = classNames('has-text-centered py-6', classes);
-	const titleClasses = classNames('title', isSinglePost ? 'is-3 has-text-weight-bold' : 'is-2 is-uppercase', isSmallFeature ? 'object-fit-cover' : '');
-	const imgStyle = isSmallFeature ? { maxWidth: '350px', aspectRatio: '1/1', objectPosition: featuredImage.position } : { maxWidth: '610px' };
+	const titleClasses = classNames('title', isSinglePost ? 'is-3 has-text-weight-bold' : 'is-2 is-uppercase');
+	const imgStyle = isSmallFeature ? { maxWidth: '350px', maxHeight: '350px' } : { maxWidth: '610px' };
 
 	return <header {...{ className }}>
 		<Section noTopMargin className="py-4">
@@ -21,9 +24,8 @@ export default function PageHeader({ title, subtitle, featuredImage, tags = [], 
 				})}
 			</div>}
 		</Section>
-		{featuredImage && <img
-			srcSet={featuredImage.srcSet}
-			alt={featuredImage.alt || `${title} - ${subtitle}`}
+		{featuredImage && <FlexImage
+			{...featuredImage}
 			className="w-100 mt-5 mx-auto"
 			style={imgStyle} />}
 	</header>;

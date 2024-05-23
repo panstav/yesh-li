@@ -5,7 +5,7 @@ import localDb from '@services/localDb';
 const apiUrl = process.env.GATSBY_API_URL;
 
 // assign value to the domain, it will remain undefined unless we're on development
-let domain = process.env.URL;
+const fullUrl = process.env.URL;
 
 export const get = transformApiCall('get');
 export const post = transformApiCall('post');
@@ -20,7 +20,12 @@ function transformApiCall(method) {
 
 	return (endpoint, data, optionsExtension = {}) => {
 
-		if (!domain) domain = new URL(document.head.querySelector('[name="yl:domain"]').getAttribute('content')).hostname;
+		let domain = fullUrl;
+		// on development, fullUrl is set by an env.URL, which is not available on production
+		// on production, the "yl:domain" will be populated by the server
+		if (!domain) domain = document.head.querySelector('[name="yl:domain"]').getAttribute('content');
+		domain = new URL(domain).hostname;
+
 		const headers = {
 			yl_domain: domain
 		};
@@ -28,7 +33,11 @@ function transformApiCall(method) {
 		const jwt = localDb.get('jwt');
 		if (jwt) headers.Authorization = `Bearer ${jwt}`;
 
-		const options = { json: data, headers, ...optionsExtension };
+		const options = {
+			json: data,
+			headers,
+			...optionsExtension
+		};
 
 		if (data && 'formData' in data) {
 			if (Object.keys(data).length > 1) throw new Error(`Cannot send both formdata and json, found extra keys: ${Object.keys(data).filter((key) => key !== 'formData').join(', ')}`);

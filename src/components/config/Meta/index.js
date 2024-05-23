@@ -3,18 +3,20 @@ import { useLocation } from '@reach/router';
 import pallatte from '@lib/pallatte';
 
 import Component from './Meta';
+import { graphql, useStaticQuery } from 'gatsby';
 
 export { default as HeadFor } from './HeadFor';
 
 export default function Meta({ title, description, featuredImage: pageFeaturedImage, mainColorName, mainColorHex, isInternal, hasAdvancedSeo = true }) {
 	const location = useLocation();
+	const parentDomain = useYeshLiDomain();
 
 	const normalizedDescription = Array.isArray(description) ? description.join(' ') : description;
 
 	mainColorHex = mainColorHex || pallatte.getColor(mainColorName);
 
 	const props = {
-		shortDomain: location.host,
+		shortDomain: parentDomain,
 		fullPath: location.origin + location.pathname,
 		title,
 		description: normalizedDescription,
@@ -30,4 +32,17 @@ export default function Meta({ title, description, featuredImage: pageFeaturedIm
 
 export function CssVariables ({ mainColorName, mainColorHex }) {
 	return <style>{`:root { accent-color: var(--color-primary); ${pallatte.getVariables(mainColorName)} ${!mainColorName ? `--color-primary: #${mainColorHex};` : ''} }`}</style>;
+}
+
+function useYeshLiDomain() {
+	const { site: { siteMetadata: { siteUrl } } } = useStaticQuery(graphql`
+		query {
+			site {
+				siteMetadata {
+					siteUrl
+				}
+			}
+		}
+	`);
+	return new URL(siteUrl).hostname;
 }
