@@ -6,7 +6,7 @@ import useUniqueValidation from "@hooks/use-unique-validation";
 
 import cleanUGT from "@lib/clean-user-generated-text";
 
-export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, unique, maxLength, required = true, setValueAs = x => x, onChange, isSmall, autoComplete }) {
+export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, unique, maxLength, required = true, setValueAs = x => x, onChange, isSmall, autoComplete, disabled }) {
 	const t = useFieldLabels();
 	const { register, getFieldState, formState } = useFormContext();
 	const { error } = getFieldState(id, formState);
@@ -35,7 +35,7 @@ export default function TextInput({ id, label, labelClassName: labelClasses, typ
 
 	return <div className='field'>
 		{label && <label htmlFor={id} className={labelClassName}>{label}:</label>}
-		<input id={id} className={inputClassName} type={type} {...register(id, inputConfig)} />
+		<input id={id} className={inputClassName} type={type} disabled={!!disabled} {...register(id, inputConfig)} />
 		{error?.message
 			? <p className='help is-danger'>{error?.message}</p>
 			: <p className='help'>{description}</p>}

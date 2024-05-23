@@ -32,6 +32,7 @@ export default function ThemeFields() {
 	});
 
 	const onSubmit = handleSubmit((data) => {
+		removeTempIds(data);
 		setLoading(true);
 		xhr.updateSiteData(siteId, data)
 			.then(() => showSavedSuccessfullyModal())
@@ -68,6 +69,17 @@ function findElems (obj) {
 		Object.entries(obj).forEach(([, value]) => {
 			if (value instanceof HTMLElement) found.push(value);
 			else if (typeof value === 'object') iterate(value);
+		});
+	}
+
+}
+
+function removeTempIds (data) {
+	iterate(data);
+	function iterate(obj) {
+		Object.keys(obj).forEach((key) => {
+			if (key === '_id') delete obj[key];
+			else if (typeof obj[key] === 'object') iterate(obj[key]);
 		});
 	}
 

@@ -12,11 +12,16 @@ export function useImageModals() {
 }
 
 export function useNavigation() {
+	const [currentPath, setCurrentPath] = useState();
 	const [navigate, setNavigate] = useState();
+	const navigateHandler = (path) => {
+		setCurrentPath(path);
+		navigate(path);
+	};
 
 	const registerNavigation = useCallback((navigationFn) => {
 		if (!navigate) return setNavigate(() => navigationFn);
 	}, [navigate]);
 
-	return { navigate, registerNavigation };
+	return { currentPath, registerNavigation, navigate: navigateHandler };
 }

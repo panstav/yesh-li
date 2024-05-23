@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 
 import { useFieldLabels } from "@hooks/use-i18n";
@@ -7,34 +7,39 @@ import Component from "./Repeater";
 import { CollapsedRepeaterItem, ModalizedRepeaterItem, NoWrapper } from "./wrappers";
 import RenderChildren from "@wrappers/RenderChildren";
 
+import { EditorContext, tempIds } from "@pages/Editor";
+
 export const ArrayOrderControlContext = createContext();
 
-export default function Repeater({ arrayId, singleName, emptyItem, collapseItems, openItemInModal, onRemove, addButtonOnTop, uniquePropKey, pathKey, minLength, maxLength, wrapper: Wrapper, children }) {
+export default function Repeater({ arrayId, singleName, emptyItem, collapseItems, openItemInModal, onRemove, addButtonOnTop, pathKey, minLength, maxLength, wrapper: ItemWrapper, children }) {
 
 	validate();
 
 	let ComponentWrapper;
-	if (!Wrapper) {
-		if (!collapseItems) Wrapper = NoWrapper;
+	if (!ItemWrapper) {
+		if (!collapseItems) ItemWrapper = NoWrapper;
 
 		if (openItemInModal) {
-			Wrapper = ModalizedRepeaterItem;
+			ItemWrapper = ModalizedRepeaterItem;
 			ComponentWrapper = 'div';
 		} else {
-			Wrapper = CollapsedRepeaterItem;
+			ItemWrapper = CollapsedRepeaterItem;
 			// ignore any props passed to the Repeater component template wrapper
 			ComponentWrapper = RenderChildren;
 		}
 	}
 
 	const t = useFieldLabels();
+	const { currentPath } = useContext(EditorContext);
 	const { getValues } = useFormContext();
 	const { append, remove, move } = useFieldArray({ name: arrayId });
+
 	const arrayData = getValues(arrayId);
 
 	const addItem = () => {
-		if (typeof emptyItem !== 'function') return append(emptyItem);
-		return append(emptyItem(getValues()));
+		const newItem = typeof emptyItem === 'function' ? emptyItem(getValues()) : emptyItem;
+		tempIds.set(emptyItem);
+		return append(newItem);
 	};
 
 	const removeItem = (itemIndex) => {
@@ -54,7 +59,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 		addItem,
 		cantAdd,
 		addButtonOnTop,
-		wrapper: Wrapper,
+		wrapper: ItemWrapper,
 		children
 	};
 
@@ -76,13 +81,16 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 		if (collapseItems) title = getValues(`${arrayId}.${index}.${collapseItems}`);
 
 		const props = {
-			uniqueId: item[uniquePropKey],
-			formId: `${arrayId}.${index}`,
 			title,
-			arrayOrder
+			arrayOrder,
+			uniqueId: item._id,
+			itemId: `${arrayId}.${index}`
 		};
 
-		if (pathKey) props.previewPath = typeof pathKey === 'function' ? pathKey(item) : item[pathKey];
+		if (pathKey) {
+			props.previewPath = typeof pathKey === 'function' ? pathKey(props.itemId) : item[pathKey];
+			props.arrayOrder.isPreviewing = props.previewPath === currentPath;
+		}
 
 		return props;
 
@@ -90,7 +98,6 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 
 	function validate () {
 		if (!arrayId) throw new Error('Repeater: arrayId is required');
-		if (!uniquePropKey) throw new Error('Repeater: uniquePropKey is required');
 		if (!singleName) throw new Error(`Repeater (${arrayId}): singleName is required`);
 		if (!emptyItem) throw new Error(`Repeater (${arrayId}): emptyItem is required`);
 		if (collapseItems && !emptyItem[collapseItems]) throw new Error(`Repeater (${arrayId}): emptyItem must have a non-falsy property named ${collapseItems}`);

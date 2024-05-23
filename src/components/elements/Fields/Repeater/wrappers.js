@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import classNames from "classnames";
 
@@ -6,7 +6,6 @@ import useI18n from "@hooks/use-i18n";
 
 import Modal, { SaveButton, useModal } from "@wrappers/Modal";
 import Details from "@elements/Details";
-import Loader from "@elements/Loader";
 
 import markErrorOnClosestDetails from "@lib/mark-error-on-closest-details";
 

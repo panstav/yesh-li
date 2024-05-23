@@ -11,10 +11,11 @@ import limitImageSize from "./limit-image-size";
 export default function ContextSetter({ extend, children }) {
 	const t = useFieldLabels();
 
-	const { navigate, registerNavigation } = useNavigation();
+	const { currentPath, navigate, registerNavigation } = useNavigation();
 	const { modals, showImageModal } = useImageModals();
 
 	const ctx = {
+		currentPath,
 		navigate,
 		registerNavigation,
 		uploadImage,

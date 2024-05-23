@@ -16,6 +16,7 @@ import ThemeFields from './ThemeFields';
 import Preview from './Preview';
 import { AuthContext } from './Auth';
 
+import { tempIds } from '.';
 import { fieldsContainer, previewContainer } from './index.module.sass';
 
 export default function Editor() {
@@ -23,9 +24,8 @@ export default function Editor() {
 	const { siteId } = useContext(AuthContext);
 
 	const form = useForm({
-		mode: 'onTouched',
-		reValidateMode: 'onChange',
-		defaultValues: () => xhr.getSiteData(siteId)
+		mode: 'onChange',
+		defaultValues: getDefaultValues
 	});
 
 	const [newPageModal, showNewPageModal] = useSuccessModal();
@@ -67,6 +67,12 @@ export default function Editor() {
 		localDb.clear();
 		// if user comes back here he'll be redirected again from the Login domain
 		return window.location.replace(`https://${redirect}/editor`);
+	}
+
+	async function getDefaultValues() {
+		const res = await xhr.getSiteData(siteId);
+		tempIds.setAll(res);
+		return res;
 	}
 
 }

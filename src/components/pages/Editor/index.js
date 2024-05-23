@@ -24,12 +24,39 @@ export default function EditorWrapper ({ pageContext }) {
 
 export function PreviewLink({ href, onClick, children }) {
 	const goTo = useContext(EditorContext).navigate;
-	return <a onClick={navigate}>{children}</a>;
 
-	function navigate(event) {
+	const navigate = (event) => {
 		event.preventDefault();
 		onClick(event);
 		goTo(href);
-	}
+	};
 
+	return <a onClick={navigate}>{children}</a>;
+}
+
+export const tempIds = {
+	set: addTempId,
+	setAll: iterateAnd(addTempId),
+	unsetAll: iterateAnd(removeTempId)
+};
+
+function iterateAnd(fn) {
+	return (complex) => {
+		return iterate(complex);
+		function iterate(obj) {
+			Object.keys(obj).forEach((key) => {
+				if (Array.isArray(obj[key])) obj[key] = obj[key].map(fn);
+				if (typeof obj[key] === 'object') iterate(obj[key]);
+			});
+			return obj;
+		}
+	};
+}
+function addTempId(item) {
+	item._id = String(Math.random());
+	return item;
+}
+function removeTempId(item) {
+	delete item._id;
+	return item;
 }

@@ -1,11 +1,12 @@
 import { createContext, useCallback, useContext, useRef } from "react";
-import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
 import useI18n from "@hooks/use-i18n";
 
 import Modal, { SaveButton, useModal } from "@wrappers/Modal";
 import RenderChildren from "@wrappers/RenderChildren";
-import { ImageInput, RichEditor, Repeater, UrlInput } from "@elements/Fields";
+import { ImageInput, RichEditor, UrlInput } from "@elements/Fields";
+import Repeater, { ArrayOrderControlContext } from "@elements/Fields/Repeater";
 import TextInput, { NumberInput } from "@elements/Fields/TextInput";
 import DateInput from "@elements/Fields/DateInput";
 import Details from "@elements/Details";
@@ -26,7 +27,7 @@ const emptyTag = { title: 'New Tag', slug: 'new-tag' };
 export default FieldsWrapper;
 
 function Tom_01 () {
-	const { getValues, setValue } = useFormContext();
+	const { getValues, setValue, getFieldState } = useFormContext();
 	const { updateSlug } = useContext(MethodsContext);
 
 	return <>
@@ -40,7 +41,6 @@ function Tom_01 () {
 				arrayId="content.pages.commercialWork.works"
 				minLength={2}
 				singleName="Commercial work"
-				uniquePropKey="embedUrl"
 				emptyItem={{
 					title: 'Work title',
 					embedUrl: 'https://vimeo.com/347119375'
@@ -72,7 +72,6 @@ function Tom_01 () {
 				arrayId="content.pages.shortFilms.films"
 				singleName="Film"
 				minLength={1}
-				uniquePropKey="watchUrl"
 				emptyItem={{
 					title: 'New Film',
 					length: '15',
@@ -111,7 +110,6 @@ function Tom_01 () {
 						arrayId={`${filmId}.credits`}
 						minLength={1}
 						singleName={'Credit'}
-						uniquePropKey="creditTitle"
 						emptyItem={{
 							creditTitle: 'New Role',
 							creditName: ''
@@ -148,12 +146,13 @@ function Tom_01 () {
 					singleName="Post"
 					sortBy="publishDate"
 					minLength={1}
-					pathKey={({ slug }) => slug && `/blog/${slug}`}
-					uniquePropKey="title"
+					pathKey={(id) => {
+						const slugId = `${id}.slug`;
+						return getFieldState(slugId).isDirty ? null : `/blog/${getValues(slugId) }`;
+					}}
 					emptyItem={{
 						type: 'post',
 						title: "New Post",
-
 						slug: getSlugFor("New Post"),
 						// date in the format of: 2021-01-01
 						publishDate: new Date().toISOString().split('T')[0],
@@ -209,7 +208,6 @@ function Tom_01 () {
 					arrayId={availableTagsId}
 					singleName="Tag"
 					onRemove={removeTagFromPosts}
-					uniquePropKey="title"
 					emptyItem={emptyTag}>
 					{(id) => <TagInput id={id} />}
 				</Repeater>
@@ -346,7 +344,7 @@ function FieldsWrapper() {
 	function updateSlug(slugId, titleOrId, { force } = {}) {
 		if (!force && getFieldState(slugId)?.isTouched) return;
 		const title = getValues(titleOrId) || titleOrId;
-		setValue(slugId, getSlugFor(title), { shouldValidate: true });
+		setValue(slugId, getSlugFor(title), { shouldValidate: true, shouldDirty: true });
 	}
 
 }
@@ -382,12 +380,14 @@ function Title (props) {
 
 function SlugGenerator({ id, titleId, validate, unique, onChange }) {
 	const [{ Editor: t }] = useI18n();
+	const { isPreviewing } = useContext(ArrayOrderControlContext);
 	const { updateSlug } = useContext(MethodsContext);
 
 	const forceUpdateSlug = () => updateSlug(id, titleId, { force: true });
 
 	const inputProps = {
 		id,
+		disabled: isPreviewing,
 		pattern: { value: regexes.slug, message: t.AttachSlug.valid_slug_requirements }
 	};
 
@@ -402,7 +402,7 @@ function SlugGenerator({ id, titleId, validate, unique, onChange }) {
 				<TextInput {...inputProps} />
 			</div>
 			<div className="control">
-				<button onClick={forceUpdateSlug} className="button is-primary">
+				<button onClick={forceUpdateSlug} className="button">
 					Generate
 				</button>
 			</div>

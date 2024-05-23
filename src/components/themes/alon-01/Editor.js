@@ -141,7 +141,6 @@ export default function Alon_01 () {
 				arrayId="content.gallery"
 				singleName={t.image}
 				minLength="0" maxLength="10"
-				uniquePropKey="srcSet"
 				emptyItem={{
 					alt: "",
 					srcSet: "https://storage.googleapis.com/yeshli-www/assets/placeholder-250x250-01.jpg"
@@ -160,7 +159,6 @@ export default function Alon_01 () {
 				arrayId="content.sections"
 				singleName={t.service}
 				minLength="0" maxLength="6"
-				uniquePropKey="srcSet"
 				emptyItem={(data) => ({
 					title: t.title,
 					color: data.mainColor,
@@ -198,7 +196,6 @@ export default function Alon_01 () {
 				arrayId="content.faq"
 				singleName={t.question_and_answer}
 				minLength="0" maxLength="10"
-				uniquePropKey="question"
 				emptyItem={{
 					question: '',
 					answer: ''
