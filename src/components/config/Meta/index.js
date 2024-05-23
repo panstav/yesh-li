@@ -8,7 +8,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 export { default as HeadFor } from './HeadFor';
 
 export default function Meta({ title, description, featuredImage: pageFeaturedImage, mainColorName, mainColorHex, isInternal, hasAdvancedSeo = true }) {
-	const location = useLocation();
+	const { href } = useLocation();
 	const parentDomain = useYeshLiDomain();
 
 	const normalizedDescription = Array.isArray(description) ? description.join(' ') : description;
@@ -16,8 +16,8 @@ export default function Meta({ title, description, featuredImage: pageFeaturedIm
 	mainColorHex = mainColorHex || pallatte.getColor(mainColorName);
 
 	const props = {
-		shortDomain: parentDomain,
-		fullPath: location.origin + location.pathname,
+		parentDomain,
+		fullPath: href,
 		title,
 		description: normalizedDescription,
 		mainColorName,
@@ -44,5 +44,5 @@ function useYeshLiDomain() {
 			}
 		}
 	`);
-	return new URL(siteUrl).hostname;
+	return siteUrl;
 }

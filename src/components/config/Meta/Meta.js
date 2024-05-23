@@ -2,13 +2,19 @@ import { CssVariables } from ".";
 
 const isRemote = !process.env.GATSBY_IS_LOCAL;
 
-export default function Meta({ shortDomain, fullPath, title, description, mainColorName, mainColorHex, pageFeaturedImage, hasAdvancedSeo, isInternal }) {
+export default function Meta({ parentDomain, fullPath, title, description, mainColorName, mainColorHex, pageFeaturedImage, hasAdvancedSeo, isInternal }) {
+
+	const shortPath = ((url) => {
+		const urlObj = new URL(url);
+		return `${urlObj.hostname}${urlObj.pathname}`;
+	})(fullPath);
+
 	return <>
 		<title>{title}</title>
 		<meta name="title" content={title} />
 		<meta name="description" content={description} />
 
-		<meta name="yl:domain" content={shortDomain} />
+		<meta name="yl:domain" content={parentDomain} />
 
 		{!isInternal && <>
 			<meta property="og:type" content="website" />
@@ -30,10 +36,10 @@ export default function Meta({ shortDomain, fullPath, title, description, mainCo
 
 				<meta name="apple-mobile-web-app-title" content={title} />
 				<meta name="application-name" content={title} />
-				<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${shortDomain}apple-touch-icon.png`} />
-				<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${shortDomain}favicon-32x32.png`} />
-				<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${shortDomain}favicon-16x16.png`} />
-				<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${shortDomain}favicon.ico`} />
+				<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${shortPath}apple-touch-icon.png`} />
+				<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${shortPath}favicon-32x32.png`} />
+				<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${shortPath}favicon-16x16.png`} />
+				<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${shortPath}favicon.ico`} />
 				<meta name="msapplication-TileColor" content={`#${mainColorHex}`} />
 				<meta name="theme-color" content={`#${mainColorHex}`} />
 			</>}
