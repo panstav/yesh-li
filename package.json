@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm run clean && gatsby develop",
-    "dev-from-scratch": "node scripts/prebuild.js && npm run dev",
+    "dev-from-scratch": "npm run prebuild && npm run dev",
     "start": "gatsby develop",
     "clean": "gatsby clean",
     "lint": "eslint ./",
     "build-debug": "npm run clean && npm run build && gatsby serve",
     "build": "gatsby build",
+    "prebuild": "node scripts/prebuild.js",
     "preversion": "npm run lint && npm test && npm run test:production",
     "test": "jest",
     "test:production": "jest --testMatch='**/production-test.js'"
