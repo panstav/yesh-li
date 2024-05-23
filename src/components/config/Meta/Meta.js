@@ -36,10 +36,10 @@ export default function Meta({ parentDomain, fullPath, title, description, mainC
 
 				<meta name="apple-mobile-web-app-title" content={title} />
 				<meta name="application-name" content={title} />
-				<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${shortPath}apple-touch-icon.png`} />
-				<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${shortPath}favicon-32x32.png`} />
-				<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${shortPath}favicon-16x16.png`} />
-				<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${shortPath}favicon.ico`} />
+				<link rel="apple-touch-icon" sizes="180x180" href={`https://storage.googleapis.com/cloudicon/${shortPath}/apple-touch-icon.png`} />
+				<link rel="icon" type="image/png" sizes="32x32" href={`https://storage.googleapis.com/cloudicon/${shortPath}/favicon-32x32.png`} />
+				<link rel="icon" type="image/png" sizes="16x16" href={`https://storage.googleapis.com/cloudicon/${shortPath}/favicon-16x16.png`} />
+				<link rel="shortcut icon" href={`https://storage.googleapis.com/cloudicon/${shortPath}/favicon.ico`} />
 				<meta name="msapplication-TileColor" content={`#${mainColorHex}`} />
 				<meta name="theme-color" content={`#${mainColorHex}`} />
 			</>}
