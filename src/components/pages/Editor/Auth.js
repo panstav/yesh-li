@@ -7,8 +7,6 @@ import snatchParameter from '@lib/snatch-parameter';
 
 import Login from './Login';
 
-import './index.sass';
-
 const siteId = process.env.SITEID_TO_EDIT;
 
 const roles = {

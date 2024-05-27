@@ -6,6 +6,8 @@ import Auth from './Auth';
 import Editor from './Editor';
 import EditorContextSetter from './ContextSetter';
 
+import './index.sass';
+
 export const EditorContext = createContext();
 export const editorProps = { isInternal: true };
 
