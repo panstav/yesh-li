@@ -1,10 +1,14 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import Frame from 'react-frame-component';
-import useI18n from "@hooks/use-i18n";
-import useSiteData from "@hooks/use-site-data";
+
 import Page from "@config/Page";
 import { CssVariables } from "@config/Meta";
+
 import Loader from "@elements/Loader";
+
+import useI18n from "@hooks/use-i18n";
+import useSiteData from "@hooks/use-site-data";
+
 import getDirByLang from "@lib/get-dir-by-lang";
 import { themesMap } from "@themes";
 
