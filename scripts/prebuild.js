@@ -48,6 +48,9 @@ async function createMultiSite(sites, redirects) {
 	// create a redirects file for all the sites that used to be on this multi-tenant site and have since moved to their own domains
 	await writeRedirectsFile(redirects);
 
+	// create an empty file to indicate that we're not deploying a root site
+	await writeRootSiteDataFile();
+
 	return sites.reduce((accu, site) => accu.then(async () => {
 
 		// save each site's data to a json file at /data/theme-{themeName}/{siteId}.json
@@ -67,9 +70,6 @@ async function createMultiSite(sites, redirects) {
 			id: `${ multiName } - homepage`,
 			slug: ''
 		})));
-
-		// create an empty file to indicate that we're not deploying a root site
-		return writeRootSiteDataFile();
 
 	}), writeSitemapFile(links));
 }
