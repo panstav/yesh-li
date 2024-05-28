@@ -7,7 +7,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 export { default as HeadFor } from './HeadFor';
 
-export default function Meta({ title, description, featuredImage: pageFeaturedImage, mainColorName, mainColorHex, isInternal, hasAdvancedSeo = true }) {
+export default function Meta({ description, featuredImage: pageFeaturedImage, mainColorName, mainColorHex, hasAdvancedSeo = true, ...metaProps }) {
 
 	const { pathname } = useLocation();
 	const parentDomain = useYeshLiDomain();
@@ -20,13 +20,12 @@ export default function Meta({ title, description, featuredImage: pageFeaturedIm
 	const props = {
 		parentDomain,
 		fullPath,
-		title,
 		description: normalizedDescription,
 		mainColorName,
 		mainColorHex,
 		pageFeaturedImage,
 		hasAdvancedSeo,
-		isInternal
+		...metaProps
 	};
 
 	return Component(props);
