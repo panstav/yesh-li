@@ -12,9 +12,9 @@
     "build-debug": "npm run clean && gatsby build && gatsby serve",
     "build": "gatsby build",
     "prebuild": "node scripts/prebuild.js",
-    "preversion": "npm run lint && npm test && npm run test:production",
     "test": "jest",
-    "test:production": "jest --testMatch='**/production-test.js'"
+    "test:production": "jest --testMatch='**/production-test.js'",
+    "preversion": "npm run lint && npm test && npm run test:production"
   },
   "dependencies": {
     "@fontsource/assistant": "^4.5.11",
