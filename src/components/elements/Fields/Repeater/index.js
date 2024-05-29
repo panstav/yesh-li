@@ -15,10 +15,11 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 
 	validate();
 
-	let ComponentWrapper;
+	let ComponentWrapper, wrapperHandlesTitle;
 	if (!ItemWrapper) {
 		if (!collapseItems) ItemWrapper = NoWrapper;
 
+		wrapperHandlesTitle = true;
 		if (openItemInModal) {
 			ItemWrapper = ModalizedRepeaterItem;
 			ComponentWrapper = 'div';
@@ -55,7 +56,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 		items: arrayData.map(extendField),
 		arrayId,
 		singleName,
-		wrapperHandlesTitle: !!collapseItems,
+		wrapperHandlesTitle,
 		addItem,
 		cantAdd,
 		addButtonOnTop,
