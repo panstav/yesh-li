@@ -2,10 +2,8 @@ import ky from 'ky';
 
 import localDb from '@services/localDb';
 
+let parentDomain;
 const apiUrl = process.env.GATSBY_API_URL;
-
-// assign value to the domain, it will remain undefined unless we're on development
-const fullUrl = process.env.URL;
 
 export const get = transformApiCall('get');
 export const post = transformApiCall('post');
@@ -15,19 +13,22 @@ export const del = transformApiCall('delete');
 
 // a function that return a function that calls ky with the method given to the first function
 function transformApiCall(method) {
+
 	// eslint-disable-next-line no-param-reassign
 	if (method === 'del') method = 'delete';
 
 	return (endpoint, data, optionsExtension = {}) => {
 
-		let domain = fullUrl;
-		// on development, fullUrl is set by an env.URL, which is not available on production
-		// on production, the "yl:domain" will be populated by the server
-		if (!domain) domain = document.head.querySelector('[name="yl:domain"]').getAttribute('content');
-		domain = new URL(domain).hostname;
+		// yl:domain meta tag should be available on all pages, rendered by the server
+		// if it isn't available, it's because we're in development and the meta tag wasn't rendered yet
+		// in that case, we'll get the parent domain from the global object, as on development it is set by one of the top-most components
+		if (!parentDomain) {
+			const parentDomainUrl = document.head.querySelector('[name="yl:domain"]')?.getAttribute('content');
+			parentDomain = parentDomainUrl ? new URL(parentDomainUrl).hostname : window.parentDomain;
+		}
 
 		const headers = {
-			yl_domain: domain
+			yl_domain: parentDomain
 		};
 
 		const jwt = localDb.get('jwt');

@@ -2,10 +2,15 @@ import { createContext } from 'react';
 
 import RenderChildren from '@wrappers/RenderChildren';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export const PageContext = createContext();
 
 export default function Page({ location, pageContext, customComponents = {}, background, children }) {
 	const { Header = Null, Footer = Null, Background = FallbackBackground } = customComponents;
+
+	// if we're in development, we'll set the parentDomain on the global object, because it might not be available as soon as the page loads
+	if (!isProduction) window.parentDomain = pageContext.parentDomain;
 
 	// have the location available in the page context
 	pageContext.location = location;
