@@ -8,7 +8,7 @@ import Component from './ImageInput';
 
 import { EditorContext, allowedImageTypes } from '@pages/Editor';
 
-export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, hasNoAlt, isCompoundField = !hasNoAlt, onChange, required = true }) {
+export default function ImageInput({ id, label, description, sizes, multiple = false, hasNoFocus, hasNoAlt, isCompoundField = !hasNoAlt, onChange, favicon, required = true }) {
 
 	const { setValue, getValues, getFieldState, formState } = useFormContext();
 
@@ -21,7 +21,10 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 	const [focusModal, openFocusModal] = useModal({
 		imageToFocus: imgProps,
 		onSubmit: ({ position }) => {
-			if (position !== getValues(`${id}.position`)) onChange?.(imgProps);
+			if (position !== getValues(`${id}.position`)) {
+				onChange?.(imgProps);
+				if (favicon) setValue('favicon', imgProps);
+			}
 			return setValue(`${id}.position`, position);
 		}
 	});
