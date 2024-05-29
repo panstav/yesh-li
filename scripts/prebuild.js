@@ -74,8 +74,7 @@ async function createMultiSite(sites, redirects) {
 			title: `${title} • ${description}`,
 			shortName: title,
 			mainColor: mainColorHex,
-			id: `${ multiName } - homepage`,
-			slug: ''
+			id: `${ multiName } - homepage`
 		})));
 
 	}), writeSitemapFile(links));
@@ -106,12 +105,12 @@ async function createRootSite(site) {
 	await writeRedirectsFile([]);
 
 	// save the site's data to a json file at /data/root.json
-
 	await writeRootSiteDataFile(site);
+
 	await fs.promises.writeFile('./static/manifest.json', JSON.stringify(getManifest(site)));
 }
 
-function getManifest({ title, shortName = title, slug, id = slug, mainColor }) {
+function getManifest({ title, shortName = title, slug = '', mainColor }) {
 	const relativeUrl = `/${slug}`;
 	const pageShortUrl = `${ shortDomain }${ slug ? relativeUrl : ''}`;
 	return {
