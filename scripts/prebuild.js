@@ -110,9 +110,8 @@ async function createRootSite(site) {
 	await fs.promises.writeFile('./static/manifest.json', JSON.stringify(getManifest(site[0])));
 }
 
-function getManifest({ title, shortName = title, slug = '', mainColor }) {
+function getManifest({ id, title, shortName = title, slug = '', mainColor }) {
 	const relativeUrl = `/${slug}`;
-	const pageShortUrl = `${ shortDomain }${ slug ? relativeUrl : ''}`;
 	return {
 		"id": id,
 		"name": title,
@@ -124,12 +123,12 @@ function getManifest({ title, shortName = title, slug = '', mainColor }) {
 		"orientation": "portrait",
 		"icons": [
 			{
-				"src": `https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-32x32.png`,
+				"src": `https://storage.googleapis.com/cloudicon/${id}/favicon-32x32.png`,
 				"sizes": "32x32",
 				"type": "image/png"
 			},
 			{
-				"src": `https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon-144x144.png`,
+				"src": `https://storage.googleapis.com/cloudicon/${id}/apple-touch-icon-144x144.png`,
 				"sizes": "144x144",
 				"type": "image/png"
 			}

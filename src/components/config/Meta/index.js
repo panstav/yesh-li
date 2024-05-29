@@ -7,24 +7,27 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 export { default as HeadFor } from './HeadFor';
 
-export default function Meta({ description, featuredImage: pageFeaturedImage, mainColorName, mainColorHex, hasAdvancedSeo = true, ...metaProps }) {
+export default function Meta({ siteTitle, title: pageTitle, slug, description, featuredImage, mainColorName, mainColorHex, hasAdvancedSeo = true, ...metaProps }) {
 
 	const { pathname } = useLocation();
-	const parentDomain = useYeshLiDomain();
-	const fullPath = `${parentDomain}${pathname === '/' ? '' : pathname}`;
+	const domainUrl = useGatsbyDomainUrl();
+	const fullPath = `${domainUrl}${pathname === '/' ? '' : pathname}`;
+	const siteHomePath = `${domainUrl}${slug ? `/${slug}` : ''}`;
 
 	const normalizedDescription = Array.isArray(description) ? description.join(' ') : description;
 
 	mainColorHex = mainColorHex || pallatte.getColor(mainColorName);
 
 	const props = {
-		parentDomain,
+		siteTitle,
+		pageTitle,
 		fullPath,
 		description: normalizedDescription,
 		mainColorName,
 		mainColorHex,
-		pageFeaturedImage,
+		featuredImage,
 		hasAdvancedSeo,
+		siteHomePath,
 		...metaProps
 	};
 
@@ -35,7 +38,7 @@ export function CssVariables ({ mainColorName, mainColorHex }) {
 	return <style>{`:root { accent-color: var(--color-primary); ${pallatte.getVariables(mainColorName)} ${!mainColorName ? `--color-primary: #${mainColorHex};` : ''} }`}</style>;
 }
 
-function useYeshLiDomain() {
+function useGatsbyDomainUrl() {
 	const { site: { siteMetadata: { siteUrl } } } = useStaticQuery(graphql`
 		query {
 			site {

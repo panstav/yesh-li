@@ -24,11 +24,14 @@ RetreatYetziraVeOtzmaPage.config = {
 	featuredImage: 'https://storage.googleapis.com/yeshli-www/samar-retreat-yetzira-ve-otzma/background-01.jpg'
 };
 
-export const Head = () => {
+export const Head = ({ pageContext: { id, parentDomain, slug } }) => {
 	return <>
-		<Meta
-			{...RetreatYetziraVeOtzmaPage.config}
-		/>
+		<Meta {...RetreatYetziraVeOtzmaPage.config} {...{
+			id,
+			parentDomain,
+			slug,
+			siteTitle: 'FROM JUNK TO MAGIC'
+		}} />
 		{isProduction && <>
 			<GoogleAnalytics />
 			<MicrosoftClarity />
