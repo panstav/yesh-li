@@ -1,13 +1,16 @@
 import cp from 'child_process';
-import exp from 'constants';
+import { createReadStream } from 'fs';
+
+import { parseSitemap } from 'sitemap';
 
 const controller = new AbortController();
 const { signal } = controller;
 
-let error;
+let sitemap, error;
 
 beforeAll(async () => {
 	error = await build();
+	sitemap = await parseSitemap(createReadStream('./public/sitemap.xml'));
 }, 500000);
 
 it('should run production build with no errors', async () => {
@@ -34,6 +37,29 @@ it('should correctly produce a manifest file', async () => {
 	expect(manifest.icons).toHaveLength(2);
 	manifest.icons.forEach((icon) => {
 		expect(icon.src.includes('undefined')).not.toBeTruthy();
+	});
+
+});
+
+describe('sitemap', () => {
+
+	it('should have a unique set of urls', async () => {
+		const urls = sitemap.map(({ url }) => url);
+		const uniqueUrls = new Set(urls);
+		expect(uniqueUrls.size).toBe(urls.length);
+	});
+
+	it('should have only valid urls', async () => {
+		let error;
+		sitemap.forEach(({ url }) => {
+			try {
+				new URL(url);
+			} catch (err) {
+				error = err;
+			}
+		});
+
+		expect(error).toBeUndefined();
 	});
 
 });

@@ -83,14 +83,18 @@ async function createMultiSite(sites, redirects) {
 async function createRootSite(site) {
 	// instance is running on a dedicated domain
 
-	const siteMap = [
-		{ url: '/', changefreq: 'daily', priority: 1 }
-	];
+	const siteMap = [];
+	let registeredHomepage;
 	Object.keys(site[0].content?.pages || {}).forEach((path) => {
 		const effectivePath = path !== 'home' ? camelToKebabCase(path) : '';
-		return siteMap.push({ url: `/${effectivePath}`, changefreq: 'weekly', priority: 0.7 });
+		if (!effectivePath) registeredHomepage = true;
+		return siteMap.push({ url: `/${effectivePath}`, changefreq: 'weekly', priority: effectivePath ? 0.7 : 1 });
 	});
 
+	// if the site didn't register a homepage, we'll create one for it
+	if (!registeredHomepage) siteMap.push({ url: '/', changefreq: 'daily', priority: 1 });
+
+	// create a sitemap entry per collection page and also turn the collectionPages array into an object with the collection type as the key and the collection pages array as the value
 	site[0].content.collectionPages = site[0].content.collectionPages?.reduce((accu, page) => {
 		const url = `${page.type}/${page.slug}`;
 		siteMap.push({ url, changefreq: 'monthly', priority: 0.5 });
