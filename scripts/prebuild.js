@@ -107,7 +107,7 @@ async function createRootSite(site) {
 	// save the site's data to a json file at /data/root.json
 	await writeRootSiteDataFile(site);
 
-	await fs.promises.writeFile('./static/manifest.json', JSON.stringify(getManifest(site)));
+	await fs.promises.writeFile('./static/manifest.json', JSON.stringify(getManifest(site[0])));
 }
 
 function getManifest({ title, shortName = title, slug = '', mainColor }) {
