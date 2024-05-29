@@ -1,6 +1,8 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { themesMap } from "@themes";
+
 import { EditorContext } from "@pages/Editor";
+
+import { themesMap } from "@themes";
 
 export default function useNavigationWorkaround({ theme }) {
 
@@ -18,23 +20,18 @@ export default function useNavigationWorkaround({ theme }) {
 		const mapKey = pathname === '/' ? '' : pathname;
 		const comp = themesMap[`${theme}${mapKey}`];
 
-		const currentPath = frameRef.current?.dataset.path;
-
-		// only navigate if
+		// don't navigate if
 		if (
-			// pathname starts with a slash - it's a valid path
+			// pathname doesn't start with a slash - it's not a valid path
 			!pathname.startsWith('/')
-			// the component exists
+			// the component doesn't exists
 			|| !comp
-			// next path is different from the current path
-			|| pathname === currentPath
-			// ^- next and current path aren't the homepage
-			|| mapKey === currentPath
 		) return;
 
 		setFramePath(mapKey);
 		setRenderAllowed(false);
 	}, []);
+
 	useEffect(() => registerNavigation(navigate), []);
 
 	useEffect(() => {
@@ -42,14 +39,13 @@ export default function useNavigationWorkaround({ theme }) {
 	}, [renderAllowed]);
 
 	useEffect(() => {
-		let listener;
+		if (!frameRef.current) return;
 
-		// set on load event
-		if (frameRef.current) {
-			listener = frameRef.current.addEventListener('load', () => {
-				navigate(frameRef.current?.contentWindow?.location?.pathname);
-			});
-		}
+		// whenever the user navigates within the iframe, it normally loads the page that was navigated to
+		// but we want a controlled navigation so we'll use our own navigate function
+		const listener = frameRef.current.addEventListener('load', () => {
+			navigate(frameRef.current?.contentWindow?.location?.pathname);
+		});
 
 		return () => frameRef?.current?.removeEventListener('load', listener);
 	}, [frameRef.current, framePath]);

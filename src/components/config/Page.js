@@ -11,6 +11,10 @@ export default function Page({ location, pageContext, customComponents = {}, bac
 	pageContext.location = location;
 
 	return <PageContext.Provider value={pageContext}>
+
+		{/* theme-specific global styles */}
+		<style dangerouslySetInnerHTML={{ __html: pageContext.globalStyles || '' }} />
+
 		<Background {...{ background }} />
 
 		<Header />
