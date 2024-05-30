@@ -64,22 +64,25 @@ describe('sitemap', () => {
 
 });
 
-it('should set the yl:domain meta tag on all pages', async () => {
+it('should set the yl meta tags on all pages', async () => {
 
 	// get all html pages in the public directory and its subdirectories
 	const pages = getHtmlFilesRecursively('./public');
 
-	// get the yl:domain meta tag content from each page
-	const domains = pages.map((page) => getYlMetaTagContent(fs.readFileSync(page, 'utf8')));
+	// get the yl meta tag content from each page
+	const metaTagsPerPage = pages.map((page) => getYlMetaTagContent(fs.readFileSync(page, 'utf8')));
 
 	// get the themes map to ensure all domains are present there
 	const themesMap = JSON.parse(fs.readFileSync('./src/components/themes/map.json'));
 	const parentDomains = themesMap.map(({ parentDomain }) => parentDomain.replace('.', ''));
 
-	// check that all domains are present in the themes map
-	domains.forEach((domain) => {
-		expect(domain).toBeTruthy();
-		expect(parentDomains).toContain(domain);
+	metaTagsPerPage.forEach(({ hostDomain, parentDomain }) => {
+		// check that all host domains are valid urls
+		expect(hostDomain).toBeTruthy();
+		expect(() => new URL(`https://${hostDomain}`)).not.toThrow();
+		// check that all parent domains are listed in the parentDomains array
+		expect(parentDomain).toBeTruthy();
+		expect(parentDomains).toContain(parentDomain);
 	});
 
 	function getHtmlFilesRecursively(dir, accu = []) {
@@ -97,7 +100,15 @@ it('should set the yl:domain meta tag on all pages', async () => {
 
 	function getYlMetaTagContent(html) {
 		const metaTags = html.match(/<meta [^>]*>/g);
-		return metaTags.filter((tag) => tag.includes('yl:domain'))[0].match(/content="([^"]*)"/)[1];
+
+		return {
+			parentDomain: getContentForMetaTagName('parent_domain'),
+			hostDomain: getContentForMetaTagName('host_domain')
+		};
+
+		function getContentForMetaTagName(tagName) {
+			return metaTags.filter((tag) => tag.includes(`yl:${tagName}`))[0].match(/content="([^"]*)"/)[1];
+		}
 	}
 
 
