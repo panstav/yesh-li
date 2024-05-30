@@ -2,14 +2,15 @@ import { CssVariables } from ".";
 
 const isRemote = !process.env.GATSBY_IS_LOCAL;
 
-export default function Meta({ siteId, siteTitle, parentDomain, fullPath, siteHomePath, pageTitle, description, mainColorName, mainColorHex, featuredImage, hasAdvancedSeo, isInternal }) {
+export default function Meta({ siteId, siteTitle, parentDomain, fullPath, shortDomainUrl, siteHomePath, pageTitle, description, mainColorName, mainColorHex, featuredImage, hasAdvancedSeo, isInternal }) {
 
 	return <>
 		<title>{pageTitle}</title>
 		<meta name="title" content={pageTitle} />
 		<meta name="description" content={description} />
 
-		<meta name="yl:domain" content={parentDomain} />
+		<meta name="yl:host_domain" content={shortDomainUrl} />
+		<meta name="yl:parent_domain" content={parentDomain} />
 
 		{!isInternal && <>
 			<meta property="og:type" content="website" />

@@ -2,7 +2,7 @@ import ky from 'ky';
 
 import localDb from '@services/localDb';
 
-let parentDomain;
+let hostDomain, parentDomain;
 const apiUrl = process.env.GATSBY_API_URL;
 
 export const get = transformApiCall('get');
@@ -19,16 +19,11 @@ function transformApiCall(method) {
 
 	return (endpoint, data, optionsExtension = {}) => {
 
-		// yl:domain meta tag should be available on all pages, rendered by the server
-		// if it isn't available, it's because we're in development and the meta tag wasn't rendered yet
-		// in that case, we'll get the parent domain from the global object, as on development it is set by one of the top-most components
-		if (!parentDomain) {
-			const parentDomainUrl = document.head.querySelector('[name="yl:domain"]')?.getAttribute('content');
-			parentDomain = parentDomainUrl ? new URL(parentDomainUrl).hostname : window.parentDomain;
-		}
+		ensureYlVariables();
 
 		const headers = {
-			yl_domain: parentDomain
+			yl_parent_domain: parentDomain,
+			yl_host_domain: hostDomain
 		};
 
 		const jwt = localDb.get('jwt');
@@ -58,4 +53,14 @@ function transformApiCall(method) {
 				});
 		});
 	};
+}
+
+function ensureYlVariables() {
+	if (hostDomain && parentDomain) return;
+
+	// yl meta tags should be available on all pages, as they're rendered server-side
+	// if it isn't available, it's because we're in development and the meta tag renders client-side
+	// in that case, we'll get the parent domain from the global object, as on development it is set by one of the top-most components
+	hostDomain = document.head.querySelector('[name="yl:host_domain"]')?.getAttribute('content') || window.hostDomain;
+	parentDomain = document.head.querySelector('[name="yl:parent_domain"]')?.getAttribute('content') || window.parentDomain;
 }
