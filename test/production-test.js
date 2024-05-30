@@ -9,7 +9,7 @@ const { signal } = controller;
 let sitemap, error;
 
 beforeAll(async () => {
-	// error = await build();
+	error = await build();
 	sitemap = await parseSitemap(createReadStream('./public/sitemap.xml'));
 }, 500000);
 
