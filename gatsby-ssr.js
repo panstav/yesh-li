@@ -26,7 +26,7 @@ function getGenerator() {
 
 	let domain;
 	try {
-		const siteData = require(`./data/root.json`)[0];
+		const siteData = require(`./data/root.json`);
 		const themesMap = require(`./src/components/themes/map.json`);
 		domain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain;
 	} catch (error) {

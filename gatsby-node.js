@@ -39,7 +39,7 @@ async function createPages({ actions }) {
 
 	// at the package root folder, there's a data folder and inside it, if there's a root.json file, we'll use it as the root page
 	const rootSiteFilePath = `${__dirname}/data/root.json`;
-	const rootSiteData = safelyReadFile(rootSiteFilePath)?.[0];
+	const rootSiteData = safelyReadFile(rootSiteFilePath);
 
 	if (rootSiteData) {
 		createRootSite();

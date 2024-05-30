@@ -30,7 +30,7 @@ const shortDomain = new URL(fullDomain).hostname;
 	await compileSass(sites);
 
 	// check whether we're on a dedicated domain or a multi-tenant app
-	if (sites.length === 1 && sites[0].slug === '') return createRootSite(sites);
+	if (sites.length === 1 && sites[0].slug === '') return createRootSite(sites[0]);
 
 	// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 	// iterate through the sites array
@@ -85,7 +85,7 @@ async function createRootSite(site) {
 
 	const siteMap = [];
 	let registeredHomepage;
-	Object.keys(site[0].content?.pages || {}).forEach((path) => {
+	Object.keys(site.content?.pages || {}).forEach((path) => {
 		const effectivePath = path !== 'home' ? camelToKebabCase(path) : '';
 		if (!effectivePath) registeredHomepage = true;
 		return siteMap.push({ url: `/${effectivePath}`, changefreq: 'weekly', priority: effectivePath ? 0.7 : 1 });
@@ -95,7 +95,7 @@ async function createRootSite(site) {
 	if (!registeredHomepage) siteMap.push({ url: '/', changefreq: 'daily', priority: 1 });
 
 	// create a sitemap entry per collection page and also turn the collectionPages array into an object with the collection type as the key and the collection pages array as the value
-	site[0].content.collectionPages = site[0].content.collectionPages?.reduce((accu, page) => {
+	site.content.collectionPages = site.content.collectionPages?.reduce((accu, page) => {
 		const url = `${page.type}/${page.slug}`;
 		siteMap.push({ url, changefreq: 'monthly', priority: 0.5 });
 		if (!accu[page.type]) accu[page.type] = [];
@@ -111,7 +111,7 @@ async function createRootSite(site) {
 	// save the site's data to a json file at /data/root.json
 	await writeRootSiteDataFile(site);
 
-	await fs.promises.writeFile('./static/manifest.json', JSON.stringify(getManifest(site[0])));
+	await fs.promises.writeFile('./static/manifest.json', JSON.stringify(getManifest(site)));
 }
 
 function getManifest({ id, title, shortName = title, slug = '', mainColor }) {
@@ -156,7 +156,7 @@ function writeRedirectsFile(redirects) {
 	return fs.promises.writeFile('./data/redirects.json', JSON.stringify(redirects));
 }
 
-function writeRootSiteDataFile(data = []) {
+function writeRootSiteDataFile(data = {}) {
 	return fs.promises.writeFile('./data/root.json', JSON.stringify(data));
 }
 
