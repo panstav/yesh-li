@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import classNames from "classnames";
 
+import { roles, misc } from 'yeshli-shared';
+
 import { domainProps } from "@domains/yeshli";
 
 import { AuthContext, copy } from '..';
@@ -37,14 +39,14 @@ export default function Hero() {
 function CTA () {
 	const { role } = useContext(AuthContext);
 
-	if (!role || role === 'GUEST') return <div>
+	if (!role || role === roles.GUEST) return <div>
 		<CtaButton href="/start">נסו כעת</CtaButton>
 		<BeneathCTA>{copy.freeAndCommitmentFree}</BeneathCTA>
 		<p className="is-size-7 has-text-weight-bold mt-2"></p>
 	</div>;
 
-	if (role === 'TRIAL') return <div>
-		<CtaButton href="#purchase">הוצאה לאור של העמוד שלך</CtaButton>
+	if (role === roles.TRIAL) return <div>
+		<CtaButton href={`#${misc.yeshLiHomepagePurchaseId}`}>הוצאה לאור של העמוד שלך</CtaButton>
 		<BeneathCTA>{copy.freeAndCommitmentFree}</BeneathCTA>
 	</div>;
 

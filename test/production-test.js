@@ -3,6 +3,8 @@ import cp from 'child_process';
 
 import { parseSitemap } from 'sitemap';
 
+import { themes as themesMap } from 'yeshli-shared';
+
 const controller = new AbortController();
 const { signal } = controller;
 
@@ -72,8 +74,7 @@ it('should set the yl meta tags on all pages', async () => {
 	// get the yl meta tag content from each page
 	const metaTagsPerPage = pages.map((page) => getYlMetaTagContent(fs.readFileSync(page, 'utf8')));
 
-	// get the themes map to ensure all domains are present there
-	const themesMap = JSON.parse(fs.readFileSync('./src/components/themes/map.json'));
+	// ensure all domains are present in themes map
 	const parentDomains = themesMap.map(({ parentDomain }) => parentDomain.replace('.', ''));
 
 	metaTagsPerPage.forEach(({ hostDomain, parentDomain }) => {

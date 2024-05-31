@@ -1,5 +1,7 @@
 import { useState, useEffect, createContext } from 'react';
 
+import { roles } from 'yeshli-shared';
+
 import xhr from '@services/xhr';
 import localDb from '@services/localDb';
 import Loader from '@elements/Loader';
@@ -8,12 +10,6 @@ import snatchParameter from '@lib/snatch-parameter';
 import Login from './Login';
 
 const siteId = process.env.SITEID_TO_EDIT;
-
-const roles = {
-	GUEST: 'GUEST',
-	EDITOR: 'EDITOR',
-	ADMIN: 'ADMIN'
-};
 
 export const AuthContext = createContext();
 

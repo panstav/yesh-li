@@ -7,10 +7,8 @@ const { SitemapStream, streamToPromise } = require('sitemap');
 const sass = require('sass');
 const sassAlias = require('sass-alias');
 
-const themesMap = require('../src/components/themes/map.json');
-
 // for some reason got doesn't like to be required regularly so we prepare a variable and require it later
-let got;
+let got, themesMap;
 
 if (!process.env.GATSBY_API_URL) {
 	dotenv.config({ path: `.env.production` });
@@ -39,6 +37,8 @@ const shortDomain = new URL(fullDomain).hostname;
 })();
 
 async function createMultiSite(sites, redirects) {
+
+	await fetchThemesMap();
 
 	const multiName = shortDomain.replace('.', '');
 
@@ -216,4 +216,9 @@ function camelToKebabCase(str) {
 		.replace(/-+/g, '-')
 		// remove dashes from start and end of the str
 		.replace(/(^-|-$)/g, '');
+}
+
+async function fetchThemesMap() {
+	const { themes } = await import('yeshli-shared');
+	themesMap = themes;
 }

@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+let themesMap;
+
 const isOnNetlify = process.env.NETLIFY;
 const shortDomain = new URL(process.env.URL).hostname;
 
@@ -34,6 +36,8 @@ function onCreateWebpackConfig({ getConfig, actions }) {
 }
 
 async function createPages({ actions }) {
+
+	await fetchThemesMap();
 
 	const themeCustomPages = [];
 
@@ -115,7 +119,6 @@ async function createPages({ actions }) {
 	function createRootSite() {
 		// instance is running on a dedicated domain
 
-		const themesMap = JSON.parse(fs.readFileSync(`${__dirname}/src/components/themes/map.json`));
 		const themeData = themesMap.find(({ themeName }) => themeName === rootSiteData.theme);
 
 		// get the editor with which he created the site and prep it for generation
@@ -238,4 +241,9 @@ function safelyReadFile (path) {
 	} catch (err) {
 		return null;
 	}
+}
+
+async function fetchThemesMap() {
+	const { themes } = await import('yeshli-shared');
+	themesMap = themes;
 }

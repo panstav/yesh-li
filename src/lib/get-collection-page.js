@@ -1,4 +1,4 @@
-import map from "@themes/map";
+import { themes as map } from 'yeshli-shared';
 
 export default function getCollectionPage(collectionPages, pathname) {
 	let res;

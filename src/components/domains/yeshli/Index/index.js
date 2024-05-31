@@ -1,6 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import classNames from "classnames";
 
+import { misc } from 'yeshli-shared';
+
 import Section from "@wrappers/Section";
 import Spacer from "@elements/Spacer";
 import xhr from "@services/xhr";
@@ -39,7 +41,7 @@ function Page () {
 		<Spacer />
 		<Spacer />
 		<EditorMock />
-		<CTA id="purchase" />
+		<CTA id={misc.yeshLiHomepagePurchaseId} />
 		<Spacer />
 		<FartherQuestions />
 		<Spacer />
