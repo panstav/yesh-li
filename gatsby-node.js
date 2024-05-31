@@ -140,7 +140,7 @@ async function createPages({ actions }) {
 		createThemePages(rootSiteData, context);
 
 		if (themeCustomPages.length) {
-			fs.writeFileSync(rootSiteFilePath, JSON.stringify([{ ...rootSiteData, customPages: themeCustomPages }]));
+			fs.writeFileSync(rootSiteFilePath, JSON.stringify({ ...rootSiteData, customPages: themeCustomPages }));
 		}
 
 		// create a page for each collection page in the site's data
