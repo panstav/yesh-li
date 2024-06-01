@@ -39,7 +39,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 
 	const addItem = () => {
 		const newItem = typeof emptyItem === 'function' ? emptyItem(getValues()) : emptyItem;
-		tempIds.set(emptyItem);
+		tempIds.set(newItem);
 		return append(newItem);
 	};
 
