@@ -43,7 +43,7 @@ async function createPages({ actions }) {
 
 	// at the package root folder, there's a data folder and inside it, if there's a root.json file, we'll use it as the root page
 	const rootSiteFilePath = `${__dirname}/data/root.json`;
-	const rootSiteData = safelyReadFile(rootSiteFilePath);
+	const rootSiteData = parsePossiblyEmptyFile(rootSiteFilePath);
 
 	if (rootSiteData) {
 		createRootSite();
@@ -235,12 +235,9 @@ async function createPages({ actions }) {
 
 }
 
-function safelyReadFile (path) {
-	try {
-		return JSON.parse(fs.readFileSync(path));
-	} catch (err) {
-		return null;
-	}
+function parsePossiblyEmptyFile (path) {
+	const content = JSON.parse(fs.readFileSync(path));
+	return Object.keys(content).length ? content : null;
 }
 
 async function fetchThemesMap() {
