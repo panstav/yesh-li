@@ -13,13 +13,13 @@ export default function Repeater({ items, arrayId, singleName, wrapperHandlesTit
 
 	const t = useFieldLabels();
 
-	const addButtonClassName = classNames(addButton, 'button is-fullwidth has-text-weight-bold',
+	const addButtonClassName = classNames(addButton, 'button block is-fullwidth has-text-weight-bold',
 		addButtonOnTop && items.length ? 'mb-3' : '',
 		!addButtonOnTop && items.length ? 'mt-3' : ''
 	);
 
 	return <>
-		{addButtonOnTop && <button type="button block" onClick={addItem} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
+		{addButtonOnTop && <button onClick={addItem} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
 		{items.map(({ uniqueId, itemId, title, previewPath, arrayOrder }) => {
 			return <Fragment key={uniqueId}>
 				<ArrayOrderControlContext.Provider value={arrayOrder}>
@@ -33,6 +33,6 @@ export default function Repeater({ items, arrayId, singleName, wrapperHandlesTit
 				</ArrayOrderControlContext.Provider>
 			</Fragment>;
 		})}
-		{!addButtonOnTop && <button type="button block" onClick={addItem} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
+		{!addButtonOnTop && <button onClick={addItem} className={addButtonClassName} disabled={!!cantAdd} title={cantAdd}>{t.addItem(singleName)}</button>}
 	</>;
 }
