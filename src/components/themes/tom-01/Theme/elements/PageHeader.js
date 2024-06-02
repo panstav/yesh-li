@@ -1,7 +1,7 @@
 import classNames from "classnames";
 
 import Section from "@wrappers/Section";
-import FlexImage from "@themes/elyse-01/Theme/FlexImage";
+import FlexImage from "@elements/FlexImage";
 
 export default function PageHeader({ title, subtitle, featuredImage, tags = [], isSmallFeature, className: classes, isSinglePost }) {
 	if (featuredImage) featuredImage.alt |= `${title} - ${subtitle}`;

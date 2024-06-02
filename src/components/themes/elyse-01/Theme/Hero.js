@@ -3,10 +3,10 @@ import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 
 import Section from "@wrappers/Section";
+import FlexImage from "@elements/FlexImage";
 
 import { PageContext, onClickMarkInterest } from "./Theme";
 import Socials from "./Socials";
-import FlexImage from "./FlexImage";
 
 export default function Hero() {
 	const { setValue } = useFormContext();
