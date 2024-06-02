@@ -35,7 +35,8 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 	const { getValues } = useFormContext();
 	const { append, remove, move } = useFieldArray({ name: arrayId });
 
-	const arrayData = getValues(arrayId);
+	// allow empty arrays
+	const arrayData = getValues(arrayId) || [];
 
 	const addItem = () => {
 		const newItem = typeof emptyItem === 'function' ? emptyItem(getValues()) : emptyItem;
