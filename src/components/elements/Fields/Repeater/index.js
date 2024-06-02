@@ -11,7 +11,7 @@ import { EditorContext, tempIds } from "@pages/Editor";
 
 export const ArrayOrderControlContext = createContext();
 
-export default function Repeater({ arrayId, singleName, emptyItem, collapseItems, openItemInModal, onRemove, addButtonOnTop, pathKey, minLength, maxLength, wrapper: ItemWrapper, children }) {
+export default function Repeater({ arrayId, singleName, emptyItem, collapseItems, openItemInModal, onRemove, addButtonOnTop, pathKey, itemIcon, minLength, maxLength, wrapper: ItemWrapper, children }) {
 
 	validate();
 
@@ -92,6 +92,14 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 		if (pathKey) {
 			props.previewPath = typeof pathKey === 'function' ? pathKey(props.itemId) : item[pathKey];
 			props.arrayOrder.isPreviewing = props.previewPath === currentPath;
+		}
+
+		if (itemIcon) {
+			props.icon = (() => {
+				if (typeof itemIcon === 'function') return itemIcon(item);
+				if (typeof itemIcon === 'string') return { src: item[itemIcon] };
+				if (typeof itemIcon === 'boolean') return item;
+			})();
 		}
 
 		return props;
