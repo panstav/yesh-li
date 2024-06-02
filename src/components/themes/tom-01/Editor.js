@@ -41,6 +41,7 @@ function Tom_01 () {
 				arrayId="content.pages.commercialWork.works"
 				minLength={2}
 				singleName="Commercial work"
+				collapseItems="title"
 				emptyItem={{
 					title: 'Work title',
 					embedUrl: 'https://vimeo.com/347119375'
