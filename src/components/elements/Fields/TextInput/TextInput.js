@@ -6,7 +6,7 @@ import useUniqueValidation from "@hooks/use-unique-validation";
 
 import cleanUGT from "@lib/clean-user-generated-text";
 
-export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, unique, maxLength, required = true, setValueAs = x => x, onChange, isSmall, autoComplete, disabled }) {
+export default function TextInput({ id, label, labelClassName: labelClasses, type = 'text', description, validate, pattern, unique, maxLength, required = true, setValueAs = x => x, onChange, debounceOnChange, isSmall, autoComplete, disabled }) {
 	const t = useFieldLabels();
 	const { register, getFieldState, formState } = useFormContext();
 	const { error } = getFieldState(id, formState);
@@ -30,7 +30,9 @@ export default function TextInput({ id, label, labelClassName: labelClasses, typ
 	if (pattern) inputConfig.pattern = pattern;
 	if (validate) inputConfig.validate = validate;
 	if (unique) inputConfig.validate ? Object.assign(inputConfig.validate, uniqueValidation) : inputConfig.validate = uniqueValidation;
-	if (onChange) inputConfig.onChange = (event) => onChange(ifValid({ validate, pattern }, valueAs(event.target.value)));
+
+	const onChangeHandler = (event) => onChange(ifValid({ validate, pattern }, valueAs(event.target.value)));
+	if (onChange) inputConfig.onChange = debounceOnChange ? debounce(onChangeHandler, debounceOnChange) : onChangeHandler;
 	if (autoComplete) inputConfig.autoComplete = autoComplete;
 
 	return <div className='field'>
@@ -51,4 +53,12 @@ function ifValid({ validate, pattern }, value) {
 	return (!validate || Object.values(validate).every(validator => validator(value)))
 		&& (!pattern || (pattern instanceof RegExp ? pattern.test(value) : pattern.value.test(value)))
 		&& value;
+}
+
+function debounce(fn, wait = 1) {
+	let timeout;
+	return function (...args) {
+		clearTimeout(timeout);
+		timeout = setTimeout(() => fn.call(this, ...args), wait);
+	};
 }
