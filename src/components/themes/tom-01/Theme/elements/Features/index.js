@@ -1,10 +1,11 @@
 import classNames from "classnames";
 
 import Section from "@wrappers/Section";
+import FlexImage from "@elements/FlexImage";
 
 import VideoEmbed from "@themes/tom-01/Theme/elements/VideoEmbed";
 
-import { singleFeature, imageInViewport } from '@themes/tom-01/Theme/index.module.sass';
+import { singleFeature } from '@themes/tom-01/Theme/index.module.sass';
 
 export default function Features({ children: features, columns = 2 }) {
 	return <Section noTopMargin
@@ -17,7 +18,7 @@ export default function Features({ children: features, columns = 2 }) {
 			const className = classNames(singleFeature, `is-${columns}-columns`);
 			return <Elem key={title} className={className} {...props}>
 				{embedUrl && <VideoEmbed {...{ embedUrl, title, style }} className="has-background-black mt-2" />}
-				{featuredImage && <img src={featuredImage} alt={title} className={imageInViewport} />}
+				{featuredImage && <FlexImage {...featuredImage} alt={title} style={{ aspectRatio: '1/1', height: 'auto' }} />}
 				<h3 className={titleClassName}>{title}</h3>
 			</Elem>;
 		})}

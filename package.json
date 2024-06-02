@@ -48,7 +48,7 @@
     "sass-alias": "^2.0.1",
     "sitemap": "^7.1.1",
     "tippy.js": "^6.3.7",
-    "yeshli-shared": "git://github.com/panstav/yeshli-shared.git#04ff106f"
+    "yeshli-shared": "github:panstav/yeshli-shared#bf2e1810"
   },
   "repository": {
     "type": "git",

@@ -13,6 +13,7 @@ import Details from "@elements/Details";
 import Checkbox from "@elements/Checkbox";
 
 import regexes from "@lib/regexes";
+import getCollectionPagePrefix from "@lib/get-collection-page-prefix";
 
 import { PreviewLink } from "@pages/Editor";
 import { compoundField } from '@pages/Editor/index.module.sass';
@@ -23,6 +24,7 @@ const availableTagsId = 'content.collectionPages.tag';
 const MethodsContext = createContext();
 
 const emptyTag = { title: 'New Tag', slug: 'new-tag' };
+const emptyPortfolioPost = { image: { alt: "", srcSet: "https://storage.googleapis.com/yeshli-www/assets/placeholder-250x250-01.jpg" }, isFeatured: false };
 
 export default FieldsWrapper;
 
@@ -30,7 +32,154 @@ function Tom_01 () {
 	const { getValues, setValue, getFieldState } = useFormContext();
 	const { updateSlug } = useContext(MethodsContext);
 
+	const theme = getValues('theme');
+	const blogPrefix = getCollectionPagePrefix(theme, 'post');
+	const portfolioPrefix = getCollectionPagePrefix(theme, 'portfolio');
+
 	return <>
+
+		<LinkedDetails title="Portfolio" href="/portfolio">
+
+			<TitleAndSubtitle
+				pageId="portfolio" />
+
+			<Repeater
+				addButtonOnTop
+				openItemInModal
+				arrayId="content.collectionPages.portfolio"
+				collapseItems="title"
+				singleName="Portfolio post"
+				pathKey={(id) => {
+					const slugId = `${id}.slug`;
+					return getFieldState(slugId).isDirty ? null : `/${portfolioPrefix}/${getValues(slugId)}`;
+				}}
+				emptyItem={{
+					type: 'portfolio',
+					title: "New Portfolio Post",
+					slug: getSlugFor("New Portfolio Post"),
+					publishDate: new Date().toISOString().split('T')[0],
+					images: [emptyPortfolioPost]
+				}}>
+				{(id) => <>
+
+					<Title
+						id={`${id}.title`}
+						maxLength={100}
+						onChange={(title) => updateSlug(`${id}.slug`, title)}
+						debounceOnChange={500}
+						unique={{ id, key: 'title', name: 'post' }} />
+
+					<SlugGenerator
+						id={`${id}.slug`}
+						titleId={`${id}.title`}
+						unique={{ id, key: 'slug' }} />
+
+					<Repeater
+						arrayId={`${id}.images`}
+						minLength={1}
+						singleName="Image"
+						itemIcon="image"
+						emptyItem={emptyPortfolioPost}>
+						{(imageId) => <>
+							<ImageInput
+								hasNoFocus
+								id={`${imageId}.image`}
+								label="Image"
+								sizes={[defaultImageMaxSize]} />
+
+							<Checkbox
+								id={`${imageId}.isFeatured`}
+								onChange={(isFeatured) => !isFeatured ? null : unfeatureOtherImages(`${id}.images`, imageId)}
+								label="Featured image" />
+						</>}
+					</Repeater>
+
+				</>}
+			</Repeater>
+
+		</LinkedDetails>
+
+		<LinkedDetails title="Blog" href="/blog"																																								>
+
+			<TitleAndSubtitle
+				pageId="blog" />
+
+			<CompoundField if={getValues('content.collectionPages.post')?.length}>
+				<Repeater
+					openItemInModal
+					addButtonOnTop
+					collapseItems="title"
+					arrayId="content.collectionPages.post"
+					singleName="Post"
+					sortBy="publishDate"
+					minLength={1}
+					pathKey={(id) => {
+						const slugId = `${id}.slug`;
+						return getFieldState(slugId).isDirty ? null : `/${blogPrefix}/${getValues(slugId)}`;
+					}}
+					emptyItem={{
+						type: 'post',
+						title: "New Post",
+						slug: getSlugFor("New Post"),
+						// date in the format of: 2021-01-01
+						publishDate: new Date().toISOString().split('T')[0],
+						contentHtml: "",
+						tags: [emptyTag],
+						featuredImage: {
+							alt: "",
+							srcSet: "https://storage.googleapis.com/yeshli-www/assets/placeholder-250x250-01.jpg"
+						}
+					}}>
+					{(id) => <>
+
+						<Title
+							id={`${id}.title`}
+							maxLength={100}
+							onChange={(title) => updateSlug(`${id}.slug`, title)}
+							debounceOnChange={500}
+							unique={{ id, key: 'title', name: 'post' }} />
+
+						<SlugGenerator
+							id={`${id}.slug`}
+							titleId={`${id}.title`}
+							unique={{ id, key: 'slug' }} />
+
+						<RichEditor
+							withHeaders withLink withImage
+							id={`${id}.contentHtml`}
+							label="Content" />
+
+						<Tags
+							id={`${id}.tags`}
+							titleKey="title"
+							emptyItem={emptyTag} />
+
+						<DateInput
+							id={`${id}.publishDate`}
+							label="Publish date" />
+
+						<ImageInput
+							id={`${id}.featuredImage`}
+							label="Featured image"
+							sizes={[350]} />
+
+					</>}
+				</Repeater>
+			</CompoundField>
+
+			<CompoundField if={getValues(availableTagsId)?.length}>
+				<Repeater
+					addButtonOnTop
+					collapseItems="title"
+					arrayId={availableTagsId}
+					singleName="Tag"
+					onRemove={removeTagFromPosts}
+					emptyItem={emptyTag}>
+					{(id) => <TagInput id={id} />}
+				</Repeater>
+			</CompoundField>
+
+		</LinkedDetails>
 
 		<LinkedDetails title="Commercial work" href="/commercial-work">
 
@@ -133,89 +282,6 @@ function Tom_01 () {
 
 		</LinkedDetails>
 
-		<LinkedDetails title="Blog" href="/blog"																																								>
-
-			<TitleAndSubtitle
-				pageId="blog" />
-
-			<CompoundField if={getValues('content.collectionPages.post')?.length}>
-				<Repeater
-					openItemInModal
-					addButtonOnTop
-					collapseItems="title"
-					arrayId="content.collectionPages.post"
-					singleName="Post"
-					sortBy="publishDate"
-					minLength={1}
-					pathKey={(id) => {
-						const slugId = `${id}.slug`;
-						return getFieldState(slugId).isDirty ? null : `/blog/${getValues(slugId) }`;
-					}}
-					emptyItem={{
-						type: 'post',
-						title: "New Post",
-						slug: getSlugFor("New Post"),
-						// date in the format of: 2021-01-01
-						publishDate: new Date().toISOString().split('T')[0],
-						contentHtml: "",
-						tags: [emptyTag],
-						featuredImage: {
-							alt: "",
-							srcSet: "https://storage.googleapis.com/yeshli-www/assets/placeholder-250x250-01.jpg"
-						}
-					}}>
-					{(id) => {
-						return <>
-
-							<Title
-								id={`${id}.title`}
-								maxLength={100}
-								onChange={(title) => updateSlug(`${id}.slug`, title)}
-								unique={{ id, key: 'title', name: 'post' }} />
-
-							<SlugGenerator
-								id={`${id}.slug`}
-								titleId={`${id}.title`}
-								unique={{ id, key: 'slug' }} />
-
-							<RichEditor
-								withHeaders withLink withImage
-								id={`${id}.contentHtml`}
-								label="Content" />
-
-							<Tags
-								id={`${id}.tags`}
-								titleKey="title"
-								emptyItem={emptyTag} />
-
-							<DateInput
-								id={`${id}.publishDate`}
-								label="Publish date" />
-
-							<ImageInput
-								id={`${id}.featuredImage`}
-								label="Featured image"
-								sizes={[350]} />
-
-						</>;
-					}}
-				</Repeater>
-			</CompoundField>
-
-			<CompoundField if={getValues(availableTagsId)?.length}>
-				<Repeater
-					addButtonOnTop
-					collapseItems="title"
-					arrayId={availableTagsId}
-					singleName="Tag"
-					onRemove={removeTagFromPosts}
-					emptyItem={emptyTag}>
-					{(id) => <TagInput id={id} />}
-				</Repeater>
-			</CompoundField>
-
-		</LinkedDetails>
-
 		<LinkedDetails title="Homepage" href="/">
 
 			<TitleAndSubtitle
@@ -272,6 +338,15 @@ function Tom_01 () {
 
 	</>;
 
+	function unfeatureOtherImages(arrayId, ownId) {
+		const images = getValues(arrayId);
+		images.forEach((image, index) => {
+			const imageId = `${arrayId}.${index}`;
+			if (!image.isFeatured || imageId === ownId) return;
+			setValue(`${imageId}.isFeatured`, false);
+		});
+	}
+
 	function removeTagFromPosts(removedItem) {
 
 		const posts = getValues('content.collectionPages.post');
@@ -305,6 +380,7 @@ function TagInput ({ id, hideModal }) {
 			label="Tag name"
 			maxLength={20}
 			unique={{ id, key: 'title', name: 'tag' }}
+			debounceOnChange={500}
 			onChange={(title) => {
 				updateAffectedPosts({ title });
 				return updateSlug(`${id}.slug`, title);

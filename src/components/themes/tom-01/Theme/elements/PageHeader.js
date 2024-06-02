@@ -3,8 +3,15 @@ import classNames from "classnames";
 import Section from "@wrappers/Section";
 import FlexImage from "@elements/FlexImage";
 
+import useSiteData from "@hooks/use-site-data";
+
+import getCollectionPagePrefix from "@lib/get-collection-page-prefix";
+
 export default function PageHeader({ title, subtitle, featuredImage, tags = [], isSmallFeature, className: classes, isSinglePost }) {
+	const { theme } = useSiteData();
 	if (featuredImage) featuredImage.alt |= `${title} - ${subtitle}`;
+
+	const tagPrefix = getCollectionPagePrefix(theme, 'tag');
 
 	const className = classNames('has-text-centered py-6', classes);
 	const titleClasses = classNames('title', isSinglePost ? 'is-3 has-text-weight-bold' : 'is-2 is-uppercase');
@@ -17,7 +24,7 @@ export default function PageHeader({ title, subtitle, featuredImage, tags = [], 
 			{tags.length > 0 && <div className="tags is-centered has-text-weight-bold reset-anchors">
 				<span className="tag is-medium has-text-black" style={{ backgroundColor: 'transparent', border: '0', textDecoration: 'underline' }}>TAGS:</span>
 				{tags.map((tag) => {
-					return <a key={tag.slug} href={`/blog/tag/${tag.slug}`} className="tag is-medium">
+					return <a key={tag.slug} href={`/${tagPrefix}/${tag.slug}`} className="tag is-medium">
 						{tag.title}
 					</a>;
 				})}
