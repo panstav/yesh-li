@@ -5,6 +5,9 @@ import classNames from 'classnames';
 import useI18n from '@hooks/use-i18n';
 
 import { logoContainer, versionByLogo } from './index.module.sass';
+import { memo } from 'react';
+
+const LogoWithVersion = memo(UnmemoizedLogoWithVersion);
 
 export default function Nav({ className: classes, logoClassName, burgerClasses, burgerOnClick, children }) {
 
@@ -15,12 +18,12 @@ export default function Nav({ className: classes, logoClassName, burgerClasses, 
 	const versionClassName = classNames('is-size-8 has-text-white', versionByLogo);
 	return <nav className={className} style={{ boxShadow: '0px 20px 30px 10px var(--color-background)' }}>
 		<div className="navbar-brand is-justify-content-center">
-			<LogoLinkWrapper className="is-flex">
+			<LogoWithVersion className="is-flex">
 				<div className={logoContainerClassName}>
 					<Logo className="has-text-white mx-0" style={{ width: '3.5rem' }} />
 					<Version className={versionClassName} />
 				</div>
-			</LogoLinkWrapper>
+			</LogoWithVersion>
 			{burgerClasses && <div className={burgerClasses} onClick={burgerOnClick}>
 				<span aria-hidden="true" />
 				<span aria-hidden="true" />
@@ -31,8 +34,7 @@ export default function Nav({ className: classes, logoClassName, burgerClasses, 
 	</nav>;
 }
 
-function LogoLinkWrapper(props) {
-
+function UnmemoizedLogoWithVersion(props) {
 	// by default slug would be falsy
 	// by default users at a multisite - have a slug
 	// and users that move to their own domain - don't have a slug on their siteData but multisite reserved their slug to redirect
