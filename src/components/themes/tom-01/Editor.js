@@ -259,6 +259,7 @@ function Tom_01 () {
 				id="title" />
 
 			<SizedFeaturedImage
+				hasNoFocus
 				id="content.featuredImage" />
 
 			<ImageInput
