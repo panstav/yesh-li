@@ -97,7 +97,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 		if (itemIcon) {
 			props.icon = (() => {
 				if (typeof itemIcon === 'function') return itemIcon(item);
-				if (typeof itemIcon === 'string') return { src: item[itemIcon] };
+				if (typeof itemIcon === 'string') return item[itemIcon];
 				if (typeof itemIcon === 'boolean') return item;
 			})();
 		}
