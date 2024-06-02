@@ -10,6 +10,7 @@ import markErrorOnClosestDetails from '@lib/mark-error-on-closest-details';
 
 import { fieldsMap } from '@themes';
 import { AuthContext } from '@pages/Editor/Auth';
+import { tempIds } from '@pages/Editor';
 
 import Component from './ThemeFields';
 
@@ -78,7 +79,7 @@ function removeTempIds (data) {
 	iterate(data);
 	function iterate(obj) {
 		Object.keys(obj).forEach((key) => {
-			if (key === '_id') delete obj[key];
+			if (key === tempIds.key) delete obj[key];
 			else if (typeof obj[key] === 'object') iterate(obj[key]);
 		});
 	}

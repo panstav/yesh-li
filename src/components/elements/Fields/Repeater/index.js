@@ -85,7 +85,7 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 		const props = {
 			title,
 			arrayOrder,
-			uniqueId: item._id,
+			uniqueId: tempIds.get(item),
 			itemId: `${arrayId}.${index}`
 		};
 

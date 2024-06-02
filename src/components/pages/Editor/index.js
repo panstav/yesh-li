@@ -36,7 +36,10 @@ export function PreviewLink({ href, onClick, children }) {
 	return <a onClick={navigate}>{children}</a>;
 }
 
+const tempIdKey = '_id';
 export const tempIds = {
+	key: tempIdKey,
+	get: ({ [tempIdKey]: id }) => id,
 	set: addTempId,
 	setAll: iterateAnd(addTempId),
 	unsetAll: iterateAnd(removeTempId)
@@ -55,10 +58,10 @@ function iterateAnd(fn) {
 	};
 }
 function addTempId(item) {
-	item._id = String(Math.random());
+	item[tempIdKey] = String(Math.random());
 	return item;
 }
 function removeTempId(item) {
-	delete item._id;
+	delete item[tempIdKey];
 	return item;
 }
