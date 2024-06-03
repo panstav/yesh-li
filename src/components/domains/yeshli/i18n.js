@@ -2,6 +2,8 @@ import OutboundLink from "@elements/OutboundLink";
 
 import YeshLiLogo from "@domains/yeshli/elements/Logo";
 
+const remember_me = "זכור אותי";
+
 const i18n = {
 
 	multi: {
@@ -10,10 +12,10 @@ const i18n = {
 	},
 
 	Login: {
-		session_over_please_reconnect: "הסשן שלך הסתיים - נא להתחבר מחדש",
+		session_over_please_reconnect: `הסשן שלך הסתיים - אפשר לבחור ב-"${remember_me}" בשביל משך סשן ארוך יותר`,
 		connect: "התחברות",
 		email_registered_with: "כתובת המייל שנרשמת איתה",
-		remember_me: "זכור אותי",
+		remember_me,
 		why_remember_me: "סמנו על מנת להשאר מחוברים לזמן רב יותר",
 		SendLoginLinkButtonText: ({ isTried }) => <>שלח לי {isTried ? 'עוד ' : ''}לינק התחברות</>,
 		link_successfully_sent_to: "לינק וקוד לאימות נשלחו אלייך למייל",
