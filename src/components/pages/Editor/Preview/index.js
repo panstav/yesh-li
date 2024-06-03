@@ -73,7 +73,7 @@ function getInitialContent({ theme, lang }) {
 	})();
 
 	// hide the iframe on clicking any element that has data-hide-all-onclick attribute, this is to avoid the flicker from the iframe navigating to the actual page and then being the Preview component being restarted to have the controlled page showing inside the iframe
-	const navigationHider = `if (document.body && !document.body?.onclick) document.body.onclick = (event) => {if (event.target.closest('[data-allow-events]').getAttribute('data-hide-all-onclick')) {Array.from(parent.document.getElementsByTagName('iframe'))[0].setAttribute('hidden', true);}};`;
+	const navigationHider = `if (document.body && !document.body?.onclick) document.body.onclick = (event) => {if (event.target.nodeName.toLowerCase() !== 'a' || !event.target.href) return; if (event.target.closest('[data-allow-events]').getAttribute('data-hide-all-onclick')) {Array.from(parent.document.getElementsByTagName('iframe'))[0].setAttribute('hidden', true);}};`;
 	// set a (except for outbound), button, input, textarea to pointer-events: none, unless they have data-allow-events attribute
 	const fieldsDisabler = `<style>* a:not([href^="https://"]):not([href^="tel:"]):not([href^="mailto:"]):not([data-allow-events]), * button:not([data-allow-events]), * label:not([data-allow-events]), * input:not([data-allow-events]), * textarea:not([data-allow-events]) { pointer-events: none !important; }</style>`;
 	// set input, textarea to disabled, ensure that any future modals will also have their inputs disabled
