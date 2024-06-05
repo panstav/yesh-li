@@ -1,11 +1,12 @@
 import { createContext, useContext } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 
+import RenderChildren from "@wrappers/RenderChildren";
+
 import { useFieldLabels } from "@hooks/use-i18n";
 
-import Component from "./Repeater";
 import { CollapsedRepeaterItem, ModalizedRepeaterItem, NoWrapper } from "./wrappers";
-import RenderChildren from "@wrappers/RenderChildren";
+import Component from "./Repeater";
 
 import { EditorContext, tempIds } from "@pages/Editor";
 
