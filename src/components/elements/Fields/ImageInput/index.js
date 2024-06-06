@@ -19,7 +19,6 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 
 	const imgProps = getValues(id) || {};
 	const [focusModal, openFocusModal] = useModal({
-		imageToFocus: imgProps,
 		onSubmit: ({ position }) => {
 			if (position !== getValues(`${id}.position`)) {
 				onChange?.(imgProps);
@@ -28,7 +27,9 @@ export default function ImageInput({ id, label, description, sizes, multiple = f
 			return setValue(`${id}.position`, position);
 		}
 	});
-	const setFocus = () => openFocusModal();
+	const setFocus = () => openFocusModal({
+		imageToFocus: getValues(id)
+	});
 
 	const [fileName, setFileName] = useState();
 	const [isLoading, setLoading] = useState(false);
