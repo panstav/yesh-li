@@ -124,7 +124,7 @@ function Tom_01 () {
 						// date in the format of: 2021-01-01
 						publishDate: new Date().toISOString().split('T')[0],
 						contentHtml: "",
-						tags: [emptyTag],
+						tags: [],
 						featuredImage: {
 							alt: "",
 							srcSet: "https://storage.googleapis.com/yeshli-www/assets/placeholder-250x250-01.jpg"
@@ -508,8 +508,10 @@ function MainContent ({ pageId = '', ...props }) {
 function Tags({ id, titleKey, emptyItem }) {
 
 	const { getValues, setValue } = useFormContext();
-	const { fields: activeTags, append: appendActiveTag } = useFieldArray({ name: id });
-	const { fields: availableTags, append: appendAvailableTag } = useFieldArray({ name: availableTagsId });
+	const { append: appendActiveTag } = useFieldArray({ name: id });
+	const activeTags = getValues(id);
+	const { append: appendAvailableTag } = useFieldArray({ name: availableTagsId });
+	const availableTags = getValues(availableTagsId);
 
 	const ref = useRef();
 
