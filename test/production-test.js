@@ -107,12 +107,9 @@ it('should set the yl meta tags on all pages', async () => {
 		};
 
 		function getContentForMetaTagName(tagName) {
-			const res = metaTags
-				.filter((tag) => tag.includes(`yl:${tagName}`))[0];
-
-				debugger;
-
-			return res.match(/content="([^"]*)"/)[1];
+			return metaTags
+				.filter((tag) => tag.includes(`yl:${tagName}`))[0]
+				.match(/content="([^"]*)"/)[1];
 		}
 	}
 
