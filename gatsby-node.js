@@ -4,6 +4,10 @@ const { themes: themesMap } = require('yeshli-shared');
 
 const isOnNetlify = process.env.NETLIFY;
 
+// only useful on multisites, on root sites process.env.URL equals to hostDomain
+const fullDomain = process.env.URL;
+const parentDomain = new URL(fullDomain).hostname;
+
 exports.onCreateWebpackConfig = ({ actions }) => {
 	// if we're building in production - turn off source maps
 	if (isOnNetlify) actions.setWebpackConfig({
@@ -69,7 +73,6 @@ async function createPages({ actions }) {
 			});
 		});
 
-		let parentDomain;
 		// for each directory, get all the sites which are json files in the theme's directory
 		themeDataDirNames.forEach((themeDataDirName) => {
 			const themeDirPath = `${sitesDataDirPath}/${themeDataDirName}`;
@@ -77,17 +80,16 @@ async function createPages({ actions }) {
 			// for each site, create a page
 			fs.readdirSync(themeDirPath).forEach((siteName) => {
 				const siteData = JSON.parse(fs.readFileSync(`${themeDirPath}/${siteName}`));
-				if (!parentDomain) parentDomain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain;
 				siteData.parentDomain = parentDomain;
 				createThemePages(siteData);
 			});
 		});
-		const parentDomainName = parentDomain.replace('.', '');
 
 		createDomainPages();
 
 		function createDomainPages() {
 
+			const parentDomainName = parentDomain.replace('.', '');
 			const multiDir = `${__dirname}/src/domains/${parentDomainName}`;
 
 			// some domains don't even have a custom pages directory - we'll skip them
