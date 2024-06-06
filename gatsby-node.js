@@ -1,9 +1,8 @@
 const fs = require('fs');
 
-let themesMap;
+const { themes: themesMap } = require('yeshli-shared');
 
 const isOnNetlify = process.env.NETLIFY;
-const shortDomain = new URL(process.env.URL).hostname;
 
 exports.onCreateWebpackConfig = ({ actions }) => {
 	// if we're building in production - turn off source maps
@@ -37,8 +36,6 @@ function onCreateWebpackConfig({ getConfig, actions }) {
 
 async function createPages({ actions }) {
 
-	await fetchThemesMap();
-
 	const themeCustomPages = [];
 
 	// at the package root folder, there's a data folder and inside it, if there's a root.json file, we'll use it as the root page
@@ -54,10 +51,14 @@ async function createPages({ actions }) {
 	}
 
 	function createMultiSite() {
+		// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 
-		const multiName = shortDomain.replace('.', '');
+		const sitesDataDirPath = `${__dirname}/data`;
 
-		createCustomPages();
+		// get all directories from the data folder
+		const themeDataDirNames = fs.readdirSync(sitesDataDirPath, { withFileTypes: true })
+			.filter(directory => directory.isDirectory())
+			.map(directory => directory.name);
 
 		// create redirects for all the sites that used to be on this multi-tenant site and have since moved to their own domains
 		const redirectsData = JSON.parse(fs.readFileSync(`${__dirname}/data/redirects.json`));
@@ -68,29 +69,26 @@ async function createPages({ actions }) {
 			});
 		});
 
-		// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
-		const sitesDirectory = `${__dirname}/data`;
-
-		// get all directories from the data folder
-		const themesWithSites = fs.readdirSync(sitesDirectory, { withFileTypes: true })
-			.filter(directory => directory.isDirectory())
-			.map(directory => directory.name);
-
+		let parentDomain;
 		// for each directory, get all the sites which are json files in the theme's directory
-		themesWithSites.forEach((themeName) => {
-			const themeDirectory = `${sitesDirectory}/${themeName}`;
+		themeDataDirNames.forEach((themeDataDirName) => {
+			const themeDirPath = `${sitesDataDirPath}/${themeDataDirName}`;
 
 			// for each site, create a page
-			fs.readdirSync(themeDirectory).forEach((siteName) => {
-				const siteData = JSON.parse(fs.readFileSync(`${themeDirectory}/${siteName}`));
-
+			fs.readdirSync(themeDirPath).forEach((siteName) => {
+				const siteData = JSON.parse(fs.readFileSync(`${themeDirPath}/${siteName}`));
+				if (!parentDomain) parentDomain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain;
+				siteData.parentDomain = parentDomain;
 				createThemePages(siteData);
 			});
 		});
+		const parentDomainName = parentDomain.replace('.', '');
 
-		function createCustomPages() {
+		createDomainPages();
 
-			const multiDir = `${__dirname}/src/domains/${multiName}`;
+		function createDomainPages() {
+
+			const multiDir = `${__dirname}/src/domains/${parentDomainName}`;
 
 			// some domains don't even have a custom pages directory - we'll skip them
 			if (!fs.existsSync(multiDir)) return;
@@ -99,7 +97,7 @@ async function createPages({ actions }) {
 			fs.readdirSync(multiDir).forEach((fileName) => {
 				if (!fileName.endsWith('.js')) return;
 
-				const domainData = JSON.parse(fs.readFileSync(`${__dirname}/src/components/domains/${multiName}/index.json`));
+				const domainData = JSON.parse(fs.readFileSync(`${__dirname}/src/components/domains/${parentDomainName}/index.json`));
 
 				// derive path from fileName, except for the homepage, who's path is always "/"
 				const path = fileName == 'index.js' ? '/' : fileName.split('.')[0];
@@ -108,7 +106,7 @@ async function createPages({ actions }) {
 					component: `${multiDir}/${fileName}`,
 					context: {
 						...domainData,
-						parentDomain: multiName
+						parentDomain
 					}
 				});
 			});
@@ -122,21 +120,22 @@ async function createPages({ actions }) {
 		const themeData = themesMap.find(({ themeName }) => themeName === rootSiteData.theme);
 
 		// get the editor with which he created the site and prep it for generation
-		const parentDomain = themeData.parentDomain.replace('.', '');
-		const domainData = JSON.parse(fs.readFileSync(`./src/components/domains/${parentDomain}/index.json`));
+		const parentDomainName = themeData.parentDomain.replace('.', '');
+		const domainData = JSON.parse(fs.readFileSync(`./src/components/domains/${parentDomainName}/index.json`));
 
 		// create the editor page
 		actions.createPage({
 			path: '/editor',
-			component: `${__dirname}/src/components/domains/${parentDomain}/Editor.js`,
+			component: `${__dirname}/src/components/domains/${parentDomainName}/Editor.js`,
 			context: {
 				...domainData,
 				...rootSiteData,
-				parentDomain
+				parentDomain: themeData.parentDomain
 			}
 		});
 
-		const context = { ...rootSiteData, parentDomain };
+		const context = { ...rootSiteData, parentDomain: themeData.parentDomain };
+
 		createThemePages(rootSiteData, context);
 
 		if (themeCustomPages.length) {
@@ -238,9 +237,4 @@ async function createPages({ actions }) {
 function parsePossiblyEmptyFile (path) {
 	const content = JSON.parse(fs.readFileSync(path));
 	return Object.keys(content).length ? content : null;
-}
-
-async function fetchThemesMap() {
-	const { themes } = await import('yeshli-shared');
-	themesMap = themes;
 }

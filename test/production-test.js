@@ -75,14 +75,13 @@ it('should set the yl meta tags on all pages', async () => {
 	const metaTagsPerPage = pages.map((page) => getYlMetaTagContent(fs.readFileSync(page, 'utf8')));
 
 	// ensure all domains are present in themes map
-	const parentDomains = themesMap.map(({ parentDomain }) => parentDomain.replace('.', ''));
+	const parentDomains = themesMap.map(({ parentDomain }) => parentDomain);
 
 	metaTagsPerPage.forEach(({ hostDomain, parentDomain }) => {
 		// check that all host domains are valid urls
-		expect(hostDomain).toBeTruthy();
 		expect(() => new URL(`https://${hostDomain}`)).not.toThrow();
-		// check that all parent domains are listed in the parentDomains array
-		expect(parentDomain).toBeTruthy();
+		// check that all parent domains are valid urls and are listed in the parentDomains array
+		expect(() => new URL(`https://${parentDomain}`)).not.toThrow();
 		expect(parentDomains).toContain(parentDomain);
 	});
 
@@ -108,7 +107,12 @@ it('should set the yl meta tags on all pages', async () => {
 		};
 
 		function getContentForMetaTagName(tagName) {
-			return metaTags.filter((tag) => tag.includes(`yl:${tagName}`))[0].match(/content="([^"]*)"/)[1];
+			const res = metaTags
+				.filter((tag) => tag.includes(`yl:${tagName}`))[0];
+
+				debugger;
+
+			return res.match(/content="([^"]*)"/)[1];
 		}
 	}
 

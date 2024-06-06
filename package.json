@@ -49,7 +49,7 @@
     "sass-alias": "^2.0.1",
     "sitemap": "^7.1.1",
     "tippy.js": "^6.3.7",
-    "yeshli-shared": "github:panstav/yeshli-shared#bf2e1810"
+    "yeshli-shared": "github:panstav/yeshli-shared#d7735215"
   },
   "repository": {
     "type": "git",
@@ -92,7 +92,8 @@
       "^@hooks(.*)$": "<rootDir>/src/hooks$1",
       "^@data(.*)$": "<rootDir>/src/data$1",
       "^@services(.*)$": "<rootDir>/src/services$1",
-      "^@test(.*)$": "<rootDir>/test$1"
+      "^@test(.*)$": "<rootDir>/test$1",
+      "yeshli-shared": "yeshli-shared"
     },
     "transformIgnorePatterns": [
       "node_modules/(?!(ky)/)"
