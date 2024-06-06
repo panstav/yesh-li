@@ -8,15 +8,16 @@ import { themes as themesMap } from 'yeshli-shared';
 const controller = new AbortController();
 const { signal } = controller;
 
-let sitemap, error;
+let buildError, sitemap, metaTagsPerPage;
 
 beforeAll(async () => {
-	error = await build();
+	buildError = await build();
+	metaTagsPerPage = getMetaTagsPerPage();
 	sitemap = await parseSitemap(createReadStream('./public/sitemap.xml'));
 }, 500000);
 
 it('should run production build with no errors', async () => {
-	expect(error).toBeUndefined();
+	expect(buildError).toBeUndefined();
 });
 
 it('should correctly produce a manifest file', async () => {
@@ -66,30 +67,63 @@ describe('sitemap', () => {
 
 });
 
-it('should set the yl meta tags on all pages', async () => {
+describe('meta tags', () => {
 
-	// get all html pages in the public directory and its subdirectories
-	const pages = getHtmlFilesRecursively('./public');
+	it('should set the yl meta tags on all pages', async () => {
 
-	// get the yl meta tag content from each page
-	const metaTagsPerPage = pages.map((page) => getYlMetaTagContent(fs.readFileSync(page, 'utf8')));
+		// get the yl meta tag content from each page
+		const ylTagPairs = metaTagsPerPage.map(({ tags }) => ({
+			parentDomain: getContentForMetaTagName(tags, 'yl:parent_domain'),
+			hostDomain: getContentForMetaTagName(tags, 'yl:host_domain')
+		}));
 
-	// ensure all domains are present in themes map
-	const parentDomains = themesMap.map(({ parentDomain }) => parentDomain);
+		// ensure all domains are present in themes map
+		const parentDomains = themesMap.map(({ parentDomain }) => parentDomain);
 
-	metaTagsPerPage.forEach(({ hostDomain, parentDomain }) => {
-		// check that all host domains are valid urls
-		expect(() => new URL(`https://${hostDomain}`)).not.toThrow();
-		// check that all parent domains are valid urls and are listed in the parentDomains array
-		expect(() => new URL(`https://${parentDomain}`)).not.toThrow();
-		expect(parentDomains).toContain(parentDomain);
+		ylTagPairs.forEach(({ hostDomain, parentDomain }) => {
+			// check that all host domains are valid urls
+			expect(() => new URL(`https://${hostDomain}`)).not.toThrow();
+			// check that all parent domains are valid urls and are listed in the parentDomains array
+			expect(() => new URL(`https://${parentDomain}`)).not.toThrow();
+			expect(parentDomains).toContain(parentDomain);
+		});
+
 	});
 
+	it('should have full urls for some meta tags', () => {
+		metaTagsPerPage.forEach(({ tags }) => {
+			const tagsContentToHaveFullUrls = ['og:url', 'twitter:url', 'og:image', 'twitter:image'].map((tagName) => getContentForMetaTagName(tags, tagName));
+			tagsContentToHaveFullUrls.forEach((tagContent) => {
+				expect(() => new URL(tagContent)).not.toThrow();
+			});
+		});
+
+	});
+
+	function getContentForMetaTagName(tags, tagName) {
+		return tags
+			.find((tag) => tag.includes(tagName))
+			.match(/content="([^"]*)"/)[1];
+	}
+
+});
+
+function getMetaTagsPerPage() {
+
+	// get all html pages in the public directory and its subdirectories
+	const htmlFilePaths = getHtmlFilesRecursively('./public');
+
+	return htmlFilePaths.map((path) => ({
+		path,
+		tags: fs.readFileSync(path, 'utf8').match(/<meta [^>]*>/g)
+	}));
+
 	function getHtmlFilesRecursively(dir, accu = []) {
+		const irrelevantDirs = ['404', '_gatsby', 'editor'];
 		const files = fs.readdirSync(dir);
 		for (const file of files) {
 			const name = `${dir}/${file}`;
-			if (fs.statSync(name).isDirectory() && !['404', '_gatsby'].some((irrelevantDir) => name.includes(irrelevantDir))) {
+			if (fs.statSync(name).isDirectory() && !irrelevantDirs.some((irrelevantDir) => file === irrelevantDir)) {
 				getHtmlFilesRecursively(name, accu);
 			} else if (name.endsWith('.html') && !name.includes('404')) {
 				accu.push(name);
@@ -98,23 +132,7 @@ it('should set the yl meta tags on all pages', async () => {
 		return accu;
 	}
 
-	function getYlMetaTagContent(html) {
-		const metaTags = html.match(/<meta [^>]*>/g);
-
-		return {
-			parentDomain: getContentForMetaTagName('parent_domain'),
-			hostDomain: getContentForMetaTagName('host_domain')
-		};
-
-		function getContentForMetaTagName(tagName) {
-			return metaTags
-				.filter((tag) => tag.includes(`yl:${tagName}`))[0]
-				.match(/content="([^"]*)"/)[1];
-		}
-	}
-
-
-});
+}
 
 async function build() {
 

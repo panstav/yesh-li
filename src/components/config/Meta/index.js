@@ -12,7 +12,7 @@ export default function Meta({ siteTitle, title: pageTitle, slug, description, f
 
 	const { pathname } = useLocation();
 	const shortDomainUrl = useShortDomainUrl();
-	const fullPath = `${shortDomainUrl}${pathname === '/' ? '' : pathname}`;
+	const fullPath = `https://${shortDomainUrl}${pathname === '/' ? '' : pathname}`;
 	const siteHomePath = `${shortDomainUrl}${slug ? `/${slug}` : ''}`;
 
 	const normalizedDescription = Array.isArray(description) ? description.join(' ') : description;

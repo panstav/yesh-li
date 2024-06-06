@@ -4,6 +4,5 @@ import { domainProps, wrapTitle } from "..";
 
 export default HeadFor({
 	...domainProps,
-	...wrapTitle('מתחילים'),
-	isInternal: true
+	...wrapTitle('מתחילים')
 });
