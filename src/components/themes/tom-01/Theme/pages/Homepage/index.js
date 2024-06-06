@@ -2,7 +2,7 @@ import { usePageContent, useSiteContent } from "@hooks/use-site-data";
 
 import SignupForUpdates from '@themes/tom-01/Theme/elements/SignupForBlog';
 import PageHeader from "@themes/tom-01/Theme/elements/PageHeader";
-import Delimiter from "@themes/tom-01/Theme/elements/Delimiter";
+import DelimiterComponent from "@themes/tom-01/Theme/elements/Delimiter";
 import SmallSection from "@themes/tom-01/Theme/elements/SmallSection";
 
 export default function Homepage() {
@@ -20,4 +20,8 @@ export default function Homepage() {
 		</SmallSection>
 		<Delimiter />
 	</>;
+}
+
+function Delimiter() {
+	return <DelimiterComponent style={{ width: '75ch' }} />;
 }
