@@ -23,6 +23,16 @@ it('should remove extra spaces', () => {
 it('should remove attributes from HTML tags', () => {
 	expect(cleanUGT('<div id="test">Hello World</div>')).toBe('<div>Hello World</div>');
 });
+it('should keep the src attribute on img tags', () => {
+	const imgSrc = `https://example.com/test.jpg`;
+	expect(cleanUGT(`<h1 style="" /><img src="${imgSrc}" alt="test">`)).toBe(`<h1 /><img src="${imgSrc}">`);
+	expect(cleanUGT(`<img src="${imgSrc}" alt="test">`)).toBe(`<img src="${imgSrc}">`);
+	expect(cleanUGT(`<imga src="${imgSrc}" alt="test">`)).toBe('<imga>');
+	expect(cleanUGT(`<img srcSet="${imgSrc}" alt="test">`)).toBe('<img>');
+});
+it('should remove the src attribute if it is empty', () => {
+	expect(cleanUGT('<img src="">')).toBe('<img>');
+});
 
 it('should remove spaces from the beginning and end of the string', () => {
 	expect(cleanUGT('  Hello World  ')).toBe('Hello World');

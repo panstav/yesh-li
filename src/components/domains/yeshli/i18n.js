@@ -2,6 +2,8 @@ import OutboundLink from "@elements/OutboundLink";
 
 import YeshLiLogo from "@domains/yeshli/elements/Logo";
 
+const remember_me = "זכור אותי";
+
 const i18n = {
 
 	multi: {
@@ -10,10 +12,10 @@ const i18n = {
 	},
 
 	Login: {
-		session_over_please_reconnect: "הסשן שלך הסתיים - נא להתחבר מחדש",
+		session_over_please_reconnect: `הסשן שלך הסתיים - אפשר לבחור ב-"${remember_me}" בשביל משך סשן ארוך יותר`,
 		connect: "התחברות",
 		email_registered_with: "כתובת המייל שנרשמת איתה",
-		remember_me: "זכור אותי",
+		remember_me,
 		why_remember_me: "סמנו על מנת להשאר מחוברים לזמן רב יותר",
 		SendLoginLinkButtonText: ({ isTried }) => <>שלח לי {isTried ? 'עוד ' : ''}לינק התחברות</>,
 		link_successfully_sent_to: "לינק וקוד לאימות נשלחו אלייך למייל",
@@ -72,6 +74,7 @@ const i18n = {
 
 			minItemsRepeater: (minItems) => minItems === 1 ? 'לפחות פריט 1' : `לפחות ${minItems} פריטים`,
 			maxItemsRepeater: (maxItems) => `מקסימום ${maxItems} פריטים`,
+			go_to_page: "לעבור לעמוד",
 			move_up: "לדחוף מעלה",
 			move_down: "לדחוף מטה",
 			remove: "להסיר",
@@ -85,7 +88,6 @@ const i18n = {
 			set_image_focus: 'בחירת פוקוס לתמונה',
 			ModerationInvalidatedModal,
 			ExtensionMatchesFileDoesNot,
-			file_type_not_matching_extention: 'הסיומת של הקובץ תואמת אך הקובץ עצמו הוא מסוג אחר שאינו נתמך.',
 			image_upload_error: 'אירעה שגיאה בהעלאת התמונה. נסו שנית מאוחר יותר',
 
 			youtube_url: "כתובת סרטון יוטיוב",
@@ -221,7 +223,11 @@ function AttachDomainContactUs({ className }) {
 }
 
 function ModerationInvalidatedModal() {
-	return <><p>המערכת זיהתה בתמונה תוכן בלתי מתאים מאחד הסוגים הבאים: תוכן למבוגרים, זיוף, דימוי רפואי, תוכן אלים או פרובוקטיבי.</p><br /><OutboundLink href="mailto:hello@yesh.li">צרו קשר אם מדובר בטעות בזיהוי.</OutboundLink></>;
+	return <>
+		<p>המערכת זיהתה בתמונה תוכן בלתי מתאים מאחד הסוגים הבאים: תוכן למבוגרים, זיוף, דימוי רפואי, תוכן אלים או פרובוקטיבי.</p>
+		<br />
+		<OutboundLink href="mailto:hello@yesh.li">צרו קשר אם מדובר בטעות בזיהוי.</OutboundLink>
+	</>;
 }
 
 function DomainAttachedSuccessFullyModal ({ domain }) {
@@ -238,7 +244,7 @@ function FatalErrorModal({ error }) {
 
 		<div className='buttons has-addons is-centered'>
 			<button className='button' onClick={() => window.location.reload()}>לרענן את הדף</button>
-			<OutboundLink className='button' href={`mailto:hello@$yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`}>לפנות לתמיכה</OutboundLink>
+			<OutboundLink className='button' href={`mailto:hello@yesh.li?subject=שגיאת מערכת ב-יש.לי&body=נתקלתי בשגיאה הזו:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`}>לפנות לתמיכה</OutboundLink>
 		</div>
 	</>;
 }

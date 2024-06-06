@@ -1,46 +1,60 @@
 @import @styles/common
 
 $windowHeight: calc(100vh - $navbar-height - $size-7)
-$primary-very-light: #edfaf8
+$primary-very-light: rgba(0, 149, 130, 0.1)
 
 .fieldsContainer
-	+desktop
-		min-width: min(40%, 27rem)
-		width: min-content
-		height: $windowHeight
+	color: #4a4a4a
 
-	.innerFieldsContainer
-		min-height: 10rem
-		overflow-y: auto
-		max-height: 100%
-		padding: $size-7 $size-8 0 $size-8
+	summary a
+		color: $primary
+		&:hover
+			color: inherit
+
+	&:has(.innerFieldsContainer)
 		+desktop
-			padding-inline-start: $size-6
+			min-width: min(40%, 27rem)
+			width: min-content
+			height: $windowHeight
+
+		.innerFieldsContainer
+			min-height: 10rem
+			overflow-y: auto
+			max-height: 100%
+			padding: $size-7 $size-8 0
+			+desktop
+				// in reverse because of the scrollbar reversal
+				padding-inline-start: $size-9
 
 	details.details
 		+has-mid-radius
-		margin-bottom: $size-7
+		&:not(:last-child)
+			margin-bottom: $size-7
 
 	.compound-field, [class*="select"] select, input[class*="textarea"], input[class*="input"], button[class*="button"], [class*="ql-toolbar"][class*="ql-toolbar"], [class*="ql-container"]
 		border-color: #a5d7cf
 	input[class*="textarea"], [class*="ql-editor"]
 		min-height: 8em
+		max-height: 60vh
+
+	[class*="ql-toolbar"]
+		[class*="ql-formats"]
+			display: inline-flex
+		[class*="ql-picker-label"]
+			font-size: 0.8rem
 
 	.compound-field
 		+has-radius
 		padding: $size-7
 		border-width: 2px
 		border-style: solid
-		background-color: rgba($primary, 0.05)
+
+		&:hover
+			background-color: $primary-very-light
 
 		// extendeing bulma's .field
 		&:not(:last-child)
 			margin-bottom: $size-75
-
-		.repeatedButton
-			&:hover
-				background-color: $danger
-				color: white
 
 	[class*="label"]
 		font-size: 1rem
@@ -48,6 +62,11 @@ $primary-very-light: #edfaf8
 		&:not(:last-child)
 			margin-bottom: $size-9
 			margin-inline-start: 1px
+
+	input[type="date"]
+		&::-webkit-calendar-picker-indicator
+			position: absolute
+			inset-inline-end: $size-8
 
 	.saveButtonContainer
 		margin-inline-start: $size-8
@@ -61,22 +80,25 @@ $primary-very-light: #edfaf8
 			+desktop
 				box-shadow: 0px 5px 50px 25px #ffffff
 
+	.addButton
+		&:hover
+			background-color: $primary
+			color: white
+
 details.details
 
 	&:hover
-		background-color: #e9f1f0
-	&[has-errors]
+		background-color: $primary-very-light
+	&[data-has-errors], &[data-has-other-errors]
 		background-color: $danger-light
 
 	summary
-		padding: $size-8 calc($size-7 + 1px)
-		font-weight: bold
-		text-shadow: -2px 2px white
+		+repeater-item-title
 
 		&:after
 			inset-inline-end: $size-6
 			font-size: 0.5rem
-			margin-top: -$size-9$size-6
+			margin-top: -$size-9
 
 	.inner-container
 		box-sizing: border-box
@@ -84,6 +106,12 @@ details.details
 		padding-right: $size-7
 		padding-left: $size-7
 		padding-bottom: 0.85rem
+
+.repeater-item-title
+	+repeater-item-title
+	+has-mid-radius
+	&:hover
+		background-color: $primary-very-light
 
 .richTextContainer
 
@@ -109,13 +137,11 @@ details.details
 		text-align: start
 		background-color: white
 
-.addButton
-	&:hover
-		background-color: $primary
-		color: white
-
 .previewContainer
-	padding: $size-7 $size-8 $size-7 $size-7
+	padding-top: $size-7
+	padding-bottom: $size-7
+	padding-inline-start: $size-8
+	padding-inline-end: $size-9
 	width: 100%
 	height: $windowHeight
 	+desktop

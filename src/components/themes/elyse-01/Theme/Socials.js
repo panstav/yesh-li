@@ -6,7 +6,7 @@ import OutboundLink from '@elements/OutboundLink';
 
 import hrefByAddressType from '@lib/href-by-address-type';
 
-import { PageContext } from '.';
+import { PageContext } from './Theme';
 
 const copy = {
 	facebook: {

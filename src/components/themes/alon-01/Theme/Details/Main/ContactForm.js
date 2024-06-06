@@ -1,10 +1,10 @@
-import { usePageContent } from "@hooks/use-page-data";
+import { useSiteContent } from "@hooks/use-site-data";
 
 import { Title } from "@wrappers/Modal";
 
 export default function ContactForm({ register, getValues, setValue, interest, formState: { errors } }) {
 
-	const { ctaHeader, submitText, sections } = usePageContent();
+	const { ctaHeader, submitText, sections } = useSiteContent();
 
 	return <>
 		<Title>{ctaHeader}</Title>

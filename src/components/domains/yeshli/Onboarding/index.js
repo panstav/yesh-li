@@ -1,5 +1,5 @@
 import React, { Suspense, createContext, useContext, useEffect, useState } from "react";
-import { Link, navigate } from "gatsby";
+import { navigate } from "gatsby";
 import { FormProvider, useForm } from "react-hook-form";
 import classNames from "classnames";
 import merge from "lodash.merge";
@@ -11,7 +11,6 @@ import { Checkmark } from "@elements/Icon";
 import xhr from "@services/xhr";
 import localDb from "@services/localDb";
 import { onboardingStepsMap, defaultTheme } from "@themes";
-
 import { wrapPage } from "@domains/yeshli";
 
 import './index.sass';
@@ -21,9 +20,7 @@ export const OnboardingContext = createContext();
 
 export { default as Head } from './Head';
 
-export default wrapPage(Onboarding);
-
-function Onboarding () {
+export default wrapPage(function Onboarding () {
 
 	const [fullForm, setFullForm] = useState();
 	const setPartial = (partial) => {
@@ -70,7 +67,7 @@ function Onboarding () {
 					{introStep && <div className="content">
 						<p>בעוד מספר דקות - בתום שאלון זה - תעברו לתצוגה מקדימה של העמוד שיצרתם.</p>
 						<p>כמעט כל השדות הם חובה ואת כולם אפשר לשנות בקלות ובכל עת.</p>
-						<p>המידע שתוסיפו לעמוד שלכם משמש את העמוד שלכם בלבד. בעמוד ה<Link to="/privacy-policy" target="_blank">מדיניות הפרטיות</Link> שלנו תוכלו לקרוא בדיוק איך המערכת מתנהלת בכל הנוגע למידע שלכם.</p>
+						<p>המידע שתוסיפו לעמוד שלכם משמש את העמוד שלכם בלבד. בעמוד ה<a href="/privacy-policy" target="_blank">מדיניות הפרטיות</a> שלנו תוכלו לקרוא בדיוק איך המערכת מתנהלת בכל הנוגע למידע שלכם.</p>
 						<CTA onClick={hideIntro}>
 							אחלה
 						</CTA>
@@ -130,7 +127,7 @@ function Onboarding () {
 		});
 	}
 
-}
+});
 
 export function Step ({ title, children }) {
 	const { setup, next, current, defaultValues } = useContext(OnboardingContext);

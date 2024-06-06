@@ -16,3 +16,20 @@
 @mixin has-strong-radius
 	overflow: hidden
 	border-radius: 4 * $radius
+
+@mixin repeater-item-title
+	padding: $size-8 calc($size-7 + 1px)
+	font-weight: bold
+	text-shadow: -2px 2px white
+	[class*="buttons"]
+		display: none
+	&:hover
+		[class*="buttons"]
+			display: flex
+
+$gap-shortcuts: ("gap": "gap")
+$gap-values: ("0": 0, "1": 0.25rem, "2": 0.5rem, "3": 0.75rem, "4": 1rem, "5": 1.5rem, "6": 3rem, "7": 4.5rem, "auto": auto)
+@each $property, $shortcut in $gap-shortcuts
+	@each $name, $value in $gap-values
+		.#{$shortcut}-#{$name}
+				#{$property}: $value

@@ -1,6 +1,7 @@
-import { Link } from "gatsby";
 import { useContext } from "react";
 import classNames from "classnames";
+
+import { roles } from 'yeshli-shared';
 
 import Section from "@wrappers/Section";
 import Modal, { useModal } from "@wrappers/Modal";
@@ -27,23 +28,23 @@ export default function CTA({ id }) {
 	const showPaymentModal = () => setPaymentModal();
 
 	const title = (() => {
-		if (role === 'MEMBER') return 'ברוכים השבים!';
-		if (role === 'TRIAL') return 'מוציאים את העמוד לאור';
+		if (role === roles.MEMBER) return 'ברוכים השבים!';
+		if (role === roles.TRIAL) return 'מוציאים את העמוד לאור';
 		return 'נסו את מערכת ניהול התוכן כעת';
 	})();
 
 	const subtitle = (() => {
-		if (!role || role === 'GUEST') return copy.freeAndCommitmentFree;
-		if (role === 'TRIAL') return 'לאורך כל המנוי העמוד יהיה נגיש למבקרים וחשוף בפני מנועי חיפוש ורשתות חברתיות';
+		if (!role || role === roles.GUEST) return copy.freeAndCommitmentFree;
+		if (role === roles.TRIAL) return 'לאורך כל המנוי העמוד יהיה נגיש למבקרים וחשוף בפני מנועי חיפוש ורשתות חברתיות';
 	})();
 
 	const cta = (() => {
-		if (!role || role === 'GUEST') return 'יאללה, מתחילים!';
+		if (!role || role === roles.GUEST) return 'יאללה, מתחילים!';
 		return 'חזרה למערכת הניהול';
 	})();
 
 	const href = (() => {
-		if (!role || role === 'GUEST') return '/start';
+		if (!role || role === roles.GUEST) return '/start';
 		return '/editor';
 	})();
 
@@ -58,7 +59,7 @@ export default function CTA({ id }) {
 				{subtitle && <p>{subtitle}</p>}
 			</div>
 
-			{role === 'TRIAL' && <Section noTopMargin className="is-medium mb-5">
+			{role === roles.TRIAL && <Section noTopMargin className="is-medium mb-5">
 				<div className="box is-flex-tablet is-flex-gap-3 has-text-start">
 					<div className="mb-5-mobile">
 						<h2 className={titleClassName}>מנוי שנתי</h2>
@@ -84,7 +85,7 @@ export default function CTA({ id }) {
 				</div>
 			</Section>}
 
-			{cta && <Link to={href} className="button is-medium is-primary is-rounded mt-5" style={{ border: '1px solid white' }}>{cta}</Link>}
+			{cta && <a href={href} className="button is-medium is-primary is-rounded mt-5" style={{ border: '1px solid white' }}>{cta}</a>}
 		</div>
 
 		<Modal {...paymentModal} render={() => <>

@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import classNames from "classnames";
 
+import { roles } from "yeshli-shared";
+
 import localDb from "@services/localDb";
 
 import { AuthContext } from "@pages/Editor/Auth";
@@ -23,7 +25,7 @@ export default function TopBanner({ className: classes }) {
 	}, []);
 
 	let Notice;
-	if (role === 'TRIAL') {
+	if (role === roles.TRIAL) {
 		if (!emailVerified) {
 			Notice = TrialNotice;
 		} else if (isEmailRecentlyVerified) {

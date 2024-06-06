@@ -49,8 +49,16 @@ describe('domain', () => {
 		expect(regexes.domain.test('http://example.co.il')).toBe(true);
 
 		expect(regexes.domain.test('http:/example.com')).toBe(false);
+		expect(regexes.domain.test('http://example.co.il/')).toBe(false);
 		expect(regexes.domain.test('https//example.com')).toBe(false);
 		expect(regexes.domain.test('http://example')).toBe(false);
+		expect(regexes.domain.test('http://example/')).toBe(false);
+		expect(regexes.domain.test('http://example/com')).toBe(false);
+		expect(regexes.domain.test('http://example/com/')).toBe(false);
+		expect(regexes.domain.test('http://example/com.example')).toBe(false);
+		expect(regexes.domain.test('http://example/com.example/')).toBe(false);
+		expect(regexes.domain.test('http://example/com/example')).toBe(false);
+		expect(regexes.domain.test('http://example/com/example/')).toBe(false);
 		expect(regexes.domain.test('http://example.')).toBe(false);
 		expect(regexes.domain.test('http://.com')).toBe(false);
 		expect(regexes.domain.test('http://.')).toBe(false);
@@ -58,6 +66,19 @@ describe('domain', () => {
 });
 
 describe('slug', () => {
+	it('should match any non-zero length of string', () => {
+		expect('a'.match(regexes.slug)[0]).toBe('a');
+		expect('a-b'.match(regexes.slug)[0]).toBe('a-b');
+		expect('ab-c'.match(regexes.slug)[0]).toBe('ab-c');
+		expect('a-bc'.match(regexes.slug)[0]).toBe('a-bc');
+
+		expect(regexes.slug.test('a')).toBe(true);
+		expect(regexes.slug.test('ab')).toBe(true);
+		expect(regexes.slug.test('abc')).toBe(true);
+		expect(regexes.slug.test('abcd')).toBe(true);
+
+		expect(regexes.slug.test('')).toBe(false);
+	});
 	it('should match a string that contains only dashes, letters and numbers', () => {
 		expect(regexes.slug.test('helloWorld')).toBe(true);
 		expect(regexes.slug.test('hello-world')).toBe(true);
@@ -68,6 +89,22 @@ describe('slug', () => {
 		expect(regexes.slug.test('hello-world-')).toBe(false);
 		expect(regexes.slug.test('-helloworld')).toBe(false);
 		expect(regexes.slug.test('hello-world!')).toBe(false);
+	});
+	it('should match a string that contains only one character, unless it\'s a dash', () => {
+		expect(regexes.slug.test('h')).toBe(true);
+		expect(regexes.slug.test('1')).toBe(true);
+		expect(regexes.slug.test('hh')).toBe(true);
+		expect(regexes.slug.test('11')).toBe(true);
+
+		expect(regexes.slug.test('-')).toBe(false);
+		expect(regexes.slug.test('--')).toBe(false);
+	});
+});
+describe('nonSlugParts', () => {
+	it('should be able to remove all non-slug parts from a string', () => {
+		expect('hello-world-123'.replace(regexes.nonSlugParts, '-')).toBe('hello-world-123');
+		expect('hello-world-123!'.replace(regexes.nonSlugParts, '-')).toBe('hello-world-123-');
+		expect('hello!@#$%^&*()_+world-123'.replace(regexes.nonSlugParts, '-')).toBe('hello-world-123');
 	});
 });
 
@@ -81,5 +118,42 @@ describe('first4Digits', () => {
 	it('should extract the first 4 digits of a string', () => {
 		expect(regexes.first4Digits.exec('123456')[0]).toBe('1234');
 		expect(regexes.first4Digits.exec('a123456')[0]).toBe('1234');
+	});
+});
+
+describe('startsWithVowel', () => {
+	it('should match a string that starts with a vowel', () => {
+		expect(regexes.startsWithVowel.test('apple')).toBe(true);
+		expect(regexes.startsWithVowel.test('Apple')).toBe(true);
+		expect(regexes.startsWithVowel.test('orange')).toBe(true);
+		expect(regexes.startsWithVowel.test('Orange')).toBe(true);
+		expect(regexes.startsWithVowel.test('ice')).toBe(true);
+		expect(regexes.startsWithVowel.test('Ice')).toBe(true);
+		expect(regexes.startsWithVowel.test('ear')).toBe(true);
+		expect(regexes.startsWithVowel.test('Ear')).toBe(true);
+
+		expect(regexes.startsWithVowel.test('banana')).toBe(false);
+		expect(regexes.startsWithVowel.test('Banana')).toBe(false);
+		expect(regexes.startsWithVowel.test('pear')).toBe(false);
+		expect(regexes.startsWithVowel.test('Pear')).toBe(false);
+		expect(regexes.startsWithVowel.test('grape')).toBe(false);
+		expect(regexes.startsWithVowel.test('Grape')).toBe(false);
+		expect(regexes.startsWithVowel.test('kiwi')).toBe(false);
+		expect(regexes.startsWithVowel.test('Kiwi')).toBe(false);
+	});
+});
+
+describe('vimeoOrYoutubeVideoUrl', () => {
+	it('should match a string that is a vimeo or youtube video URL', () => {
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://vimeo.com/123456')).toBe(true);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://www.vimeo.com/123456')).toBe(true);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://youtube.com/watch?v=123456')).toBe(true);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://www.youtube.com/watch?v=123456')).toBe(true);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://vimeo.com/123456/')).toBe(true);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://youtube.com/watch?v=123456/')).toBe(true);
+
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://vimeo.com/')).toBe(false);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://youtube.com/watch?v=')).toBe(false);
+		expect(regexes.vimeoOrYoutubeVideoUrl.test('https://youtube.com/1235')).toBe(false);
 	});
 });

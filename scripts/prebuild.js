@@ -1,10 +1,14 @@
 const fs = require('fs');
 const { Readable } = require('stream');
+const path = require('path');
 
-const { SitemapStream, streamToPromise } = require('sitemap');
 const dotenv = require('dotenv');
+const { SitemapStream, streamToPromise } = require('sitemap');
+const sass = require('sass');
+const sassAlias = require('sass-alias');
 
-const themesMap = require('../src/components/themes/map.json');
+// for some reason got doesn't like to be required regularly so we prepare a variable and require it later
+let got, themesMap;
 
 if (!process.env.GATSBY_API_URL) {
 	dotenv.config({ path: `.env.production` });
@@ -15,30 +19,26 @@ const shortDomain = new URL(fullDomain).hostname;
 
 (async () => {
 
-	// if not in production - exit
-	if (!process.env.NETLIFY) return;
+	if (!process.env.NETLIFY) await cleanUp();
 
 	// get sites from api
-	const { sites, redirects } = await getUserSites();
+	const { sites, redirects } = await api(`sites?domain=${shortDomain}`);
+
+	// compile any theme-specific global styles
+	await compileSass(sites);
 
 	// check whether we're on a dedicated domain or a multi-tenant app
-	if (sites.length === 1 && sites[0].slug === '') return scaffoldRootSite(sites);
+	if (sites.length === 1 && sites[0].slug === '') return createRootSite(sites[0]);
 
 	// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 	// iterate through the sites array
-	await scaffoldMultiSite(sites, redirects);
+	await createMultiSite(sites, redirects);
 
 })();
 
-async function getUserSites() {
+async function createMultiSite(sites, redirects) {
 
-	// got doesn't like to be `require`d
-	const got = await getGot();
-
-	return got.get(`${process.env.GATSBY_API_URL}/sites?domain=${shortDomain}`).json();
-}
-
-async function scaffoldMultiSite(sites, redirects) {
+	await fetchThemesMap();
 
 	const multiName = shortDomain.replace('.', '');
 
@@ -53,7 +53,10 @@ async function scaffoldMultiSite(sites, redirects) {
 		.concat(sites.map(site => ({ url: `/${site.slug}`, changefreq: 'daily', priority: 1 })));
 
 	// create a redirects file for all the sites that used to be on this multi-tenant site and have since moved to their own domains
-	await fs.promises.writeFile('./data/redirects.json', JSON.stringify(redirects));
+	await writeRedirectsFile(redirects);
+
+	// create an empty file to indicate that we're not deploying a root site
+	await writeRootSiteDataFile();
 
 	return sites.reduce((accu, site) => accu.then(async () => {
 
@@ -71,31 +74,48 @@ async function scaffoldMultiSite(sites, redirects) {
 			title: `${title} • ${description}`,
 			shortName: title,
 			mainColor: mainColorHex,
-			id: `${ multiName } - homepage`,
-			slug: ''
+			id: `${ multiName } - homepage`
 		})));
 
-	}), createSitemap(links));
+	}), writeSitemapFile(links));
 }
 
-async function scaffoldRootSite(site) {
-	// instance is running on a dedicated domain, the root page is the only page
+async function createRootSite(site) {
+	// instance is running on a dedicated domain
 
-	await createSitemap([
-		{ url: '/', changefreq: 'daily', priority: 1 }
-	]);
+	const siteMap = [];
+	let registeredHomepage;
+	Object.keys(site.content?.pages || {}).forEach((path) => {
+		const effectivePath = path !== 'home' ? camelToKebabCase(path) : '';
+		if (!effectivePath) registeredHomepage = true;
+		return siteMap.push({ url: `/${effectivePath}`, changefreq: 'weekly', priority: effectivePath ? 0.7 : 1 });
+	});
+
+	// if the site didn't register a homepage, we'll create one for it
+	if (!registeredHomepage) siteMap.push({ url: '/', changefreq: 'daily', priority: 1 });
+
+	// create a sitemap entry per collection page and also turn the collectionPages array into an object with the collection type as the key and the collection pages array as the value
+	site.content.collectionPages = site.content.collectionPages?.reduce((accu, page) => {
+		const url = `${page.type}/${page.slug}`;
+		siteMap.push({ url, changefreq: 'monthly', priority: 0.5 });
+		if (!accu[page.type]) accu[page.type] = [];
+		accu[page.type].push(page);
+		return accu;
+	}, {});
+
+	await writeSitemapFile(siteMap);
 
 	// create an empty redirects file
-	await fs.promises.writeFile('./data/redirects.json', JSON.stringify([]));
+	await writeRedirectsFile([]);
 
 	// save the site's data to a json file at /data/root.json
-	await fs.promises.writeFile('./data/root.json', JSON.stringify(site));
+	await writeRootSiteDataFile(site);
+
 	await fs.promises.writeFile('./static/manifest.json', JSON.stringify(getManifest(site)));
 }
 
-function getManifest({ title, shortName = title, slug, id = slug, mainColor }) {
+function getManifest({ id, title, shortName = title, slug = '', mainColor }) {
 	const relativeUrl = `/${slug}`;
-	const pageShortUrl = `${ shortDomain }${ slug ? relativeUrl : ''}`;
 	return {
 		"id": id,
 		"name": title,
@@ -107,12 +127,12 @@ function getManifest({ title, shortName = title, slug, id = slug, mainColor }) {
 		"orientation": "portrait",
 		"icons": [
 			{
-				"src": `https://storage.googleapis.com/cloudicon/${pageShortUrl}/favicon-32x32.png`,
+				"src": `https://storage.googleapis.com/cloudicon/${id}/favicon-32x32.png`,
 				"sizes": "32x32",
 				"type": "image/png"
 			},
 			{
-				"src": `https://storage.googleapis.com/cloudicon/${pageShortUrl}/apple-touch-icon-144x144.png`,
+				"src": `https://storage.googleapis.com/cloudicon/${id}/apple-touch-icon-144x144.png`,
 				"sizes": "144x144",
 				"type": "image/png"
 			}
@@ -120,13 +140,85 @@ function getManifest({ title, shortName = title, slug, id = slug, mainColor }) {
 	};
 }
 
-async function getGot() {
-	return (await import('got')).got;
+async function api(path) {
+	if (!got) got = (await import('got')).got;
+	return got.get(`${process.env.GATSBY_API_URL}/${path}`).json();
 }
 
-async function createSitemap(items) {
+async function writeSitemapFile(items) {
 	const stream = new SitemapStream({ hostname: fullDomain });
 	const sitemap = await streamToPromise(Readable.from(items).pipe(stream)).then((data) => data.toString());
 
 	return fs.promises.writeFile('./static/sitemap.xml', sitemap);
+}
+
+function writeRedirectsFile(redirects) {
+	return fs.promises.writeFile('./data/redirects.json', JSON.stringify(redirects));
+}
+
+function writeRootSiteDataFile(data = {}) {
+	return fs.promises.writeFile('./data/root.json', JSON.stringify(data));
+}
+
+async function compileSass(sites) {
+	// array could be a single root site or multiple sites in a multi-site setup
+
+	return Promise.all(sites.map(async (site) => {
+
+		let result;
+
+		// some themes don't have a global.sass file, an error will be thrown and we'll ignore it
+		try {
+
+			// the sass compiler doesn't support aliases, so we'll use sass-alias to resolve the ones we use in sass files
+			const importer = sassAlias.create({
+				'@styles': path.join(__dirname, '../src/styles')
+			});
+
+			// any global styles will reside in a global.sass file in the theme's components folder
+			result = await sass.compileAsync(`./src/components/themes/${site.theme}/Theme/global.sass`, {
+				importers: [importer],
+				style: 'compressed',
+				loadPaths: ['./node_modules']
+			});
+
+			// save the compiled css to the siteData object
+			// the prop will be used in the Page component to inject the global styles in a way that is persistent across the pages of theme and also available to the editor preview
+			site.globalStyles = result.css;
+
+		} catch (error) {
+			// ignore only the errors that are thrown when the global.sass file is missing
+			if (error.message !== "no such file or directory") throw error;
+		}
+	}));
+}
+
+function cleanUp() {
+
+	const paths = ['./data', './static'];
+
+	return Promise.all(paths.map(deleteAllButGitIgnoreAt));
+}
+
+async function deleteAllButGitIgnoreAt(pathPrefix) {
+	const files = await fs.promises.readdir(pathPrefix);
+	return Promise.all(files.map((fileName) => {
+		if (fileName === '.gitignore') return;
+		return fs.promises.rm(`${pathPrefix}/${fileName}`, { recursive: true });
+	}));
+}
+
+function camelToKebabCase(str) {
+	return str
+		// kebab casing
+		.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase()
+		// ensure dashes don't repeat
+		.replace(/-+/g, '-')
+		// remove dashes from start and end of the str
+		.replace(/(^-|-$)/g, '');
+}
+
+async function fetchThemesMap() {
+	const { themes } = await import('yeshli-shared');
+	themesMap = themes;
 }

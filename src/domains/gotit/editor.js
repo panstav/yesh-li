@@ -1,1 +1,0 @@
-export { default as default, Head } from "@domains/gotit/Editor";

@@ -1,29 +1,68 @@
-import { createContext, createElement } from 'react';
+import { createContext } from 'react';
+
+import RenderChildren from '@wrappers/RenderChildren';
+import useShortDomainUrl from '@hooks/use-short-domain-url';
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 export const PageContext = createContext();
 
-export default function Page({ pageContext, background, children }) {
+export default function Page({ location, pageContext, customComponents = {}, background, children }) {
+	const { Header = Null, Footer = Null, Background = FallbackBackground } = customComponents;
+
+	useDevelopmentVariables({ parentDomain: pageContext.parentDomain});
+
+	// have the location available in the page context
+	pageContext.location = location;
+
 	return <PageContext.Provider value={pageContext}>
 
+		{/* theme-specific global styles */}
+		<style dangerouslySetInnerHTML={{ __html: pageContext.globalStyles || '' }} />
+
 		<Background {...{ background }} />
+
+		<Header />
 		{children}
+		<Footer />
+
 		<div id="modal-root" />
 
 	</PageContext.Provider>;
 }
 
 export function wrapPageElement({ element, props }) {
-	return createElement(Page, {
-		// downstream props
-		...props,
-		// a reminiscence of the old code, required for shila's theme
-		...element.type.config,
-	}, element);
+	const Wrapper = element?.type?.Wrapper || RenderChildren;
+	const customComponents = element?.type?.customComponents;
+
+	return <Wrapper>
+		<Page {...{
+			...props,
+			customComponents,
+			// a reminiscence of the old code, required for shila's theme
+			...element.type.config,
+		}}>
+			{element}
+		</Page>
+	</Wrapper>;
 }
 
-function Background({ background: url }) {
+function FallbackBackground({ background: url }) {
 	if (!url) return null;
 	return <div style={{ zIndex: '-10', position: 'fixed', top: '-50%', left: '-50%', width: '200%', height: '200%' }}>
 		<img style={{ position: 'absolute', top: '0', left: '0', right: '0', bottom: '0', margin: 'auto', minWidth: '50%', maxWidth: 'none', minHeight: '50%' }} src={url} />
 	</div>;
+}
+
+function useDevelopmentVariables({ parentDomain }) {
+	// if we're in development, we'll set the hostDomain and parentDomain on the global object, because the meta tags holding these values might not be available as soon as the page loads
+	const shortDomainUrl = useShortDomainUrl();
+	if (!isProduction) {
+		window.parentDomain = parentDomain;
+		window.hostDomain = shortDomainUrl;
+	}
+}
+
+function Null () {
+	return null;
 }

@@ -28,22 +28,63 @@ summary
 	&:first-child:not(.is-rounded)
 		border-start-start-radius: $radius
 		border-end-start-radius: $radius
-		&.is-small
+		&.is-small:not(.has-strong-radius)
 			border-start-start-radius: 2px
 			border-end-start-radius: 2px
 	&:last-child:not(.is-rounded)
 		border-start-end-radius: $radius
 		border-end-end-radius: $radius
-		&.is-small
+		&.is-small:not(.has-strong-radius)
 			border-start-end-radius: 2px
 			border-end-end-radius: 2px
+
+.navbar
+	.navbar-burger, .navbar-end
+		margin-right: unset
+		margin-inline-start: auto
+	.navbar-link:not(.is-arrowless)
+		padding-left: 0.75rem
+		padding-inline-end: 2.5em
+		&:after
+			left: unset
+			inset-inline-end: 1.3rem
+	.navbar-dropdown
+		right: unset
+		.navbar-item
+			padding-left: 1rem
+			padding-inline-end: 3rem
+
+.buttons.has-addons
+	.button:not(:last-child)
+		margin-left: unset
+		margin-inline-end: -1px
+
+.field.is-grouped > .control:not(:last-child)
+	margin-left: unset
+	margin-inline-end: 0.75rem
+.select select:not([multiple])
+	padding-left: calc(0.75em - 1px)
+	padding-inline-end: 2.5rem
+.select:not(.is-multiple):not(.is-loading):not(.specific-enough):after
+	inset-inline-start: unset
+	inset-inline-end: 1.125em
+	border-color: $primary
+
+.tags .tag:not(:last-child)
+	margin-left: unset
+	margin-inline-end: 0.5rem
+.tag:not(body):not(.specific-enough) .delete
+	margin-right: unset
+	margin-left: unset
+	margin-inline-start: 0.3rem
+	margin-inline-end: -0.375rem
 
 .reset-anchors
 	@include reset-anchors
 
 details.details
 
-	&[open] summary:after
+	&[open] > summary:after
 		transform: rotate(135deg)
 
 	summary

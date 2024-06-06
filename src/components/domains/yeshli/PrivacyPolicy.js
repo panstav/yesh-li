@@ -16,9 +16,7 @@ export const Head = HeadFor({
 	hasAdvancedSeo: false
 });
 
-export default wrapPage(PrivacyPolicy);
-
-function PrivacyPolicy() {
+export default wrapPage(function PrivacyPolicy() {
 	return <ContentPage>
 
 		<LastUpdated date={new Date('2024-02-21')} />
@@ -83,4 +81,4 @@ function PrivacyPolicy() {
 		<ContactParagraph />
 
 	</ContentPage>;
-}
+});

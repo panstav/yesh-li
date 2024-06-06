@@ -2,12 +2,12 @@ import Section from '@wrappers/Section';
 import xhr from '@services/xhr';
 
 import useFetch from '@hooks/use-fetch';
-import usePageData from '@hooks/use-page-data';
+import useSiteData from '@hooks/use-site-data';
 
 import Fields from './FormFields';
 
 export default function ContactForm() {
-	const { content: { ctaHeader } } = usePageData();
+	const { content: { ctaHeader } } = useSiteData();
 	const [postLead, isSuccess, isError] = useFetch(xhr.createLead);
 
 	return <>

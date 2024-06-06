@@ -1,0 +1,30 @@
+@import @styles/common
+
+.singlePost
+	display: flex
+	flex-direction: column-reverse
+
+	img
+		width: 100%
+
+	@include from(550px)
+		flex-direction: row
+
+		img
+			width: 250px
+
+.singleFeature
+
+	width: 100%
+	img
+		width: 100%
+
+	+tablet
+		&[class*="is-2-columns"]
+			width: calc(50% - 0.5rem)
+		&[class*="is-3-columns"]
+			width: calc(33.333% - 0.5rem)
+
+.imageInViewport
+	max-height: 80vh
+	margin: auto

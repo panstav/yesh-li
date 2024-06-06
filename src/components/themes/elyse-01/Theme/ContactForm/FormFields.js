@@ -1,10 +1,10 @@
 import { useFormContext } from "react-hook-form";
 
-import usePageData from "@hooks/use-page-data";
+import useSiteData from "@hooks/use-site-data";
 
 export default function FormFields ({ isSuccess, isError }) {
 	const { register } = useFormContext();
-	const { content: { submitText, sections } } = usePageData();
+	const { content: { submitText, sections } } = useSiteData();
 	return <>
 		<div className="field">
 			<label className="label" htmlFor="contact-name">שם:</label>

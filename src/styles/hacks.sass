@@ -1,5 +1,8 @@
 html.with-modal
 	overflow-y: hidden
+	&.blur-modal-background
+		#gatsby-focus-wrapper > *:not(#modal-root)
+			filter: blur(10px)
 
 .object-fit-cover
 	object-fit: cover
@@ -11,3 +14,8 @@ html.with-modal
 
 .stroke-as-color svg
 	stroke: currentColor
+
+// fix for quill editor to have the headings select arrow on the by-dir end of the select, instead of always on the right end
+.ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg
+	right: unset
+	inset-inline-end: 0

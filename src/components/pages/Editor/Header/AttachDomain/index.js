@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import classNames from "classnames";
 
 import useI18n from "@hooks/use-i18n";
@@ -7,9 +8,11 @@ import { Title } from "@wrappers/Modal";
 
 import ExistingDomain from "./ExistingDomain";
 
-export default function AttachDomain({ onSuccess: onSuccessHandler, slug: currentSlug, hideModal }) {
+export default function AttachDomain({ onSuccess: onSuccessHandler, hideModal }) {
 
 	const [{ Editor: { AttachDomain: { ContactUs, BuyingDomainUnavailable, ...t } } }] = useI18n();
+
+	const currentSlug = useFormContext().getValues('slug');
 
 	const [panel, setPanel] = useState('existing');
 

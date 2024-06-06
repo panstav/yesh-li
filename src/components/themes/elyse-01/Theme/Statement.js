@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import Section from "@wrappers/Section";
 
-import { PageContext } from ".";
+import { PageContext } from "./Theme";
 
 export default function Statement() {
 	const { css, content: { statement } } = useContext(PageContext);

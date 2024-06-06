@@ -1,6 +1,7 @@
-import { Link } from "gatsby";
 import { createContext, useEffect, useState } from "react";
 import classNames from "classnames";
+
+import { misc } from 'yeshli-shared';
 
 import Section from "@wrappers/Section";
 import Spacer from "@elements/Spacer";
@@ -20,7 +21,6 @@ import { footerGlow } from './index.module.sass';
 import './index.sass';
 
 export const AuthContext = createContext();
-
 export const copy = {
 	freeAndCommitmentFree: 'חינם וללא התחייבות'
 };
@@ -41,7 +41,7 @@ function Page () {
 		<Spacer />
 		<Spacer />
 		<EditorMock />
-		<CTA id="purchase" />
+		<CTA id={misc.yeshLiHomepagePurchaseId} />
 		<Spacer />
 		<FartherQuestions />
 		<Spacer />
@@ -88,7 +88,7 @@ function Footer () {
 function BottomLink ({ dotPrefix = true, href, label }) {
 	return <>
 		{dotPrefix && <span className="has-text-weight-bold px-2" style={{ fontSize: '0.75em' }}>·</span>}
-		<Link to={href}>{label}</Link>
+		<a href={href}>{label}</a>
 	</>;
 }
 

@@ -1,12 +1,14 @@
 import '@styles/index.sass';
 
+import { themes as themesMap } from 'yeshli-shared';
+
 const shortDomain = new URL(process.env.URL).hostname;
 
 let generator;
 
 export { wrapPageElement } from '@config/Page';
 
-export const onPreRenderHTML = async ({ getHeadComponents, replaceHeadComponents }) => {
+export async function onPreRenderHTML({ getHeadComponents, replaceHeadComponents }) {
 	const headComponents = getHeadComponents();
 
 	// promote the preconnect and preload tags to the top of the head, so they are loaded before the css dump and everything else
@@ -20,14 +22,13 @@ export const onPreRenderHTML = async ({ getHeadComponents, replaceHeadComponents
 	});
 
 	replaceHeadComponents(headComponents);
-};
+}
 
 function getGenerator() {
 
 	let domain;
 	try {
-		const siteData = require(`./data/root.json`)[0];
-		const themesMap = require(`./src/components/themes/map.json`);
+		const siteData = require(`./data/root.json`);
 		domain = themesMap.find(({ themeName }) => themeName === siteData.theme).parentDomain;
 	} catch (error) {
 		domain = shortDomain;

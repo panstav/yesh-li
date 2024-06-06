@@ -1,6 +1,7 @@
-import { Link } from "gatsby";
 import { useContext } from "react";
 import classNames from "classnames";
+
+import { roles, misc } from 'yeshli-shared';
 
 import { domainProps } from "@domains/yeshli";
 
@@ -38,14 +39,14 @@ export default function Hero() {
 function CTA () {
 	const { role } = useContext(AuthContext);
 
-	if (!role || role === 'GUEST') return <div>
+	if (!role || role === roles.GUEST) return <div>
 		<CtaButton href="/start">נסו כעת</CtaButton>
 		<BeneathCTA>{copy.freeAndCommitmentFree}</BeneathCTA>
 		<p className="is-size-7 has-text-weight-bold mt-2"></p>
 	</div>;
 
-	if (role === 'TRIAL') return <div>
-		<CtaButton href="#purchase">הוצאה לאור של העמוד שלך</CtaButton>
+	if (role === roles.TRIAL) return <div>
+		<CtaButton href={`#${misc.yeshLiHomepagePurchaseId}`}>הוצאה לאור של העמוד שלך</CtaButton>
 		<BeneathCTA>{copy.freeAndCommitmentFree}</BeneathCTA>
 	</div>;
 
@@ -53,8 +54,8 @@ function CTA () {
 		<CtaButton href="/editor">עריכת העמוד שלך</CtaButton>
 	</div>;
 }
-function CtaButton ({ href, ...props }) {
-	return <Link to={href} className="button is-primary is-rounded is-medium" style={{ border: '2px solid rgb(255 255 255 / 75%)' }} {...props} />;
+function CtaButton(props) {
+	return <a className="button is-primary is-rounded is-medium" style={{ border: '2px solid rgb(255 255 255 / 75%)' }} {...props} />;
 }
 function BeneathCTA (props) {
 	return <p className="is-size-7 has-text-weight-bold mt-2" {...props} />;

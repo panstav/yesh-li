@@ -1,84 +1,67 @@
-import { useContext, useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import classNames from 'classnames';
+import { createContext, useContext } from 'react';
 
-import xhr from '@services/xhr';
-import localDb from '@services/localDb';
-import snatchParameter from '@lib/snatch-parameter';
+import getDirByLang from '@lib/get-dir-by-lang';
 
-import useI18n from '@hooks/use-i18n';
+import Auth from './Auth';
+import Editor from './Editor';
+import EditorContextSetter from './ContextSetter';
 
-import Modal, { useSuccessModal } from '@wrappers/Modal';
-import Loader from '@elements/Loader';
+import './index.sass';
 
-import Header from './Header';
-import ThemeFields from './ThemeFields';
-import Preview from './Preview';
-import Auth, { AuthContext } from './Auth';
+export const EditorContext = createContext();
+export const editorProps = { isInternal: true };
 
-import { fieldsContainer, previewContainer } from './index.module.sass';
+export const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+export const acceptedFileSuffixes = allowedImageTypes.join(',').replaceAll('image/', '.');
+export const acceptedExtnames = allowedImageTypes.join(', ').replaceAll('image/', '.');
 
-export const editorProps = {
-	isInternal: true
-};
-
-export default function Editor () {
+export default function EditorWrapper ({ pageContext }) {
+	const { forward, backward } = getDirByLang(pageContext.lang, { bothSides: true });
 	return <Auth>
-		<EditorForm />
+		<EditorContextSetter extend={{ dir: { forward, backward } }}>
+			<Editor  />
+		</EditorContextSetter>
 	</Auth>;
 }
 
-function EditorForm() {
-	const [{ Editor: { NewPageModal } }] = useI18n();
-	const { siteId } = useContext(AuthContext);
+export function PreviewLink({ href, onClick, children }) {
+	const goTo = useContext(EditorContext).navigate;
 
-	const form = useForm({
-		mode: 'onChange',
-		defaultValues: () => xhr.getSiteData(siteId)
-	});
+	const navigate = (event) => {
+		event.preventDefault();
+		onClick(event);
+		goTo(href);
+	};
 
-	const [newPageModal, showNewPageModal] = useSuccessModal();
-	useEffect(() => {
-		if (snatchParameter('newPage')) showNewPageModal();
-	}, []);
+	return <a onClick={navigate}>{children}</a>;
+}
 
-	if (!Object.keys(form.getValues()).length) return <Loader />;
+const tempIdKey = '_id';
+export const tempIds = {
+	key: tempIdKey,
+	get: ({ [tempIdKey]: id }) => id,
+	set: addTempId,
+	setAll: iterateAnd(addTempId),
+	unsetAll: iterateAnd(removeTempId)
+};
 
-	// if the site has moved out to it's own domain, redirect to its editor page
-	// treat the redirect property as a domain
-	const redirect = form.getValues().redirect;
-	if (redirect) return wrongDomain();
-
-	const fieldsContainerClassName = classNames('is-flex is-flex-direction-column is-justify-content-space-between', fieldsContainer);
-
-	return <>
-
-		<FormProvider {...form}>
-
-			<Header />
-
-			<div className='is-flex-desktop'>
-				<div className={fieldsContainerClassName}>
-					<ThemeFields />
-				</div>
-				<div className={previewContainer}>
-					<Preview />
-				</div>
-			</div>
-			{/* <Footer /> */}
-
-		</FormProvider>
-
-		<Modal {...newPageModal} render={NewPageModal} />
-
-	</>;
-
-	function wrongDomain () {
-		// we should be loading the editor from the site's domain
-		// lets delete the localstorage and redirect to the site's editor
-		localDb.clear();
-		// if user comes back here he'll be redirected again from the Login domain
-		return window.location.replace(`https://${redirect}/editor`);
-	}
-
+function iterateAnd(fn) {
+	return (complex) => {
+		return iterate(complex);
+		function iterate(obj) {
+			Object.keys(obj).forEach((key) => {
+				if (Array.isArray(obj[key])) obj[key] = obj[key].map(fn);
+				if (typeof obj[key] === 'object') iterate(obj[key]);
+			});
+			return obj;
+		}
+	};
+}
+function addTempId(item) {
+	item[tempIdKey] = String(Math.random());
+	return item;
+}
+function removeTempId(item) {
+	delete item[tempIdKey];
+	return item;
 }

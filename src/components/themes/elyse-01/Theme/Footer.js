@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import Section from '@wrappers/Section';
 
-import { PageContext } from '.';
+import { PageContext } from './Theme';
 import Socials from './Socials';
 
 export default function Footer () {
