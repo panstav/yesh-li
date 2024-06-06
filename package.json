@@ -1,7 +1,7 @@
 {
   "name": "yesh-li",
   "description": "",
-  "version": "2.9.1",
+  "version": "2.10.0-0",
   "main": "index.js",
   "scripts": {
     "dev": "npm run clean && gatsby develop",
