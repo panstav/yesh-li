@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 
 import { useFieldLabels } from "@hooks/use-i18n";
 
-import { Step } from "@domains/yeshli/Onboarding";
+import { Step } from "@domains/yeshli/pages/Onboarding";
 
 import { FeaturedImageFile, FullNameInput, MainColorSelect, WhatsappContact, PhoneContact, EmailContact, FacebookContact, OccupationInput } from "@themes/alon-01/shared";
 import Checkbox from "@elements/Checkbox";

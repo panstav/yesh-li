@@ -7,7 +7,7 @@ import YeshLiLogo from "@domains/yeshli/elements/Logo";
 import SectionTitle from "@domains/yeshli/elements/SectionTitle";
 
 import { titleFont } from '@domains/yeshli/index.module.sass';
-import { aboveGlow } from '@domains/yeshli/Index/index.module.sass';
+import { aboveGlow } from '@domains/yeshli/pages/Index/index.module.sass';
 
 import { benefitsContainer, benefit, benefitsGlow } from './index.module.sass';
 

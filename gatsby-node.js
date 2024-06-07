@@ -90,7 +90,7 @@ async function createPages({ actions }) {
 		function createDomainPages() {
 
 			const parentDomainName = parentDomain.replace('.', '');
-			const multiDir = `${__dirname}/src/domains/${parentDomainName}`;
+			const multiDir = `${__dirname}/src/components/domains/${parentDomainName}/pages`;
 
 			// some domains don't even have a custom pages directory - we'll skip them
 			if (!fs.existsSync(multiDir)) return;

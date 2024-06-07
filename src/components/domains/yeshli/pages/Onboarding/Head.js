@@ -1,6 +1,6 @@
 import { HeadFor } from "@config/Meta";
 
-import { domainProps, wrapTitle } from "..";
+import { domainProps, wrapTitle } from "../..";
 
 export default HeadFor({
 	...domainProps,
