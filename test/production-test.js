@@ -65,6 +65,25 @@ describe('sitemap', () => {
 		expect(error).toBeUndefined();
 	});
 
+	it('should correspond to the pages in the public directory', async () => {
+
+		// get the path to the homepage, it should be the shortest of all paths
+		const homepagePath = sitemap.reduce((accu, { url }) => {
+			if (url.length < accu.length) return url;
+			return accu;
+		}, sitemap[0].url);
+
+		const sitemapUrls = sitemap.map(({ url }) => url.replace(homepagePath, '/'));
+
+		const foundPaths = [];
+		getMetaTagsPerPage().forEach(({ path }) => {
+			const url = path.replace('./public', '').replace('/index.html', '') || '/';
+			expect(sitemapUrls).toContain(url);
+			foundPaths.push(url);
+		});
+		expect(sitemapUrls.length).toBe(foundPaths.length);
+	});
+
 });
 
 describe('meta tags', () => {
@@ -94,6 +113,7 @@ describe('meta tags', () => {
 		metaTagsPerPage.forEach(({ tags }) => {
 			const tagsContentToHaveFullUrls = ['og:url', 'twitter:url', 'og:image', 'twitter:image'].map((tagName) => getContentForMetaTagName(tags, tagName));
 			tagsContentToHaveFullUrls.forEach((tagContent) => {
+				expect(tagContent).toBeTruthy();
 				expect(() => new URL(tagContent)).not.toThrow();
 			});
 		});

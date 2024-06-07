@@ -7,8 +7,10 @@ const { SitemapStream, streamToPromise } = require('sitemap');
 const sass = require('sass');
 const sassAlias = require('sass-alias');
 
+const { themes: themesMap } = require('yeshli-shared');
+
 // for some reason got doesn't like to be required regularly so we prepare a variable and require it later
-let got, themesMap;
+let got;
 
 if (!process.env.GATSBY_API_URL) {
 	dotenv.config({ path: `.env.production` });
@@ -37,8 +39,6 @@ const shortDomain = new URL(fullDomain).hostname;
 })();
 
 async function createMultiSite(sites, redirects) {
-
-	await fetchThemesMap();
 
 	const multiName = shortDomain.replace('.', '');
 
@@ -95,8 +95,10 @@ async function createRootSite(site) {
 	if (!registeredHomepage) siteMap.push({ url: '/', changefreq: 'daily', priority: 1 });
 
 	// create a sitemap entry per collection page and also turn the collectionPages array into an object with the collection type as the key and the collection pages array as the value
+	const siteCollectionPagesSettings = themesMap.find(({ themeName }) => themeName === site.theme).collectionPages;
 	site.content.collectionPages = site.content.collectionPages?.reduce((accu, page) => {
-		const url = `${page.type}/${page.slug}`;
+		const prefix = siteCollectionPagesSettings.find(({ type }) => type === page.type).prefix;
+		const url = `${prefix}/${page.slug}`;
 		siteMap.push({ url, changefreq: 'monthly', priority: 0.5 });
 		if (!accu[page.type]) accu[page.type] = [];
 		accu[page.type].push(page);
@@ -216,9 +218,4 @@ function camelToKebabCase(str) {
 		.replace(/-+/g, '-')
 		// remove dashes from start and end of the str
 		.replace(/(^-|-$)/g, '');
-}
-
-async function fetchThemesMap() {
-	const { themes } = await import('yeshli-shared');
-	themesMap = themes;
 }
