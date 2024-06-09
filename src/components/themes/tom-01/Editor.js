@@ -4,7 +4,6 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import useI18n from "@hooks/use-i18n";
 
 import Modal, { SaveButton, useModal } from "@wrappers/Modal";
-import RenderChildren from "@wrappers/RenderChildren";
 import { ImageInput, RichEditor, UrlInput } from "@elements/Fields";
 import Repeater, { ArrayOrderControlContext } from "@elements/Fields/Repeater";
 import TextInput, { NumberInput } from "@elements/Fields/TextInput";
@@ -12,6 +11,7 @@ import DateInput from "@elements/Fields/DateInput";
 import Details from "@elements/Details";
 import { LinkedDetails } from "@pages/Editor";
 import Checkbox from "@elements/Checkbox";
+import CompoundField from "@elements/CompoundField";
 
 import regexes from "@lib/regexes";
 import getCollectionPagePrefix from "@lib/get-collection-page-prefix";
@@ -402,13 +402,6 @@ function TagInput ({ id, hideModal }) {
 		}
 	}
 
-}
-
-function CompoundField(props) {
-	const Wrapper = ((typeof props.if === 'function' && props.if()) || props.if || !Object.keys(props).includes('if')) ? 'div' : RenderChildren;
-	return <Wrapper className={compoundField}>
-		{props.children}
-	</Wrapper>;
 }
 
 function FieldsWrapper() {
