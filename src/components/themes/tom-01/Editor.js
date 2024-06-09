@@ -15,6 +15,7 @@ import CompoundField from "@elements/CompoundField";
 
 import regexes from "@lib/regexes";
 import getCollectionPagePrefix from "@lib/get-collection-page-prefix";
+import slugify from "@lib/slugify";
 
 import { compoundField } from '@pages/Editor/index.module.sass';
 
@@ -56,7 +57,7 @@ function Tom_01 () {
 				emptyItem={{
 					type: 'portfolio',
 					title: "New Portfolio Post",
-					slug: getSlugFor("New Portfolio Post"),
+					slug: slugify("New Portfolio Post"),
 					publishDate: new Date().toISOString().split('T')[0],
 					images: [emptyPortfolioPost]
 				}}>
@@ -120,7 +121,7 @@ function Tom_01 () {
 					emptyItem={{
 						type: 'post',
 						title: "New Post",
-						slug: getSlugFor("New Post"),
+						slug: slugify("New Post"),
 						// date in the format of: 2021-01-01
 						publishDate: new Date().toISOString().split('T')[0],
 						contentHtml: "",
@@ -415,7 +416,7 @@ function FieldsWrapper() {
 	function updateSlug(slugId, titleOrId, { force } = {}) {
 		if (!force && getFieldState(slugId)?.isTouched) return;
 		const title = getValues(titleOrId) || titleOrId;
-		setValue(slugId, getSlugFor(title), { shouldValidate: true, shouldDirty: true });
+		setValue(slugId, slugify(title), { shouldValidate: true, shouldDirty: true });
 	}
 
 }
@@ -576,11 +577,4 @@ function Tags({ id, titleKey, emptyItem }) {
 		});
 	}
 
-}
-
-function getSlugFor(str) {
-	let res = str.toLowerCase().replace(regexes.nonSlugParts, '-');
-	if (res.startsWith('-')) res = res.slice(1);
-	if (res.endsWith('-')) res = res.slice(0, -1);
-	return res;
 }
