@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
@@ -5,7 +6,6 @@ import classNames from 'classnames';
 import useI18n from '@hooks/use-i18n';
 
 import { logoContainer, versionByLogo } from './index.module.sass';
-import { memo } from 'react';
 
 const LogoWithVersion = memo(UnmemoizedLogoWithVersion);
 

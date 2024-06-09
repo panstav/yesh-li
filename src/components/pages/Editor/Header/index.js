@@ -14,8 +14,7 @@ import Nav from './Nav';
 import MenuItems, { MenuItem } from './MenuItems';
 import SlugChoice from './SlugChoice';
 import AttachDomain from './AttachDomain';
-
-export const SafeHeader = () => <Nav className="is-justify-content-center" />;
+export { default as SafeHeader } from './SafeHeader';
 
 export default memo(Header, () => true);
 
