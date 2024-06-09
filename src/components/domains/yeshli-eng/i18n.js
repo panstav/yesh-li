@@ -71,7 +71,7 @@ const i18n = {
 			slug_updated_successfully: "The URL has been updated, in less than an hour your page will be accessible.",
 			log_out: "Log out",
 			public_site: "Public site",
-			publish_site: "הוצאה לאור",
+			publish_site: "Publish site",
 			choose_slug: "Choose URL",
 			choose_domain: "Choose domain",
 			go_to_site: "Go to site",
