@@ -42,7 +42,11 @@ async function createMultiSite(sites, redirects) {
 
 	const multiName = shortDomain.replace('.', '');
 
-	const links = (await fs.promises.readdir(`./src/components/domains/${multiName}/pages`)).filter((fileName) => fileName.endsWith('.js'))
+	const links = (await fs.promises.readdir(`./src/components/domains/${multiName}/pages`))
+		// remove non-js files and internal pages
+		.filter((fileName) => fileName.endsWith('.js') && !['admin', 'editor'].some((internalPage) => internalPage + '.js' === fileName))
+
+		// map to sitemap entries
 		.map((pageFileName) => {
 
 			// avoid using index as the homepage page
