@@ -1,4 +1,6 @@
-import { createContext, useContext } from 'react';
+import { createContext, useCallback, useContext, useRef } from 'react';
+
+import Details from '@elements/Details';
 
 import getDirByLang from '@lib/get-dir-by-lang';
 
@@ -24,16 +26,19 @@ export default function EditorWrapper ({ pageContext }) {
 	</Auth>;
 }
 
-export function PreviewLink({ href, onClick, children }) {
-	const goTo = useContext(EditorContext).navigate;
+export function LinkedDetails({ title, href, children }) {
+	if (!href) throw new Error('LinkedDetails must have an href prop');
 
-	const navigate = (event) => {
-		event.preventDefault();
-		onClick(event);
-		goTo(href);
-	};
+	const ref = useRef();
 
-	return <a onClick={navigate}>{children}</a>;
+	const onClick = useCallback((event) => {
+		// when clicking on details title, don't close details, but open if closed
+		if (ref.current && ref.current.open) event.stopPropagation();
+	}, [ref]);
+
+	return <Details detailsRef={ref} title={() => <PreviewLink {...{ onClick, href }}>{title}</PreviewLink>}>
+		{children}
+	</Details>;
 }
 
 const tempIdKey = '_id';
@@ -64,4 +69,16 @@ function addTempId(item) {
 function removeTempId(item) {
 	delete item[tempIdKey];
 	return item;
+}
+
+function PreviewLink({ href, onClick, children }) {
+	const goTo = useContext(EditorContext).navigate;
+
+	const navigate = (event) => {
+		event.preventDefault();
+		onClick(event);
+		goTo(href);
+	};
+
+	return <a onClick={navigate}>{children}</a>;
 }

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useRef } from "react";
+import { createContext, useContext, useRef } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import useI18n from "@hooks/use-i18n";
@@ -10,12 +10,12 @@ import Repeater, { ArrayOrderControlContext } from "@elements/Fields/Repeater";
 import TextInput, { NumberInput } from "@elements/Fields/TextInput";
 import DateInput from "@elements/Fields/DateInput";
 import Details from "@elements/Details";
+import { LinkedDetails } from "@pages/Editor";
 import Checkbox from "@elements/Checkbox";
 
 import regexes from "@lib/regexes";
 import getCollectionPagePrefix from "@lib/get-collection-page-prefix";
 
-import { PreviewLink } from "@pages/Editor";
 import { compoundField } from '@pages/Editor/index.module.sass';
 
 const defaultImageMaxSize = 610;
@@ -583,21 +583,6 @@ function Tags({ id, titleKey, emptyItem }) {
 		});
 	}
 
-}
-
-function LinkedDetails({ title, href, children }) {
-	if (!href) throw new Error('LinkedDetails must have an href prop');
-
-	const ref = useRef();
-
-	const onClick = useCallback((event) => {
-		// when clicking on details title, don't close details, but open if closed
-		if (ref.current && ref.current.open) event.stopPropagation();
-	}, [ref]);
-
-	return <Details detailsRef={ref} title={() => <PreviewLink {...{ onClick, href }}>{title}</PreviewLink>}>
-		{children}
-	</Details>;
 }
 
 function getSlugFor(str) {
