@@ -38,6 +38,7 @@ const i18n = {
 			maxLengthField: (maxLength) => `Maximum ${maxLength} characters`,
 
 			invalid_url: 'Invalid URL',
+			invalid_relative_url: 'Invalid relative URL',
 			invalid_phone_number: 'Invalid phone number',
 			invalid_email: 'Invalid email address',
 			errors_are_red: "Problems in page editing are displayed in red",

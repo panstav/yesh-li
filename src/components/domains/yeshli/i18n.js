@@ -54,6 +54,7 @@ const i18n = {
 			maxLengthField: (maxLength) => `מקסימום ${maxLength} תווים`,
 
 			invalid_url: 'כתובת האינטרנט לא תקינה',
+			invalid_relative_url: 'כתובת אינטרנט יחסית לא תקינה',
 			invalid_phone_number: 'מספר הטלפון אינו תקין',
 			invalid_email: 'כתובת האימייל אינה תקינה',
 			errors_are_red: "בעיות בעריכת העמוד מוצגות באדום",

@@ -7,7 +7,7 @@ import TextInput from "./TextInput";
 
 export { default } from "./TextInput";
 
-export function UrlInput({ type = 'url', validate, includes, required, ...props }) {
+export function UrlInput({ type = 'url', validate, includes, required, isRelative, ...props }) {
 	const t = useFieldLabels();
 	return <TextInput
 		type={type}
@@ -15,7 +15,7 @@ export function UrlInput({ type = 'url', validate, includes, required, ...props 
 			...validate,
 			// only invalidate these if value is present, otherwise it's the required validator's responsibility
 			incldues: (str) => (!includes || (!str || str.includes(includes))) || t.urlMissingOn(includes),
-			isUrl: (str) => (!str || isUrl(str)) || t.invalid_url
+			isUrl: (str) => (!str || (isRelative ? isRelativeUrl(str) : isUrl(str))) || (isRelative ? t.invalid_relative_url : t.invalid_url)
 		}}
 		required={required}
 		{...props} />;
@@ -47,4 +47,8 @@ export function NumberInput(props) {
 	return <TextInput
 		type="number"
 		{...props} />;
+}
+
+function isRelativeUrl(str) {
+	return str.startsWith('/') && isUrl(`https://example.com${str}`);
 }
