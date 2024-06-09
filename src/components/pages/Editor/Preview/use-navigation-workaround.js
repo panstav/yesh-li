@@ -2,11 +2,12 @@ import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { EditorContext } from "@pages/Editor";
 
+import { domainsMap } from "@domains";
 import { themesMap } from "@themes";
 
-export default function useNavigationWorkaround({ theme }) {
+export default function useNavigationWorkaround({ domain, theme }) {
 
-	const { registerNavigation } = useContext(EditorContext);
+	const { domainControl, registerNavigation } = useContext(EditorContext);
 
 	const [renderAllowed, setRenderAllowed] = useState(true);
 	const [framePath, setFramePath] = useState();
@@ -18,7 +19,9 @@ export default function useNavigationWorkaround({ theme }) {
 		if (!pathname) return;
 
 		const mapKey = pathname === '/' ? '' : pathname;
-		const comp = themesMap[`${theme}${mapKey}`];
+		const comp = domainControl
+			? domainsMap[`${domain}${mapKey}`]
+			: themesMap[`${theme}${mapKey}`];
 
 		// don't navigate if
 		if (

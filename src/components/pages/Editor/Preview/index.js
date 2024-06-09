@@ -19,7 +19,11 @@ export default function PreviewWrapper() {
 
 	const hasErrors = useEditorValidation();
 
-	const { framePath, frameRef, renderAllowed } = useNavigationWorkaround({ theme: validProps.theme });
+
+	const { framePath, frameRef, renderAllowed } = useNavigationWorkaround({
+		theme: validProps.theme,
+		domain: validProps.domain
+	});
 
 	// creating the initial content for the iframe is somewhat expensive so we'll memoize it here to calculate it only once
 	const initialContent = useMemo(() => getInitialContent({ lang, theme: validProps.theme }), []);

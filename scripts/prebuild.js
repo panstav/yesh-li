@@ -7,7 +7,7 @@ const { SitemapStream, streamToPromise } = require('sitemap');
 const sass = require('sass');
 const sassAlias = require('sass-alias');
 
-const { themes: themesMap } = require('yeshli-shared');
+const { domains: domainsMap, themes: themesMap } = require('yeshli-shared');
 
 // for some reason got doesn't like to be required regularly so we prepare a variable and require it later
 let got;
@@ -24,7 +24,7 @@ const shortDomain = new URL(fullDomain).hostname;
 	if (!process.env.NETLIFY) await cleanUp();
 
 	// get sites from api
-	const { sites, redirects } = await api(`sites?domain=${shortDomain}`);
+	const { domain, sites, redirects } = await api(`sites?domain=${shortDomain}`);
 
 	// compile any theme-specific global styles
 	await compileSass(sites);
@@ -34,11 +34,11 @@ const shortDomain = new URL(fullDomain).hostname;
 
 	// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 	// iterate through the sites array
-	await createMultiSite(sites, redirects);
+	await createMultiSite(domain, sites, redirects);
 
 })();
 
-async function createMultiSite(sites, redirects) {
+async function createMultiSite(domain, sites, redirects) {
 
 	const multiName = shortDomain.replace('.', '');
 
@@ -62,6 +62,13 @@ async function createMultiSite(sites, redirects) {
 	// create an empty file to indicate that we're not deploying a root site
 	await writeRootSiteDataFile();
 
+	const { title, description, mainColorHex } = await fs.promises.readFile(`./src/components/domains/${multiName}/index.json`).then(JSON.parse);
+	const collectionPagesSettings = domainsMap.find(({ domain }) => domain === shortDomain).collectionPages;
+	
+	domain.content.collectionPages = groupByCollectionPageTypeAndPushToSitemap(domain.content.collectionPages, collectionPagesSettings, links);
+	// if the current site has custom data for the domain pages, and possibly collectionPages for it too, we'll create a file for it
+	if (domain) await fs.promises.writeFile('./data/domain.json', JSON.stringify(domain));
+
 	return sites.reduce((accu, site) => accu.then(async () => {
 
 		// save each site's data to a json file at /data/theme-{themeName}/{siteId}.json
@@ -69,9 +76,6 @@ async function createMultiSite(sites, redirects) {
 		await fs.promises.writeFile(`./data/theme-${site.theme}/${site.slug}.json`, JSON.stringify(site));
 		await fs.promises.mkdir(`./static/${site.slug}`, { recursive: true });
 		await fs.promises.writeFile(`./static/${site.slug}/manifest.json`, JSON.stringify(getManifest(site)));
-
-		const parentDomain = themesMap.find(({ themeName }) => themeName === sites[0].theme).parentDomain.replace('.', '');
-		const { title, description, mainColorHex } = await fs.promises.readFile(`./src/components/domains/${parentDomain}/index.json`).then(JSON.parse);
 
 		// create a manifest for the homepage as well
 		await fs.promises.writeFile(`./static/manifest.json`, JSON.stringify(getManifest({

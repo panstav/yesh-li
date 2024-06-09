@@ -7,7 +7,7 @@ import rootThemeData from '@data/root.json';
 export const defaultTheme = 'alon-01';
 
 export const themesMap = getMappedComponents('Theme');
-export const fieldsMap = getMappedComponents('Editor');
+export const themeFieldsMap = getMappedComponents('Editor');
 export const onboardingStepsMap = getMappedComponents('Onboarding');
 
 function getMappedComponents (type) {

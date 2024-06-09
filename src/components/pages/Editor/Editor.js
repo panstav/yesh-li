@@ -16,12 +16,13 @@ import ThemeFields from './ThemeFields';
 import Preview from './Preview';
 import { AuthContext } from './Auth';
 
-import { tempIds } from '.';
+import { EditorContext, tempIds } from '.';
 import { fieldsContainer, previewContainer } from './index.module.sass';
 
 export default function Editor() {
 	const [{ Editor: { NewPageModal } }] = useI18n();
 	const { siteId } = useContext(AuthContext);
+	const { domainControl } = useContext(EditorContext);
 
 	const form = useForm({
 		mode: 'onChange',
@@ -70,7 +71,10 @@ export default function Editor() {
 	}
 
 	async function getDefaultValues() {
-		const res = await xhr.getSiteData(siteId);
+		const res = domainControl
+			? await xhr.getDomainData()
+			: await xhr.getSiteData(siteId);
+
 		tempIds.setAll(res);
 		return res;
 	}

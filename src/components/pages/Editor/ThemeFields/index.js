@@ -8,9 +8,10 @@ import { useFieldLabels } from '@hooks/use-i18n';
 import xhr from '@services/xhr';
 import markErrorOnClosestDetails from '@lib/mark-error-on-closest-details';
 
-import { fieldsMap } from '@themes';
+import { themeFieldsMap } from '@themes';
+import { domainFieldsMap } from '@domains';
+import { EditorContext, tempIds } from '@pages/Editor';
 import { AuthContext } from '@pages/Editor/Auth';
-import { tempIds } from '@pages/Editor';
 
 import Component from './ThemeFields';
 
@@ -18,6 +19,7 @@ export default function ThemeFields() {
 
 	const t = useFieldLabels();
 	const { siteId } = useContext(AuthContext);
+	const { domainControl } = useContext(EditorContext);
 	const { handleSubmit, getValues, formState: { errors } } = useFormContext();
 
 	const [isLoading, setLoading] = useState(false);
@@ -35,13 +37,16 @@ export default function ThemeFields() {
 	const onSubmit = handleSubmit((data) => {
 		removeTempIds(data);
 		setLoading(true);
-		xhr.updateSiteData(siteId, data)
+		(domainControl ? xhr.updateDomainData(data) : xhr.updateSiteData(siteId, data))
 			.then(() => showSavedSuccessfullyModal())
 			.catch(() => showErrorWhileSavingModal())
 			.finally(() => setLoading(false));
 	});
 
-	const FieldGroup = fieldsMap[getValues().theme];
+	const FieldGroup = domainControl
+		? domainFieldsMap[getValues().domain]
+		: themeFieldsMap[getValues().theme];
+
 	const hasErrors = !!Object.keys(errors).length;
 
 	const props = {

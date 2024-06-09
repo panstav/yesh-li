@@ -1,4 +1,5 @@
 import { useState, useEffect, createContext } from 'react';
+import { navigate } from 'gatsby';
 
 import { roles } from 'yeshli-shared';
 
@@ -13,7 +14,7 @@ const siteId = process.env.SITEID_TO_EDIT;
 
 export const AuthContext = createContext();
 
-export default function Auth({ children }) {
+export default function Auth({ adminOnly, children }) {
 
 	const [user, setUser] = useState();
 
@@ -24,6 +25,8 @@ export default function Auth({ children }) {
 
 	// user is neither logged in nor is trying to, start the login process
 	if (user.role === roles.GUEST) return <Login jwtExpired={user.jwtExpired} />;
+
+	if (adminOnly && user.role !== roles.ADMIN) return navigate('/editor');
 
 	user.siteId = siteId || user.sites[0];
 

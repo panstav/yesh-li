@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import localDb from '@services/localDb';
@@ -6,11 +7,13 @@ import useI18n from '@hooks/use-i18n';
 import { Eye, Logout } from '@elements/Icon';
 import OutboundLink from '@elements/OutboundLink';
 
+import { EditorContext } from '@pages/Editor';
 import { eyeIcon } from './index.module.sass';
 
 export default function MenuItems({ showSlugModal, showDomainModal }) {
 
 	const [{ Editor: { Header: t } }] = useI18n();
+	const { domainControl } = useContext(EditorContext);
 
 	const { getValues } = useFormContext();
 	const slug = getValues('slug');
@@ -27,6 +30,8 @@ export default function MenuItems({ showSlugModal, showDomainModal }) {
 			}
 		}
 	];
+
+	if (domainControl) return done();
 
 	if (!getValues('isPublic')) {
 		// site has yet to be published
@@ -70,7 +75,11 @@ export default function MenuItems({ showSlugModal, showDomainModal }) {
 		}
 	}
 
-	return menuItems.map(MenuItem);
+	return done();
+
+	function done() {
+		return menuItems.map(MenuItem);
+	}
 
 }
 

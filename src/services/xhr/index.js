@@ -24,6 +24,10 @@ export default {
 	createTempRootSite: (domain) => post('temp-root-site', { domain }, { timeout: false }),
 	validateNameServers: ({ domain, nameServers, siteId, currentSlug }) => get(`name-servers-validation?domain=${domain}&currentSlug=${currentSlug}&siteId=${siteId}&required=${nameServers.join(',')}`),
 
+	// admin-facing routes
+	getDomainData: () => get(`domain-data`),
+	updateDomainData: (data) => put(`domain-data`, data),
+
 	// marketing-facing routes
 	postEnquiry: (data) => post('enquiry', data)
 

@@ -9,7 +9,8 @@ import useI18n from '@hooks/use-i18n';
 import Modal, { useModal, useSuccessModal } from '@wrappers/Modal';
 import { Sheet } from '@elements/Icon';
 
-import { AuthContext } from '../Auth';
+import { EditorContext } from '@pages/Editor';
+import { AuthContext } from '@pages/Editor/Auth';
 import Nav from './Nav';
 import MenuItems, { MenuItem } from './MenuItems';
 import SlugChoice from './SlugChoice';
@@ -21,7 +22,7 @@ export default memo(Header, () => true);
 function Header() {
 
 	const [{ Editor: { Header: t, AttachDomain: { DomainAttachedSuccessFullyModal } }}] = useI18n();
-
+	const { domainControl } = useContext(EditorContext);
 	const { siteId } = useContext(AuthContext);
 
 	const [slugUpdateSuccess, showSlugUpdateSuccess] = useSuccessModal({
@@ -49,7 +50,7 @@ function Header() {
 	return <>
 		<Nav logoClassName="is-clickable" burgerClasses={burgerClasses} burgerOnClick={toggleMenu}>
 			<div className={menuClasses}>
-				<GoToSpreadsheet />
+				{!domainControl && <GoToSpreadsheet />}
 				<div className="navbar-end">
 					<MenuItems {...{
 						showSlugModal, showDomainModal

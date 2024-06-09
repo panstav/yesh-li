@@ -17,10 +17,10 @@ export const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 export const acceptedFileSuffixes = allowedImageTypes.join(',').replaceAll('image/', '.');
 export const acceptedExtnames = allowedImageTypes.join(', ').replaceAll('image/', '.');
 
-export default function EditorWrapper ({ pageContext }) {
+export default function EditorWrapper({ pageContext, adminOnly, domainControl }) {
 	const { forward, backward } = getDirByLang(pageContext.lang, { bothSides: true });
-	return <Auth>
-		<EditorContextSetter extend={{ dir: { forward, backward } }}>
+	return <Auth adminOnly={adminOnly}>
+		<EditorContextSetter extend={{ domainControl, dir: { forward, backward } }}>
 			<Editor  />
 		</EditorContextSetter>
 	</Auth>;

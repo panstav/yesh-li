@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import Frame from 'react-frame-component';
 
 import Page from "@config/Page";
@@ -8,16 +8,22 @@ import Loader from "@elements/Loader";
 
 import useI18n from "@hooks/use-i18n";
 
+import { EditorContext } from "@pages/Editor";
+import { domainsMap } from "@domains";
 import { themesMap } from "@themes";
 
 export default function Preview({ frameRef, framePath = '', hasErrors, initialContent, pageContext }) {
 
 	const [{ Editor: { Preview: t } }] = useI18n();
+	const { domainControl } = useContext(EditorContext);
 
 	const [customComponents, setCustomComponents] = useState();
 
 	// get the correct page component based on the theme and the path
-	const ThemedPage = themesMap[`${pageContext.theme}${framePath}`];
+	const PreviewPage = domainControl
+		? domainsMap[`${pageContext.domain}${framePath}`]
+		: themesMap[`${pageContext.theme}${framePath}`];
+
 	// normalize the location object to show the correct path for the homepage of the theme
 	const location = { pathname: framePath === '' ? '/' : framePath };
 
@@ -34,7 +40,7 @@ export default function Preview({ frameRef, framePath = '', hasErrors, initialCo
 					<Suspense fallback={<Loader />}>
 
 						<CustomComponentsSetter />
-						<ThemedPage {...pageContext} />
+						<PreviewPage {...pageContext} />
 
 					</Suspense>
 				</Page>
@@ -48,10 +54,10 @@ export default function Preview({ frameRef, framePath = '', hasErrors, initialCo
 		// so we'll set them here to rerender the page with the correct components
 
 		useEffect(() => {
-			const customComponents = ThemedPage?._payload?._result?.default?.customComponents;
+			const customComponents = PreviewPage?._payload?._result?.default?.customComponents;
 			if (!customComponents) return;
 			setCustomComponents(customComponents);
-		}, [ThemedPage?._payload?._status]);
+		}, [PreviewPage?._payload?._status]);
 
 		return null;
 	}
