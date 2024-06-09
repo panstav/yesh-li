@@ -2,7 +2,7 @@ import { lazy } from 'react';
 
 import { themes as map } from 'yeshli-shared';
 
-import rootThemeData from '/data/root.json';
+import rootThemeData from '@data/root.json';
 
 export const defaultTheme = 'alon-01';
 

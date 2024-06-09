@@ -90,7 +90,7 @@
       "^@wrappers(.*)$": "<rootDir>/src/components/wrappers$1",
       "^@lib(.*)$": "<rootDir>/src/lib$1",
       "^@hooks(.*)$": "<rootDir>/src/hooks$1",
-      "^@data(.*)$": "<rootDir>/src/data$1",
+      "^@data(.*)$": "<rootDir>/data$1",
       "^@services(.*)$": "<rootDir>/src/services$1",
       "^@test(.*)$": "<rootDir>/test$1",
       "yeshli-shared": "yeshli-shared"

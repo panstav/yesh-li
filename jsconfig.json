@@ -26,14 +26,14 @@
 			"@lib/*": [
 				"./src/lib/*"
 			],
-			"@data/*": [
-				"./src/data/*"
-			],
 			"@hooks/*": [
 				"./src/hooks/*"
 			],
 			"@services/*": [
 				"./src/services/*"
+			],
+			"@data/*": [
+				"./data/*"
 			],
 			"@test/*": [
 				"./test/*"
