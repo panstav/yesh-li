@@ -15,7 +15,7 @@ export default function Hero() {
 		<div className="is-small-mobile mx-auto">
 			<div className="columns is-align-items-stretch m-0">
 				<div className="column is-one-third p-0">
-					<FlexImage {...portrait} isCover />
+					<FlexImage {...portrait} />
 				</div>
 				<div className="column is-two-thirds is-flex is-align-items-center py-6">
 					<Section noTopMargin>

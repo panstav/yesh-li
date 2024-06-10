@@ -23,7 +23,7 @@ export default function Services() {
 						<div className="columns is-mobile is-flex-gap-2-tablet is-align-items-stretch m-0">
 							<div className={serviceMediaSideClassName}>
 								<div className="has-strong-radius" style={{ overflow: 'hidden', height: '100%' }}>
-									<FlexImage {...image} isCover />
+									<FlexImage {...image} />
 								</div>
 							</div>
 							<div className="column is-two-thirds is-flex is-flex-direction-column is-justify-content-center is-align-items-start py-5">
