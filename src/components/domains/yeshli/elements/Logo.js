@@ -1,4 +1,4 @@
-import { Icon } from "@elements/Icon";
+import Icon from '@elements/Icon/Icon';
 
 export default function YeshLiLogo (props) {
 	return <Icon viewBox={'0 0 2450 1370'} {...props}>

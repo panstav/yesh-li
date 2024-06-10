@@ -1,5 +1,7 @@
 import classNames from "classnames";
 
+import Icon from "./Icon";
+
 export const AddContact = (props) => <Icon viewBox="0 -960 960 960" {...props}>
 	<path xmlns="http://www.w3.org/2000/svg" d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm-360-80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z" />
 </Icon>;
@@ -201,22 +203,6 @@ export const X = (props) => <Icon viewBox="0 0 1200 1227" {...props}>
 export const YouTube = (props) => <Icon size={48} {...props}>
 	<path d="M45.1,12.8a5.5,5.5,0,0,0-3.9-3.9C37.8,8,24,8,24,8S10.2,8,6.8,8.9a5.5,5.5,0,0,0-3.9,3.9C2,16.2,2,23.4,2,23.4s0,7.2.9,10.6a5.5,5.5,0,0,0,3.9,3.9c3.4.9,17.2.9,17.2.9s13.8,0,17.2-.9A5.5,5.5,0,0,0,45.1,34c.9-3.4.9-10.6.9-10.6S46,16.2,45.1,12.8ZM19.6,30V16.8L31,23.4Z" />
 </Icon>;
-
-export function Icon({ className, size = 24, sizeX = size, sizeY = size, viewBox, svgProps = { style: {} }, children, ...props }) {
-
-	// prep cursor:pointer className
-	const clickableClass = 'onClick' in props ? 'is-clickable' : '';
-
-	props.className = classNames('icon', className, clickableClass);
-
-	if (['onFocus', 'onBlur'].some((attribute) => attribute in props)) props.tabIndex = '0';
-
-	return <div {...props}>
-		<svg {...svgProps} style={{ width: '100%', ...svgProps.style }} xmlns="http://www.w3.org/2000/svg" viewBox={viewBox || `0 0 ${sizeX} ${sizeY}`}>
-			{children}
-		</svg>
-	</div>;
-}
 
 function Arrow({ rotate = 0, ...props }) {
 	return <Icon size={452} svgProps={{ style: { rotate: `${rotate}deg` } }} {...props}>

@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from 'react';
 import classNames from 'classnames';
 
-import { Icon } from '@elements/Icon';
+import Icon from '@elements/Icon/Icon';
 
 const emailValidationRegexp = /^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
