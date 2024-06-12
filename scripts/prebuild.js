@@ -100,14 +100,7 @@ async function createRootSite(site) {
 
 	// create a sitemap entry per collection page and also turn the collectionPages array into an object with the collection type as the key and the collection pages array as the value
 	const siteCollectionPagesSettings = themesMap.find(({ themeName }) => themeName === site.theme).collectionPages;
-	site.content.collectionPages = site.content.collectionPages?.reduce((accu, page) => {
-		const prefix = siteCollectionPagesSettings.find(({ type }) => type === page.type).prefix;
-		const url = `${prefix}/${page.slug}`;
-		siteMap.push({ url, changefreq: 'monthly', priority: 0.5 });
-		if (!accu[page.type]) accu[page.type] = [];
-		accu[page.type].push(page);
-		return accu;
-	}, {});
+	site.content.collectionPages = groupByCollectionPageTypeAndPushToSitemap(site.content.collectionPages, siteCollectionPagesSettings, siteMap);
 
 	await writeSitemapFile(siteMap);
 
@@ -144,6 +137,17 @@ function getManifest({ id, title, shortName = title, slug = '', mainColor }) {
 			}
 		]
 	};
+}
+
+function groupByCollectionPageTypeAndPushToSitemap(collectionPages, config, siteMap) {
+	return collectionPages?.reduce((accu, page) => {
+		const prefix = config.find(({ type }) => type === page.type).prefix;
+		const url = `${prefix}/${page.slug}`;
+		siteMap.push({ url, changefreq: 'monthly', priority: 0.5 });
+		if (!accu[page.type]) accu[page.type] = [];
+		accu[page.type].push(page);
+		return accu;
+	}, {});
 }
 
 async function api(path) {
