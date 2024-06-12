@@ -6,7 +6,7 @@ import { SafeHeader } from "@pages/Editor/Header";
 
 import Modal, { useErrorModal } from "./Modal";
 
-export default function PageWrapper({ children }) {
+export default function ErrorModalProvider({ children }) {
 	const [{ multi: { FatalErrorModal } }] = useI18n();
 
 	const [fatalErrorModalProps, showFatalErrorModal] = useErrorModal({ hideable: false });

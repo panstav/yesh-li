@@ -1,6 +1,6 @@
 import { createI18nWrapper } from "@config/I18n";
 
-import PageWrapper from "@wrappers/PageWrapper";
+import ErrorModalProvider from "@wrappers/ErrorModalProvider";
 import GoogleAnalytics from "@elements/GoogleAnalytics";
 import MicrosoftClarity from "@elements/MicrosoftClarity";
 
@@ -34,9 +34,9 @@ export function createDomainWrapper(i18n) {
 
 		function Wrapper({ children }) {
 			return <I18nWrapper>
-				<PageWrapper>
+				<ErrorModalProvider>
 					{children}
-				</PageWrapper>
+				</ErrorModalProvider>
 			</I18nWrapper>;
 		}
 	};
