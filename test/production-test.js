@@ -65,23 +65,38 @@ describe('sitemap', () => {
 		expect(error).toBeUndefined();
 	});
 
-	it('should correspond to the pages in the public directory', async () => {
+	describe('should have the correct set of paths', () => {
 
-		// get the path to the homepage, it should be the shortest of all paths
-		const homepagePath = sitemap.reduce((accu, { url }) => {
-			if (url.length < accu.length) return url;
-			return accu;
-		}, sitemap[0].url);
+		let sitemapUrls;
+		const sitemapPaths = [];
 
-		const sitemapUrls = sitemap.map(({ url }) => url.replace(homepagePath, '/'));
+		beforeAll(() => {
 
-		const foundPaths = [];
-		getMetaTagsPerPage().forEach(({ path }) => {
-			const url = path.replace('./public', '').replace('/index.html', '') || '/';
-			expect(sitemapUrls).toContain(url);
-			foundPaths.push(url);
+			// get the path to the homepage, it should be the shortest of all paths
+			const homepageUrl = sitemap.reduce((accu, { url }) => {
+				if (url.length < accu.length) return url;
+				return accu;
+			}, sitemap[0].url);
+
+			sitemapUrls = sitemap.map(({ url }) => url.replace(homepageUrl, '/'));
 		});
-		expect(sitemapUrls.length).toBe(foundPaths.length);
+
+		it('should correspond to the pages in the public directory', async () => {
+
+			getMetaTagsPerPage().forEach(({ path }) => {
+				const url = path.replace('./public', '').replace('/index.html', '') || '/';
+				expect(sitemapUrls).toContain(url);
+				sitemapPaths.push(url);
+			});
+
+			expect(sitemapUrls.length).toBe(sitemapPaths.length);
+		});
+
+		it('should not include the admin or editor pages', () => {
+			expect(sitemapUrls).not.toContain('/admin');
+			expect(sitemapUrls).not.toContain('/editor');
+		});
+
 	});
 
 });
