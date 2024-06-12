@@ -11,3 +11,9 @@ export function createI18nWrapper(i18n) {
 		</I18nContext.Provider>;
 	};
 }
+
+export function I18nProvider({ i18n, children }) {
+	return <I18nContext.Provider value={i18n}>
+		{children}
+	</I18nContext.Provider>;
+}
