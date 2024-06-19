@@ -1,1 +1,1 @@
-export { default as default, Head } from "./Editor";
+export { default as default, Head } from "./pages/Editor";

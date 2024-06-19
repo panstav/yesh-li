@@ -69,7 +69,7 @@ async function createMultiSite(domain, sites, redirects) {
 		domain.content.collectionPages = groupByCollectionPageTypeAndPushToSitemap(domain.content.collectionPages, collectionPagesSettings, links);
 	}
 	// create a domain file, if there's no relevant data, we'll create an empty file
-	await fs.promises.writeFile('./data/domain.json', JSON.stringify(domain || {}));
+	await writeDomainFile(domain || {});
 
 	return sites.reduce((accu, site) => accu.then(async () => {
 
@@ -115,6 +115,9 @@ async function createRootSite(site) {
 
 	// save the site's data to a json file at /data/root.json
 	await writeRootSiteDataFile(site);
+
+	// Write domain data to domain.json
+	await writeDomainFile({});
 
 	await fs.promises.writeFile('./static/manifest.json', JSON.stringify(getManifest(site)));
 }
@@ -166,6 +169,10 @@ async function writeSitemapFile(items) {
 	const sitemap = await streamToPromise(Readable.from(items).pipe(stream)).then((data) => data.toString());
 
 	return fs.promises.writeFile('./static/sitemap.xml', sitemap);
+}
+
+function writeDomainFile(domain) {
+	return fs.promises.writeFile('./data/domain.json', JSON.stringify(domain));
 }
 
 function writeRedirectsFile(redirects) {
