@@ -9,7 +9,7 @@ import { logoContainer, versionByLogo } from './index.module.sass';
 
 const LogoWithVersion = memo(UnmemoizedLogoWithVersion);
 
-export default function Nav({ className: classes, logoClassName, burgerClasses, burgerOnClick, children }) {
+export default function Nav({ logoLinksHome, className: classes, logoClassName, burgerClasses, burgerOnClick, children }) {
 
 	const [{ multi: { Logo } }] = useI18n();
 
@@ -18,7 +18,7 @@ export default function Nav({ className: classes, logoClassName, burgerClasses, 
 	const versionClassName = classNames('is-size-8 has-text-white', versionByLogo);
 	return <nav className={className} style={{ boxShadow: '0px 20px 30px 10px var(--color-background)' }}>
 		<div className="navbar-brand is-justify-content-center">
-			<LogoWithVersion className="is-flex">
+			<LogoWithVersion logoLinksHome={logoLinksHome} className="is-flex">
 				<div className={logoContainerClassName}>
 					<Logo className="has-text-white mx-0" style={{ width: '3.5rem' }} />
 					<Version className={versionClassName} />
@@ -38,7 +38,7 @@ function UnmemoizedLogoWithVersion(props) {
 	// by default slug would be falsy
 	// by default users at a multisite - have a slug
 	// and users that move to their own domain - don't have a slug on their siteData but multisite reserved their slug to redirect
-	if (!useFormContext()?.getValues('slug')) return props.children;
+	if (!props.logoLinksHome || !useFormContext()?.getValues('slug')) return props.children;
 
 	return <a href="/" {...props} />;
 }
