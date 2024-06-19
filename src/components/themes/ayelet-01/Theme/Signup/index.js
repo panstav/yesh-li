@@ -32,7 +32,7 @@ export default function Form({ className }) {
 			'תאריכים': dates
 		};
 
-		xhr.postLead(lead)
+		xhr.createLead(lead)
 			.then(() => {
 				setSucceeded(true);
 				if (formSubmittionEventId) trackConversion(formSubmittionEventId);
