@@ -16,20 +16,21 @@ export default function Repeater({ arrayId, singleName, emptyItem, collapseItems
 
 	validate();
 
-	let ComponentWrapper, wrapperHandlesTitle;
-	if (!ItemWrapper) {
-		if (!collapseItems) ItemWrapper = NoWrapper;
+	if (!ItemWrapper) ItemWrapper = (() => {
+		if (!collapseItems) return NoWrapper;
+		if (openItemInModal) return ModalizedRepeaterItem;
+		return CollapsedRepeaterItem;
+	})();
 
-		wrapperHandlesTitle = true;
-		if (openItemInModal) {
-			ItemWrapper = ModalizedRepeaterItem;
-			ComponentWrapper = 'div';
-		} else {
-			ItemWrapper = CollapsedRepeaterItem;
-			// ignore any props passed to the Repeater component template wrapper
-			ComponentWrapper = RenderChildren;
-		}
-	}
+	const ComponentWrapper = (() => {
+		if (openItemInModal) return 'div';
+		return RenderChildren;
+	})();
+
+	const wrapperHandlesTitle = (() => {
+		if (!ItemWrapper || collapseItems) return true;
+		return false;
+	})();
 
 	const t = useFieldLabels();
 	const { currentPath } = useContext(EditorContext);
