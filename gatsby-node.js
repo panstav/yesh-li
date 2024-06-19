@@ -51,7 +51,6 @@ async function createPages({ actions }) {
 
 	} else {
 		createMultiSite();
-		createLegacySites();
 	}
 
 	function createMultiSite() {

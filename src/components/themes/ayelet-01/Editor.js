@@ -69,8 +69,9 @@ export default function Ayelet_01() {
 				arrayId="content.roomTypes"
 				singleName="חדר"
 				minLength="1"
+				collapseItems="name"
 				emptyItem={{
-					name: 'חדר אחר',
+					name: 'סוג חדר חדש',
 					persons: 1,
 					totalPrice: 1000
 				}}>
@@ -81,9 +82,11 @@ export default function Ayelet_01() {
 						maxLength={30} />
 					<NumberInput
 						id={`${id}.persons`}
+						validate={{ onlyPositiveNumbers: (value) => value >= 1 || 'מינימום 1' }}
 						label="מספר האנשים בחדר" />
 					<NumberInput
 						id={`${id}.totalPrice`}
+						validate={{ onlyPositiveNumbers: (value) => value >= 1 || 'מינימום 1' }}
 						label="מחיר"
 						description="לא כולל מחיר הסדנה" />
 				</>}
@@ -101,10 +104,13 @@ export default function Ayelet_01() {
 					srcSet: "https://storage.googleapis.com/yeshli-www/assets/placeholder-250x250-01.jpg"
 				}}>
 				{(id) => <>
-					<ImageInput
-						isCompoundField={false}
-						hasNoFocus
-						id={id} />
+					<div className="block">
+						<ImageInput
+							sizes={[850]}
+							isCompoundField={false}
+							hasNoFocus
+							id={id} />
+					</div>
 					<Select
 						id={`${id}.size`}
 						label="גודל"
@@ -121,8 +127,9 @@ export default function Ayelet_01() {
 				arrayId="content.guides"
 				singleName="מדריך\ה"
 				minLength="1"
+				collapseItems="name"
 				emptyItem={{
-					name: '',
+					name: 'מדריך/ה חדש/ה',
 					description: '',
 					image: {
 						alt: '',
@@ -134,13 +141,14 @@ export default function Ayelet_01() {
 						id={`${id}.name`}
 						label="שם"
 						maxLength={30} />
+					<ImageInput
+						id={`${id}.image`}
+						hasNoFocus
+						sizes={[200]} />
 					<TextArea
 						id={`${id}.description`}
 						label="תיאור"
 						maxLength={250} />
-					<ImageInput
-						id={`${id}.image`}
-						sizes={[200]} />
 				</>}
 			</Repeater>
 		</Details>
