@@ -46,6 +46,7 @@ export function EmailInput(props) {
 export function NumberInput(props) {
 	return <TextInput
 		type="number"
+		setValueAs={(str) => String(Number(str))}
 		{...props} />;
 }
 
