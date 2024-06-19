@@ -2,6 +2,8 @@ import fs from 'fs';
 
 import regexes from '@lib/regexes';
 
+const domainsWithoutEditorFile = [];
+
 const i18nProperties = {
 	strings: [],
 	functions: []
@@ -15,6 +17,11 @@ beforeAll(() => {
 		if (!fs.statSync(`${__dirname}/${fileName}`).isDirectory()) return;
 		// collect directory names
 		domains.push(fileName);
+
+		// if directory doesn't have a Editor.js file, include it in domainsWithoutEditorFile
+		if (!fs.existsSync(`${__dirname}/${fileName}/Editor.js`)) {
+			domainsWithoutEditorFile.push(fileName);
+		}
 	});
 
 	domains.forEach(domainName => {
@@ -33,16 +40,24 @@ beforeAll(() => {
 
 });
 
-it('should have not underscores for i18n functions', () => {
-	expect(i18nProperties.functions.length).toBeGreaterThan(0);
-	i18nProperties.functions.forEach((key) => {
-		expect(key).not.toContain('_');
+describe('i18n', () => {
+
+	it('should have not underscores for i18n functions', () => {
+		expect(i18nProperties.functions.length).toBeGreaterThan(0);
+		i18nProperties.functions.forEach((key) => {
+			expect(key).not.toContain('_');
+		});
 	});
+
+	it('should have snake_case for i18n strings', () => {
+		expect(i18nProperties.strings.length).toBeGreaterThan(0);
+		i18nProperties.strings.forEach((key) => {
+			expect(key).toMatch(regexes.snakeCase);
+		});
+	});
+
 });
 
-it('should have snake_case for i18n strings', () => {
-	expect(i18nProperties.strings.length).toBeGreaterThan(0);
-	i18nProperties.strings.forEach((key) => {
-		expect(key).toMatch(regexes.snakeCase);
-	});
+it('should have a Editor.js file in each domain directory', () => {
+	expect(domainsWithoutEditorFile.length).toBe(0);
 });
