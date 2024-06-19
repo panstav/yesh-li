@@ -151,7 +151,7 @@ function BuyingDomainUnavailable({ goToExistingDomainPanel }) {
 	return <>
 		<p>At this stage it is not possible to purchase a domain through the system.</p>
 		<p>We recommend purchasing your domain through <OutboundLink href="https://www.namecheap.com/">Namecheap</OutboundLink>.</p>
-		<p>After you purchase your domain you can continue with the instructions in the <a onClick={goToExistingDomainPanel}>Use Existing Domain</a> tab.</p>
+		<p>After you purchase your domain you can continue with the instructions in the <a onClick={goToExistingDomainPanel}>{i18n.Editor.AttachDomain.use_existing_domain}</a> tab.</p>
 		<AttachDomainContactUs />
 	</>;
 }

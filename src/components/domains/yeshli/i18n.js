@@ -165,7 +165,7 @@ const i18n = {
 		AttachDomain: {
 
 			attach_domain_to_site: "חיבור דומיין לאתר",
-			use_existing_domain: "חיבור דומיין קיים",
+			use_existing_domain: "חיבור לדומיין קיים",
 			buy_new_domain: "רכישת דומיין חדש",
 			BuyingDomainUnavailable,
 			attaching_domain_wait_or_come_later: "המערכת מכינה את האתר לחיבור הדומיין. פעולה זו עשויה להמשך מספר דקות, אפשר לחכות שתסתיים ואפשר גם לסגור את העמוד ולחזור לכאן מאוחר יותר.",
@@ -214,7 +214,7 @@ function BuyingDomainUnavailable({ goToExistingDomainPanel }) {
 	return <>
 		<p>בשלב זה אין אפשרות לרכוש דומיין דרך המערכת.</p>
 		<p>אנו ממליצים לרכוש את הדומיין שלכם דרך <OutboundLink href="https://domains.livedns.co.il/">LiveDNS</OutboundLink> במידה ואתם רוצים סיומת ישראלית ודרך <OutboundLink href="https://www.namecheap.com/">Namecheap</OutboundLink> עבור כל סיומת אחרת.</p>
-		<p>לאחר שתרכשו את הדומיין שלכם תוכלו להמשיך עם ההוראות שבלשונית <a onClick={goToExistingDomainPanel}>חיבור דומיין קיים</a>.</p>
+		<p>לאחר שתרכשו את הדומיין שלכם תוכלו להמשיך עם ההוראות שבלשונית <a onClick={goToExistingDomainPanel}>{i18n.Editor.AttachDomain.use_existing_domain}</a>.</p>
 		<AttachDomainContactUs />
 	</>;
 }
