@@ -1,11 +1,11 @@
 import GlassBox from "@wrappers/GlassBox";
 
-import usePageContent from "@hooks/use-page-content";
+import { useSiteContent } from "@hooks/use-site-data";
 
 import Heading from "./Heading";
 
 export default function Details() {
-	const { workshopDetails, retreatPrice, registrationPrice, lastDayToRegister, accommodationDetails, roomTypes, cancellationPolicy } = usePageContent();
+	const { workshopDetails, retreatPrice, registrationPrice, lastDayToRegister, accommodationDetails, roomTypes, cancellationPolicy } = useSiteContent();
 
 	return <>
 		<GlassBox>

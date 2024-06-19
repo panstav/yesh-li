@@ -1,6 +1,7 @@
+import { HeadFor } from '@config/Meta';
 import GlassBox from '@wrappers/GlassBox';
 
-import usePageContent from '@hooks/use-page-content';
+import { useSiteContent } from '@hooks/use-site-data';
 
 import Details from './Details';
 import Hero from './Hero';
@@ -12,8 +13,16 @@ import Gallery from './Gallery';
 import Footer from './Footer';
 import Signup from './Signup';
 
+export const Head = HeadFor(({ pageContext: { content: { description, featuredImage } } }) => {
+	return {
+		preload: [{ href: featuredImage.src, as: 'image' }],
+		description,
+		featuredImage: featuredImage.src
+	};
+});
+
 export default function RetreatYetziraVeOtzmaPage() {
-	const content = usePageContent();
+	const content = useSiteContent();
 
 	content.isSoldOutBool = content.isSoldOut === 'true';
 	content.galleryRows = splitGalleryItemsToRows(content.gallery, 3);
@@ -42,7 +51,7 @@ export default function RetreatYetziraVeOtzmaPage() {
 }
 
 function Background() {
-	const { featuredImage } = usePageContent();
+	const { featuredImage } = useSiteContent();
 
 	return <div data-is-background="1" style={{ zIndex: '-10', position: 'fixed', top: '-50%', left: '-50%', width: '200%', height: '200%' }}>
 		<img style={{ position: 'absolute', top: '0', left: '0', right: '0', bottom: '0', margin: 'auto', minWidth: '50%', maxWidth: 'none', minHeight: '50%' }} src={featuredImage.src} />

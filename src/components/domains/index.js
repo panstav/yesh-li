@@ -18,7 +18,7 @@ function getMappedComponents (type) {
 		if (type !== 'pages') return accu;
 
 		// if theme has additional collection pages, add them to the map
-		if (collectionPages?.length && domainData.content.collectionPages) collectionPages.forEach(({ type, prefix, componentPath }) => {
+		if (Object.keys(domainData).length && collectionPages?.length && domainData.content.collectionPages) collectionPages.forEach(({ type, prefix, componentPath }) => {
 			domainData.content.collectionPages[type].forEach(({ slug }) => {
 				accu[`${domain}/${prefix}/${slug}`] = lazy(() => import(`./${domainName}/${componentPath}`));
 			});

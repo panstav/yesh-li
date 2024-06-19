@@ -63,11 +63,13 @@ async function createMultiSite(domain, sites, redirects) {
 	await writeRootSiteDataFile();
 
 	const { title, description, mainColorHex } = await fs.promises.readFile(`./src/components/domains/${multiName}/index.json`).then(JSON.parse);
-	const collectionPagesSettings = domainsMap.find(({ domain }) => domain === shortDomain).collectionPages;
-	
-	domain.content.collectionPages = groupByCollectionPageTypeAndPushToSitemap(domain.content.collectionPages, collectionPagesSettings, links);
-	// if the current site has custom data for the domain pages, and possibly collectionPages for it too, we'll create a file for it
-	if (domain) await fs.promises.writeFile('./data/domain.json', JSON.stringify(domain));
+	const { collectionPages: collectionPagesSettings = [] } = domainsMap.find(({ domain }) => domain === shortDomain) || {};
+
+	if (collectionPagesSettings.length) {
+		domain.content.collectionPages = groupByCollectionPageTypeAndPushToSitemap(domain.content.collectionPages, collectionPagesSettings, links);
+	}
+	// create a domain file, if there's no relevant data, we'll create an empty file
+	await fs.promises.writeFile('./data/domain.json', JSON.stringify(domain || {}));
 
 	return sites.reduce((accu, site) => accu.then(async () => {
 

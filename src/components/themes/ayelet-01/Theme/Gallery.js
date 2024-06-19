@@ -1,9 +1,9 @@
 import LazyImage from "@elements/LazyImage";
 
-import usePageContent from "@hooks/use-page-content";
+import { useSiteContent } from "@hooks/use-site-data";
 
 export default function Gallery() {
-	const { galleryRows } = usePageContent();
+	const { galleryRows } = useSiteContent();
 
 	return <div className="is-flex is-flex-direction-column" style={{ gap: '1rem' }}>
 		{galleryRows.map((slideRow) => {

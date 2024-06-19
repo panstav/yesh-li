@@ -1,11 +1,12 @@
 import GlassBox from '@wrappers/GlassBox';
 
+import { useSiteContent } from '@hooks/use-site-data';
+
 import Section from './Section';
 import Signup from './Signup';
-import usePageContent from '@hooks/use-page-content';
 
-export default function Description () {
-	const { topDescription } = usePageContent();
+export default function Description() {
+	const { topDescription } = useSiteContent();
 
 	return <>
 		<Section withTopMargin={false} style={{ marginTop: '25vh', marginBottom: '25vh', textShadow: '0 0 10px white' }}>
@@ -21,7 +22,7 @@ export default function Description () {
 }
 
 function Title() {
-	const { titleRow1, titleRow2, eventDate, isSoldOutBool } = usePageContent();
+	const { titleRow1, titleRow2, eventDate, isSoldOutBool } = useSiteContent();
 
 	return <h1 className="has-text-centered">
 		<div className="is-size-2 has-text-weight-bold">

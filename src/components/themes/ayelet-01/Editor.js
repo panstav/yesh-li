@@ -69,8 +69,9 @@ export default function Ayelet_01() {
 				arrayId="content.roomTypes"
 				singleName="חדר"
 				minLength="1"
+				collapseItems="name"
 				emptyItem={{
-					name: '',
+					name: 'סוג חדר חדש',
 					persons: 1,
 					totalPrice: 1000
 				}}>
@@ -81,9 +82,11 @@ export default function Ayelet_01() {
 						maxLength={30} />
 					<NumberInput
 						id={`${id}.persons`}
+						validate={{ onlyPositiveNumbers: (value) => value >= 1 || 'מינימום 1' }}
 						label="מספר האנשים בחדר" />
 					<NumberInput
 						id={`${id}.totalPrice`}
+						validate={{ onlyPositiveNumbers: (value) => value >= 1 || 'מינימום 1' }}
 						label="מחיר"
 						description="לא כולל מחיר הסדנה" />
 				</>}
@@ -124,8 +127,9 @@ export default function Ayelet_01() {
 				arrayId="content.guides"
 				singleName="מדריך\ה"
 				minLength="1"
+				collapseItems="name"
 				emptyItem={{
-					name: '',
+					name: 'מדריך/ה חדש/ה',
 					description: '',
 					image: {
 						alt: '',
