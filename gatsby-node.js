@@ -221,18 +221,6 @@ async function createPages({ actions }) {
 		}
 	}
 
-	function createLegacySites() {
-		const slug = 'from-junk-to-magic';
-		actions.createPage({
-			path: `/${slug}`,
-			component: require.resolve(`${__dirname}/src/components/pages/FromJunkToMagic/index.js`),
-			context: {
-				parentDomain: 'yesh.li',
-				slug
-			}
-		});
-	}
-
 }
 
 function parsePossiblyEmptyFile (path) {
