@@ -2,7 +2,9 @@ import fs from 'fs';
 
 import regexes from '@lib/regexes';
 
+let gotFour0Four;
 const domainsWithoutEditorFile = [];
+
 
 const i18nProperties = {
 	strings: [],
@@ -25,6 +27,7 @@ beforeAll(() => {
 	});
 
 	domains.forEach(domainName => {
+		gotFour0Four = require(`./${domainName}/404.js`).default;
 		const i18n = require(`./${domainName}/i18n.js`).default;
 
 		Object.keys(i18n).forEach((key) => iterate([key]));
@@ -60,4 +63,12 @@ describe('i18n', () => {
 
 it('should have a Editor.js file in each domain directory', () => {
 	expect(domainsWithoutEditorFile.length).toBe(0);
+});
+
+it('should have a 404 page', async () => {
+	expect(gotFour0Four).toBeTruthy();
+});
+
+it('should have a 404 page', async () => {
+	expect(gotFour0Four).toBeTruthy();
 });

@@ -56,6 +56,9 @@ async function createPages({ actions }) {
 	function createMultiSite() {
 		// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 
+		const parentDomainName = parentDomain.replace('.', '');
+		createFour0FourPage(parentDomainName, parentDomain);
+
 		const sitesDataDirPath = `${__dirname}/data`;
 
 		// get all directories from the data folder
@@ -88,7 +91,6 @@ async function createPages({ actions }) {
 
 		function createDomainPages() {
 
-			const parentDomainName = parentDomain.replace('.', '');
 			const multiDir = `${__dirname}/src/components/domains/${parentDomainName}/pages`;
 
 			// some domains don't even have a custom pages directory - we'll skip them
@@ -124,10 +126,12 @@ async function createPages({ actions }) {
 		const parentDomainName = themeData.parentDomain.replace('.', '');
 		const domainData = JSON.parse(fs.readFileSync(`./src/components/domains/${parentDomainName}/index.json`));
 
+		createFour0FourPage(parentDomainName, themeData.parentDomain);
+
 		// create the editor page
 		actions.createPage({
 			path: '/editor',
-			component: `${__dirname}/src/components/domains/${parentDomainName}/Editor.js`,
+			component: `${__dirname}/src/components/domains/${parentDomainName}/pages/Editor/index.js`,
 			context: {
 				...domainData,
 				...rootSiteData,
@@ -219,6 +223,16 @@ async function createPages({ actions }) {
 		} catch (err) {
 			console.error(`Error creating page for ${path} using theme ${theme}`, err);
 		}
+	}
+
+	function createFour0FourPage(parentDomainName, parentDomain) {
+		actions.createPage({
+			path: `/404`,
+			component: require.resolve(`${__dirname}/src/components/domains/${parentDomainName}/404.js`),
+			context: {
+				parentDomain
+			}
+		});
 	}
 
 }

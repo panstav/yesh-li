@@ -7,7 +7,9 @@ const i18n = {
 
 	multi: {
 		Logo: YeshLiLogo,
-		FatalErrorModal
+		FatalErrorModal,
+		four0FourTitle: 'העמוד לא נמצא',
+		Four0FourSubtitle
 	},
 
 	Login: {
@@ -185,4 +187,9 @@ function FatalErrorModal({ error }) {
 			<OutboundLink className='button' href={`mailto:hello@yesh.li?subject=System error in YeshLi&body=I encountered this error:%0D%0A%0D%0A${error.stack.replaceAll('\n', '%0D%0A')}`}>Contact support</OutboundLink>
 		</div>
 	</>;
+}
+
+function Four0FourSubtitle() {
+	const goBack = () => window.history.goBack();
+	return <p><span className="is-clickable" onClick={goBack}>Go back</span> or <a href="/">go back home</a> to proceed.</p>;
 }
