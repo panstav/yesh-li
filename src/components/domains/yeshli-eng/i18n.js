@@ -8,7 +8,7 @@ const i18n = {
 	multi: {
 		Logo: YeshLiLogo,
 		FatalErrorModal,
-		four0FourTitle: 'העמוד לא נמצא',
+		four_0_four_title: 'Page wasn\'t found',
 		Four0FourSubtitle
 	},
 
