@@ -68,7 +68,3 @@ it('should have a Editor.js file in each domain directory', () => {
 it('should have a 404 page', async () => {
 	expect(gotFour0Four).toBeTruthy();
 });
-
-it('should have a 404 page', async () => {
-	expect(gotFour0Four).toBeTruthy();
-});
