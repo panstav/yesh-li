@@ -20,6 +20,8 @@ function onCreateWebpackConfig({ getConfig, actions }) {
 	// if we're building in production - turn off source maps
 	if (isOnNetlify) config.devtool = false;
 
+	delete config.optimization.splitChunks?.cacheGroups?.commons;
+
 	// Update the config.
 	actions.replaceWebpackConfig(config);
 
