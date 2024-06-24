@@ -7,10 +7,10 @@ import Component from './Meta';
 export { default as HeadFor } from './HeadFor';
 
 export default function Meta({ pathname, siteTitle, title: pageTitle, slug, description, featuredImage, mainColorName, mainColorHex, hasAdvancedSeo = true, ...metaProps }) {
-	
+
 	const shortDomainUrl = useShortDomainUrl();
 	const fullPath = `https://${shortDomainUrl}${pathname === '/' ? '' : pathname}`;
-	const siteHomePath = `${shortDomainUrl}${slug ? `/${slug}` : ''}`;
+	const siteHomePath = `https://${shortDomainUrl}${slug ? `/${slug}` : ''}`;
 
 	const normalizedDescription = Array.isArray(description) ? description.join(' ') : description;
 
