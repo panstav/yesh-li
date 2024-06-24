@@ -10,8 +10,8 @@ export default function getCollectionPage(collectionPages, pathname) {
 	combinedMap.find((mapItem) => {
 
 		// go though each collectionPage and find the one that matches the pathname exactly
-		const { type, prefix } = mapItem.collectionPages.find(({ prefix }) => pathname.startsWith(`/${prefix}/`)) || {};
-		if (!type) return;
+		const { type, prefix } = mapItem.collectionPages.find(({ prefix }) => pathname === `/${prefix}/${pathname.split("/").pop()}`) || {};
+		if (!type) throw new Error(`No collectionPage found for pathname: ${pathname}`);
 
 		return collectionPages[type].find((collectionPage) => {
 			if (pathname === `/${prefix}/${collectionPage.slug}`) {
