@@ -27,6 +27,7 @@ export default function HeadFor(arg) {
 			{preload && preload.map((preload) => <link rel="preload" key={preload.href} {...preload} />)}
 
 			<Meta
+				pathname={data.location.pathname}
 				siteId={data.pageContext.id}
 				siteTitle={data.pageContext.title}
 				slug={data.pageContext.slug}

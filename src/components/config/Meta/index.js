@@ -1,5 +1,3 @@
-import { useLocation } from '@reach/router';
-
 import useShortDomainUrl from '@hooks/use-short-domain-url';
 
 import pallatte from '@lib/pallatte';
@@ -8,9 +6,8 @@ import Component from './Meta';
 
 export { default as HeadFor } from './HeadFor';
 
-export default function Meta({ siteTitle, title: pageTitle, slug, description, featuredImage, mainColorName, mainColorHex, hasAdvancedSeo = true, ...metaProps }) {
-
-	const { pathname } = useLocation();
+export default function Meta({ pathname, siteTitle, title: pageTitle, slug, description, featuredImage, mainColorName, mainColorHex, hasAdvancedSeo = true, ...metaProps }) {
+	
 	const shortDomainUrl = useShortDomainUrl();
 	const fullPath = `https://${shortDomainUrl}${pathname === '/' ? '' : pathname}`;
 	const siteHomePath = `${shortDomainUrl}${slug ? `/${slug}` : ''}`;
