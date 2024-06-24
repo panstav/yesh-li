@@ -8,13 +8,6 @@ const isOnNetlify = process.env.NETLIFY;
 const fullDomain = process.env.URL;
 const parentDomain = new URL(fullDomain).hostname;
 
-exports.onCreateWebpackConfig = ({ actions }) => {
-	// if we're building in production - turn off source maps
-	if (isOnNetlify) actions.setWebpackConfig({
-		devtool: false
-	});
-};
-
 exports.createPages = createPages;
 
 exports.onCreateWebpackConfig = onCreateWebpackConfig;
@@ -23,6 +16,9 @@ function onCreateWebpackConfig({ getConfig, actions }) {
 	const config = getConfig();
 
 	silenceOrderWarning();
+
+	// if we're building in production - turn off source maps
+	if (isOnNetlify) config.devtool = false;
 
 	// Update the config.
 	actions.replaceWebpackConfig(config);
@@ -131,7 +127,7 @@ async function createPages({ actions }) {
 		// create the editor page
 		actions.createPage({
 			path: '/editor',
-			component: `${__dirname}/src/components/domains/${parentDomainName}/pages/Editor/index.js`,
+			component: `${__dirname}/src/components/domains/${parentDomainName}/Editor.js`,
 			context: {
 				...domainData,
 				...rootSiteData,
