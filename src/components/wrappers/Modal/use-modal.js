@@ -76,5 +76,5 @@ function modalType (type) {
 }
 
 function setHtmlClass(className, value) {
-	document.documentElement.classList.toggle(className, value);
+	window.document.documentElement.classList.toggle(className, value);
 }
