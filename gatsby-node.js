@@ -224,9 +224,18 @@ async function createPages({ actions }) {
 	}
 
 	function createFour0FourPage(parentDomainName, parentDomain) {
+
+		const resolvedComponent = (() => {
+			try {
+				return require.resolve(`${__dirname}/src/components/domains/${parentDomainName}/404.js`);
+			} catch (error) {
+				return require.resolve(`${__dirname}/src/components/domains/${parentDomainName}/pages/404.js`);
+			}
+		})();
+
 		actions.createPage({
 			path: `/404`,
-			component: require.resolve(`${__dirname}/src/components/domains/${parentDomainName}/404.js`),
+			component: resolvedComponent,
 			context: {
 				parentDomain
 			}
