@@ -11,7 +11,7 @@ export default function getCollectionPage(collectionPages, pathname) {
 
 		// go though each collectionPage and find the one that matches the pathname exactly
 		const { type, prefix } = mapItem.collectionPages.find(({ prefix }) => pathname === `/${prefix}/${pathname.split("/").pop()}`) || {};
-		if (!type) throw new Error(`No collectionPage found for pathname: ${pathname}`);
+		if (!type) return false;
 
 		return collectionPages[type].find((collectionPage) => {
 			if (pathname === `/${prefix}/${collectionPage.slug}`) {
