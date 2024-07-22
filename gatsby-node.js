@@ -47,7 +47,6 @@ async function createPages({ actions }) {
 
 	if (rootSiteData) createRootSite();
 	else createMultiSite();
-	}
 
 	function createMultiSite() {
 		// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
