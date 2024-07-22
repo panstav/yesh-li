@@ -20,6 +20,7 @@ function onCreateWebpackConfig({ getConfig, actions }) {
 	// if we're building in production - turn off source maps
 	if (isOnNetlify) config.devtool = false;
 
+	// fix issue with css modules not being loaded in Preview
 	delete config.optimization.splitChunks?.cacheGroups?.commons;
 
 	// Update the config.
@@ -44,11 +45,8 @@ async function createPages({ actions }) {
 	const rootSiteFilePath = `${__dirname}/data/root.json`;
 	const rootSiteData = parsePossiblyEmptyFile(rootSiteFilePath);
 
-	if (rootSiteData) {
-		createRootSite();
-
-	} else {
-		createMultiSite();
+	if (rootSiteData) createRootSite();
+	else createMultiSite();
 	}
 
 	function createMultiSite() {
