@@ -18,6 +18,7 @@ if (!process.env.GATSBY_API_URL) {
 
 const fullDomain = process.env.URL;
 const shortDomain = new URL(fullDomain).hostname;
+const multiName = shortDomain.replace('.', '');
 
 (async () => {
 
@@ -27,7 +28,7 @@ const shortDomain = new URL(fullDomain).hostname;
 	const { domain, sites, redirects } = await api(`sites?domain=${shortDomain}`);
 
 	// compile any theme-specific global styles
-	await compileSass(sites);
+	await compileSass(domain, sites);
 
 	// check whether we're on a dedicated domain or a multi-tenant app
 	if (sites.length === 1 && sites[0].slug === '') return createRootSite(sites[0]);
@@ -39,8 +40,6 @@ const shortDomain = new URL(fullDomain).hostname;
 })();
 
 async function createMultiSite(domain, sites, redirects) {
-
-	const multiName = shortDomain.replace('.', '');
 
 	const links = (await fs.promises.readdir(`./src/components/domains/${multiName}/pages`))
 		// remove non-js files and internal pages
@@ -183,11 +182,16 @@ function writeRootSiteDataFile(data = {}) {
 	return fs.promises.writeFile('./data/root.json', JSON.stringify(data));
 }
 
-async function compileSass(sites) {
-	// array could be a single root site or multiple sites in a multi-site setup
+async function compileSass(domain, sites) {
 
-	return Promise.all(sites.map(async (site) => {
+	// domain might have a global.sass file too
+	domain.globalStyles = await transpileSass(`./src/components/domains/${multiName}/global.sass`);
+	// sites array could be a single root site or multiple sites in a multi-site setup
+	await Promise.all(sites.map(async site => {
+		site.globalStyles = await transpileSass(`./src/components/themes/${site.theme}/Theme/global.sass`);
+	}));
 
+	async function transpileSass(pathToSass) {
 		let result;
 
 		// some themes don't have a global.sass file, an error will be thrown and we'll ignore it
@@ -199,7 +203,7 @@ async function compileSass(sites) {
 			});
 
 			// any global styles will reside in a global.sass file in the theme's components folder
-			result = await sass.compileAsync(`./src/components/themes/${site.theme}/Theme/global.sass`, {
+			result = await sass.compileAsync(pathToSass, {
 				importers: [importer],
 				style: 'compressed',
 				loadPaths: ['./node_modules']
@@ -207,13 +211,13 @@ async function compileSass(sites) {
 
 			// save the compiled css to the siteData object
 			// the prop will be used in the Page component to inject the global styles in a way that is persistent across the pages of theme and also available to the editor preview
-			site.globalStyles = result.css;
+			return result.css;
 
 		} catch (error) {
 			// ignore only the errors that are thrown when the global.sass file is missing
 			if (error.message !== "no such file or directory") throw error;
 		}
-	}));
+	}
 }
 
 function cleanUp() {
