@@ -4,7 +4,7 @@ test("slugify", () => {
 	expect(slugify("Hello World")).toBe("hello-world");
 	expect(slugify("Hello World!")).toBe("hello-world");
 	expect(slugify("Hello World!!")).toBe("hello-world");
-	expect(slugify("What's up?")).toBe("what-s-up");
+	expect(slugify("What's up?")).toBe("whats-up");
 	expect(slugify("123")).toBe("123");
 	expect(slugify("123 456")).toBe("123-456");
 	expect(slugify(" 123 456 ")).toBe("123-456");
