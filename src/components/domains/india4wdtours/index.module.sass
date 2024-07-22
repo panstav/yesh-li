@@ -1,0 +1,62 @@
+@import @styles/common
+
+@mixin boxes
+	> div[class~="box"]
+		margin: 0
+		box-shadow: $shadow
+
+		&:hover:not([class~="has-no-hover"])
+			background-color: $white-bis
+
+		&:not(:first-child)
+			border-top-left-radius: 0
+			border-top-right-radius: 0
+		&:not(:last-child)
+			border-bottom-left-radius: 0
+			border-bottom-right-radius: 0
+
+.dashed-underline
+	border-bottom: 1px dashed black
+	cursor: default
+
+.is-primary-on-hover:not(.specific-enough)
+	&:hover
+		background-color: $primary
+		color: white
+		border-color: transparent
+.is-success-on-hover:not(.specific-enough)
+	&:hover
+		background-color: $success
+		color: white
+		border-color: transparent
+
+.info-description-top-margin
+	margin-top: 3rem
+	+tablet
+		margin-top: 1.5rem
+
+.is-stacked-boxes
+	+boxes
+.is-stacked-boxes-tablet
+	+tablet
+		+boxes
+
+.unconstrained-carousel-container[class*="react-multi-carousel-list"]
+	overflow: visible
+
+.delimiter
+	width: 1px
+	+tablet
+		width: auto
+		height: 1px
+		margin-top: 0.75rem
+
+.pt-4-tablet
+	+tablet
+		padding-top: 1rem !important
+.pb-4-tablet
+	+tablet
+		padding-bottom: 1rem !important
+.pe-4-tablet
+	+tablet
+		padding-inline-end: 1rem !important
