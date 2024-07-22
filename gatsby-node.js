@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const { themes: themesMap } = require('yeshli-shared');
+const { themes: themesMap, domains: domainsMap } = require('yeshli-shared');
 
 const isOnNetlify = process.env.NETLIFY;
 
@@ -91,6 +91,15 @@ async function createPages({ actions }) {
 
 			const multiDir = `${__dirname}/src/components/domains/${parentDomainName}/pages`;
 
+			const domainDynamicData = JSON.parse(fs.readFileSync(`${__dirname}/data/domain.json`));
+			const domainHardData = JSON.parse(fs.readFileSync(`${__dirname}/src/components/domains/${parentDomainName}/index.json`));
+
+			const context = {
+				...domainDynamicData,
+				...domainHardData,
+				parentDomain
+			};
+
 			// some domains don't even have a custom pages directory - we'll skip them
 			if (!fs.existsSync(multiDir)) return;
 
@@ -98,19 +107,34 @@ async function createPages({ actions }) {
 			fs.readdirSync(multiDir).forEach((fileName) => {
 				if (!fileName.endsWith('.js')) return;
 
-				const domainData = JSON.parse(fs.readFileSync(`${__dirname}/src/components/domains/${parentDomainName}/index.json`));
-
 				// derive path from fileName, except for the homepage, who's path is always "/"
 				const path = fileName == 'index.js' ? '/' : fileName.split('.')[0];
 				actions.createPage({
 					path,
 					component: `${multiDir}/${fileName}`,
-					context: {
-						...domainData,
-						parentDomain
-					}
+					context
 				});
 			});
+
+			// create a page for each collection page in the domain's dynamic data
+			if (domainDynamicData.content.collectionPages) {
+				Object.keys(domainDynamicData.content.collectionPages).forEach((type) => {
+					domainDynamicData.content.collectionPages[type].forEach((page) => {
+
+						const res = domainsMap.find(({ domain }) => domain === parentDomain).collectionPages.find((pageTypeData) => type === pageTypeData.type);
+						const { componentPath, prefix } = res;
+						const key = `${prefix}/${page.slug}`;
+
+						return createDomainPage({
+							domain: parentDomainName,
+							path: `/${key}`,
+							context,
+							key,
+							componentPath
+						});
+					});
+				});
+			}
 		}
 
 	}
@@ -193,6 +217,34 @@ async function createPages({ actions }) {
 				componentPath: `pages/${fileName}`
 			});
 		});
+	}
+
+	function createDomainPage({ key, domain, componentPath, path, context }) {
+		// do not throw on creating pages, just log the error
+		try {
+
+			// we might have a got data about sites that don't have a theme yet, that's a dev/prod issue, ignore these sites
+			const componentFullPath = `${__dirname}/src/components/domains/${domain}/${componentPath}`;
+			if (!fs.existsSync(componentFullPath)) return;
+
+			// create the page for this site using the theme's component and the site's data as it's pageContext prop
+			actions.createPage({
+				path,
+				context,
+				component: componentFullPath,
+			});
+
+			// add pages to a map that will be used by Editor->Preview to navigate between pages
+			// homepage is already taken care of so ignore it
+			if (key && path !== '/') themeCustomPages.push({
+				key,
+				theme: domain,
+				path: componentPath
+			});
+
+		} catch (err) {
+			console.error(`Error creating page for ${path} using domain ${domain}`, err);
+		}
 	}
 
 	function createThemePage({ key, theme, componentPath, path, context }) {
