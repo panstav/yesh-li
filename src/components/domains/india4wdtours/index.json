@@ -7,5 +7,6 @@
 		"small": "https://storage.googleapis.com/yeshli-www/assets/page-mockup-05-small.webp",
 		"regular": "https://storage.googleapis.com/yeshli-www/assets/page-mockup-04.webp"
 	},
-	"mainColorHex": "00856F"
+	"mainColorHex": "00856F",
+	"isUsingSitesCollectionPagesData": true
 }

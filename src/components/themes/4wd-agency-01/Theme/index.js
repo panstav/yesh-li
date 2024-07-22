@@ -1,0 +1,1 @@
+export { default } from '@domains/india4wdtours/pages/Guide';

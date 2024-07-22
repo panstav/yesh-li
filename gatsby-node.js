@@ -52,6 +52,9 @@ async function createPages({ actions }) {
 		// instance is running as a multi-tenant app, we'll create a page for each tenant using the tenant's theme
 
 		const parentDomainName = parentDomain.replace('.', '');
+		const domainHardData = JSON.parse(fs.readFileSync(`${__dirname}/src/components/domains/${parentDomainName}/index.json`));
+		const domainDynamicData = JSON.parse(fs.readFileSync(`${__dirname}/data/domain.json`));
+
 		createFour0FourPage(parentDomainName, parentDomain);
 
 		const sitesDataDirPath = `${__dirname}/data`;
@@ -79,6 +82,15 @@ async function createPages({ actions }) {
 				const siteData = JSON.parse(fs.readFileSync(`${themeDirPath}/${siteName}`));
 				siteData.parentDomain = parentDomain;
 				createThemePages(siteData);
+
+				// some domains need the data from the sites accossiated with them
+				if (domainHardData.isUsingSitesCollectionPagesData && siteData.content.collectionPages?.length) {
+					if (!domainDynamicData.content.sitesCollectionPages) domainDynamicData.content.sitesCollectionPages = {};
+					siteData.content.collectionPages.forEach((collectionPage) => {
+						if (!domainDynamicData.content.sitesCollectionPages[collectionPage.type]) domainDynamicData.content.sitesCollectionPages[collectionPage.type] = [];
+						domainDynamicData.content.sitesCollectionPages[collectionPage.type].push(collectionPage);
+					});
+				}
 			});
 		});
 
@@ -87,9 +99,6 @@ async function createPages({ actions }) {
 		function createDomainPages() {
 
 			const multiDir = `${__dirname}/src/components/domains/${parentDomainName}/pages`;
-
-			const domainDynamicData = JSON.parse(fs.readFileSync(`${__dirname}/data/domain.json`));
-			const domainHardData = JSON.parse(fs.readFileSync(`${__dirname}/src/components/domains/${parentDomainName}/index.json`));
 
 			const context = {
 				...domainDynamicData,

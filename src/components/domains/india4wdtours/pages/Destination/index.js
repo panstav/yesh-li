@@ -27,7 +27,7 @@ export default wrapPage(DestinationPage);
 
 function DestinationPage() {
 	const destinationData = useCollectionPageContent();
-	destinationData.routes = useSiteContent().collectionPages.route.filter(({ itinerary }) => itinerary.find(({ slug }) => destinationData.slug === slug));
+	destinationData.routes = useSiteContent().sitesCollectionPages.route.filter(({ itinerary }) => itinerary.find(({ slug }) => destinationData.slug === slug));
 
 	const { featuredImage, images } = destinationData;
 
