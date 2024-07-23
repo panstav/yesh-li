@@ -21,7 +21,7 @@ const i18n = {
 		link_successfully_sent_to: "A link and a code for verification have been sent to your email",
 		validation: "Validation",
 		code_you_received: "The code you received by email",
-		email_address_verification: "Email address verification",
+		email_address_verification: "Continue",
 		digitsOnlyWhileYouPasted: (badPaste) => `The code should contain digits only. You tried to paste: '${badPaste}'`,
 		bad_verification_code: "The verification code is incorrect",
 	},
