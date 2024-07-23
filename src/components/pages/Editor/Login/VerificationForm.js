@@ -27,7 +27,7 @@ export default function VerificationCode({ email, buttonClassName, onChange }) {
 	return <>
 		<div className="field">
 			<label htmlFor="code1" className="label">{t.code_you_received}:</label>
-			<div className="is-flex is-flex-direction-row-reverse is-flex-gap-3 is-justify-content-center">
+			<div className="is-flex is-flex-gap-3 is-justify-content-center is-ltr">
 				{[1, 2, 3, 4].map((i) => <input
 					{...form.register(`code${i}`, { required: true })}
 					key={i}
