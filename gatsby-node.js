@@ -114,7 +114,7 @@ async function createPages({ actions }) {
 			});
 
 			// create a page for each collection page in the domain's dynamic data
-			if (domainDynamicData.content.collectionPages) {
+			if (domainDynamicData.content?.collectionPages) {
 				Object.keys(domainDynamicData.content.collectionPages).forEach((type) => {
 					domainDynamicData.content.collectionPages[type].forEach((page) => {
 
