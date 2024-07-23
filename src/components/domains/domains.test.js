@@ -5,7 +5,6 @@ import regexes from '@lib/regexes';
 let gotFour0Four;
 const domainsWithoutEditorFile = [];
 
-
 const i18nProperties = {
 	strings: [],
 	functions: []
